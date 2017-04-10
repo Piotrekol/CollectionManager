@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2BDF5D5F-1CB0-47A6-8138-E4DB961740F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CollectionManagerExtensionsDll</RootNamespace>
+    <AssemblyName>CollectionManagerExtensionsDll</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
+    <OutputPath>bin\Remote Debug\</OutputPath>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Enums\CollectionListSaveType.cs" />
+    <Compile Include="Modules\API\BeatmapExtensionEx.cs" />
+    <Compile Include="Modules\API\osu\OsuApi.cs" />
+    <Compile Include="Modules\BeatmapFilter\BeatmapFilter.cs" />
+    <Compile Include="Modules\CollectionListGenerator\BeatmapType.cs" />
+    <Compile Include="Modules\CollectionListGenerator\IListGenerator.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListGenerator.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListTypes\GenericGenerator.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListTypes\HtmlListGenerator.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListTypes\RedditCodeGenerator.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListTypes\OsuBbCodeGenerator.cs" />
+    <Compile Include="Modules\DownloadManager\API\CookieAwareWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Modules\DownloadManager\API\DownloadItem.cs" />
+    <Compile Include="Modules\DownloadManager\API\DownloadManager.cs" />
+    <Compile Include="Modules\DownloadManager\API\DownloadProgress.cs" />
+    <Compile Include="Modules\DownloadManager\API\DownloadProgressReportEventArgs.cs" />
+    <Compile Include="Modules\DownloadManager\API\LoginData.cs" />
+    <Compile Include="Modules\DownloadManager\ILoginForm.cs" />
+    <Compile Include="Modules\DownloadManager\OsuDownloader.cs" />
+    <Compile Include="Utils\BeatmapUtils.cs" />
+    <Compile Include="Utils\ListGeneratorUtils.cs" />
+    <Compile Include="Modules\CollectionListGenerator\ListTypes\TxtListGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj">
+      <Project>{533ab47a-d1b5-45db-a37e-f053fa3699c4}</Project>
+      <Name>CollectionManagerDll</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\API\osustats\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

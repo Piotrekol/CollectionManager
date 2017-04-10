@@ -1,0 +1,24 @@
+﻿using System;
+using GuiComponents.Interfaces;
+
+namespace GuiComponents.Forms
+{
+    public partial class LoginFormView : BaseForm, ILoginFormView
+    {
+        public LoginFormView()
+        {
+            InitializeComponent();
+            button_Login.Click += (s, a) => { ClickedLogin = true; this.Close(); };
+            button_Login.Click += (s, a) => { this.Close(); };
+            AcceptButton = button_Login;
+            CancelButton = button_Cancel;
+        }
+
+
+        public string Login => ClickedLogin ? textBox_login.Text : "";
+        public string Password => ClickedLogin ? textBox_password.Text : "";
+        public bool ClickedLogin { get; set; }
+        public event EventHandler LoginClick;
+        public event EventHandler CancelClick;
+    }
+}

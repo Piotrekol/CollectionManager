@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9F6C4BFE-5696-4513-BB06-90DC14A56CCF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GuiComponents</RootNamespace>
+    <AssemblyName>GuiComponents</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
+    <OutputPath>bin\Remote Debug\</OutputPath>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\BeatmapListingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BeatmapListingView.Designer.cs">
+      <DependentUpon>BeatmapListingView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BeatmapThumbnailView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BeatmapThumbnailView.Designer.cs">
+      <DependentUpon>BeatmapThumbnailView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CollectionListingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CollectionListingView.Designer.cs">
+      <DependentUpon>CollectionListingView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CollectionRenameView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CollectionRenameView.Designer.cs">
+      <DependentUpon>CollectionRenameView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CollectionTextView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CollectionTextView.Designer.cs">
+      <DependentUpon>CollectionTextView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CombinedBeatmapPreviewView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CombinedBeatmapPreviewView.Designer.cs">
+      <DependentUpon>CombinedBeatmapPreviewView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CombinedListingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CombinedListingView.Designer.cs">
+      <DependentUpon>CombinedListingView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DownloadManagerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DownloadManagerView.Designer.cs">
+      <DependentUpon>DownloadManagerView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InfoTextView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\InfoTextView.Designer.cs">
+      <DependentUpon>InfoTextView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MainSidePanelView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MainSidePanelView.Designer.cs">
+      <DependentUpon>MainSidePanelView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MusicControlView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MusicControlView.Designer.cs">
+      <DependentUpon>MusicControlView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabControlEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BeatmapListingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BeatmapListingForm.Designer.cs">
+      <DependentUpon>BeatmapListingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CollectionAddRenameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CollectionAddRenameForm.Designer.cs">
+      <DependentUpon>CollectionAddRenameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DownloadManagerFormView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DownloadManagerFormView.Designer.cs">
+      <DependentUpon>DownloadManagerFormView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginFormView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginFormView.Designer.cs">
+      <DependentUpon>LoginFormView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainFormView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainFormView.Designer.cs">
+      <DependentUpon>MainFormView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserDialogs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\BeatmapListingView.resx">
+      <DependentUpon>BeatmapListingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BeatmapThumbnailView.resx">
+      <DependentUpon>BeatmapThumbnailView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CollectionListingView.resx">
+      <DependentUpon>CollectionListingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CollectionRenameView.resx">
+      <DependentUpon>CollectionRenameView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CollectionTextView.resx">
+      <DependentUpon>CollectionTextView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CombinedBeatmapPreviewView.resx">
+      <DependentUpon>CombinedBeatmapPreviewView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CombinedListingView.resx">
+      <DependentUpon>CombinedListingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DownloadManagerView.resx">
+      <DependentUpon>DownloadManagerView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\InfoTextView.resx">
+      <DependentUpon>InfoTextView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MainSidePanelView.resx">
+      <DependentUpon>MainSidePanelView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MusicControlView.resx">
+      <DependentUpon>MusicControlView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BeatmapListingForm.resx">
+      <DependentUpon>BeatmapListingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CollectionAddRenameForm.resx">
+      <DependentUpon>CollectionAddRenameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DownloadManagerFormView.resx">
+      <DependentUpon>DownloadManagerFormView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginFormView.resx">
+      <DependentUpon>LoginFormView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainFormView.resx">
+      <DependentUpon>MainFormView.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj">
+      <Project>{533ab47a-d1b5-45db-a37e-f053fa3699c4}</Project>
+      <Name>CollectionManagerDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj">
+      <Project>{2bdf5d5f-1cb0-47a6-8138-e4db961740f2}</Project>
+      <Name>CollectionManagerExtensionsDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{14768636-102a-4a27-ab5a-9b5d1ba316a6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj">
+      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
+      <Name>ObjectListView2012</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

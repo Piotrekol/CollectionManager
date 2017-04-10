@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{533AB47A-D1B5-45DB-A37E-F053FA3699C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CollectionManager</RootNamespace>
+    <AssemblyName>CollectionManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
+    <OutputPath>bin\Remote Debug\</OutputPath>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\Beatmap.cs" />
+    <Compile Include="Example.cs" />
+    <Compile Include="DataTypes\BeatmapExtension.cs" />
+    <Compile Include="DataTypes\Beatmaps.cs" />
+    <Compile Include="DataTypes\Collection.cs" />
+    <Compile Include="DataTypes\Collections.cs" />
+    <Compile Include="Enums\CollectionEdit.cs" />
+    <Compile Include="Exceptions\BeatmapCacherNotInitalizedException.cs" />
+    <Compile Include="Exceptions\NotOsuDirectoryException.cs" />
+    <Compile Include="Interfaces\ICollectionEditor.cs" />
+    <Compile Include="Interfaces\ICollectionNameValidator.cs" />
+    <Compile Include="Modules\CollectionsManager\CollectionEditArgs.cs" />
+    <Compile Include="Modules\CollectionsManager\CollectionsManagerWithCounts.cs" />
+    <Compile Include="Modules\CollectionsManager\CollectionsManager.cs" />
+    <Compile Include="Modules\FileIO\FileCollections\CollectionLoader.cs" />
+    <Compile Include="Modules\FileIO\FileCollections\OsdbCollectionHandler.cs" />
+    <Compile Include="Modules\FileIO\FileCollections\OsuCollectionHandler.cs" />
+    <Compile Include="Modules\FileIO\OsuFileIo.cs" />
+    <Compile Include="Modules\FileIO\OsuDb\MapCacher.cs" />
+    <Compile Include="Modules\FileIO\OsuDb\OsuDatabase.cs" />
+    <Compile Include="DataTypes\RangeObservableCollection.cs" />
+    <Compile Include="Enums\PlayModes.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Interfaces\IMapDataStorer.cs" />
+    <Compile Include="Modules\FileIO\OsuDb\LOsuDatabaseLoader.cs" />
+    <Compile Include="Modules\FileIO\OsuDb\OsuDatabaseReader.cs" />
+    <Compile Include="Modules\FileIO\OsuPathResolver.cs" />
+    <Compile Include="Modules\FileIO\OsuSettingsLoader.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

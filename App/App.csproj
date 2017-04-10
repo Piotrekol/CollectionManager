@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>App</RootNamespace>
+    <AssemblyName>App</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
+    <OutputPath>bin\Remote Debug\</OutputPath>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BeatmapListingActionsHandler.cs" />
+    <Compile Include="CollectionEditor.cs" />
+    <Compile Include="GuiActionsHandler.cs" />
+    <Compile Include="Initalizer.cs" />
+    <Compile Include="Interfaces\Controls\IBeatmapThumbnailModel.cs" />
+    <Compile Include="Interfaces\Controls\ICollectionAddRenameModel.cs" />
+    <Compile Include="Interfaces\Controls\ICollectionTextModel.cs" />
+    <Compile Include="Interfaces\Controls\ICombinedBeatmapPreviewModel.cs" />
+    <Compile Include="Interfaces\Controls\IDownloadManagerModel.cs" />
+    <Compile Include="Interfaces\Controls\IInfoTextModel.cs" />
+    <Compile Include="Interfaces\Controls\IMusicControlModel.cs" />
+    <Compile Include="Interfaces\Controls\IBeatmapListingPresenter.cs" />
+    <Compile Include="Interfaces\Controls\IBeatmapListingModel.cs" />
+    <Compile Include="Interfaces\Controls\ICollectionListingModel.cs" />
+    <Compile Include="Interfaces\Forms\IMainFormModel.cs" />
+    <Compile Include="Interfaces\IBeatmapListingBindingProvider.cs" />
+    <Compile Include="Interfaces\IFormEvents.cs" />
+    <Compile Include="Interfaces\IGenericMapSetterModel.cs" />
+    <Compile Include="Interfaces\IUpdateModel.cs" />
+    <Compile Include="Misc\BeatmapListFilter.cs" />
+    <Compile Include="Misc\Helpers.cs" />
+    <Compile Include="Misc\GuiComponentsProvider.cs" />
+    <Compile Include="Models\Controls\BeatmapListingModel.cs" />
+    <Compile Include="Models\Controls\BeatmapThumbnailModel.cs" />
+    <Compile Include="Models\Controls\CollectionListingModel.cs" />
+    <Compile Include="Models\Controls\CollectionRenameModel.cs" />
+    <Compile Include="Models\Controls\CollectionTextModel.cs" />
+    <Compile Include="Models\Controls\CombinedBeatmapPreviewModel.cs" />
+    <Compile Include="Models\Controls\DownloadManagerModel.cs" />
+    <Compile Include="Models\Controls\InfoTextModel.cs" />
+    <Compile Include="Models\Controls\MusicControlModel.cs" />
+    <Compile Include="Models\Forms\MainFormModel.cs" />
+    <Compile Include="Models\GenericMapSetterModel.cs" />
+    <Compile Include="OsuDownloadManager.cs" />
+    <Compile Include="Presenters\Controls\BeatmapThumbnailPresenter.cs" />
+    <Compile Include="Presenters\Controls\CollectionAddRenamePresenter.cs" />
+    <Compile Include="Presenters\Controls\CollectionTextPresenter.cs" />
+    <Compile Include="Presenters\Controls\CombinedBeatmapPreviewPresenter.cs" />
+    <Compile Include="Presenters\Controls\DownloadManagerPresenter.cs" />
+    <Compile Include="Presenters\Controls\InfoTextPresenter.cs" />
+    <Compile Include="Presenters\Controls\MusicControlPresenter.cs" />
+    <Compile Include="Presenters\Forms\BeatmapListingFormPresenter.cs" />
+    <Compile Include="Presenters\Forms\CollectionAddRenameFormPresenter.cs" />
+    <Compile Include="Presenters\Forms\DownloadManagerFormPresenter.cs" />
+    <Compile Include="Presenters\Forms\MainFormPresenter.cs" />
+    <Compile Include="Presenters\Controls\BeatmapListingPresenter.cs" />
+    <Compile Include="Presenters\Controls\CollectionListingPresenter.cs" />
+    <Compile Include="Presenters\Controls\CombinedListingPresenter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SidePanelActionsHandler.cs" />
+    <Compile Include="UpdateChecker.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj">
+      <Project>{533ab47a-d1b5-45db-a37e-f053fa3699c4}</Project>
+      <Name>CollectionManagerDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj">
+      <Project>{2bdf5d5f-1cb0-47a6-8138-e4db961740f2}</Project>
+      <Name>CollectionManagerExtensionsDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{14768636-102a-4a27-ab5a-9b5d1ba316a6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuiComponents\GuiComponents.csproj">
+      <Project>{9f6c4bfe-5696-4513-bb06-90dc14a56ccf}</Project>
+      <Name>GuiComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MusicPlayer\MusicPlayer.csproj">
+      <Project>{573a1557-c916-4abe-bd52-94760d19cc29}</Project>
+      <Name>MusicPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj">
+      <Project>{18FEDA0C-D147-4286-B39A-01204808106A}</Project>
+      <Name>ObjectListView2012</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,13 @@
+﻿namespace CollectionManager.Enums
+{
+    public enum CollectionEdit
+    {
+        Add=0,
+        Remove=1,
+        Rename=2,
+        Merge=3,
+        Clear=4,
+        AddBeatmaps=5,
+        RemoveBeatmaps=6,
+    }
+}
