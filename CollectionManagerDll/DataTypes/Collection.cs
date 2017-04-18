@@ -173,34 +173,26 @@ namespace CollectionManager.DataTypes
         {
             if (_beatmapHashes.Contains(hash))
             {
-                bool removed = false;
-                for (int i = 0; i < KnownBeatmaps.Count; i++)
+                foreach (var map in AllBeatmaps())
                 {
-                    if (KnownBeatmaps[i].Md5 == hash)
+                    if (map.Md5 == hash)
                     {
-                        KnownBeatmaps.RemoveAt(i);
-                        removed = true;
+                        UnknownBeatmaps.Remove(map);
+                        KnownBeatmaps.Remove(map);
+                        DownloadableBeatmaps.Remove(map);
+                        _beatmapHashes.Remove(hash);
                         break;
                     }
                 }
-                if (!removed)
-                    for (int i = 0; i < UnknownBeatmaps.Count; i++)
-                    {
-                        if (UnknownBeatmaps[i].Md5 == hash)
-                        {
-                            UnknownBeatmaps.RemoveAt(i);
-                            removed = true;
-                            break;
-                        }
-                    }
-                _beatmapHashes.Remove(hash);
+
             }
+
 
         }
         public IEnumerator GetEnumerator()
         {
             return this.AllBeatmaps().GetEnumerator();
         }
-        
+
     }
 }
