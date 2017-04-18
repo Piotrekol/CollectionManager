@@ -151,8 +151,16 @@ namespace CollectionManager.DataTypes
                 }
                 if (map.MapId > 10 && LoadedMaps.LoadedBeatmapsMapIdDict.ContainsKey(map.MapId))
                 {
-                    KnownBeatmaps.Add(LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId]);
-                    LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId].LocalVersionDiffers = true;
+                    //Remove previously added map hash
+                    _beatmapHashes.Remove(map.Md5);
+                    //Get our local version of the map
+                    map = LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId];
+                    //And add that instead.
+                    _beatmapHashes.Add(map.Md5);
+
+                    KnownBeatmaps.Add(map);
+                    map.LocalVersionDiffers = true;
+
                     return;
                 }
                 if (map.MapSetId != 0)
