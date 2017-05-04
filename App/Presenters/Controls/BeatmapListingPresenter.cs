@@ -35,6 +35,8 @@ namespace App.Presenters.Controls
             _view.DownloadBeatmapsManaged += (s, a) => _model.EmitDownloadBeatmapsManaged();
             _view.OpenBeatmapPages += (s, a) => _model.EmitOpenBeatmapPages();
             _view.BeatmapsDropped += (s, a) => _model.EmitBeatmapsDropped(s, a);
+            _view.CopyBeatmapsAsText += (s, a) => _model.EmitCopyBeatmapsAsText();
+
 
             _model = model;
             _model.BeatmapsChanged += _model_BeatmapsChanged;

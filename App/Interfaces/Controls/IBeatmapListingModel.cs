@@ -18,6 +18,7 @@ namespace App.Interfaces
         event EventHandler DownloadBeatmaps;
         event EventHandler DownloadBeatmapsManaged;
         event EventHandler DeleteBeatmapsFromCollection;
+        event EventHandler CopyBeatmapsAsText;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         Beatmaps SelectedBeatmaps { get; set; }
@@ -27,6 +28,7 @@ namespace App.Interfaces
         void EmitDownloadBeatmaps();
         void EmitDownloadBeatmapsManaged();
         void EmitDeleteBeatmapsFromCollection();
+        void EmitCopyBeatmapsAsText();
         void EmitBeatmapsDropped(object sender,Beatmaps beatmaps);
         Beatmaps GetBeatmaps();
         void SetBeatmaps(Beatmaps beatmaps);

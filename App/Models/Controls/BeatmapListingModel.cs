@@ -18,6 +18,7 @@ namespace App.Models
         public event EventHandler DownloadBeatmaps;
         public event EventHandler DownloadBeatmapsManaged;
         public event EventHandler DeleteBeatmapsFromCollection;
+        public event EventHandler CopyBeatmapsAsText;
         public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         private BeatmapListFilter _beatmapListFilter;
@@ -71,6 +72,10 @@ namespace App.Models
             DeleteBeatmapsFromCollection?.Invoke(this, EventArgs.Empty);
         }
 
+        public void EmitCopyBeatmapsAsText()
+        {
+            CopyBeatmapsAsText?.Invoke(this, EventArgs.Empty);
+        }
         public void EmitBeatmapsDropped(object sender, Beatmaps beatmaps)
         {
             BeatmapsDropped?.Invoke(sender, beatmaps);

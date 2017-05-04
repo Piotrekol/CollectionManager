@@ -21,6 +21,7 @@ namespace GuiComponents.Controls
         public event EventHandler DownloadBeatmaps;
         public event EventHandler DownloadBeatmapsManaged;
         public event EventHandler DeleteBeatmapsFromCollection;
+        public event EventHandler CopyBeatmapsAsText;
         public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         public string SearchText => textBox_beatmapSearch.Text;
@@ -177,6 +178,8 @@ namespace GuiComponents.Controls
                 DownloadBeatmapsManaged?.Invoke(this, EventArgs.Empty);
             else if (sender == OpenBeatmapPageMapMenuStrip)
                 OpenBeatmapPages?.Invoke(this, EventArgs.Empty);
+            else if (sender == copyAsTextMenuStrip)
+                CopyBeatmapsAsText?.Invoke(this, EventArgs.Empty);
         }
     }
 

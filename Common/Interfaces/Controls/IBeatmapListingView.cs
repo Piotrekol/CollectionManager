@@ -21,6 +21,7 @@ namespace GuiComponents.Interfaces
         event EventHandler DownloadBeatmaps;
         event EventHandler DownloadBeatmapsManaged;
         event EventHandler DeleteBeatmapsFromCollection;
+        event EventHandler CopyBeatmapsAsText;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         void SetBeatmaps(IEnumerable beatmaps);

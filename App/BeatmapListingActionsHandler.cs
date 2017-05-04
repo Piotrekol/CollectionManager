@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using App.Interfaces;
-using App.Misc;
+using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
+using CollectionManager.Modules.FileIO;
+using CollectionManagerExtensionsDll.Enums;
+using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
@@ -15,12 +18,14 @@ namespace App
         private readonly ICollectionEditor _collectionEditor;
         private readonly IUserDialogs _userDialogs;
         private readonly ILoginFormView _loginForm;
-
-        public BeatmapListingActionsHandler(ICollectionEditor collectionEditor, IUserDialogs userDialogs, ILoginFormView loginForm)
+        private readonly OsuFileIo _osuFileIo;
+        private readonly ListGenerator _listGenerator = new ListGenerator();
+        public BeatmapListingActionsHandler(ICollectionEditor collectionEditor, IUserDialogs userDialogs, ILoginFormView loginForm, OsuFileIo osuFileIo)
         {
             _collectionEditor = collectionEditor;
             _userDialogs = userDialogs;
             _loginForm = loginForm;
+            _osuFileIo = osuFileIo;
         }
 
         public void Bind(IBeatmapListingModel beatmapListingModel)
@@ -28,6 +33,7 @@ namespace App
             beatmapListingModel.DownloadBeatmapsManaged += DownloadBeatmapsManaged;
             beatmapListingModel.DownloadBeatmaps += DownloadBeatmaps;
             beatmapListingModel.DeleteBeatmapsFromCollection += DeleteBeatmapsFromCollection;
+            beatmapListingModel.CopyBeatmapsAsText += CopyBeatmapsAsText;
             beatmapListingModel.OpenBeatmapPages += OpenBeatmapPages;
         }
 
@@ -36,6 +42,7 @@ namespace App
             beatmapListingModel.DownloadBeatmapsManaged -= DownloadBeatmapsManaged;
             beatmapListingModel.DownloadBeatmaps -= DownloadBeatmaps;
             beatmapListingModel.DeleteBeatmapsFromCollection -= DeleteBeatmapsFromCollection;
+            beatmapListingModel.CopyBeatmapsAsText -= CopyBeatmapsAsText;
             beatmapListingModel.OpenBeatmapPages -= OpenBeatmapPages;
         }
 
@@ -51,6 +58,22 @@ namespace App
         {
             var model = (IBeatmapListingModel)sender;
             _collectionEditor.EditCollection(CollectionEditArgs.RemoveBeatmaps(model.CurrentCollection.Name, model.SelectedBeatmaps));
+        }
+
+        private void CopyBeatmapsAsText(object sender, EventArgs args)
+        {
+            var model = (IBeatmapListingModel)sender;
+            var dummyCollection = new Collection(_osuFileIo.LoadedMaps);
+            foreach (var beatmap in model.SelectedBeatmaps)
+            {
+                dummyCollection.AddBeatmap(beatmap);
+            }
+            var text = _listGenerator.GetAllMapsList(new Collections() { dummyCollection },CollectionListSaveType.BeatmapList);
+            try
+            {
+                System.Windows.Forms.Clipboard.SetText(text);
+            }
+            catch { }
         }
 
         private void DownloadBeatmaps(object sender, EventArgs args)

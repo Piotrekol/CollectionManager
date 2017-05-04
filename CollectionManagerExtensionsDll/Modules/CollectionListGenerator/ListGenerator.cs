@@ -21,6 +21,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator
             _listGenerators.Add(CollectionListSaveType.Html, new HtmlListGenerator());
             _listGenerators.Add(CollectionListSaveType.osuBBCode, new OsuBbCodeGenerator());
             _listGenerators.Add(CollectionListSaveType.RedditCode, new RedditCodeGenerator());
+            _listGenerators.Add(CollectionListSaveType.BeatmapList, new BeatmapListGenerator());
         }
         public string GetMissingMapsList(Collections collections,
             CollectionListSaveType listType = CollectionListSaveType.Txt)

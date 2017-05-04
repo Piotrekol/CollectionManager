@@ -16,7 +16,7 @@ namespace App
         {
             _sidePanelActionsHandler = new SidePanelActionsHandler(osuFileIo, collectionEditor, userDialogs, mainFormView,this,mainFormPresenter, loginForm);
 
-            _beatmapListingActionsHandler = new BeatmapListingActionsHandler(collectionEditor,userDialogs,loginForm);
+            _beatmapListingActionsHandler = new BeatmapListingActionsHandler(collectionEditor,userDialogs,loginForm,osuFileIo);
             _beatmapListingActionsHandler.Bind(mainFormPresenter.BeatmapListingModel);
         }
 

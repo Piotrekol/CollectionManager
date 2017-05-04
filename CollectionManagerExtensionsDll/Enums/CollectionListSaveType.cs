@@ -5,6 +5,7 @@
         Txt,
         Html,
         osuBBCode,
-        RedditCode
+        RedditCode,
+        BeatmapList
     }
 }
