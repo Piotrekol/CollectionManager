@@ -114,7 +114,7 @@ namespace GuiComponents.Controls
             this.ListViewBeatmaps.DropSink = dropsink;
 
         }
-        
+
 
         private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)
         {
@@ -151,6 +151,7 @@ namespace GuiComponents.Controls
         public void SelectNextOrFirst()
         {
             ListViewBeatmaps.SelectNextOrFirst();
+            ListViewBeatmaps.EnsureSelectionIsVisible();
         }
 
         protected virtual void OnSearchTextChanged()

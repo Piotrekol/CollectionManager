@@ -7,6 +7,21 @@ namespace GuiComponents
 {
     internal static class Helpers
     {
+
+        public static void EnsureSelectionIsVisible(this FastObjectListView list)
+        {
+            if (list.InvokeRequired)
+            {
+                list.Invoke((Action)(() =>
+                {
+                    list.EnsureSelectionIsVisible();
+                }));
+                return;
+            }
+            var obj = list.SelectedObject;
+            if (obj!=null)
+                list.EnsureModelVisible(obj);
+        }
         public static void SelectNextOrFirst(this FastObjectListView list)
         {
             if (list.InvokeRequired)
