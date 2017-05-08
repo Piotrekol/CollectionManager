@@ -6,6 +6,7 @@ using System.Reflection;
 using App.Interfaces;
 using App.Models;
 using App.Presenters.Forms;
+using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using GuiComponents.Interfaces;
 
@@ -57,6 +58,24 @@ namespace App.Misc
             form.ShowAndBlock();
 
             return model.NewCollectionNameIsValid ? model.NewCollectionName : "";
+        }
+
+        public static Collection AddSelectedBeatmapsToCollection(this IBeatmapListingModel model,Collection collection)
+        {
+            foreach (var beatmap in model.SelectedBeatmaps)
+            {
+                collection.AddBeatmap(beatmap);
+            }
+            return collection;
+        }
+
+        public static void SetClipboardText(string text)
+        {
+            try
+            {
+                System.Windows.Forms.Clipboard.SetText(text);
+            }
+            catch { }
         }
     }
 }

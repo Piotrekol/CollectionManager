@@ -55,6 +55,7 @@
             this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.copyUrlMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewBeatmaps)).BeginInit();
             this.SuspendLayout();
@@ -93,9 +94,10 @@
             this.OpenDlMapMenuStrip,
             this.DeleteMapMenuStrip,
             this.searchToolStripMenuItem,
-            this.copyAsTextMenuStrip});
+            this.copyAsTextMenuStrip,
+            this.copyUrlMenuStrip});
             this.BeatmapsContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.BeatmapsContextMenuStrip.Size = new System.Drawing.Size(153, 114);
+            this.BeatmapsContextMenuStrip.Size = new System.Drawing.Size(153, 136);
             // 
             // OpenDlMapMenuStrip
             // 
@@ -294,6 +296,13 @@
             this.olvColumn9.Text = "OD";
             this.olvColumn9.Width = 30;
             // 
+            // copyUrlMenuStrip
+            // 
+            this.copyUrlMenuStrip.Name = "copyUrlMenuStrip";
+            this.copyUrlMenuStrip.Size = new System.Drawing.Size(152, 22);
+            this.copyUrlMenuStrip.Text = "Copy url(s)";
+            this.copyUrlMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
             // BeatmapListingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -339,5 +348,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn3;
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private System.Windows.Forms.ToolStripMenuItem copyAsTextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem copyUrlMenuStrip;
     }
 }

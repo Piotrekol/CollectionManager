@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using App.Interfaces;
+using App.Misc;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.Enums;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
+using CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
@@ -21,6 +23,7 @@ namespace App
         private readonly OsuFileIo _osuFileIo;
         private readonly ListGenerator _listGenerator = new ListGenerator();
         private readonly Dictionary<BeatmapListingAction, Action<object>> _beatmapOperationHandlers;
+        private readonly UserListGenerator UserUrlListGenerator = new UserListGenerator() { collectionBodyFormat = "{MapLink}" + UserListGenerator.NewLine };
         public BeatmapListingActionsHandler(ICollectionEditor collectionEditor, IUserDialogs userDialogs, ILoginFormView loginForm, OsuFileIo osuFileIo)
         {
             _collectionEditor = collectionEditor;
@@ -31,6 +34,7 @@ namespace App
             _beatmapOperationHandlers = new Dictionary<BeatmapListingAction, Action<object>>
             {
                 {BeatmapListingAction.CopyBeatmapsAsText, CopyBeatmapsAsText },
+                {BeatmapListingAction.CopyBeatmapsAsUrls, CopyBeatmapsAsUrls },
                 {BeatmapListingAction.DeleteBeatmapsFromCollection, DeleteBeatmapsFromCollection },
                 {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
                 {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmaps },
@@ -68,20 +72,16 @@ namespace App
             _collectionEditor.EditCollection(CollectionEditArgs.RemoveBeatmaps(model.CurrentCollection.Name, model.SelectedBeatmaps));
         }
 
+        private void CopyBeatmapsAsUrls(object sender)
+        {
+            var dummyCollection =  ((IBeatmapListingModel)sender).AddSelectedBeatmapsToCollection(new Collection(_osuFileIo.LoadedMaps));
+            Helpers.SetClipboardText(_listGenerator.GetAllMapsList(new Collections() { dummyCollection }, UserUrlListGenerator));
+        }
+
         private void CopyBeatmapsAsText(object sender)
         {
-            var model = (IBeatmapListingModel)sender;
-            var dummyCollection = new Collection(_osuFileIo.LoadedMaps);
-            foreach (var beatmap in model.SelectedBeatmaps)
-            {
-                dummyCollection.AddBeatmap(beatmap);
-            }
-            var text = _listGenerator.GetAllMapsList(new Collections() { dummyCollection },CollectionListSaveType.BeatmapList);
-            try
-            {
-                System.Windows.Forms.Clipboard.SetText(text);
-            }
-            catch { }
+            var dummyCollection = ((IBeatmapListingModel)sender).AddSelectedBeatmapsToCollection(new Collection(_osuFileIo.LoadedMaps));
+            Helpers.SetClipboardText(_listGenerator.GetAllMapsList(new Collections() { dummyCollection }, CollectionListSaveType.BeatmapList));
         }
 
         private void DownloadBeatmaps(object sender)

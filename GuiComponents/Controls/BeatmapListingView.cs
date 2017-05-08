@@ -178,6 +178,8 @@ namespace GuiComponents.Controls
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapPages);
             else if (sender == copyAsTextMenuStrip)
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.CopyBeatmapsAsText);
+            else if (sender == copyUrlMenuStrip)
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.CopyBeatmapsAsUrls);
         }
     }
 
