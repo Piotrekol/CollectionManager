@@ -22,6 +22,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator
             _listGenerators.Add(CollectionListSaveType.osuBBCode, new OsuBbCodeGenerator());
             _listGenerators.Add(CollectionListSaveType.RedditCode, new RedditCodeGenerator());
             _listGenerators.Add(CollectionListSaveType.BeatmapList, new BeatmapListGenerator());
+            _listGenerators.Add(CollectionListSaveType.UserDefined, null);
         }
         public string GetMissingMapsList(Collections collections,
             CollectionListSaveType listType = CollectionListSaveType.Txt)
@@ -34,27 +35,33 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator
         {
             return GenerateList(collections, listType, BeatmapListType.All);
         }
+        public string GetAllMapsList(Collections collections, UserListGenerator listGenerator)
+        {
+            _listGenerators[CollectionListSaveType.UserDefined] = listGenerator;
+            return GenerateList(collections, CollectionListSaveType.UserDefined, BeatmapListType.All);
+        }
 
         private string GenerateList(Collections collections,
             CollectionListSaveType listType = CollectionListSaveType.Txt,
             BeatmapListType beatmapListType = BeatmapListType.All)
         {
             if (collections == null) return "";
-            _listGenerators[listType].StartGenerating();
+            var generator = _listGenerators[listType];
+            generator.StartGenerating();
 
             _stringBuilder.Clear();
-            _stringBuilder.Append(_listGenerators[listType].GetListHeader(collections));
+            _stringBuilder.Append(generator.GetListHeader(collections));
             for (int i = 0; i < collections.Count; i++)
             {
                 var mapSets = collections[i].GetMapSets(beatmapListType);
                 _stringBuilder.Append(
-                    _listGenerators[listType].GetCollectionBody(collections[i], mapSets, i)
+                    generator.GetCollectionBody(collections[i], mapSets, i)
                     );
 
             }
-            _stringBuilder.Append(_listGenerators[listType].GetListFooter(collections));
+            _stringBuilder.Append(generator.GetListFooter(collections));
 
-            _listGenerators[listType].EndGenerating();
+            generator.EndGenerating();
 
 
             return _stringBuilder.ToString();

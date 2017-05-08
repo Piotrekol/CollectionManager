@@ -6,6 +6,7 @@
         Html,
         osuBBCode,
         RedditCode,
-        BeatmapList
+        BeatmapList,
+        UserDefined
     }
 }

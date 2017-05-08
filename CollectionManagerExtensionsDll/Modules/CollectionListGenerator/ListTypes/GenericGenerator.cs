@@ -4,10 +4,10 @@ using CollectionManager.DataTypes;
 
 namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes
 {
-    internal abstract class GenericGenerator : IListGenerator
+    public abstract class GenericGenerator : IListGenerator
     {
-        private StringBuilder _mainStringBuilder = new StringBuilder();
-        private StringBuilder _md5Output = new StringBuilder();
+        protected StringBuilder _mainStringBuilder = new StringBuilder();
+        protected StringBuilder _md5Output = new StringBuilder();
 
         protected abstract string MainHeader { get; }
         protected abstract string MainFooter { get; }
@@ -40,7 +40,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
             return MainHeader;
         }
 
-        public string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
+        public virtual string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
         {
             _mainStringBuilder.Clear();
             _md5Output.Clear();
