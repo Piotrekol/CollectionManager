@@ -38,22 +38,28 @@ namespace MusicPlayer
 
         protected override void Play(int startTime)
         {
-            if (_audioFileReader == null)
-                return;
-            StopPlayback();
-            _speedControl.PlaybackRate = playbackSpeed;
-            _waveOutDevice.Init(_speedControl);
-            _audioFileReader.Volume = SoundVolume;
-            _audioFileReader.Skip(startTime);
-            _waveOutDevice.Play();
+            lock (_lockingObject)
+            {
+                if (_audioFileReader == null)
+                    return;
+                StopPlayback();
+                _speedControl.PlaybackRate = playbackSpeed;
+                _waveOutDevice.Init(_speedControl);
+                _audioFileReader.Volume = SoundVolume;
+                _audioFileReader.Skip(startTime);
+                _waveOutDevice.Play();
 
-            _playbackAborted = false;
-            _timer.Start();
+                _playbackAborted = false;
+                _timer.Start();
+            }
         }
 
         private void SetSpeedReader(AudioFileReader audio)
         {
-            _speedControl = new VarispeedSampleProvider(audio, 100, _soundTouchProfile);
+            lock (_lockingObject)
+            {
+                _speedControl = new VarispeedSampleProvider(audio, 100, _soundTouchProfile);
+            }
         }
         private double LastTime = 0.0;
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)

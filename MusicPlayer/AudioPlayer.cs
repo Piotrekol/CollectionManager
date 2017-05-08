@@ -98,14 +98,17 @@ namespace MusicPlayer
         }
         protected void SetAudioReader(AudioFileReaderEx autioReader)
         {
-            if (!autioReader.Equals(_audioFileReader))
-                CleanAfterLastPlayback();
+            lock (_lockingObject)
+            {
+                if (!autioReader.Equals(_audioFileReader))
+                    CleanAfterLastPlayback();
 
-            _audioFileReader = autioReader;
-            if (_audioFileReader.Reused)
-                return;
-            _waveOutDevice = new WaveOut();
-            _waveOutDevice.PlaybackStopped += WaveOutDevice_PlaybackStopped;
+                _audioFileReader = autioReader;
+                if (_audioFileReader.Reused)
+                    return;
+                _waveOutDevice = new WaveOut();
+                _waveOutDevice.PlaybackStopped += WaveOutDevice_PlaybackStopped;
+            }
         }
 
         protected virtual void Play(int startTime)
@@ -143,13 +146,16 @@ namespace MusicPlayer
         }
         public void StopPlayback()
         {
-            if (_waveOutDevice.PlaybackState == PlaybackState.Playing)
+            lock (_lockingObject)
             {
-                _playbackAborted = true;
-                var oldVolume = _audioFileReader.Volume;
-                _audioFileReader.Volume = 0f;
-                _waveOutDevice.Stop();
-                _audioFileReader.Volume = oldVolume;
+                if (_waveOutDevice.PlaybackState == PlaybackState.Playing)
+                {
+                    _playbackAborted = true;
+                    var oldVolume = _audioFileReader.Volume;
+                    _audioFileReader.Volume = 0f;
+                    _waveOutDevice.Stop();
+                    _audioFileReader.Volume = oldVolume;
+                }
             }
         }
         protected virtual void WaveOutDevice_PlaybackStopped(object sender, StoppedEventArgs e)
