@@ -1,6 +1,7 @@
 ﻿using System;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using Common;
 using Gui.Misc;
 
 namespace App.Interfaces
@@ -13,22 +14,13 @@ namespace App.Interfaces
 
         event EventHandler SelectedBeatmapChanged;
         event EventHandler SelectedBeatmapsChanged;
-
-        event EventHandler OpenBeatmapPages;
-        event EventHandler DownloadBeatmaps;
-        event EventHandler DownloadBeatmapsManaged;
-        event EventHandler DeleteBeatmapsFromCollection;
-        event EventHandler CopyBeatmapsAsText;
+        event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         Beatmaps SelectedBeatmaps { get; set; }
         Beatmap SelectedBeatmap { get; set; }
         Collection CurrentCollection { get; }
-        void EmitOpenBeatmapPages();
-        void EmitDownloadBeatmaps();
-        void EmitDownloadBeatmapsManaged();
-        void EmitDeleteBeatmapsFromCollection();
-        void EmitCopyBeatmapsAsText();
+        void EmitBeatmapOperation(BeatmapListingAction args);
         void EmitBeatmapsDropped(object sender,Beatmaps beatmaps);
         Beatmaps GetBeatmaps();
         void SetBeatmaps(Beatmaps beatmaps);

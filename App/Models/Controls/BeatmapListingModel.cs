@@ -3,6 +3,7 @@ using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
 using App.Interfaces;
 using App.Misc;
+using Common;
 using Gui.Misc;
 
 namespace App.Models
@@ -14,11 +15,7 @@ namespace App.Models
         public event EventHandler FilteringFinished;
         public event EventHandler SelectedBeatmapChanged;
         public event EventHandler SelectedBeatmapsChanged;
-        public event EventHandler OpenBeatmapPages;
-        public event EventHandler DownloadBeatmaps;
-        public event EventHandler DownloadBeatmapsManaged;
-        public event EventHandler DeleteBeatmapsFromCollection;
-        public event EventHandler CopyBeatmapsAsText;
+        public event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         private BeatmapListFilter _beatmapListFilter;
@@ -52,29 +49,10 @@ namespace App.Models
 
             }
         }
-        public void EmitOpenBeatmapPages()
-        {
-            OpenBeatmapPages?.Invoke(this, EventArgs.Empty);
-        }
 
-        public void EmitDownloadBeatmaps()
+        public void EmitBeatmapOperation(BeatmapListingAction args)
         {
-            DownloadBeatmaps?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void EmitDownloadBeatmapsManaged()
-        {
-            DownloadBeatmapsManaged?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void EmitDeleteBeatmapsFromCollection()
-        {
-            DeleteBeatmapsFromCollection?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void EmitCopyBeatmapsAsText()
-        {
-            CopyBeatmapsAsText?.Invoke(this, EventArgs.Empty);
+            BeatmapOperation?.Invoke(this, args);
         }
         public void EmitBeatmapsDropped(object sender, Beatmaps beatmaps)
         {
@@ -140,5 +118,6 @@ namespace App.Models
                 _beatmapListFilter?.SetBeatmaps(_beatmapsDataSource);
             BeatmapsChanged?.Invoke(this, EventArgs.Empty);
         }
+
     }
 }

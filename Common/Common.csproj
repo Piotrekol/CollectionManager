@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeatmapListingAction.cs" />
     <Compile Include="EventArgs\EventArgs.cs" />
     <Compile Include="EventArgs\FloatEventArgs.cs" />
     <Compile Include="EventArgs\IntEventArgs.cs" />

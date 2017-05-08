@@ -20,33 +20,41 @@ namespace App
         private readonly ILoginFormView _loginForm;
         private readonly OsuFileIo _osuFileIo;
         private readonly ListGenerator _listGenerator = new ListGenerator();
+        private readonly Dictionary<BeatmapListingAction, Action<object>> _beatmapOperationHandlers;
         public BeatmapListingActionsHandler(ICollectionEditor collectionEditor, IUserDialogs userDialogs, ILoginFormView loginForm, OsuFileIo osuFileIo)
         {
             _collectionEditor = collectionEditor;
             _userDialogs = userDialogs;
             _loginForm = loginForm;
             _osuFileIo = osuFileIo;
+
+            _beatmapOperationHandlers = new Dictionary<BeatmapListingAction, Action<object>>
+            {
+                {BeatmapListingAction.CopyBeatmapsAsText, CopyBeatmapsAsText },
+                {BeatmapListingAction.DeleteBeatmapsFromCollection, DeleteBeatmapsFromCollection },
+                {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
+                {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmaps },
+                {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages }
+            };
         }
 
         public void Bind(IBeatmapListingModel beatmapListingModel)
         {
-            beatmapListingModel.DownloadBeatmapsManaged += DownloadBeatmapsManaged;
-            beatmapListingModel.DownloadBeatmaps += DownloadBeatmaps;
-            beatmapListingModel.DeleteBeatmapsFromCollection += DeleteBeatmapsFromCollection;
-            beatmapListingModel.CopyBeatmapsAsText += CopyBeatmapsAsText;
-            beatmapListingModel.OpenBeatmapPages += OpenBeatmapPages;
+            beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
         }
+
 
         public void UnBind(IBeatmapListingModel beatmapListingModel)
         {
-            beatmapListingModel.DownloadBeatmapsManaged -= DownloadBeatmapsManaged;
-            beatmapListingModel.DownloadBeatmaps -= DownloadBeatmaps;
-            beatmapListingModel.DeleteBeatmapsFromCollection -= DeleteBeatmapsFromCollection;
-            beatmapListingModel.CopyBeatmapsAsText -= CopyBeatmapsAsText;
-            beatmapListingModel.OpenBeatmapPages -= OpenBeatmapPages;
+            beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
         }
 
-        private void DownloadBeatmapsManaged(object sender, EventArgs args)
+        private void BeatmapListingModel_BeatmapOperation(object sender, BeatmapListingAction args)
+        {
+            _beatmapOperationHandlers[args](sender);
+        }
+
+        private void DownloadBeatmapsManaged(object sender)
         {
             var model = (IBeatmapListingModel)sender;
             var manager = OsuDownloadManager.Instance;
@@ -54,13 +62,13 @@ namespace App
             if (manager.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
                 OsuDownloadManager.Instance.DownloadBeatmaps(model.SelectedBeatmaps);
         }
-        private void DeleteBeatmapsFromCollection(object sender, EventArgs args)
+        private void DeleteBeatmapsFromCollection(object sender)
         {
             var model = (IBeatmapListingModel)sender;
             _collectionEditor.EditCollection(CollectionEditArgs.RemoveBeatmaps(model.CurrentCollection.Name, model.SelectedBeatmaps));
         }
 
-        private void CopyBeatmapsAsText(object sender, EventArgs args)
+        private void CopyBeatmapsAsText(object sender)
         {
             var model = (IBeatmapListingModel)sender;
             var dummyCollection = new Collection(_osuFileIo.LoadedMaps);
@@ -76,7 +84,7 @@ namespace App
             catch { }
         }
 
-        private void DownloadBeatmaps(object sender, EventArgs args)
+        private void DownloadBeatmaps(object sender)
         {
             var model = (IBeatmapListingModel)sender;
 
@@ -84,7 +92,7 @@ namespace App
             MassOpen(mapIds, @"https://osu.ppy.sh/d/{0}");
         }
 
-        private void OpenBeatmapPages(object sender, EventArgs args)
+        private void OpenBeatmapPages(object sender)
         {
             var model = (IBeatmapListingModel)sender;
 

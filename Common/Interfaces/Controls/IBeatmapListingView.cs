@@ -17,11 +17,7 @@ namespace GuiComponents.Interfaces
         event EventHandler SearchTextChanged;
         event EventHandler SelectedBeatmapChanged;
         event EventHandler SelectedBeatmapsChanged;
-        event EventHandler OpenBeatmapPages;
-        event EventHandler DownloadBeatmaps;
-        event EventHandler DownloadBeatmapsManaged;
-        event EventHandler DeleteBeatmapsFromCollection;
-        event EventHandler CopyBeatmapsAsText;
+        event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         void SetBeatmaps(IEnumerable beatmaps);

@@ -30,13 +30,9 @@ namespace App.Presenters.Controls
             _view.SearchTextChanged+=ViewOnSearchTextChanged;
             _view.SelectedBeatmapChanged += (s, a) => _model.SelectedBeatmap = _view.SelectedBeatmap;
             _view.SelectedBeatmapsChanged += (s, a) => _model.SelectedBeatmaps = _view.SelectedBeatmaps;
-            _view.DeleteBeatmapsFromCollection+= (s, a) => _model.EmitDeleteBeatmapsFromCollection();
-            _view.DownloadBeatmaps += (s, a) => _model.EmitDownloadBeatmaps();
-            _view.DownloadBeatmapsManaged += (s, a) => _model.EmitDownloadBeatmapsManaged();
-            _view.OpenBeatmapPages += (s, a) => _model.EmitOpenBeatmapPages();
+            
             _view.BeatmapsDropped += (s, a) => _model.EmitBeatmapsDropped(s, a);
-            _view.CopyBeatmapsAsText += (s, a) => _model.EmitCopyBeatmapsAsText();
-
+            _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
 
             _model = model;
             _model.BeatmapsChanged += _model_BeatmapsChanged;

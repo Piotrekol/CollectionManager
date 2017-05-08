@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using Common;
 using GuiComponents.Interfaces;
 using Gui.Misc;
 
@@ -17,11 +18,7 @@ namespace GuiComponents.Controls
         public event EventHandler SelectedBeatmapChanged;
         public event EventHandler SelectedBeatmapsChanged;
 
-        public event EventHandler OpenBeatmapPages;
-        public event EventHandler DownloadBeatmaps;
-        public event EventHandler DownloadBeatmapsManaged;
-        public event EventHandler DeleteBeatmapsFromCollection;
-        public event EventHandler CopyBeatmapsAsText;
+        public event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
         public string SearchText => textBox_beatmapSearch.Text;
@@ -172,15 +169,15 @@ namespace GuiComponents.Controls
         private void MenuStripClick(object sender, EventArgs e)
         {
             if (sender == DeleteMapMenuStrip)
-                DeleteBeatmapsFromCollection?.Invoke(this, EventArgs.Empty);
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.DeleteBeatmapsFromCollection);
             else if (sender == DownloadMapInBrowserMenuStrip)
-                DownloadBeatmaps?.Invoke(this, EventArgs.Empty);
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.DownloadBeatmaps);
             else if (sender == DownloadMapManagedMenuStrip)
-                DownloadBeatmapsManaged?.Invoke(this, EventArgs.Empty);
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.DownloadBeatmapsManaged);
             else if (sender == OpenBeatmapPageMapMenuStrip)
-                OpenBeatmapPages?.Invoke(this, EventArgs.Empty);
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapPages);
             else if (sender == copyAsTextMenuStrip)
-                CopyBeatmapsAsText?.Invoke(this, EventArgs.Empty);
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.CopyBeatmapsAsText);
         }
     }
 
