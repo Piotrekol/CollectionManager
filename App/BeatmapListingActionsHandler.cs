@@ -38,7 +38,8 @@ namespace App
                 {BeatmapListingAction.DeleteBeatmapsFromCollection, DeleteBeatmapsFromCollection },
                 {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
                 {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmaps },
-                {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages }
+                {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages },
+                {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder }
             };
         }
 
@@ -65,6 +66,15 @@ namespace App
 
             if (manager.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
                 OsuDownloadManager.Instance.DownloadBeatmaps(model.SelectedBeatmaps);
+        }
+        private void OpenBeatmapFolder(object sender)
+        {
+            var model = (IBeatmapListingModel)sender;
+            if (model.SelectedBeatmap != null)
+            {
+                var location = ((BeatmapExtension) model.SelectedBeatmap).FullOsuFileLocation();
+                Process.Start("explorer.exe", $"/select, \"{location}\"");
+            }
         }
         private void DeleteBeatmapsFromCollection(object sender)
         {
