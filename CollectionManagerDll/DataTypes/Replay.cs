@@ -1,8 +1,10 @@
-﻿using CollectionManager.Enums;
-using System;
+﻿using System;
+using CollectionManager.Enums;
+using CollectionManager.Interfaces;
+using CollectionManager.Modules.FileIO;
 using CollectionManager.Modules.FileIO.OsuScoresDb;
 
-namespace CollectionManager.Modules.FileIO
+namespace CollectionManager.DataTypes
 {
     public class Replay : IReplay, ICloneable
     {

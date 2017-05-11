@@ -1,7 +1,7 @@
 ﻿using System;
 using CollectionManager.Enums;
 
-namespace CollectionManager.Modules.FileIO.OsuScoresDb
+namespace CollectionManager.Interfaces
 {
     public interface IReplay
     {

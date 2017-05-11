@@ -78,11 +78,11 @@
     <Compile Include="Modules\FileIO\OsuDb\LOsuDatabaseLoader.cs" />
     <Compile Include="Modules\FileIO\OsuDb\OsuDatabaseReader.cs" />
     <Compile Include="Modules\FileIO\OsuPathResolver.cs" />
-    <Compile Include="Modules\FileIO\OsuScoresDb\IReplay.cs" />
+    <Compile Include="Interfaces\IReplay.cs" />
     <Compile Include="Modules\FileIO\OsuScoresDb\ScoresCacher.cs" />
     <Compile Include="Modules\FileIO\OsuScoresDb\ScoresDatabaseIO.cs" />
     <Compile Include="Modules\FileIO\OsuSettingsLoader.cs" />
-    <Compile Include="Modules\FileIO\Replay.cs" />
+    <Compile Include="DataTypes\Replay.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

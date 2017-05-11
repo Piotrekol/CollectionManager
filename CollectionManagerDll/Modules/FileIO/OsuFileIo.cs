@@ -1,5 +1,6 @@
 ﻿using CollectionManager.Modules.FileIO.FileCollections;
 using CollectionManager.Modules.FileIO.OsuDb;
+using CollectionManager.Modules.FileIO.OsuScoresDb;
 
 namespace CollectionManager.Modules.FileIO
 {
@@ -11,9 +12,12 @@ namespace CollectionManager.Modules.FileIO
         public OsuPathResolver OsuPathResolver => OsuPathResolver.Instance;
         public MapCacher LoadedMaps => OsuDatabase.LoadedMaps;
 
+        public ScoresDatabaseIo ScoresLoader;
+        public ScoresCacher ScoresDatabase = new ScoresCacher();
         public OsuFileIo()
         {
             CollectionLoader = new CollectionLoader(OsuDatabase.LoadedMaps);
+            ScoresLoader = new ScoresDatabaseIo(ScoresDatabase);
         }
     }
 }
