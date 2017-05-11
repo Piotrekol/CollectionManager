@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\Beatmap.cs" />
+    <Compile Include="DataTypes\Score.cs" />
+    <Compile Include="DataTypes\Scores.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="DataTypes\BeatmapExtension.cs" />
     <Compile Include="DataTypes\Beatmaps.cs" />
@@ -54,14 +56,18 @@
     <Compile Include="Enums\CollectionEdit.cs" />
     <Compile Include="Exceptions\BeatmapCacherNotInitalizedException.cs" />
     <Compile Include="Exceptions\NotOsuDirectoryException.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Interfaces\ICollectionEditor.cs" />
     <Compile Include="Interfaces\ICollectionNameValidator.cs" />
+    <Compile Include="Interfaces\IScoreDataStorer.cs" />
     <Compile Include="Modules\CollectionsManager\CollectionEditArgs.cs" />
     <Compile Include="Modules\CollectionsManager\CollectionsManagerWithCounts.cs" />
     <Compile Include="Modules\CollectionsManager\CollectionsManager.cs" />
     <Compile Include="Modules\FileIO\FileCollections\CollectionLoader.cs" />
     <Compile Include="Modules\FileIO\FileCollections\OsdbCollectionHandler.cs" />
     <Compile Include="Modules\FileIO\FileCollections\OsuCollectionHandler.cs" />
+    <Compile Include="Modules\FileIO\OsuBinaryReader.cs" />
+    <Compile Include="Modules\FileIO\OsuBinaryWriter.cs" />
     <Compile Include="Modules\FileIO\OsuFileIo.cs" />
     <Compile Include="Modules\FileIO\OsuDb\MapCacher.cs" />
     <Compile Include="Modules\FileIO\OsuDb\OsuDatabase.cs" />
@@ -72,7 +78,11 @@
     <Compile Include="Modules\FileIO\OsuDb\LOsuDatabaseLoader.cs" />
     <Compile Include="Modules\FileIO\OsuDb\OsuDatabaseReader.cs" />
     <Compile Include="Modules\FileIO\OsuPathResolver.cs" />
+    <Compile Include="Modules\FileIO\OsuScoresDb\IReplay.cs" />
+    <Compile Include="Modules\FileIO\OsuScoresDb\ScoresCacher.cs" />
+    <Compile Include="Modules\FileIO\OsuScoresDb\ScoresDatabaseIO.cs" />
     <Compile Include="Modules\FileIO\OsuSettingsLoader.cs" />
+    <Compile Include="Modules\FileIO\Replay.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
