@@ -90,6 +90,7 @@ namespace GuiComponents.Controls
             }
             label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
         }
+        public static DateTime d = new DateTime(2006, 1, 1);
         private void InitListView()
         {
             //listview
@@ -101,6 +102,12 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.UseFiltering = true;
             ListViewBeatmaps.UseNotifyPropertyChanged = true;
             ListViewBeatmaps.ShowItemCountOnGroups = true;
+            ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
+            LastPlayed.AspectToStringConverter = delegate (object cellValue)
+            {
+                var val = (DateTime)cellValue;
+                return val > d ? $"{val}" : "Never";
+            };
 
             var dropsink = new RearrangingDropSink();
             dropsink.CanDropBetween = false;

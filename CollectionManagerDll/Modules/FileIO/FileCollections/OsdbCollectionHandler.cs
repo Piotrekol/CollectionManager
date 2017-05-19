@@ -17,6 +17,15 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         private FileStream _fileStream;
         private ILogger _logger;
         private MemoryStream _memStream;
+        private Dictionary<string, int> _versions = new Dictionary<string, int>()
+        {
+            {"o!dm",1 },
+            {"o!dm2",2 },
+            {"o!dm3",3 },
+            {"o!dm4",4 }
+        };
+
+        private string CurrentVersion => "o!dm4";
         public OsdbCollectionHandler(ILogger logger)
         {
             _logger = logger;
@@ -34,7 +43,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         {
             OpenFile(fullFileDir, true);
             //header
-            _binWriter.Write("o!dm3");
+            _binWriter.Write(CurrentVersion);
             //save date
             _binWriter.Write(DateTime.Now.ToOADate());
             //who saved given osdb
@@ -44,7 +53,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             //bool ignoreMissingMaps = false;
             foreach (var collection in collections)
             {
-                List<Beatmap> beatmapsPossibleToSave = new List<Beatmap>();
+                Beatmaps beatmapsPossibleToSave = new Beatmaps();
                 HashSet<string> beatmapWithHashOnly = new HashSet<string>();
 
                 foreach (var beatmap in collection.KnownBeatmaps)
@@ -78,6 +87,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _binWriter.Write(beatmap.TitleRoman);
                     _binWriter.Write(beatmap.DiffName);
                     _binWriter.Write(beatmap.Md5);
+                    _binWriter.Write(beatmap.UserComment);
                 }
                 _binWriter.Write(beatmapWithHashOnly.Count);
                 foreach (var beatmapHash in beatmapWithHashOnly)
@@ -91,7 +101,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             CloseFile(true);
         }
 
-        public Collections ReadOsdb(string fullFileDir,MapCacher mapCacher)
+        public Collections ReadOsdb(string fullFileDir, MapCacher mapCacher)
         {
             int fileVersion = -1;
             DateTime fileDate = DateTime.Now;
@@ -100,24 +110,13 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             _binReader.BaseStream.Seek(0, SeekOrigin.Begin);
             string versionString = _binReader.ReadString();
             //check header
-            switch (versionString)
+            if(_versions.ContainsKey(versionString))
+                    fileVersion = _versions[versionString];
+            if (fileVersion == -1)
             {
-                case "o!dm":
-                    fileVersion = 1;
-                    break;
-
-                case "o!dm2":
-                    fileVersion = 2;
-                    break;
-
-                case "o!dm3":
-                    fileVersion = 3;
-                    break;
-                default:
-                    Error("Something went wrong while loading this file");
-                    break;
+                Error("Unrecognized osdb file version");
             }
-            if (fileVersion != -1)
+            else
             {
                 _logger?.Log("Starting file load");
                 fileDate = DateTime.FromOADate(_binReader.ReadDouble());
@@ -131,7 +130,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     var name = _binReader.ReadString();
                     var numberOfBeatmaps = _binReader.ReadInt32();
                     _logger?.Log(">Number of maps in collection {0}: {1} named:{2}", i.ToString(), numberOfBeatmaps.ToString(), name);
-                    var collection = new Collection(mapCacher) { Name = name, LastEditorUsername = lastEditor};
+                    var collection = new Collection(mapCacher) { Name = name, LastEditorUsername = lastEditor };
                     for (int j = 0; j < numberOfBeatmaps; j++)
                     {
                         var map = new BeatmapExtension();
@@ -142,6 +141,8 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                         map.TitleRoman = _binReader.ReadString();
                         map.DiffName = _binReader.ReadString();
                         map.Md5 = _binReader.ReadString();
+                        if (fileVersion >= 4)
+                            map.UserComment = _binReader.ReadString();
                         collection.AddBeatmap(map);
                     }
 
@@ -161,8 +162,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             }
             if (_binReader.ReadString() != "By Piotrekol")
             {
-                Error("Something went wrong while loading this file");
-                //collections = new List<Collection>();
+                Error("File footer is invalid, with could mean that this file is corrupted. CONTINUE AT YOUR OWN RISK");
             }
 
 

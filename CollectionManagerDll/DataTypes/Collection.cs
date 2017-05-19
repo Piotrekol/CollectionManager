@@ -135,6 +135,10 @@ namespace CollectionManager.DataTypes
             this.AddBeatmap(new BeatmapExtension() { Md5 = hash });
         }
 
+        private void ProcessAdditionalProps(BeatmapExtension src, BeatmapExtension dest)
+        {
+            dest.UserComment = src.UserComment;
+        }
         private void ProcessNewlyAddedMap(BeatmapExtension map)
         {
             lock (LoadedMaps.LockingObject)
@@ -146,7 +150,9 @@ namespace CollectionManager.DataTypes
                 }
                 if (LoadedMaps.LoadedBeatmapsMd5Dict.ContainsKey(map.Md5))
                 {
-                    KnownBeatmaps.Add(LoadedMaps.LoadedBeatmapsMd5Dict[map.Md5]);
+                    var knownMap = LoadedMaps.LoadedBeatmapsMd5Dict[map.Md5];
+                    ProcessAdditionalProps(map,knownMap);
+                    KnownBeatmaps.Add(knownMap);
                     return;
                 }
                 if (map.MapId > 10 && LoadedMaps.LoadedBeatmapsMapIdDict.ContainsKey(map.MapId))
@@ -154,12 +160,12 @@ namespace CollectionManager.DataTypes
                     //Remove previously added map hash
                     _beatmapHashes.Remove(map.Md5);
                     //Get our local version of the map
-                    map = LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId];
+                    var knownMap = LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId];
                     //And add that instead.
-                    _beatmapHashes.Add(map.Md5);
-
-                    KnownBeatmaps.Add(map);
-                    map.LocalVersionDiffers = true;
+                    _beatmapHashes.Add(knownMap.Md5);
+                    ProcessAdditionalProps(map, knownMap);
+                    KnownBeatmaps.Add(knownMap);
+                    knownMap.LocalVersionDiffers = true;
 
                     return;
                 }
