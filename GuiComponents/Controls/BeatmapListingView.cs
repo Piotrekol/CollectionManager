@@ -105,6 +105,7 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
             LastPlayed.AspectToStringConverter = delegate (object cellValue)
             {
+                if (cellValue == null) return "Never";
                 var val = (DateTime)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
