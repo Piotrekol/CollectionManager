@@ -219,6 +219,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             if (b.Source.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             if (b.ArtistUnicode != null && b.ArtistUnicode.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             if (b.TitleUnicode != null && b.TitleUnicode.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
+            if (b.UserComment != null && b.UserComment.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             return false;
         }
 
