@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
+using CollectionManagerExtensionsDll.DataTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -25,7 +27,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         {
             _apiKey = apiKey;
         }
-
+        #region get_beatmaps
         public Beatmaps GetBeatmaps(DateTime fromDate, DateTime toDate)
         {
             var resultBeatmaps = new Beatmaps();
@@ -68,6 +70,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
 
             foreach (var json in jsonArray)
             {
+                //TODO: I'm pretty sure there's a nice and automated way to do this in Newtonsoft.
                 var beatmap = new BeatmapExtensionEx();
                 beatmap.MapSetId = int.Parse(json["beatmapset_id"].ToString());
                 beatmap.MapId = int.Parse(json["beatmap_id"].ToString());
@@ -84,47 +87,62 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
 
                 beatmaps.Add(beatmap);
             }
-
-
-
-
-
-
             return beatmaps;
         }
 
-        public BeatmapExtension GetBeatmap(int beatmapId)
+        public BeatmapExtensionEx GetBeatmap(int beatmapId)
         {
-            return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&b=" + beatmapId);
+            var maps = GetBeatmaps(GetBeatmapsURL + "?k=" + _apiKey + "&b=" + beatmapId);
+            return maps.Count > 0 ? maps[0] : null;
         }
-        public BeatmapExtension GetBeatmap(string hash)
+        public BeatmapExtensionEx GetBeatmap(string hash)
         {
-            return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&h=" + hash);
+            var maps = GetBeatmaps(GetBeatmapsURL + "?k=" + _apiKey + "&h=" + hash);
+            return maps.Count > 0 ? maps[0] : null;
         }
 
-        private BeatmapExtension GetBeatmapResult(string url)
+        #endregion
+
+        #region get_user_best
+        public List<OnlineScore> GetUserBest(string username, PlayModes mode, int limit = 100)
+        {
+            return GetUserScoresResult(GetUserBestURL + "?k=" + _apiKey + "&u=" + username + "&m=" + mode + "&type=string" + "&limit=" + limit, username);
+        }
+        private List<OnlineScore> GetUserScoresResult(string url,string username)
         {
             var jsonResponse = _client.DownloadString(url);
+
             if (jsonResponse == "Please provide a valid API key.")
                 throw new Exception("Invalid osu!Api key");
-            jsonResponse = jsonResponse.Trim(']', '[');
             if (jsonResponse.Trim(' ') == string.Empty)
                 return null;
-            var json = JObject.Parse(jsonResponse);
-            var beatmap = new BeatmapExtension();
-            //var a = json.Count;
-            beatmap.MapSetId = int.Parse(json["beatmapset_id"].ToString());
-            beatmap.MapId = int.Parse(json["beatmap_id"].ToString());
-            beatmap.DiffName = json["version"].ToString();
-            beatmap.Md5 = json["file_md5"].ToString();
-            beatmap.ArtistRoman = json["artist"].ToString();
-            beatmap.TitleRoman = json["title"].ToString();
-            beatmap.Creator = json["creator"].ToString();
-            beatmap.ModPpStars.Add(0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2));
-            //beatmap.OverallDifficulty = float.Parse(json["difficultyrating"].ToString(), );
-            beatmap.DataDownloaded = true;
-
-            return beatmap;
+            var json = JArray.Parse(jsonResponse);
+            var scores = new List<OnlineScore>();
+            foreach (var kvPair in json)
+            {
+                //TODO: I'm pretty sure there's a nice and automated way to do this in Newtonsoft.
+                var score = new OnlineScore();
+                score.BeatmapId = kvPair.Value<int>("beatmap_id");
+                score.Score = kvPair.Value<int>("score");
+                score.Count300 = kvPair.Value<int>("count300");
+                score.Count100 = kvPair.Value<int>("count100");
+                score.Count50 = kvPair.Value<int>("count50");
+                score.Countmiss = kvPair.Value<int>("countmiss");
+                score.Maxcombo = kvPair.Value<int>("maxcombo");
+                score.Countkatu = kvPair.Value<int>("countkatu");
+                score.Countgeki = kvPair.Value<int>("countgeki");
+                score.Perfect = kvPair.Value<int>("perfect");
+                score.EnabledMods = kvPair.Value<int>("enabled_mods");
+                score.UserId = kvPair.Value<int>("user_id");
+                score.Date = kvPair.Value<DateTime>("date");
+                score.Rank = kvPair.Value<string>("rank");
+                score.Pp = kvPair.Value<double>("pp");
+                score.Username = username;
+                scores.Add(score);
+            }
+            return scores;
         }
+
+        #endregion
     }
 }

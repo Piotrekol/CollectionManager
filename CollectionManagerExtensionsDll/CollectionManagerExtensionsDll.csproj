@@ -50,10 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DataTypes\OnlineScore.cs" />
     <Compile Include="Enums\CollectionListSaveType.cs" />
     <Compile Include="Modules\API\BeatmapExtensionEx.cs" />
     <Compile Include="Modules\API\osu\OsuApi.cs" />
+    <Compile Include="Modules\API\osu\OsuWeb.cs" />
     <Compile Include="Modules\BeatmapFilter\BeatmapFilter.cs" />
+    <Compile Include="Modules\CollectionGenerator\CollectionGenerator.cs" />
+    <Compile Include="Modules\CollectionGenerator\CollectionGeneratorSettings.cs" />
     <Compile Include="Modules\CollectionListGenerator\BeatmapType.cs" />
     <Compile Include="Modules\CollectionListGenerator\IListGenerator.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListGenerator.cs" />
@@ -73,6 +77,8 @@
     <Compile Include="Modules\DownloadManager\API\LoginData.cs" />
     <Compile Include="Modules\DownloadManager\ILoginForm.cs" />
     <Compile Include="Modules\DownloadManager\OsuDownloader.cs" />
+    <Compile Include="Modules\ModParser\ModParser.cs" />
+    <Compile Include="Modules\ModParser\Mods.cs" />
     <Compile Include="Utils\BeatmapUtils.cs" />
     <Compile Include="Utils\ListGeneratorUtils.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\TxtListGenerator.cs" />
