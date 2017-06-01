@@ -47,7 +47,7 @@ namespace App.Presenters.Controls
         {
             if (musicPlayer.IsSpeedControlAvaliable)
             {
-                musicPlayer.SetSpeed(_view.IsDTEnabled ? 1.25f : 1.0f);
+                musicPlayer.SetSpeed(_view.IsDTEnabled ? 1.5f : 1.0f);
             }
 
 
