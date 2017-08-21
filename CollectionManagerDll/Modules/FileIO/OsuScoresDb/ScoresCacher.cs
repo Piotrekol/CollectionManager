@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
@@ -22,6 +23,19 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
             return GetScores(map.Md5);
         }
 
+        public DateTime GetLastPlayDate(string mapHash)
+        {
+            DateTime lastPlayed = DateTime.MinValue;
+            if (ScoreList.ContainsKey(mapHash))
+            {
+                foreach (var s in ScoreList[mapHash])
+                {
+                    if (s.Date > lastPlayed)
+                        lastPlayed = s.Date;
+                }
+            }
+            return lastPlayed;
+        }
         public List<Score> GetScores(string mapHash)
         {
             var scores = new List<Score>();

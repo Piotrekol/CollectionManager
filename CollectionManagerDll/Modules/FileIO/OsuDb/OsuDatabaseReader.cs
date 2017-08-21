@@ -4,6 +4,7 @@ using System.IO;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
+using CollectionManager.Modules.FileIO.OsuScoresDb;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
@@ -14,9 +15,12 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         private readonly IMapDataStorer _mapDataStorer;
         private FileStream _fileStream;
         private BinaryReader _binaryReader;
+        private BinaryWriter _binaryWriter;
         private Exception _exception;
         private readonly BeatmapExtension _tempBeatmap = new BeatmapExtension();
         private bool _stopProcessing;
+        public ScoresDatabaseIo ScoresLoader;
+        public ScoresCacher ScoresDatabase = new ScoresCacher();
 
         public bool LoadedSuccessfully
         {
@@ -39,14 +43,19 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         {
             _mapDataStorer = mapDataStorer;
             _logger = logger;
+            ScoresLoader = new ScoresDatabaseIo(ScoresDatabase);
+            ScoresLoader.ReadDb(@"D:\Gry\osu!\scores.db");
+
         }
         
         public virtual void LoadDatabase(string fullOsuDbPath)
         {
             if (FileExists(fullOsuDbPath))
             {
-                _fileStream = new FileStream(fullOsuDbPath, FileMode.Open, FileAccess.Read);
+                _fileStream = new FileStream(fullOsuDbPath, FileMode.Open, FileAccess.ReadWrite);
                 _binaryReader = new BinaryReader(_fileStream);
+                _binaryWriter = new BinaryWriter(_fileStream);
+
                 if (DatabaseContainsData())
                 {
                     ReadDatabaseEntries();
@@ -105,7 +114,25 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             beatmap.AudioOffset = _binaryReader.ReadInt16();
             beatmap.LetterBox = ReadString();
             beatmap.Played = !_binaryReader.ReadBoolean();
-            beatmap.LastPlayed = GetDate();
+            if (true)
+            {
+                //Quick hack because I'm tired of osu reseting my db and recently played every week or so.
+                _binaryWriter.Seek((int)_binaryReader.BaseStream.Position, SeekOrigin.Begin);
+                var date = ScoresDatabase.GetLastPlayDate(beatmap.Md5);
+                if (date != DateTime.MinValue)
+                {
+                    _binaryWriter.Write(date.Ticks);
+                    _fileStream.Seek(-8, SeekOrigin.Current);
+
+                }
+                beatmap.LastPlayed = GetDate();
+            }
+            else
+            {
+                beatmap.LastPlayed = GetDate();
+            }
+
+            
             beatmap.IsOsz2 = _binaryReader.ReadBoolean();
             beatmap.Dir = ReadString();
             beatmap.LastSync = GetDate();
@@ -362,6 +389,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         {
             _fileStream.Close();
             _binaryReader.Close();
+            _binaryWriter.Close();
             _fileStream.Dispose();
             _binaryReader.Dispose();
         }
