@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
 using System.Timers;
 using CollectionManager.DataTypes;
@@ -103,7 +102,7 @@ namespace App.Presenters.Controls
             if (map == null || !_view.IsAutoPlayEnabled)
                 return;
             var audioLocation = ((BeatmapExtension)map).FullAudioFileLocation();
-            if (ShouldSkipTrack(audioLocation))
+            if ((_lastAudioFileLocation == audioLocation || string.IsNullOrWhiteSpace(audioLocation)) && _view.IsMusicPlayerMode && !musicPlayer.IsPlaying)
             {
                 //Run as worker to avoid eventual stack overflow exception (eg. too many maps with no audio file in a row)
                 RunAsWorker(() => _model.EmitNextMapRequest());
@@ -113,14 +112,6 @@ namespace App.Presenters.Controls
             PlayBeatmap(map);
         }
 
-        private bool ShouldSkipTrack(string audioLocation)
-        {
-            if ((_lastAudioFileLocation == audioLocation || string.IsNullOrWhiteSpace(audioLocation)) &&
-                _view.IsMusicPlayerMode && !musicPlayer.IsPlaying)
-                return true;
-
-            return !File.Exists(audioLocation);
-        }
         private void PlayBeatmap(Beatmap map)
         {
             var audioLocation = ((BeatmapExtension)map).FullAudioFileLocation();
