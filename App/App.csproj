@@ -60,6 +60,7 @@
     <Compile Include="Interfaces\Controls\IBeatmapListingPresenter.cs" />
     <Compile Include="Interfaces\Controls\IBeatmapListingModel.cs" />
     <Compile Include="Interfaces\Controls\ICollectionListingModel.cs" />
+    <Compile Include="Interfaces\Controls\IUsernameGeneratorModel.cs" />
     <Compile Include="Interfaces\Forms\IMainFormModel.cs" />
     <Compile Include="Interfaces\IBeatmapListingBindingProvider.cs" />
     <Compile Include="Interfaces\IFormEvents.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Models\Controls\DownloadManagerModel.cs" />
     <Compile Include="Models\Controls\InfoTextModel.cs" />
     <Compile Include="Models\Controls\MusicControlModel.cs" />
+    <Compile Include="Models\Controls\UsernameGeneratorModel.cs" />
     <Compile Include="Models\Forms\MainFormModel.cs" />
     <Compile Include="Models\GenericMapSetterModel.cs" />
     <Compile Include="OsuDownloadManager.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Presenters\Controls\DownloadManagerPresenter.cs" />
     <Compile Include="Presenters\Controls\InfoTextPresenter.cs" />
     <Compile Include="Presenters\Controls\MusicControlPresenter.cs" />
+    <Compile Include="Presenters\Controls\UsernameGeneratorPresenter.cs" />
     <Compile Include="Presenters\Forms\BeatmapListingFormPresenter.cs" />
     <Compile Include="Presenters\Forms\CollectionAddRenameFormPresenter.cs" />
     <Compile Include="Presenters\Forms\DownloadManagerFormPresenter.cs" />
