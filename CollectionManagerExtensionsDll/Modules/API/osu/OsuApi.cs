@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -77,19 +78,16 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.TitleRoman = json["title"].ToString();
                 beatmap.Creator = json["creator"].ToString();
                 beatmap.ApprovedDate = DateTime.ParseExact(json["approved_date"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                beatmap.ModPpStars.Add(0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2));
+                beatmap.ModPpStars.Add(PlayModes.Osu, new Dictionary<int, double>()
+                {
+                    { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
+                });
                 beatmap.GenreId = Int32.Parse(json["genre_id"].ToString());
                 beatmap.LanguageId = Int32.Parse(json["language_id"].ToString());
                 beatmap.DataDownloaded = true;
 
                 beatmaps.Add(beatmap);
             }
-
-
-
-
-
-
             return beatmaps;
         }
 
@@ -120,7 +118,10 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             beatmap.ArtistRoman = json["artist"].ToString();
             beatmap.TitleRoman = json["title"].ToString();
             beatmap.Creator = json["creator"].ToString();
-            beatmap.ModPpStars.Add(0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2));
+            beatmap.ModPpStars.Add(PlayModes.Osu, new Dictionary<int, double>()
+            {
+                { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
+            });
             //beatmap.OverallDifficulty = float.Parse(json["difficultyrating"].ToString(), );
             beatmap.DataDownloaded = true;
 

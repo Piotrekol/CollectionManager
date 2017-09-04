@@ -1,5 +1,6 @@
 ﻿#define GetStarsCombinations
 using System;
+using System.Collections.Generic;
 using System.IO;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
@@ -40,7 +41,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             _mapDataStorer = mapDataStorer;
             _logger = logger;
         }
-        
+
         public virtual void LoadDatabase(string fullOsuDbPath)
         {
             if (FileExists(fullOsuDbPath))
@@ -158,33 +159,36 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
             for (int j = 0; j < 4; j++)
             {
-                ReadStarsData(beatmap);
+                ReadStarsData(beatmap, (PlayModes)j);
             }
             beatmap.DrainingTime = _binaryReader.ReadInt32();
             beatmap.TotalTime = _binaryReader.ReadInt32();
             beatmap.PreviewTime = _binaryReader.ReadInt32();
         }
 
-        private void ReadStarsData(Beatmap beatmap)
+        private void ReadStarsData(Beatmap beatmap, PlayModes playMode)
         {
             int num = _binaryReader.ReadInt32();
-            if (num < 0)
+            if (num <= 0)
             {
                 return;
             }
+            if (!beatmap.ModPpStars.ContainsKey(playMode))
+                beatmap.ModPpStars.Add(playMode, new Dictionary<int, double>());
+            var modPpStars = beatmap.ModPpStars[playMode];
             for (int j = 0; j < num; j++)
             {
                 int modEnum = (int)ConditionalRead();
                 Double stars = (Double)ConditionalRead();
-                if (!beatmap.ModPpStars.ContainsKey(modEnum))
+                if (!modPpStars.ContainsKey(modEnum))
                 {
-                    beatmap.ModPpStars.Add(modEnum, Math.Round(stars, 2));
+                    modPpStars.Add(modEnum, Math.Round(stars, 2));
                 }
                 else
                 {
                     var star = Math.Round(stars, 2);
-                    if (beatmap.ModPpStars[modEnum] < star)
-                        beatmap.ModPpStars[modEnum] = star;
+                    if (modPpStars[modEnum] < star)
+                        modPpStars[modEnum] = star;
                 }
 
             }

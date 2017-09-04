@@ -36,7 +36,7 @@ namespace CollectionManager.DataTypes
                 if (MapId == 0)
                     return MapSetLink;
                 return @"http://osu.ppy.sh/b/" + MapId;
-                
+
             }
         }
         public string MapSetLink
@@ -48,14 +48,16 @@ namespace CollectionManager.DataTypes
                 return @"http://osu.ppy.sh/s/" + MapSetId;
             }
         }
-
-        public Dictionary<int, double> ModPpStars = new Dictionary<int, double>();
+        public Dictionary<PlayModes, Dictionary<int, double>> ModPpStars = new Dictionary<PlayModes, Dictionary<int, double>>();
+        //public Dictionary<int, double> ModPpStars = new Dictionary<int, double>();
         public double StarsNomod
         {
             get
             {
-                if (ModPpStars.ContainsKey(0))
-                    return ModPpStars[0];
+                if (ModPpStars.ContainsKey(PlayModes.Osu) && ModPpStars[PlayModes.Osu].ContainsKey(0))
+                    return ModPpStars[PlayModes.Osu][0];
+                if (ModPpStars.ContainsKey(playMode) && ModPpStars[playMode].ContainsKey(0))
+                    return ModPpStars[playMode][0];
                 return 0d;
             }
         }
@@ -257,7 +259,7 @@ namespace CollectionManager.DataTypes
         }
         public void InitEmptyValues()
         {
-            ModPpStars = new Dictionary<int, double>();
+            ModPpStars = new Dictionary<PlayModes, Dictionary<int, double>>();
             TitleUnicode = string.Empty;
             TitleRoman = string.Empty;
             ArtistUnicode = string.Empty;
