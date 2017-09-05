@@ -1,6 +1,6 @@
 ﻿namespace CollectionManager.Enums
 {
-    public enum PlayModes
+    public enum PlayMode
     {
         Osu = 0,
         Taiko = 1,

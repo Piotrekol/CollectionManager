@@ -48,14 +48,14 @@ namespace CollectionManager.DataTypes
                 return @"http://osu.ppy.sh/s/" + MapSetId;
             }
         }
-        public Dictionary<PlayModes, Dictionary<int, double>> ModPpStars = new Dictionary<PlayModes, Dictionary<int, double>>();
+        public Dictionary<PlayMode, Dictionary<int, double>> ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
         //public Dictionary<int, double> ModPpStars = new Dictionary<int, double>();
         public double StarsNomod
         {
             get
             {
-                if (ModPpStars.ContainsKey(PlayModes.Osu) && ModPpStars[PlayModes.Osu].ContainsKey(0))
-                    return ModPpStars[PlayModes.Osu][0];
+                if (ModPpStars.ContainsKey(Enums.PlayMode.Osu) && ModPpStars[Enums.PlayMode.Osu].ContainsKey(0))
+                    return ModPpStars[Enums.PlayMode.Osu][0];
                 if (ModPpStars.ContainsKey(playMode) && ModPpStars[playMode].ContainsKey(0))
                     return ModPpStars[playMode][0];
                 return 0d;
@@ -108,8 +108,8 @@ namespace CollectionManager.DataTypes
         public int MapRating { get; set; }
         public short Offset { get; set; }
         public float StackLeniency { get; set; }
-        private PlayModes playMode;
-        public PlayModes PlayMode
+        private PlayMode playMode;
+        public PlayMode PlayMode
         {
             get
             {
@@ -125,7 +125,7 @@ namespace CollectionManager.DataTypes
                 }
                 else
                 {
-                    playMode = PlayModes.Osu;
+                    playMode = PlayMode.Osu;
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace CollectionManager.DataTypes
         }
         public void InitEmptyValues()
         {
-            ModPpStars = new Dictionary<PlayModes, Dictionary<int, double>>();
+            ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
             TitleUnicode = string.Empty;
             TitleRoman = string.Empty;
             ArtistUnicode = string.Empty;
@@ -290,7 +290,7 @@ namespace CollectionManager.DataTypes
             MapRating = 0;
             Offset = 0;
             StackLeniency = 0;
-            PlayMode = PlayModes.Osu;
+            PlayMode = PlayMode.Osu;
             Source = string.Empty;
             AudioOffset = 0;
             LetterBox = string.Empty;

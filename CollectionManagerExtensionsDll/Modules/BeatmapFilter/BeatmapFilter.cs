@@ -95,13 +95,13 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                             return delegate (Beatmap b) { return isPatternMatch(Math.Round(b.StarsNomod, 2), op, num); };
 
                         case "cs":
-                            return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.CircleSize, 1), op, num) && b.PlayMode != PlayModes.OsuMania && b.PlayMode != PlayModes.Taiko; };
+                            return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.CircleSize, 1), op, num) && b.PlayMode != PlayMode.OsuMania && b.PlayMode != PlayMode.Taiko; };
                         case "hp":
                             return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.HpDrainRate, 1), op, num); };
                         case "od":
                             return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.OverallDifficulty, 1), op, num); };
                         case "ar":
-                            return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.ApproachRate, 1), op, num) && b.PlayMode != PlayModes.OsuMania && b.PlayMode != PlayModes.Taiko; };
+                            return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.ApproachRate, 1), op, num) && b.PlayMode != PlayMode.OsuMania && b.PlayMode != PlayMode.Taiko; };
 
                         case "key":
                         case "keys":
@@ -170,14 +170,14 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         };
         private static readonly KeyValuePair<double, string>[] ModePairs = new KeyValuePair<double, string>[]
         {
-            new KeyValuePair<double, string> ((double)PlayModes.Osu, "osu!"),
-            new KeyValuePair<double, string> ((double)PlayModes.Taiko, "taiko"),
-            new KeyValuePair<double, string> ((double)PlayModes.CatchTheBeat, "catchthebeat"),
-            new KeyValuePair<double, string> ((double)PlayModes.CatchTheBeat, "ctb"),
-            new KeyValuePair<double, string> ((double)PlayModes.OsuMania, "osu!mania"),
-            new KeyValuePair<double, string> ((double)PlayModes.OsuMania, "osumania"),
-            new KeyValuePair<double, string> ((double)PlayModes.OsuMania, "mania"),
-            new KeyValuePair<double, string> ((double)PlayModes.OsuMania, "o!m"),
+            new KeyValuePair<double, string> ((double)PlayMode.Osu, "osu!"),
+            new KeyValuePair<double, string> ((double)PlayMode.Taiko, "taiko"),
+            new KeyValuePair<double, string> ((double)PlayMode.CatchTheBeat, "catchthebeat"),
+            new KeyValuePair<double, string> ((double)PlayMode.CatchTheBeat, "ctb"),
+            new KeyValuePair<double, string> ((double)PlayMode.OsuMania, "osu!mania"),
+            new KeyValuePair<double, string> ((double)PlayMode.OsuMania, "osumania"),
+            new KeyValuePair<double, string> ((double)PlayMode.OsuMania, "mania"),
+            new KeyValuePair<double, string> ((double)PlayMode.OsuMania, "o!m"),
         };
 
 

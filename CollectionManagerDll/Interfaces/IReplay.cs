@@ -5,7 +5,7 @@ namespace CollectionManager.Interfaces
 {
     public interface IReplay
     {
-        PlayModes PlayMode { get; set; }
+        PlayMode PlayMode { get; set; }
         int Version { get; set; }
         string MapHash { get; set; }
         string PlayerName { get; set; }

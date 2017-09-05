@@ -78,7 +78,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.TitleRoman = json["title"].ToString();
                 beatmap.Creator = json["creator"].ToString();
                 beatmap.ApprovedDate = DateTime.ParseExact(json["approved_date"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                beatmap.ModPpStars.Add(PlayModes.Osu, new Dictionary<int, double>()
+                beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
                 {
                     { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
                 });
@@ -118,7 +118,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             beatmap.ArtistRoman = json["artist"].ToString();
             beatmap.TitleRoman = json["title"].ToString();
             beatmap.Creator = json["creator"].ToString();
-            beatmap.ModPpStars.Add(PlayModes.Osu, new Dictionary<int, double>()
+            beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
             {
                 { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
             });

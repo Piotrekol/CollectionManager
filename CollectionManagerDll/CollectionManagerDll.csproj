@@ -72,7 +72,7 @@
     <Compile Include="Modules\FileIO\OsuDb\MapCacher.cs" />
     <Compile Include="Modules\FileIO\OsuDb\OsuDatabase.cs" />
     <Compile Include="DataTypes\RangeObservableCollection.cs" />
-    <Compile Include="Enums\PlayModes.cs" />
+    <Compile Include="Enums\PlayMode.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IMapDataStorer.cs" />
     <Compile Include="Modules\FileIO\OsuDb\LOsuDatabaseLoader.cs" />

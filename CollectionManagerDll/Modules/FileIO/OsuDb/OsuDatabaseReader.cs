@@ -100,7 +100,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             beatmap.MapRating = _binaryReader.ReadInt32();
             beatmap.Offset = _binaryReader.ReadInt16();
             beatmap.StackLeniency = _binaryReader.ReadSingle();
-            beatmap.PlayMode = (PlayModes)_binaryReader.ReadByte();
+            beatmap.PlayMode = (PlayMode)_binaryReader.ReadByte();
             beatmap.Source = ReadString();
             beatmap.Tags = ReadString();
             beatmap.AudioOffset = _binaryReader.ReadInt16();
@@ -159,14 +159,14 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
             for (int j = 0; j < 4; j++)
             {
-                ReadStarsData(beatmap, (PlayModes)j);
+                ReadStarsData(beatmap, (PlayMode)j);
             }
             beatmap.DrainingTime = _binaryReader.ReadInt32();
             beatmap.TotalTime = _binaryReader.ReadInt32();
             beatmap.PreviewTime = _binaryReader.ReadInt32();
         }
 
-        private void ReadStarsData(Beatmap beatmap, PlayModes playMode)
+        private void ReadStarsData(Beatmap beatmap, PlayMode playMode)
         {
             int num = _binaryReader.ReadInt32();
             if (num <= 0)

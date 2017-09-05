@@ -8,7 +8,7 @@ namespace CollectionManager.DataTypes
 {
     public class Replay : IReplay, ICloneable
     {
-        public PlayModes PlayMode { get; set; }
+        public PlayMode PlayMode { get; set; }
         public int Version { get; set; }
         public string MapHash { get; set; }
         public string PlayerName { get; set; }
@@ -35,7 +35,7 @@ namespace CollectionManager.DataTypes
         {
             if (outobj == null)
                 outobj = new Replay();
-            outobj.PlayMode = (PlayModes)reader.ReadByte();
+            outobj.PlayMode = (PlayMode)reader.ReadByte();
             outobj.Version = reader.ReadInt32();
             outobj.MapHash = reader.ReadString();
             outobj.PlayerName = reader.ReadString();
