@@ -143,11 +143,6 @@ namespace CollectionManager.DataTypes
         {
             lock (LoadedMaps.LockingObject)
             {
-                if (LoadedMaps.Beatmaps.Count == 0)
-                {
-                    UnknownBeatmaps.Add(map);
-                    return;
-                }
                 if (LoadedMaps.LoadedBeatmapsMd5Dict.ContainsKey(map.Md5))
                 {
                     var knownMap = LoadedMaps.LoadedBeatmapsMd5Dict[map.Md5];
