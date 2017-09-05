@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
 using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuDb;
 
@@ -22,10 +23,11 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {"o!dm",1 },
             {"o!dm2",2 },
             {"o!dm3",3 },
-            {"o!dm4",4 }
+            {"o!dm4",4 },
+            {"o!dm5",5 }
         };
 
-        private string CurrentVersion => "o!dm4";
+        private string CurrentVersion => "o!dm5";
         public OsdbCollectionHandler(ILogger logger)
         {
             _logger = logger;
@@ -88,6 +90,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _binWriter.Write(beatmap.DiffName);
                     _binWriter.Write(beatmap.Md5);
                     _binWriter.Write(beatmap.UserComment);
+                    _binWriter.Write((byte)beatmap.PlayMode);
                 }
                 _binWriter.Write(beatmapWithHashOnly.Count);
                 foreach (var beatmapHash in beatmapWithHashOnly)
@@ -143,6 +146,8 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                         map.Md5 = _binReader.ReadString();
                         if (fileVersion >= 4)
                             map.UserComment = _binReader.ReadString();
+                        if (fileVersion >= 5)
+                            map.PlayMode = (PlayMode)_binReader.ReadByte();
                         collection.AddBeatmap(map);
                     }
 
