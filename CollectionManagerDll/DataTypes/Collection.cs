@@ -25,11 +25,11 @@ namespace CollectionManager.DataTypes
         /// but contain enough information(MapSetId) to be able to issue new download
         /// </summary>
         /// <remarks>.osdb files contain this data since v2</remarks>
-        public Beatmaps DownloadableBeatmaps { get; }= new Beatmaps();
+        public Beatmaps DownloadableBeatmaps { get; } = new Beatmaps();
         /// <summary>
         /// Contains beatmap with data from LoadedMaps
         /// </summary>
-        public Beatmaps KnownBeatmaps { get; }= new Beatmaps();
+        public Beatmaps KnownBeatmaps { get; } = new Beatmaps();
 
 
 
@@ -75,7 +75,7 @@ namespace CollectionManager.DataTypes
 
             foreach (var beatmap in tempBeatmaps)
             {
-                ProcessNewlyAddedMap(beatmap);
+                ProcessNewlyAddedMap((BeatmapExtension)beatmap);
             }
 
         }
@@ -85,7 +85,7 @@ namespace CollectionManager.DataTypes
         {
             for (int i = 0; i < this.KnownBeatmaps.Count; i++)
             {
-                yield return this.KnownBeatmaps[i];
+                yield return (BeatmapExtension)this.KnownBeatmaps[i];
             }
             foreach (var beatmap in NotKnownBeatmaps())
             {
@@ -97,11 +97,11 @@ namespace CollectionManager.DataTypes
         {
             for (int i = 0; i < this.DownloadableBeatmaps.Count; i++)
             {
-                yield return this.DownloadableBeatmaps[i];
+                yield return (BeatmapExtension)this.DownloadableBeatmaps[i];
             }
             for (int i = 0; i < this.UnknownBeatmaps.Count; i++)
             {
-                yield return this.UnknownBeatmaps[i];
+                yield return (BeatmapExtension)this.UnknownBeatmaps[i];
             }
         }
 
@@ -143,20 +143,19 @@ namespace CollectionManager.DataTypes
         {
             lock (LoadedMaps.LockingObject)
             {
-                if (LoadedMaps.LoadedBeatmapsMd5Dict.ContainsKey(map.Md5))
+                var knownMap = (BeatmapExtension)LoadedMaps.GetByHash(map.Md5);
+                if (knownMap != null)
                 {
-                    var knownMap = LoadedMaps.LoadedBeatmapsMd5Dict[map.Md5];
-                    ProcessAdditionalProps(map,knownMap);
+                    ProcessAdditionalProps(map, knownMap);
                     KnownBeatmaps.Add(knownMap);
                     return;
                 }
-                if (map.MapId > 10 && LoadedMaps.LoadedBeatmapsMapIdDict.ContainsKey(map.MapId))
+                knownMap = (BeatmapExtension)LoadedMaps.GetByMapId(map.MapId);
+                if (map.MapId > 10 && knownMap != null)
                 {
                     //Remove previously added map hash
                     _beatmapHashes.Remove(map.Md5);
-                    //Get our local version of the map
-                    var knownMap = LoadedMaps.LoadedBeatmapsMapIdDict[map.MapId];
-                    //And add that instead.
+                    //And add our local version of the map that instead.
                     _beatmapHashes.Add(knownMap.Md5);
                     ProcessAdditionalProps(map, knownMap);
                     KnownBeatmaps.Add(knownMap);

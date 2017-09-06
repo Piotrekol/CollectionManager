@@ -9,7 +9,7 @@ namespace CollectionManager
     {
         internal void Run()
         {
-            var osuFileIo = new OsuFileIo();
+            var osuFileIo = new OsuFileIo(new BeatmapExtension());
 
             //Automatic Detection of osu! directory location
             string dir = osuFileIo.OsuPathResolver.GetOsuDir(ThisPathIsCorrect, SelectDirectoryDialog);

@@ -12,11 +12,11 @@ namespace CollectionManager.Modules.FileIO.OsuDb
     public class OsuDatabaseLoader
     {
         private readonly ILogger _logger;
-        private readonly IMapDataStorer _mapDataStorer;
+        private readonly IMapDataManager _mapDataStorer;
         private FileStream _fileStream;
         private BinaryReader _binaryReader;
         private Exception _exception;
-        private readonly BeatmapExtension _tempBeatmap = new BeatmapExtension();
+        private readonly Beatmap _tempBeatmap;
         private bool _stopProcessing;
 
         public bool LoadedSuccessfully
@@ -36,8 +36,9 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         public int ExpectedNumOfBeatmaps { get; private set; } = -1;
         public int NumberOfLoadedBeatmaps { get; private set; }
 
-        public OsuDatabaseLoader(ILogger logger, IMapDataStorer mapDataStorer)
+        public OsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer,Beatmap tempBeatmap)
         {
+            _tempBeatmap = tempBeatmap;
             _mapDataStorer = mapDataStorer;
             _logger = logger;
         }

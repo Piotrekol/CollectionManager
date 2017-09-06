@@ -1,6 +1,6 @@
 ﻿namespace CollectionManager.DataTypes
 {
-    public class Beatmaps :RangeObservableCollection<BeatmapExtension>
+    public class Beatmaps :RangeObservableCollection<Beatmap>
     {
     }
 }

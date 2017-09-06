@@ -52,11 +52,9 @@ namespace CollectionManager
             writer.Write(replay.OnlineScoreId);
         }
 
-        public static BeatmapExtension GetMap(this IReplay replay, MapCacher mapCacher)
+        public static Beatmap GetMap(this IReplay replay, IMapDataManager mapCacher)
         {
-            if (mapCacher.LoadedBeatmapsMd5Dict.ContainsKey(replay.MapHash))
-                return mapCacher.LoadedBeatmapsMd5Dict[replay.MapHash];
-            return null;
+            return mapCacher.GetByHash(replay.MapHash);
         }
     }
 }

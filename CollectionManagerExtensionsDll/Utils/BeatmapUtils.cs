@@ -46,10 +46,13 @@ namespace CollectionManagerExtensionsDll.Utils
         }
 
         public static string OsuSongsDirectory = "";
-        public static string GetImageLocation(this BeatmapExtension beatmap)
+        public static string GetImageLocation(this Beatmap beatmap)
         {
-            if (beatmap.LocalBeatmapMissing)
-                return string.Empty;
+            if (beatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension)))
+            {
+                if (((BeatmapExtension)beatmap).LocalBeatmapMissing)
+                    return string.Empty;
+            }
             var osuFileLocation = beatmap.FullOsuFileLocation();
             string ImageLocation = string.Empty;
             using (StreamReader file = new StreamReader(osuFileLocation))
@@ -71,18 +74,24 @@ namespace CollectionManagerExtensionsDll.Utils
             }
             return ImageLocation;
         }
-        public static string BeatmapDirectory(this BeatmapExtension beatmap)
+        public static string BeatmapDirectory(this Beatmap beatmap)
         {
             return Path.Combine(OsuSongsDirectory, beatmap.Dir);
         }
-        public static string FullOsuFileLocation(this BeatmapExtension beatmap)
+        public static string FullOsuFileLocation(this Beatmap beatmap)
         {
             return Path.Combine(beatmap.BeatmapDirectory(), beatmap.OsuFileName);
         }
-        public static string FullAudioFileLocation(this BeatmapExtension beatmap)
+
+        public static string FullAudioFileLocation(this Beatmap beatmap)
         {
-            if (beatmap.LocalBeatmapMissing)
-                return string.Empty;
+            var isSubclassed = beatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension));
+            if (isSubclassed)
+            {
+                if (((BeatmapExtension)beatmap).LocalBeatmapMissing)
+                    return string.Empty;
+            }
+           
             return Path.Combine(beatmap.BeatmapDirectory(), beatmap.Mp3Name);
 
         }

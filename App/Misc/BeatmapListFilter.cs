@@ -16,7 +16,7 @@ namespace App.Misc
         public event EventHandler FilteringFinished;
         public BeatmapListFilter(Beatmaps beatmaps)
         {
-            _beatmapFilter = new BeatmapFilter(beatmaps);
+            _beatmapFilter = new BeatmapFilter(beatmaps,new BeatmapExtension());
             timer = new Timer();
             timer.Interval = 400;
             timer.Tick += Timer_Tick;

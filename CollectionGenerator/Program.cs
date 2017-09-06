@@ -11,7 +11,7 @@ namespace CollectionGenerator
     class Program
     {
         private static OsuApi _api;
-        private static readonly OsuFileIo OsuFileIo = new OsuFileIo();
+        private static readonly OsuFileIo OsuFileIo = new OsuFileIo(new BeatmapExtension());
         static void Main(string[] args)
         {
             Console.WriteLine("Collection Generator");

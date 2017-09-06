@@ -89,7 +89,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _binWriter.Write(beatmap.TitleRoman);
                     _binWriter.Write(beatmap.DiffName);
                     _binWriter.Write(beatmap.Md5);
-                    _binWriter.Write(beatmap.UserComment);
+                    _binWriter.Write(((BeatmapExtension)beatmap).UserComment);
                     _binWriter.Write((byte)beatmap.PlayMode);
                 }
                 _binWriter.Write(beatmapWithHashOnly.Count);

@@ -1,4 +1,6 @@
-﻿namespace CollectionManager.Modules.FileIO.OsuDb
+﻿using CollectionManager.DataTypes;
+
+namespace CollectionManager.Modules.FileIO.OsuDb
 {
     public class OsuDatabase
     {
@@ -13,9 +15,9 @@
         public int NumberOfBeatmaps => LoadedMaps.Beatmaps.Count;
         public string Username => _databaseLoader.Username;
 
-        public OsuDatabase()
+        public OsuDatabase(Beatmap beatmapBase)
         {
-            _databaseLoader = new LOsuDatabaseLoader(null, LoadedMaps);
+            _databaseLoader = new LOsuDatabaseLoader(null, LoadedMaps, beatmapBase);
         }
 
         public void Load(string fileDir)

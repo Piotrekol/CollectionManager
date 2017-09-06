@@ -5,13 +5,13 @@ using CollectionManager.Interfaces;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
-    public class MapCacher : IMapDataStorer
+    public class MapCacher : IMapDataManager
     {
         public readonly object LockingObject = new object();
         public readonly Beatmaps Beatmaps = new Beatmaps();
         public HashSet<string> BeatmapHashes = new HashSet<string>();
-        public Dictionary<string, BeatmapExtension> LoadedBeatmapsMd5Dict = new Dictionary<string, BeatmapExtension>();
-        public Dictionary<int, BeatmapExtension> LoadedBeatmapsMapIdDict = new Dictionary<int, BeatmapExtension>();
+        private Dictionary<string, Beatmap> LoadedBeatmapsMd5Dict = new Dictionary<string, Beatmap>();
+        private Dictionary<int, Beatmap> LoadedBeatmapsMapIdDict = new Dictionary<int, Beatmap>();
         public event EventHandler BeatmapsModified;
         private bool _massStoring = false;
         public MapCacher()
@@ -25,7 +25,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             BeatmapHashes.Clear();
             EndMassStoring();
         }
-        private void UpdateLookupDicts(BeatmapExtension map, bool recalculate = false)
+        private void UpdateLookupDicts(Beatmap map, bool recalculate = false)
         {
             lock (LockingObject)
             {
@@ -61,12 +61,12 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             OnBeatmapsModified();
         }
 
-        public void StoreBeatmap(BeatmapExtension beatmap)
+        public void StoreBeatmap(Beatmap beatmap)
         {
             if (!BeatmapHashes.Contains(beatmap.Md5))
             {
                 this.BeatmapHashes.Add(beatmap.Md5);
-                this.Beatmaps.Add((BeatmapExtension)beatmap.Clone());
+                this.Beatmaps.Add((Beatmap)beatmap.Clone());
                 if (!_massStoring)
                 {
                     UpdateLookupDicts(beatmap);
@@ -83,6 +83,20 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         private void OnBeatmapsModified()
         {
             BeatmapsModified?.Invoke(this, EventArgs.Empty);
+        }
+
+        public Beatmap GetByHash(string hash)
+        {
+            if (LoadedBeatmapsMd5Dict.ContainsKey(hash))
+                return LoadedBeatmapsMd5Dict[hash];
+            return null;
+        }
+
+        public Beatmap GetByMapId(int mapId)
+        {
+            if (LoadedBeatmapsMapIdDict.ContainsKey(mapId))
+                return LoadedBeatmapsMapIdDict[mapId];
+            return null;
         }
     }
 }

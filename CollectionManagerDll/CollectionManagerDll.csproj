@@ -74,7 +74,7 @@
     <Compile Include="DataTypes\RangeObservableCollection.cs" />
     <Compile Include="Enums\PlayMode.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\IMapDataStorer.cs" />
+    <Compile Include="Interfaces\IMapDataManager.cs" />
     <Compile Include="Modules\FileIO\OsuDb\LOsuDatabaseLoader.cs" />
     <Compile Include="Modules\FileIO\OsuDb\OsuDatabaseReader.cs" />
     <Compile Include="Modules\FileIO\OsuPathResolver.cs" />

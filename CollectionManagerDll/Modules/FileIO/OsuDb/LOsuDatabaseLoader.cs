@@ -1,4 +1,5 @@
 ﻿using System;
+using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
@@ -7,7 +8,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
     {
         private ILogger logger;
         public string status { get; private set; }
-        public LOsuDatabaseLoader(ILogger logger, IMapDataStorer mapDataStorer) : base(logger, mapDataStorer)
+        public LOsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer, Beatmap tempBeatmap) : base(logger, mapDataStorer, tempBeatmap)
         {
         }
 

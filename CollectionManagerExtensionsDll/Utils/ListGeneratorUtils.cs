@@ -19,7 +19,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
         }
         
 
-        internal static Dictionary<int, Beatmaps> GetBeatmapSets(IEnumerable<BeatmapExtension> collection)
+        internal static Dictionary<int, Beatmaps> GetBeatmapSets(IEnumerable<Beatmap> collection)
         {
             var beatmapSets = new Dictionary<int, Beatmaps>();
             beatmapSets.Add(-1, new Beatmaps());

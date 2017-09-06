@@ -32,8 +32,10 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             $
         ");
 
-        public BeatmapFilter(Beatmaps beatmaps)
+        private bool BeatmapExtensionIsUsed = false;
+        public BeatmapFilter(Beatmaps beatmaps, Beatmap baseBeatmap)
         {
+            BeatmapExtensionIsUsed = baseBeatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension));
             SetBeatmaps(beatmaps);
         }
 
@@ -139,23 +141,41 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                         return delegate (Beatmap b) { return isPatternMatch((double)b.PlayMode, op, num); };
                     case "status":
                         num = descriptorToNum(val, StatusPairs);
-                        
+
                         return delegate (Beatmap b) { return isPatternMatch((double)b.State, op, num); };
                 }
             }
             int id;
             if (Int32.TryParse(searchWord, out id))
             {
-                return delegate (Beatmap b)
+                if (BeatmapExtensionIsUsed)
                 {
-                    //match mapid and mapset id while input is numbers.
-                    if (b.MapId == id) return true;
-                    if (b.MapSetId == id) return true;
-                    if (b.ThreadId == id) return true;
-                    return isWordMatch((BeatmapExtension)b, searchWord);
-                };
+                    return delegate (Beatmap b)
+                    {
+                        //match mapid and mapset id while input is numbers.
+                        if (b.MapId == id) return true;
+                        if (b.MapSetId == id) return true;
+                        if (b.ThreadId == id) return true;
+                        return isWordMatch((BeatmapExtension)b, searchWord);
+                    };
+                }
+                else
+                {
+                    return delegate (Beatmap b)
+                    {
+                        //match mapid and mapset id while input is numbers.
+                        if (b.MapId == id) return true;
+                        if (b.MapSetId == id) return true;
+                        if (b.ThreadId == id) return true;
+                        return isWordMatch(b, searchWord);
+                    };
+                }
             }
-            return delegate (Beatmap b) { return isWordMatch((BeatmapExtension)b, searchWord); };
+            if (BeatmapExtensionIsUsed)
+                return delegate (Beatmap b) { return isWordMatch((BeatmapExtension)b, searchWord); };
+            else
+                return delegate (Beatmap b) { return isWordMatch(b, searchWord); };
+
         }
 
         private static readonly KeyValuePair<double, string>[] StatusPairs = new KeyValuePair<double, string>[]
@@ -211,7 +231,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         {
             return false;
         }
-        private bool isWordMatch(BeatmapExtension b, string word)
+        private bool isWordMatch(Beatmap b, string word)
         {
             if (b.ToString(true).IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             if (b.Creator.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
@@ -219,8 +239,13 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             if (b.Source.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             if (b.ArtistUnicode != null && b.ArtistUnicode.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             if (b.TitleUnicode != null && b.TitleUnicode.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
-            if (b.UserComment != null && b.UserComment.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) return true;
             return false;
+        }
+        private bool isWordMatch(BeatmapExtension b, string word)
+        {
+            return isWordMatch((Beatmap)b, word) ||
+                   (b.UserComment != null &&
+                   b.UserComment.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         private bool isArtistMatch(Beatmap b, string word)

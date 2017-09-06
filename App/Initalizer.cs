@@ -18,7 +18,7 @@ namespace App
 {
     public class Initalizer : ApplicationContext
     {
-        public static OsuFileIo OsuFileIo = new OsuFileIo();
+        public static OsuFileIo OsuFileIo = new OsuFileIo(new BeatmapExtension());
         public static CollectionsManagerWithCounts CollectionsManager;
         public static Beatmaps LoadedBeatmaps => OsuFileIo.LoadedMaps.Beatmaps;
         public static Collections LoadedCollections => CollectionsManager.LoadedCollections;

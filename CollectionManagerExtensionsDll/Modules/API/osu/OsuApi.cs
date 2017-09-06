@@ -91,16 +91,16 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             return beatmaps;
         }
 
-        public BeatmapExtension GetBeatmap(int beatmapId)
+        public Beatmap GetBeatmap(int beatmapId)
         {
             return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&b=" + beatmapId);
         }
-        public BeatmapExtension GetBeatmap(string hash)
+        public Beatmap GetBeatmap(string hash)
         {
             return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&h=" + hash);
         }
 
-        private BeatmapExtension GetBeatmapResult(string url)
+        private Beatmap GetBeatmapResult(string url)
         {
             var jsonResponse = _client.DownloadString(url);
             if (jsonResponse == "Please provide a valid API key.")
