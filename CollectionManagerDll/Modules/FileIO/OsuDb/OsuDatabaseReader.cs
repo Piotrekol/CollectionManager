@@ -60,9 +60,14 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
         protected virtual void ReadDatabaseEntries()
         {
+            _logger?.Log("Starting MassStoring of {0} beatmaps", ExpectedNumOfBeatmaps.ToString());
+
             _mapDataStorer.StartMassStoring();
             for (NumberOfLoadedBeatmaps = 0; NumberOfLoadedBeatmaps < ExpectedNumOfBeatmaps; NumberOfLoadedBeatmaps++)
             {
+                if(NumberOfLoadedBeatmaps%100==0)
+                    _logger?.Log("Loading {0} of {1}", NumberOfLoadedBeatmaps.ToString(),
+                    ExpectedNumOfBeatmaps.ToString());
                 //TODO: check if it is safe to remove all try/catch _stopProcessing stuff
                 if (_stopProcessing)
                 {
@@ -70,6 +75,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 }
                 ReadNextBeatmap();
             }
+            _logger?.Log("Loaded {0} beatmaps", NumberOfLoadedBeatmaps.ToString());
             _mapDataStorer.EndMassStoring();
         }
         private void ReadNextBeatmap()
