@@ -83,6 +83,8 @@
     <Compile Include="Modules\FileIO\OsuScoresDb\ScoresDatabaseIO.cs" />
     <Compile Include="Modules\FileIO\OsuSettingsLoader.cs" />
     <Compile Include="DataTypes\Replay.cs" />
+    <Compile Include="Modules\ModParser\ModParser.cs" />
+    <Compile Include="DataTypes\Mods.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
