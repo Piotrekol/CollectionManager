@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CollectionManager.Enums;
+using CollectionManager.Modules.ModParser;
 
 namespace CollectionManager.DataTypes
 {
@@ -88,17 +89,13 @@ namespace CollectionManager.DataTypes
             }
         }
         public Dictionary<PlayMode, Dictionary<int, double>> ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
-        //public Dictionary<int, double> ModPpStars = new Dictionary<int, double>();
-        public double StarsNomod
+        public double StarsNomod => Stars(PlayMode);
+
+        public double Stars(PlayMode playMode, Mods mods=Mods.Omod)
         {
-            get
-            {
-                if (ModPpStars.ContainsKey(Enums.PlayMode.Osu) && ModPpStars[Enums.PlayMode.Osu].ContainsKey(0))
-                    return ModPpStars[Enums.PlayMode.Osu][0];
-                if (ModPpStars.ContainsKey(playMode) && ModPpStars[playMode].ContainsKey(0))
-                    return ModPpStars[playMode][0];
-                return 0d;
-            }
+            if (ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods))
+                return ModPpStars[_playMode][0];
+            return 0d;
         }
 
         public double MaxBpm { get; set; }
@@ -147,24 +144,24 @@ namespace CollectionManager.DataTypes
         public int MapRating { get; set; }
         public short Offset { get; set; }
         public float StackLeniency { get; set; }
-        private PlayMode playMode;
+        private PlayMode _playMode;
         public PlayMode PlayMode
         {
             get
             {
-                return playMode;
+                return _playMode;
             }
 
             set
             {
-                playMode = value;
+                _playMode = value;
                 if (Enum.IsDefined(PlayMode.GetType(), value))
                 {
-                    playMode = value;
+                    _playMode = value;
                 }
                 else
                 {
-                    playMode = PlayMode.Osu;
+                    _playMode = PlayMode.Osu;
                 }
             }
         }
