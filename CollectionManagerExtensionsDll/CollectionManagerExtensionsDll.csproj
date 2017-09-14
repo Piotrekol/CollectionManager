@@ -35,6 +35,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interpolate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\String.Interpolate.0.0.1\lib\net40\Interpolate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -77,10 +81,6 @@
     <Compile Include="Utils\ListGeneratorUtils.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\TxtListGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\StringFormat\FormatExpression.cs" />
-    <Compile Include="Utils\StringFormat\HaackFormatter.cs" />
-    <Compile Include="Utils\StringFormat\ITextExpression.cs" />
-    <Compile Include="Utils\StringFormat\LiteralFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj">

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CollectionManager.DataTypes;
-using StringLib;
+using Interpolate;
 
 namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes
 {
