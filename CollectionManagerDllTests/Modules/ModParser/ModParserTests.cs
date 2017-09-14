@@ -80,5 +80,55 @@ namespace CollectionManager.Modules.ModParser.Tests
             Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Dt).ShortMod));
             Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Hd).ShortMod));
         }
+        [TestMethod()]
+        public void NoModText1()
+        {
+            _modParser = new ModParser();
+            var mods = Mods.Omod;
+            var result = _modParser.GetModsFromEnum((int)mods);
+
+            Assert.IsTrue(result.Count(s => s == ',') == 0);
+            Assert.IsTrue(result == _modParser.LongNoModText);
+        }
+        [TestMethod()]
+        public void NoModText2()
+        {
+            _modParser = new ModParser();
+            var mods = Mods.Omod;
+            var result = _modParser.GetModsFromEnum((int)mods,true);
+
+            Assert.IsTrue(result.Count(s => s == ',') == 0);
+            Assert.IsTrue(result == _modParser.ShortNoModText);
+        }
+        [TestMethod()]
+        public void NoModText3()
+        {
+            _modParser = new ModParser();
+            var mods = Mods.Omod;
+            _modParser.LongNoModText = "No mods enabled";
+            Assert.IsTrue(_modParser.LongNoModText == "No mods enabled");
+            _modParser.ShortNoModText = "N/A";
+            Assert.IsTrue(_modParser.ShortNoModText == "N/A");
+
+            var result = _modParser.GetModsFromEnum((int)mods);
+
+            Assert.IsTrue(result.Count(s => s == ',') == 0);
+            Assert.IsTrue(result == _modParser.LongNoModText);
+        }
+        [TestMethod()]
+        public void NoModText4()
+        {
+            _modParser = new ModParser();
+            var mods = Mods.Omod;
+            _modParser.LongNoModText = "No mods enabled";
+            Assert.IsTrue(_modParser.LongNoModText == "No mods enabled");
+            _modParser.ShortNoModText = "N/A";
+            Assert.IsTrue(_modParser.ShortNoModText == "N/A");
+
+            var result = _modParser.GetModsFromEnum((int)mods,true);
+
+            Assert.IsTrue(result.Count(s => s == ',') == 0);
+            Assert.IsTrue(result == _modParser.ShortNoModText);
+        }
     }
 }

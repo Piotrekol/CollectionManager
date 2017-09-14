@@ -10,8 +10,8 @@ namespace CollectionManager.Modules.ModParser
         public class OsuMod
         {
             public Mods Value { get; }
-            public string LongMod { get; }
-            public string ShortMod { get; }
+            public string LongMod { get; set; }
+            public string ShortMod { get; set; }
 
             public OsuMod(Mods value, string shortMod, string longMod)
             {
@@ -21,6 +21,16 @@ namespace CollectionManager.Modules.ModParser
             }
         }
 
+        public string ShortNoModText
+        {
+            get { return _mods.Find(f => f.Value == Mods.Omod).ShortMod; }
+            set { _mods.Find(f => f.Value == Mods.Omod).ShortMod = value; }
+        }
+        public string LongNoModText
+        {
+            get { return _mods.Find(f => f.Value == Mods.Omod).LongMod; }
+            set { _mods.Find(f => f.Value == Mods.Omod).LongMod = value; }
+        }
         public ReadOnlyCollection<OsuMod> AllMods => _mods.AsReadOnly();
         public List<OsuMod> HiddenMods { get; } = new List<OsuMod>
         {
