@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionGenerator", "CollectionGenerator\CollectionGenerator.csproj", "{3070A7AA-7493-42A7-9E0E-74878453ABB4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionManagerDllTests", "CollectionManagerDllTests\CollectionManagerDllTests.csproj", "{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,8 +78,17 @@ Global
 		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Remote Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Remote Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Remote Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Remote Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
 	EndGlobalSection
 EndGlobal
