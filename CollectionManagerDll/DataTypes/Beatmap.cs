@@ -95,7 +95,7 @@ namespace CollectionManager.DataTypes
         {
             mods = mods & Mods.MapChanging;
             if (ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods))
-                return ModPpStars[_playMode][0];
+                return ModPpStars[_playMode][(int)mods];
             return 0d;
         }
 
