@@ -61,7 +61,7 @@ namespace CollectionManager.Modules.ModParser
         };
 
         public bool IsModHidden(OsuMod mod) => HiddenMods.Exists(m => m.Value == mod.Value);
-
+        public bool IsModHidden(Mods mod) => HiddenMods.Exists(m => m.Value == mod);
 
         public Mods GetModsFromInt(int mods)
         {
@@ -79,6 +79,7 @@ namespace CollectionManager.Modules.ModParser
         {
             System.Text.StringBuilder modStr = new System.Text.StringBuilder();
 
+            modsEnum = (int)GetModsFromInt(modsEnum);
             foreach (var mod in _mods)
             {
                 if ((modsEnum & (int)mod.Value) > 0)
