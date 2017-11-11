@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using App.Interfaces;
 using App.Misc;
 using App.Models;
+using App.Presenters.Controls;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
+using CollectionManagerExtensionsDll.DataTypes;
+using CollectionManagerExtensionsDll.Modules.API.osu;
+using CollectionManagerExtensionsDll.Modules.CollectionGenerator;
 using GuiComponents.Interfaces;
+using NAudio.Codecs;
 
 namespace App
 {
@@ -20,11 +26,14 @@ namespace App
         private readonly IMainFormView _mainForm;
 
         IBeatmapListingForm _beatmapListingForm;
+        private IUserTopGeneratorForm _userTopGeneratorForm;
+        private IUsernameGeneratorForm _usernameGeneratorForm;
         private IDownloadManagerFormView _downloadManagerForm;
         private readonly IBeatmapListingBindingProvider _beatmapListingBindingProvider;
         private readonly MainFormPresenter _mainFormPresenter;
         private readonly ILoginFormView _loginForm;
-
+        private CollectionsGenerator _collectionGenerator;
+        private OsuSite _osuSite = new OsuSite();
         public SidePanelActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainForm, IBeatmapListingBindingProvider beatmapListingBindingProvider, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
             _osuFileIo = osuFileIo;
@@ -34,6 +43,7 @@ namespace App
             _beatmapListingBindingProvider = beatmapListingBindingProvider;
             _mainFormPresenter = mainFormPresenter;
             _loginForm = loginForm;
+            _collectionGenerator = new CollectionsGenerator(Initalizer.OsuFileIo.LoadedMaps);
 
             BindMainFormActions();
         }
@@ -49,9 +59,64 @@ namespace App
             _mainForm.SidePanelView.ShowBeatmapListing += (s, a) => ShowBeatmapListing();
             _mainForm.SidePanelView.ShowDownloadManager += (s, a) => ShowDownloadManager();
             _mainForm.SidePanelView.DownloadAllMissing += (s, a) => DownloadAllMissing();
+            _mainForm.SidePanelView.GenerateCollections += (s, a) => GenerateCollections();
 
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
+        }
+
+        private void GenerateCollections()
+        {
+            if (_userTopGeneratorForm == null || _userTopGeneratorForm.IsDisposed)
+            {
+                _userTopGeneratorForm = GuiComponentsProvider.Instance.GetClassImplementing<IUserTopGeneratorForm>();
+                var model = new UserTopGeneratorModel((a) => 
+                    _collectionGenerator.CreateCollectionName(new ApiScore() {EnabledMods = (int) (Mods.Hr | Mods.Hd)},
+                    "Piotrekol", a));
+                model.GenerateUsernames += GenerateUsernames;
+                new UserTopGeneratorFormPresenter(model, _userTopGeneratorForm);
+                model.Start += (s, a) => _collectionGenerator.GenerateCollection(model.GeneratorConfiguration);
+                model.SaveCollections +=
+                    (s, a) => _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(model.Collections));
+                model.Abort += (s, a) => _collectionGenerator.Abort();
+                _collectionGenerator.StatusUpdated +=
+                    (s, a) =>
+                    {
+                        model.GenerationStatus = _collectionGenerator.Status;
+                        model.GenerationCompletionPrecentage = _collectionGenerator.ProcessingCompletionPrecentage;
+                    };
+
+                _collectionGenerator.CollectionsUpdated +=
+                    (s, a) => model.Collections = _collectionGenerator.Collections;
+            }
+            _userTopGeneratorForm.Show();
+        }
+
+
+        private void GenerateUsernames(object sender, EventArgs eventArgs)
+        {
+            if (_usernameGeneratorForm == null || _usernameGeneratorForm.IsDisposed)
+            {
+                _usernameGeneratorForm = GuiComponentsProvider.Instance.GetClassImplementing<IUsernameGeneratorForm>();
+                var model = new UsernameGeneratorModel();
+                model.Start +=
+                    (s, a) =>
+                    {
+                        new Thread(() =>
+                        {
+                            model.GeneratedUsernames = _osuSite.GetUsernames(model.StartRank, model.EndRank,
+                           (string logMessage, int completionPrecentage) =>
+                           {
+                               model.Status = logMessage;
+                               model.CompletionPrecentage = completionPrecentage;
+                           });
+                            model.EmitComplete();
+                        }).Start();
+                    };
+                model.Complete += (s, a) => Helpers.SetClipboardText(model.GeneratedUsernamesStr);
+                new UsernameGeneratorPresenter(model, _usernameGeneratorForm.view);
+            }
+            _usernameGeneratorForm.ShowAndBlock();
         }
 
         private void DownloadAllMissing()

@@ -121,6 +121,12 @@
     <Compile Include="Controls\UsernameGeneratorView.Designer.cs">
       <DependentUpon>UsernameGeneratorView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserTopGeneratorView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserTopGeneratorView.Designer.cs">
+      <DependentUpon>UserTopGeneratorView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,12 @@
     </Compile>
     <Compile Include="Forms\UsernameGeneratorForm.Designer.cs">
       <DependentUpon>UsernameGeneratorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UserTopGeneratorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserTopGeneratorForm.Designer.cs">
+      <DependentUpon>UserTopGeneratorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,6 +213,9 @@
     <EmbeddedResource Include="Controls\UsernameGeneratorView.resx">
       <DependentUpon>UsernameGeneratorView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserTopGeneratorView.resx">
+      <DependentUpon>UserTopGeneratorView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BeatmapListingForm.resx">
       <DependentUpon>BeatmapListingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -218,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UsernameGeneratorForm.resx">
       <DependentUpon>UsernameGeneratorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserTopGeneratorForm.resx">
+      <DependentUpon>UserTopGeneratorForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

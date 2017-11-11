@@ -16,6 +16,7 @@ namespace GuiComponents.Controls
         public event EventHandler ShowBeatmapListing;
         public event EventHandler ShowDownloadManager;
         public event EventHandler DownloadAllMissing;
+        public event EventHandler GenerateCollections;
 
         public MainSidePanelView()
         {
@@ -30,6 +31,7 @@ namespace GuiComponents.Controls
             button_beatmapListing.Click += delegate { OnShowBeatmapListing(); };
             button_mapDownloads.Click += delegate { OnShowDownloadManager(); };
             button_downloadAllMissing.Click += delegate { OnDownloadAllMissing(); };
+            button_GenerateCollections.Click += delegate { OnGenerateCollections(); };
         }
         private void OnLoadCollection()
         {
@@ -79,6 +81,11 @@ namespace GuiComponents.Controls
         protected virtual void OnDownloadAllMissing()
         {
             DownloadAllMissing?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnGenerateCollections()
+        {
+            GenerateCollections?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace GuiComponents.Interfaces
         event EventHandler ShowBeatmapListing;
         event EventHandler ShowDownloadManager;
         event EventHandler DownloadAllMissing;
-        
+        event EventHandler GenerateCollections;
+
     }
 }

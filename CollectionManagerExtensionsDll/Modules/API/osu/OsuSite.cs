@@ -21,7 +21,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         private LogUsernameGeneration _logger;
         public List<string> GetUsernames(int startRank, int endRank, LogUsernameGeneration logger)
         {
-            if (startRank < 0 || startRank > 10000 || endRank < 0 || endRank > 10000)
+            if (startRank < 0 || startRank > 9999 || endRank < 0 || endRank > 10000)
                 throw new ArgumentException("Parameters were not in allowed range(0-10000)");
             _logger = logger;
 
@@ -59,7 +59,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             var usernames = new List<string>();
             if (pageContents.Length > 0)
             {
-                var match = Regex.Matches(pageContents, ".*?href=\"\\/u\\/(\\d+)\">(.*)<\\/a>");
+                var match = Regex.Matches(pageContents, ".*?href=\'\\/u\\/(\\d+)\'>(.*)<\\/a>");
                 if (match.Count > 0)
                 {
                     for (int i = startUserIndex; i <= endUserIndex; i++)

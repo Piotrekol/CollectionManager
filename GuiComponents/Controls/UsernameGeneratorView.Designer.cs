@@ -33,12 +33,12 @@
             this.button_Start = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel_main = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown_StartRank = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown_EndRank = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.panel_main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_StartRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_EndRank)).BeginInit();
@@ -96,6 +96,15 @@
             this.panel_main.Size = new System.Drawing.Size(263, 78);
             this.panel_main.TabIndex = 31;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(39, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Min";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -109,7 +118,7 @@
             // 
             this.numericUpDown_StartRank.Location = new System.Drawing.Point(130, 28);
             this.numericUpDown_StartRank.Maximum = new decimal(new int[] {
-            10000,
+            9999,
             0,
             0,
             0});
@@ -166,15 +175,6 @@
             this.label2.Size = new System.Drawing.Size(27, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Max";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(24, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Min";
             // 
             // UsernameGeneratorView
             // 

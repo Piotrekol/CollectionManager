@@ -53,6 +53,7 @@
     <Compile Include="Interfaces\Controls\ICollectionAddView.cs" />
     <Compile Include="Interfaces\Controls\ICollectionRenameView.cs" />
     <Compile Include="Interfaces\Controls\IUsernameGeneratorView.cs" />
+    <Compile Include="Interfaces\Controls\IUserTopGenerator.cs" />
     <Compile Include="Interfaces\Forms\IBeatmapListingForm.cs" />
     <Compile Include="Interfaces\Controls\IBeatmapListingView.cs" />
     <Compile Include="Interfaces\Controls\IBeatmapThumbnailView.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Interfaces\Controls\IMainSidePanelView.cs" />
     <Compile Include="Interfaces\Controls\IMusicControlView.cs" />
     <Compile Include="Interfaces\Forms\IUsernameGeneratorForm.cs" />
+    <Compile Include="Interfaces\Forms\IUserTopGeneratorForm.cs" />
     <Compile Include="Interfaces\IUserDialogs.cs" />
     <Compile Include="MessageBoxType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

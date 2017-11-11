@@ -32,8 +32,8 @@
             this.button_mapDownloads = new System.Windows.Forms.Button();
             this.button_beatmapListing = new System.Windows.Forms.Button();
             this.groupBox_onlineServices = new System.Windows.Forms.GroupBox();
-            this.button_getUserTops = new System.Windows.Forms.Button();
-            this.button_GetMissingMaps = new System.Windows.Forms.Button();
+            this.button_downloadAllMissing = new System.Windows.Forms.Button();
+            this.button_GenerateCollections = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button_listMissingMaps = new System.Windows.Forms.Button();
             this.button_listAllCollections = new System.Windows.Forms.Button();
@@ -45,7 +45,6 @@
             this.button_loadDefaultCollection = new System.Windows.Forms.Button();
             this.button_loadCollection = new System.Windows.Forms.Button();
             this.button_refreshBeatmapList = new System.Windows.Forms.Button();
-            this.button_downloadAllMissing = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox_onlineServices.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -55,7 +54,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button_downloadAllMissing);
             this.panel1.Controls.Add(this.button_mapDownloads);
             this.panel1.Controls.Add(this.button_beatmapListing);
             this.panel1.Controls.Add(this.groupBox_onlineServices);
@@ -93,39 +91,36 @@
             // 
             this.groupBox_onlineServices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_onlineServices.Controls.Add(this.button_getUserTops);
-            this.groupBox_onlineServices.Controls.Add(this.button_GetMissingMaps);
-            this.groupBox_onlineServices.Location = new System.Drawing.Point(3, 376);
+            this.groupBox_onlineServices.Controls.Add(this.button_downloadAllMissing);
+            this.groupBox_onlineServices.Controls.Add(this.button_GenerateCollections);
+            this.groupBox_onlineServices.Location = new System.Drawing.Point(3, 340);
             this.groupBox_onlineServices.Name = "groupBox_onlineServices";
             this.groupBox_onlineServices.Size = new System.Drawing.Size(174, 76);
             this.groupBox_onlineServices.TabIndex = 12;
             this.groupBox_onlineServices.TabStop = false;
             this.groupBox_onlineServices.Text = "Online services";
-            this.groupBox_onlineServices.Visible = false;
             // 
-            // button_getUserTops
+            // button_downloadAllMissing
             // 
-            this.button_getUserTops.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.button_downloadAllMissing.Location = new System.Drawing.Point(4, 18);
+            this.button_downloadAllMissing.Name = "button_downloadAllMissing";
+            this.button_downloadAllMissing.Size = new System.Drawing.Size(170, 23);
+            this.button_downloadAllMissing.TabIndex = 14;
+            this.button_downloadAllMissing.Text = "Download all missing maps";
+            this.button_downloadAllMissing.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_downloadAllMissing.UseVisualStyleBackColor = true;
+            // 
+            // button_GenerateCollections
+            // 
+            this.button_GenerateCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_getUserTops.Location = new System.Drawing.Point(1, 47);
-            this.button_getUserTops.Name = "button_getUserTops";
-            this.button_getUserTops.Size = new System.Drawing.Size(170, 23);
-            this.button_getUserTops.TabIndex = 11;
-            this.button_getUserTops.Text = "Get user top ranks";
-            this.button_getUserTops.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_getUserTops.UseVisualStyleBackColor = true;
-            // 
-            // button_GetMissingMaps
-            // 
-            this.button_GetMissingMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_GetMissingMaps.Location = new System.Drawing.Point(1, 19);
-            this.button_GetMissingMaps.Name = "button_GetMissingMaps";
-            this.button_GetMissingMaps.Size = new System.Drawing.Size(170, 23);
-            this.button_GetMissingMaps.TabIndex = 9;
-            this.button_GetMissingMaps.Text = "Get missing maps";
-            this.button_GetMissingMaps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_GetMissingMaps.UseVisualStyleBackColor = true;
+            this.button_GenerateCollections.Location = new System.Drawing.Point(4, 47);
+            this.button_GenerateCollections.Name = "button_GenerateCollections";
+            this.button_GenerateCollections.Size = new System.Drawing.Size(170, 23);
+            this.button_GenerateCollections.TabIndex = 11;
+            this.button_GenerateCollections.Text = "Generate collections";
+            this.button_GenerateCollections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_GenerateCollections.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -262,16 +257,6 @@
             this.button_refreshBeatmapList.UseVisualStyleBackColor = true;
             this.button_refreshBeatmapList.Visible = false;
             // 
-            // button_downloadAllMissing
-            // 
-            this.button_downloadAllMissing.Location = new System.Drawing.Point(4, 340);
-            this.button_downloadAllMissing.Name = "button_downloadAllMissing";
-            this.button_downloadAllMissing.Size = new System.Drawing.Size(170, 23);
-            this.button_downloadAllMissing.TabIndex = 14;
-            this.button_downloadAllMissing.Text = "Download all missing maps";
-            this.button_downloadAllMissing.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_downloadAllMissing.UseVisualStyleBackColor = true;
-            // 
             // MainSidePanelView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,8 +279,7 @@
         public System.Windows.Forms.Button button_mapDownloads;
         public System.Windows.Forms.Button button_beatmapListing;
         public System.Windows.Forms.GroupBox groupBox_onlineServices;
-        public System.Windows.Forms.Button button_getUserTops;
-        public System.Windows.Forms.Button button_GetMissingMaps;
+        public System.Windows.Forms.Button button_GenerateCollections;
         private System.Windows.Forms.GroupBox groupBox3;
         public System.Windows.Forms.Button button_listMissingMaps;
         public System.Windows.Forms.Button button_listAllCollections;

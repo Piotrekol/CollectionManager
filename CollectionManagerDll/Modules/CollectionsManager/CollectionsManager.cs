@@ -34,6 +34,17 @@ namespace CollectionManager.Modules.CollectionsManager
                 }
                 LoadedCollections.AddRange(args.Collections);
             }
+            else if (action == CollectionEdit.AddOrMergeIfExists)
+            {
+                foreach (var collection in args.Collections)
+                {
+                    if (CollectionNameExists(collection.Name))
+                        EditCollection(CollectionEditArgs.MergeCollections(
+                            new Collections() { GetCollectionByName(collection.Name),collection }, collection.Name), true);
+                    else
+                        EditCollection(CollectionEditArgs.AddCollections(new Collections() { collection }), true);
+                }
+            }
             else if (action == CollectionEdit.Remove)
             {
                 foreach (var collectionName in args.CollectionNames)
