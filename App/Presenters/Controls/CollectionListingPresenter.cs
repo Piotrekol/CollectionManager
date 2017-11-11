@@ -62,9 +62,13 @@ namespace App.Presenters.Controls
             switch (e.Value)
             {
                 case "Delete":
+                    if (selectedCollections == null)
+                        return;
                     args = CollectionEditArgs.RemoveCollections(selectedCollections);
                     break;
                 case "Merge":
+                    if (selectedCollections == null)
+                        return;
                     args = CollectionEditArgs.MergeCollections(selectedCollections, selectedCollections[0].Name);
                     break;
                 case "Create":
