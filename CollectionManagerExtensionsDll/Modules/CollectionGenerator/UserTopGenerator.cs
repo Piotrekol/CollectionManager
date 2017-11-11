@@ -7,7 +7,7 @@ using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO.OsuDb;
 using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Modules.API.osu;
-using CollectionManagerExtensionsDll.Modules.ModParser;
+using CollectionManager.Modules.ModParser;
 
 namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
 {
@@ -173,13 +173,13 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
             }
             return egibleScores;
         }
-
+        private static ModParser modParser = new ModParser();
         public static string CreateCollectionName(ApiScore score, string username, string collectionNameFormat)
         {
             try
             {
                 return String.Format(collectionNameFormat, username,
-                    ModsParser.Instance.GetModsFromEnum(score.EnabledMods, true));
+                    modParser.GetModsFromEnum(score.EnabledMods, true));
             }
             catch (FormatException ex)
             {
