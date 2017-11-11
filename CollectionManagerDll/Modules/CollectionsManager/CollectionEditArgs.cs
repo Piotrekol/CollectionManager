@@ -95,6 +95,15 @@ namespace CollectionManager.Modules.CollectionsManager
             };
         }
         #endregion
-        
+        #region Add or merge if exists
+        public static CollectionEditArgs AddOrMergeCollections(Collections collections)
+        {
+            return new CollectionEditArgs(CollectionEdit.AddOrMergeIfExists)
+            {
+                Collections = collections
+            };
+        }
+        #endregion
+
     }
 }

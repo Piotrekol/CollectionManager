@@ -39,6 +39,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MusicPlayer\NAudio\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -60,6 +64,8 @@
     <Compile Include="Interfaces\Controls\IBeatmapListingPresenter.cs" />
     <Compile Include="Interfaces\Controls\IBeatmapListingModel.cs" />
     <Compile Include="Interfaces\Controls\ICollectionListingModel.cs" />
+    <Compile Include="Interfaces\Controls\IUsernameGeneratorModel.cs" />
+    <Compile Include="Interfaces\Controls\IUserTopGeneratorModel.cs" />
     <Compile Include="Interfaces\Forms\IMainFormModel.cs" />
     <Compile Include="Interfaces\IBeatmapListingBindingProvider.cs" />
     <Compile Include="Interfaces\IFormEvents.cs" />
@@ -77,6 +83,8 @@
     <Compile Include="Models\Controls\DownloadManagerModel.cs" />
     <Compile Include="Models\Controls\InfoTextModel.cs" />
     <Compile Include="Models\Controls\MusicControlModel.cs" />
+    <Compile Include="Models\Controls\UsernameGeneratorModel.cs" />
+    <Compile Include="Models\Controls\UserTopGeneratorModel.cs" />
     <Compile Include="Models\Forms\MainFormModel.cs" />
     <Compile Include="Models\GenericMapSetterModel.cs" />
     <Compile Include="OsuDownloadManager.cs" />
@@ -87,6 +95,8 @@
     <Compile Include="Presenters\Controls\DownloadManagerPresenter.cs" />
     <Compile Include="Presenters\Controls\InfoTextPresenter.cs" />
     <Compile Include="Presenters\Controls\MusicControlPresenter.cs" />
+    <Compile Include="Presenters\Controls\UsernameGeneratorPresenter.cs" />
+    <Compile Include="Presenters\Controls\UserTopGeneratorPresenter.cs" />
     <Compile Include="Presenters\Forms\BeatmapListingFormPresenter.cs" />
     <Compile Include="Presenters\Forms\CollectionAddRenameFormPresenter.cs" />
     <Compile Include="Presenters\Forms\DownloadManagerFormPresenter.cs" />
@@ -94,6 +104,7 @@
     <Compile Include="Presenters\Controls\BeatmapListingPresenter.cs" />
     <Compile Include="Presenters\Controls\CollectionListingPresenter.cs" />
     <Compile Include="Presenters\Controls\CombinedListingPresenter.cs" />
+    <Compile Include="Presenters\Forms\UserTopGeneratorFormPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SidePanelActionsHandler.cs" />

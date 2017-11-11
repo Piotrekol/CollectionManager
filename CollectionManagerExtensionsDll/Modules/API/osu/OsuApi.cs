@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Net;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManagerExtensionsDll.DataTypes;
+using CollectionManagerExtensionsDll.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,8 +14,9 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
 {
     public class OsuApi
     {
-        private readonly WebClient _client = new WebClient();
-        private string _apiKey;
+
+        private readonly ImpatientWebClient _client = new ImpatientWebClient();
+        public string ApiKey { private get; set; }
 
         private const string ApiUrl = "https://osu.ppy.sh/api/";
         private const string GetBeatmapsURL = ApiUrl + "get_beatmaps";
@@ -22,11 +25,14 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         private const string GetUserBestURL = ApiUrl + "get_user_best";
         private const string GetUserRecentURL = ApiUrl + "get_user_recent";
         private const string GetMatchURL = ApiUrl + "get_match";
+
+        private Dictionary<int, BeatmapExtension> _downloadedBeatmaps = new Dictionary<int, BeatmapExtension>();
+
         public OsuApi(string apiKey)
         {
-            _apiKey = apiKey;
+            ApiKey = apiKey;
         }
-
+        
         public Beatmaps GetBeatmaps(DateTime fromDate, DateTime toDate)
         {
             var resultBeatmaps = new Beatmaps();
@@ -35,8 +41,22 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
 
             while (currentDate < toDate)
             {
-                var newBeatmaps = GetBeatmaps(string.Format(GetBeatmapsURL + "?k={0}&since={1}", _apiKey, currentDate.ToString("yyyy-MM-dd HH:mm:ss")));
-
+                bool exception;
+                RangeObservableCollection<BeatmapExtensionEx> newBeatmaps=null;
+                do
+                {
+                    exception = false;
+                    try
+                    {
+                        newBeatmaps =
+                            GetBeatmaps(string.Format(GetBeatmapsURL + "?k={0}&since={1}", ApiKey,
+                                currentDate.ToString("yyyy-MM-dd HH:mm:ss")));
+                    }
+                    catch (WebException)
+                    {
+                        exception = true;
+                    }
+                } while (exception);
                 if (newBeatmaps.Count < 500)
                     currentDate = toDate;
                 foreach (var newBeatmap in newBeatmaps)
@@ -59,7 +79,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         {
             var beatmaps = new RangeObservableCollection<BeatmapExtensionEx>();
 
-            var jsonResponse = _client.DownloadString(url);
+             var jsonResponse = _client.DownloadString(url);
             if (jsonResponse == "Please provide a valid API key.")
                 throw new Exception("Invalid osu!Api key");
             //jsonResponse = jsonResponse.Trim(']', '[');
@@ -94,39 +114,99 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
 
         public Beatmap GetBeatmap(int beatmapId)
         {
-            return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&b=" + beatmapId);
+            if (_downloadedBeatmaps.ContainsKey(beatmapId))
+                return _downloadedBeatmaps[beatmapId];
+            var map = GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId);
+            if (map != null)
+                _downloadedBeatmaps.Add(beatmapId, map);
+            return map;
         }
         public Beatmap GetBeatmap(string hash)
         {
-            return GetBeatmapResult(GetBeatmapsURL + "?k=" + _apiKey + "&h=" + hash);
+            return GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&h=" + hash);
         }
-
-        private Beatmap GetBeatmapResult(string url)
+        public IList<ApiScore> GetUserBest(string username, PlayMode mode, int limit = 100)
         {
-            var jsonResponse = _client.DownloadString(url);
-            if (jsonResponse == "Please provide a valid API key.")
-                throw new Exception("Invalid osu!Api key");
-            jsonResponse = jsonResponse.Trim(']', '[');
-            if (jsonResponse.Trim(' ') == string.Empty)
-                return null;
-            var json = JObject.Parse(jsonResponse);
-            var beatmap = new BeatmapExtension();
-            //var a = json.Count;
-            beatmap.MapSetId = int.Parse(json["beatmapset_id"].ToString());
-            beatmap.MapId = int.Parse(json["beatmap_id"].ToString());
-            beatmap.DiffName = json["version"].ToString();
-            beatmap.Md5 = json["file_md5"].ToString();
-            beatmap.ArtistRoman = json["artist"].ToString();
-            beatmap.TitleRoman = json["title"].ToString();
-            beatmap.Creator = json["creator"].ToString();
-            beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
+            return GetUserScoresResult(GetUserBestURL + "?k=" + ApiKey + "&u=" + username + "&m=" + mode + "&type=string" + "&limit=" + limit);
+        }
+        private IList<ApiScore> GetUserScoresResult(string url)
+        {
+            try
             {
-                { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
-            });
-            //beatmap.OverallDifficulty = float.Parse(json["difficultyrating"].ToString(), );
-            beatmap.DataDownloaded = true;
+                var jsonResponse = _client.DownloadString(url);
 
-            return beatmap;
+                if (jsonResponse == "Please provide a valid API key.")
+                    throw new Exception("Invalid osu!Api key");
+                if (jsonResponse.Trim(' ') == string.Empty)
+                    return null;
+                var json = JArray.Parse(jsonResponse);
+                var scores = new List<ApiScore>();
+                foreach (var kvPair in json)
+                {
+                    var score = new ApiScore
+                    {
+                        BeatmapId = kvPair.Value<int>("beatmap_id"),
+                        Score = kvPair.Value<int>("score"),
+                        Count300 = kvPair.Value<int>("count300"),
+                        Count100 = kvPair.Value<int>("count100"),
+                        Count50 = kvPair.Value<int>("count50"),
+                        Countmiss = kvPair.Value<int>("countmiss"),
+                        Maxcombo = kvPair.Value<int>("maxcombo"),
+                        Countkatu = kvPair.Value<int>("countkatu"),
+                        Countgeki = kvPair.Value<int>("countgeki"),
+                        Perfect = kvPair.Value<int>("perfect"),
+                        EnabledMods = kvPair.Value<int>("enabled_mods"),
+                        UserId = kvPair.Value<int>("user_id"),
+                        Date = kvPair.Value<DateTime>("date"),
+                        Rank = kvPair.Value<string>("rank"),
+                        Pp = kvPair.Value<double>("pp")
+                    };
+                    scores.Add(score);
+                }
+                return scores;
+            }
+            catch
+            {
+                return null;
+            }
+
+
+
+        }
+        private BeatmapExtension GetBeatmapResult(string url)
+        {
+            try
+            {
+                var jsonResponse = _client.DownloadString(url);
+                if (jsonResponse == "Please provide a valid API key.")
+                    throw new Exception("Invalid osu!Api key");
+                jsonResponse = jsonResponse.Trim(']', '[');
+                if (jsonResponse.Trim(' ') == string.Empty)
+                    return null;
+                var json = JObject.Parse(jsonResponse);
+                var beatmap = new BeatmapExtension();
+                //var a = json.Count;
+                beatmap.MapSetId = int.Parse(json["beatmapset_id"].ToString());
+                beatmap.MapId = int.Parse(json["beatmap_id"].ToString());
+                beatmap.DiffName = json["version"].ToString();
+                beatmap.Md5 = json["file_md5"].ToString();
+                beatmap.ArtistRoman = json["artist"].ToString();
+                beatmap.TitleRoman = json["title"].ToString();
+                beatmap.Creator = json["creator"].ToString();
+                beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
+                {
+                    { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
+                });
+                beatmap.PlayMode = (PlayMode)Int32.Parse(json["mode"].ToString());
+                //beatmap.OverallDifficulty = float.Parse(json["difficultyrating"].ToString(), );
+                beatmap.DataDownloaded = true;
+
+                return beatmap;
+            }
+            catch (WebException)
+            {
+                return null;
+            }
         }
     }
 }

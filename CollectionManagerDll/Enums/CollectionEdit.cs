@@ -9,5 +9,6 @@
         Clear=4,
         AddBeatmaps=5,
         RemoveBeatmaps=6,
+        AddOrMergeIfExists=7,
     }
 }
