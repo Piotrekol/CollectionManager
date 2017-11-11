@@ -84,6 +84,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 });
                 beatmap.GenreId = Int32.Parse(json["genre_id"].ToString());
                 beatmap.LanguageId = Int32.Parse(json["language_id"].ToString());
+                beatmap.PlayMode = (PlayMode)Int32.Parse(json["mode"].ToString());
                 beatmap.DataDownloaded = true;
 
                 beatmaps.Add(beatmap);
