@@ -33,6 +33,7 @@ namespace CollectionGenerator
             Console.WriteLine("Generating collections");
             OsuFileIo.CollectionLoader.SaveOsdbCollection(GenByYear(maps), @"D:\Kod\kolekcje\ByYear.osdb");
             OsuFileIo.CollectionLoader.SaveOsdbCollection(GenByGenreV2(maps), @"D:\Kod\kolekcje\ByGenre.osdb");
+            OsuFileIo.CollectionLoader.SaveOsdbCollection(GenBulkCollection(maps), @"D:\Kod\kolekcje\Bulk.osdb");
 
         }
         private static readonly Dictionary<int, string> mapGenres = new Dictionary<int, string>()
@@ -82,6 +83,17 @@ namespace CollectionGenerator
 
             RemoveEmptyCollections(collections);
 
+            return collections;
+        }
+        static Collections GenBulkCollection(Beatmaps maps)
+        {
+            var collections = new Collections();
+            var collection = new Collection(OsuFileIo.LoadedMaps) { Name = "Bulk" };
+            foreach(var map in maps)
+            {
+                collection.AddBeatmap(map);
+            }
+            collections.Add(collection);
             return collections;
         }
         static Collections GenByGenreV2(Beatmaps maps)
