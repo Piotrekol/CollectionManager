@@ -88,6 +88,7 @@ namespace CollectionManager.DataTypes
                 return @"http://osu.ppy.sh/s/" + MapSetId;
             }
         }
+        //TODO: add helper functions for adding/removing star values
         public Dictionary<PlayMode, Dictionary<int, double>> ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
         public double StarsNomod => Stars(PlayMode);
 

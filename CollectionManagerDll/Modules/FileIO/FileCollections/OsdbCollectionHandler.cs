@@ -24,10 +24,11 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {"o!dm2",2 },
             {"o!dm3",3 },
             {"o!dm4",4 },
-            {"o!dm5",5 }
+            {"o!dm5",5 },
+            {"o!dm6",6 },
         };
 
-        private string CurrentVersion => "o!dm5";
+        private string CurrentVersion => "o!dm6";
         public OsdbCollectionHandler(ILogger logger)
         {
             _logger = logger;
@@ -91,6 +92,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _binWriter.Write(beatmap.Md5);
                     _binWriter.Write(((BeatmapExtension)beatmap).UserComment);
                     _binWriter.Write((byte)beatmap.PlayMode);
+                    _binWriter.Write(beatmap.StarsNomod);
                 }
                 _binWriter.Write(beatmapWithHashOnly.Count);
                 foreach (var beatmapHash in beatmapWithHashOnly)
@@ -148,6 +150,11 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                             map.UserComment = _binReader.ReadString();
                         if (fileVersion >= 5)
                             map.PlayMode = (PlayMode)_binReader.ReadByte();
+                        if(fileVersion>=6)
+                            map.ModPpStars.Add(map.PlayMode, new Dictionary<int, double>()
+                            {
+                                { 0, _binReader.ReadDouble()}
+                            });
                         collection.AddBeatmap(map);
                     }
 
