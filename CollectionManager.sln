@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionManagerDll", "CollectionManagerDll\CollectionManagerDll.csproj", "{533AB47A-D1B5-45DB-A37E-F053FA3699C4}"
 EndProject
@@ -99,5 +99,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
 		{0C2E6C9E-8FAE-43EE-BA81-A66D44F97EB1} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {637B5D93-1012-4091-A903-2B630AE70CF9}
 	EndGlobalSection
 EndGlobal

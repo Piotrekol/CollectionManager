@@ -1,4 +1,5 @@
-﻿using CollectionManager.DataTypes;
+﻿using System.Collections.Generic;
+using CollectionManager.DataTypes;
 
 namespace CollectionManager.Interfaces
 {
@@ -9,5 +10,6 @@ namespace CollectionManager.Interfaces
         void StoreBeatmap(Beatmap beatmap);
         Beatmap GetByHash(string hash);
         Beatmap GetByMapId(int mapId);
+        List<Beatmap> GetByMapString(string artist, string title, string difficulty);
     }
 }

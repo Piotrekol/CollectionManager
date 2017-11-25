@@ -39,12 +39,18 @@
       <HintPath>..\packages\String.Interpolate.0.0.1\lib\net40\Interpolate.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MoreLinq, Version=2.8.21218.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.8.0\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,8 +61,15 @@
   <ItemGroup>
     <Compile Include="DataTypes\ApiScore.cs" />
     <Compile Include="DataTypes\CollectionGeneratorConfiguration.cs" />
+    <Compile Include="DataTypes\MessageBus\CollectionNameExists.cs" />
+    <Compile Include="DataTypes\MessageBus\IsCollectionNameValid.cs" />
+    <Compile Include="DataTypes\MessageBus\MessageBusBase.cs" />
+    <Compile Include="DataTypes\MsnResult.cs" />
+    <Compile Include="DataTypes\OsuResult.cs" />
     <Compile Include="DataTypes\ScoreSaveConditions.cs" />
+    <Compile Include="Enums\BeatmapSource.cs" />
     <Compile Include="Enums\CollectionListSaveType.cs" />
+    <Compile Include="Enums\OsuState.cs" />
     <Compile Include="Modules\API\BeatmapExtensionEx.cs" />
     <Compile Include="Modules\API\osu\OsuApi.cs" />
     <Compile Include="Modules\API\osu\OsuSite.cs" />
@@ -72,6 +85,7 @@
     <Compile Include="Modules\CollectionListGenerator\ListTypes\RedditCodeGenerator.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\OsuBbCodeGenerator.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\UserListGenerator.cs" />
+    <Compile Include="Modules\CollectionsManagerMessageBus.cs" />
     <Compile Include="Modules\DownloadManager\API\CookieAwareWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -82,6 +96,11 @@
     <Compile Include="Modules\DownloadManager\API\LoginData.cs" />
     <Compile Include="Modules\DownloadManager\ILoginForm.cs" />
     <Compile Include="Modules\DownloadManager\OsuDownloader.cs" />
+    <Compile Include="Modules\Bus\MessageBroker.cs" />
+    <Compile Include="Modules\Bus\MessageBus.cs" />
+    <Compile Include="Modules\Msn\MsnListener.cs" />
+    <Compile Include="Modules\Msn\MsnManager.cs" />
+    <Compile Include="Modules\StatusListener.cs" />
     <Compile Include="Utils\BeatmapUtils.cs" />
     <Compile Include="Utils\ImpatientWebClient.cs">
       <SubType>Component</SubType>

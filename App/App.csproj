@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BeatmapListingActionsHandler.cs" />
     <Compile Include="CollectionEditor.cs" />
+    <Compile Include="EndlessPlayManager.cs" />
     <Compile Include="GuiActionsHandler.cs" />
     <Compile Include="Initalizer.cs" />
     <Compile Include="Interfaces\Controls\IBeatmapThumbnailModel.cs" />

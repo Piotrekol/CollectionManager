@@ -7,8 +7,11 @@ using App.Models;
 using App.Models.Forms;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
+using CollectionManager.Modules;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
+using CollectionManagerExtensionsDll.DataTypes.MessageBus;
+using CollectionManagerExtensionsDll.Modules;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
@@ -19,13 +22,12 @@ namespace App
     public class Initalizer : ApplicationContext
     {
         public static OsuFileIo OsuFileIo = new OsuFileIo(new BeatmapExtension());
-        public static CollectionsManagerWithCounts CollectionsManager;
+        public static CollectionsManagerMessageBus CollectionsManager;
         public static Beatmaps LoadedBeatmaps => OsuFileIo.LoadedMaps.Beatmaps;
         public static Collections LoadedCollections => CollectionsManager.LoadedCollections;
         public static string OsuDirectory;
         public static CollectionEditor CollectionEditor { get; private set; }
         private IUserDialogs UserDialogs { get; set; }// = new GuiComponents.UserDialogs();
-
 
         public void Run()
         {
@@ -47,7 +49,7 @@ namespace App
             BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
 
             //Init "main" classes
-            CollectionsManager = new CollectionsManagerWithCounts(LoadedBeatmaps);
+            CollectionsManager = new CollectionsManagerMessageBus(LoadedBeatmaps);
 
             var collectionAddRemoveForm = GuiComponentsProvider.Instance.GetClassImplementing<ICollectionAddRenameForm>();
             CollectionEditor = new CollectionEditor(CollectionsManager, CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
@@ -71,6 +73,11 @@ namespace App
 
             HandleMainWindowActions(mainForm);
 
+            MessageBus.Register<CollectionEditArgs>(CollectionsManager.EditCollection);
+            MessageBus.RegisterFunc<IsCollectionNameValid, IsCollectionNameValid>(CollectionsManager.IsCollectionNameValid);
+
+            new EndlessPlayManager(OsuFileIo.LoadedMaps);
+            
             mainForm.ShowAndBlock();
             Quit();
         }

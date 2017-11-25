@@ -154,7 +154,7 @@ namespace CollectionManager.Modules.CollectionsManager
             return false;
         }
 
-        public bool IsCollectionNameValid(string name)
+        public virtual bool IsCollectionNameValid(string name)
         {
             return !CollectionNameExists(name);
         }

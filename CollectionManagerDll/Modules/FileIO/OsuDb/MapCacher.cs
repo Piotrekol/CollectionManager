@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
@@ -97,6 +98,15 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             if (LoadedBeatmapsMapIdDict.ContainsKey(mapId))
                 return LoadedBeatmapsMapIdDict[mapId];
             return null;
+        }
+
+        public List<Beatmap> GetByMapString(string artist, string title, string difficulty)
+        {
+            var result = Beatmaps.Where(b => b.Artist == artist)
+                .Where(b => b.Title == title);
+            if (!string.IsNullOrWhiteSpace(difficulty))
+                result = result.Where(b => b.DiffName == difficulty);
+            return result.ToList();
         }
     }
 }
