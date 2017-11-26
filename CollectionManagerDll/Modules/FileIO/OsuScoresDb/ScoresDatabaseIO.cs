@@ -44,15 +44,20 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
             }
             GC.Collect();
         }
-        public void ReadReplay(string filelocation, bool minimalLoad = true)
+        public IReplay ReadReplay(string filelocation, bool minimalLoad = true)
         {
             var fs = new FileStream(filelocation, FileMode.Open, FileAccess.Read);
+            return ReadReplay(fs, minimalLoad);
+
+        }
+        public IReplay ReadReplay(FileStream fs, bool minimalLoad = true)
+        {
+            Score score = null;
             using (var reader = new OsuBinaryReader(fs))
-                try
-                {
-                    _scoreDataStorer.Store((Score)Replay.Read(reader, new Score(), minimalLoad));
-                }
-                catch { FileErrorList.Add(filelocation); }
+                score = (Score)Replay.Read(reader, new Score(), minimalLoad);
+            _scoreDataStorer.Store(score);
+            return score;
+
         }
         public virtual void SaveDb(Dictionary<string, Scores> scores, int version, string saveLocation)
         {
