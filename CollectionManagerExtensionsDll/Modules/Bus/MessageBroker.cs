@@ -28,20 +28,7 @@ namespace CollectionManagerExtensionsDll.Modules
             list.ForEach(action =>
                 synchronizationContext.Post(m => action((T)m), message));
         }
-
-        //public T0 SendWait<T0, T1>(T1 message)
-        //{
-        //    var key = typeof(T1);
-        //    if (!consumers.ContainsKey(key)) return default(T0);
-
-        //    var list = (consumersFunc[key] as List<Func<T1, T0>>).First();
-        //    var result = default(T0);
-        //    synchronizationContext.Send(x =>
-        //    {
-        //        result = list(message);
-        //    }, message);
-        //    return result;
-        //}
+        
         public TResult SendWait<T1, TResult>(T1 arg1)
         {
             var key = typeof(T1);

@@ -16,10 +16,7 @@ namespace CollectionManager.Modules.FileIO
 
         public ScoresDatabaseIo ScoresLoader;
         public IScoreDataStorer ScoresDatabase = new ScoresCacher();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="beatmapBase">Object that</param>
+
         public OsuFileIo(Beatmap beatmapBase)
         {
             OsuDatabase = new OsuDatabase(beatmapBase);
