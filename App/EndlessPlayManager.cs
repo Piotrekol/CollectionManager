@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
+using CollectionManager.Modules.FileIO;
 using CollectionManager.Modules.FileIO.OsuDb;
-using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.DataTypes.MessageBus;
 using CollectionManagerExtensionsDll.Enums;
 using CollectionManagerExtensionsDll.Modules;
@@ -12,24 +12,35 @@ namespace App
     public class EndlessPlayManager
     {
         private readonly MapCacher _mapCacher;
-        private readonly StatusListener _statusListener;
-        string collectionName;
-
-        public EndlessPlayManager(MapCacher beatmapManager)
+        private readonly Dictionary<OsuState, string> _collectionNames = new Dictionary<OsuState, string>
         {
-            _mapCacher = beatmapManager;
-            _statusListener = new StatusListener(beatmapManager);
-            _statusListener.NewOsuResult += NewOsuResult;
-            collectionName = $"Endless {DateTime.Now:g}";
-            CreateCollection(collectionName);
+            {OsuState.Playing,"Played" },
+            {OsuState.Listening,"Listened" },
+            {OsuState.Watching,"Watched" },
+            {OsuState.Passed,"Passed" },
+            {OsuState.Failed,"Failed" }
+        };
+        string collectionPrefix = "Endless ";
+
+        public EndlessPlayManager(MapCacher mapCacher, OsuFileIo osuFileIo)
+        {
+            _mapCacher = mapCacher;
+            var playHistoryManager = new PlayHistoryManager(osuFileIo, new StatusListener(mapCacher));
+            playHistoryManager.NewHistoryEntry += NewHistoryEntry;
+            foreach (var name in _collectionNames)
+            {
+                CreateCollection($"{collectionPrefix}{name.Value}");
+            }
         }
 
-        private void NewOsuResult(object sender, OsuResult osuResult)
+        private void NewHistoryEntry(object sender, PlayHistoryManager.PlayHistoryEntry playHistoryEntry)
         {
-            if (osuResult.Beatmap == null || osuResult.Msn.OsuState != OsuState.Playing)
-                return;
-            MessageBus.Send(CollectionEditArgs.AddBeatmaps(collectionName,
-                new Beatmaps { osuResult.Beatmap }));
+            if (_collectionNames.ContainsKey(playHistoryEntry.State) && playHistoryEntry.Beatmap != null)
+            {
+                var collectionName = $"{collectionPrefix}{_collectionNames[playHistoryEntry.State]}";
+                MessageBus.Send(CollectionEditArgs.AddBeatmaps(collectionName,
+                    new Beatmaps { playHistoryEntry.Beatmap }));
+            }
         }
 
         private void CreateCollection(string name)

@@ -76,8 +76,8 @@ namespace App
             MessageBus.Register<CollectionEditArgs>(CollectionsManager.EditCollection);
             MessageBus.RegisterFunc<IsCollectionNameValid, IsCollectionNameValid>(CollectionsManager.IsCollectionNameValid);
 
-            new EndlessPlayManager(OsuFileIo.LoadedMaps);
-            
+            new EndlessPlayManager(OsuFileIo.LoadedMaps, OsuFileIo);
+
             mainForm.ShowAndBlock();
             Quit();
         }
