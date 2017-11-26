@@ -9,11 +9,14 @@ namespace CollectionManagerExtensionsDll.Modules
     public class StatusListener:IDisposable
     {
         private readonly IMapDataManager _beatmapManager;
-        private readonly MsnManager _msnManager = new MsnManager();
+        private readonly MsnManager _msnManager;
         public EventHandler<OsuResult> NewOsuResult;
 
-        public StatusListener(IMapDataManager beatmapManager)
+        public StatusListener(IMapDataManager beatmapManager, MsnManager msnManager=null)
         {
+            if(msnManager==null)
+                msnManager = new MsnManager();
+            _msnManager = msnManager;
             _beatmapManager = beatmapManager;
             _msnManager.NewMsnMessage+=NewMsnMessage;
         }
