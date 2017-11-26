@@ -20,9 +20,9 @@ namespace CollectionManagerExtensionsDll.Modules.Msn
         {
             lock (_lockingObject)
             {
-                var duplicated = IsFalsePlay(result.Raw, result.OsuState, _lastMsnString);
+                var duplicated = IsFalsePlay(result.Raw(), result.OsuState, _lastMsnString);
                 result.OsuState = duplicated ? OsuState.FalsePlaying : result.OsuState;
-                _lastMsnString = result.Raw;
+                _lastMsnString = result.Raw();
 
                 NewMsnMessage?.Invoke(this,result);
             }

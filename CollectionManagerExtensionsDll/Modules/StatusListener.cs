@@ -20,7 +20,7 @@ namespace CollectionManagerExtensionsDll.Modules
 
         private void NewMsnMessage(object sender, MsnResult msnResult)
         {
-            Console.WriteLine("{0}: {1}",msnResult.OsuState.ToString(),msnResult.Raw);
+            Console.WriteLine("{0}: {1}",msnResult.OsuState.ToString(),msnResult.Raw());
             var maps = _beatmapManager.GetByMapString(msnResult.Artist, msnResult.Title, msnResult.Diff);
             Console.WriteLine("Found {0} maps",maps.Count);
 
