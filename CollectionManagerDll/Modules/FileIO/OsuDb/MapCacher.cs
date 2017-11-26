@@ -102,8 +102,8 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
         public List<Beatmap> GetByMapString(string artist, string title, string difficulty)
         {
-            var result = Beatmaps.Where(b => b.Artist == artist)
-                .Where(b => b.Title == title);
+            var result = Beatmaps.Where(b => b.ArtistRoman == artist)
+                .Where(b => b.TitleRoman == title);
             if (!string.IsNullOrWhiteSpace(difficulty))
                 result = result.Where(b => b.DiffName == difficulty);
             return result.ToList();
