@@ -10,6 +10,7 @@ namespace CollectionManager.Modules.FileIO
     {
         public static OsuPathResolver Instance = new OsuPathResolver();
         private Process[] _processes;
+        public string ResolvedDirectory { get; set; }
 
         public bool OsuIsRunning
         {
@@ -35,12 +36,12 @@ namespace CollectionManager.Modules.FileIO
 
         public string GetOsuDir(Func<string, bool> thisPathIsCorrect, Func<string, string> selectDirectoryDialog)
         {
-            var dir = _getRunningOsuDir();
-            if (dir != string.Empty)
+            ResolvedDirectory = _getRunningOsuDir();
+            if (ResolvedDirectory != string.Empty)
             {
-                var result = thisPathIsCorrect(dir);
+                var result = thisPathIsCorrect(ResolvedDirectory);
                 if (result)
-                    return dir;
+                    return ResolvedDirectory;
                 else
                     return GetManualOsuDir(selectDirectoryDialog);
             }
@@ -86,11 +87,11 @@ namespace CollectionManager.Modules.FileIO
         }
         public string GetManualOsuDir(Func<string, string> selectDirectoryDialog)
         {
-            var directory = selectDirectoryDialog("Where is your osu! folder located at?");
-            if (!File.Exists(directory + @"\osu!.db"))
-                directory = string.Empty;
+            ResolvedDirectory = selectDirectoryDialog("Where is your osu! folder located at?");
+            if (!File.Exists(ResolvedDirectory + @"\osu!.db"))
+                ResolvedDirectory = string.Empty;
 
-            return directory;
+            return ResolvedDirectory;
         }
 
         public string SelectDirectory(string text, bool showNewFolder = false)
