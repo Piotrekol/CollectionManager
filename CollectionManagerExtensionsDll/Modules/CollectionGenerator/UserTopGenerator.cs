@@ -28,6 +28,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
         private readonly CollectionsManager _collectionManager;
         private LogCollectionGeneration _logger;
         readonly Dictionary<string, IList<ApiScore>> _scoreCache = new Dictionary<string, IList<ApiScore>>();
+        readonly Dictionary<int, Beatmap> _beatmapCache = new Dictionary<int, Beatmap>();
         
         public UserTopGenerator(string osuApiKey, MapCacher mapCacher)
         {
@@ -121,6 +122,8 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
                 if (loadedBeatmap.MapId == beatmapId)
                     return loadedBeatmap;
             }
+            if (_beatmapCache.ContainsKey(beatmapId))
+                return _beatmapCache[beatmapId];
             Beatmap result;
             _currentUserMissingMapCount++;
             do
@@ -138,6 +141,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
                     Thread.Sleep(Cooldown * 1000);
                 }
             } while (result == null);
+            _beatmapCache.Add(beatmapId,result);
             return result;
         }
         private IList<ApiScore> GetPlayerScores(string username, ScoreSaveConditions configuration)
