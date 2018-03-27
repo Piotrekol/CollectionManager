@@ -13,7 +13,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         private static readonly string parsingPage = "Getting page {0} of {1}";
         private static readonly string parsingComplete = "Finished Processing of {0} pages";
 
-        private static readonly string _baseUrl = "https://osu.ppy.sh/p";
+        private static readonly string _baseUrl = "https://old.ppy.sh/p";
         private static readonly string UserPpRankingUrl = _baseUrl + "/pp/?m=0&s=3&o=1&f=0&page={0}";
         private static readonly int UsersPerPage = 50;
         public delegate void LogUsernameGeneration(string logMessage, int completionPrecentage);
