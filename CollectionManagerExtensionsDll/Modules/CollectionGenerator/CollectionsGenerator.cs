@@ -69,7 +69,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
 
         public void Abort()
         {
-            if (_processingThread.IsAlive)
+            if (_processingThread?.IsAlive ?? false)
             {
                 _processingThread.Abort();
                 try
