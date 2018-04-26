@@ -29,12 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox_configuration = new System.Windows.Forms.GroupBox();
-            this.label_processingStatus = new System.Windows.Forms.Label();
             this.button_GenerateUsernames = new System.Windows.Forms.Button();
-            this.progressBar_usernames = new System.Windows.Forms.ProgressBar();
             this.label6 = new System.Windows.Forms.Label();
-            this.button_Abort = new System.Windows.Forms.Button();
-            this.button_Start = new System.Windows.Forms.Button();
             this.textBox_apiKey = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -58,8 +54,14 @@
             this.textBox_collectionNameFormat = new System.Windows.Forms.TextBox();
             this.textBox_usernames = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label_processingStatus = new System.Windows.Forms.Label();
+            this.progressBar_usernames = new System.Windows.Forms.ProgressBar();
+            this.button_Abort = new System.Windows.Forms.Button();
+            this.button_Start = new System.Windows.Forms.Button();
             this.collectionListingView1 = new GuiComponents.Controls.CollectionListingView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.comboBox_gamemode = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox_configuration.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maximumPP)).BeginInit();
@@ -73,6 +75,8 @@
             // 
             this.groupBox_configuration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_configuration.Controls.Add(this.label11);
+            this.groupBox_configuration.Controls.Add(this.comboBox_gamemode);
             this.groupBox_configuration.Controls.Add(this.button_GenerateUsernames);
             this.groupBox_configuration.Controls.Add(this.label6);
             this.groupBox_configuration.Controls.Add(this.textBox_apiKey);
@@ -90,15 +94,6 @@
             this.groupBox_configuration.TabStop = false;
             this.groupBox_configuration.Text = "Configuration";
             // 
-            // label_processingStatus
-            // 
-            this.label_processingStatus.AutoSize = true;
-            this.label_processingStatus.Location = new System.Drawing.Point(19, 58);
-            this.label_processingStatus.Name = "label_processingStatus";
-            this.label_processingStatus.Size = new System.Drawing.Size(52, 13);
-            this.label_processingStatus.TabIndex = 29;
-            this.label_processingStatus.Text = "Waiting...";
-            // 
             // button_GenerateUsernames
             // 
             this.button_GenerateUsernames.Location = new System.Drawing.Point(395, 95);
@@ -109,13 +104,6 @@
             this.button_GenerateUsernames.UseVisualStyleBackColor = true;
             this.button_GenerateUsernames.Click += new System.EventHandler(this.button_GenerateUsernames_Click);
             // 
-            // progressBar_usernames
-            // 
-            this.progressBar_usernames.Location = new System.Drawing.Point(22, 32);
-            this.progressBar_usernames.Name = "progressBar_usernames";
-            this.progressBar_usernames.Size = new System.Drawing.Size(496, 23);
-            this.progressBar_usernames.TabIndex = 26;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -124,27 +112,6 @@
             this.label6.Size = new System.Drawing.Size(89, 13);
             this.label6.TabIndex = 25;
             this.label6.Text = "Your osu!api key:";
-            // 
-            // button_Abort
-            // 
-            this.button_Abort.Enabled = false;
-            this.button_Abort.Location = new System.Drawing.Point(278, 3);
-            this.button_Abort.Name = "button_Abort";
-            this.button_Abort.Size = new System.Drawing.Size(240, 23);
-            this.button_Abort.TabIndex = 24;
-            this.button_Abort.Text = "Abort";
-            this.button_Abort.UseVisualStyleBackColor = true;
-            this.button_Abort.Click += new System.EventHandler(this.button_Abort_Click);
-            // 
-            // button_Start
-            // 
-            this.button_Start.Location = new System.Drawing.Point(22, 3);
-            this.button_Start.Name = "button_Start";
-            this.button_Start.Size = new System.Drawing.Size(240, 23);
-            this.button_Start.TabIndex = 23;
-            this.button_Start.Text = "Start";
-            this.button_Start.UseVisualStyleBackColor = true;
-            this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
             // 
             // textBox_apiKey
             // 
@@ -415,6 +382,43 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Enter comma separated list of usernames to get data from";
             // 
+            // label_processingStatus
+            // 
+            this.label_processingStatus.AutoSize = true;
+            this.label_processingStatus.Location = new System.Drawing.Point(19, 58);
+            this.label_processingStatus.Name = "label_processingStatus";
+            this.label_processingStatus.Size = new System.Drawing.Size(52, 13);
+            this.label_processingStatus.TabIndex = 29;
+            this.label_processingStatus.Text = "Waiting...";
+            // 
+            // progressBar_usernames
+            // 
+            this.progressBar_usernames.Location = new System.Drawing.Point(22, 32);
+            this.progressBar_usernames.Name = "progressBar_usernames";
+            this.progressBar_usernames.Size = new System.Drawing.Size(496, 23);
+            this.progressBar_usernames.TabIndex = 26;
+            // 
+            // button_Abort
+            // 
+            this.button_Abort.Enabled = false;
+            this.button_Abort.Location = new System.Drawing.Point(278, 3);
+            this.button_Abort.Name = "button_Abort";
+            this.button_Abort.Size = new System.Drawing.Size(240, 23);
+            this.button_Abort.TabIndex = 24;
+            this.button_Abort.Text = "Abort";
+            this.button_Abort.UseVisualStyleBackColor = true;
+            this.button_Abort.Click += new System.EventHandler(this.button_Abort_Click);
+            // 
+            // button_Start
+            // 
+            this.button_Start.Location = new System.Drawing.Point(22, 3);
+            this.button_Start.Name = "button_Start";
+            this.button_Start.Size = new System.Drawing.Size(240, 23);
+            this.button_Start.TabIndex = 23;
+            this.button_Start.Text = "Start";
+            this.button_Start.UseVisualStyleBackColor = true;
+            this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
+            // 
             // collectionListingView1
             // 
             this.collectionListingView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -436,6 +440,29 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(538, 88);
             this.panel1.TabIndex = 2;
+            // 
+            // comboBox_gamemode
+            // 
+            this.comboBox_gamemode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_gamemode.FormattingEnabled = true;
+            this.comboBox_gamemode.Items.AddRange(new object[] {
+            "osu",
+            "taiko",
+            "ctb",
+            "mania"});
+            this.comboBox_gamemode.Location = new System.Drawing.Point(302, 279);
+            this.comboBox_gamemode.Name = "comboBox_gamemode";
+            this.comboBox_gamemode.Size = new System.Drawing.Size(121, 21);
+            this.comboBox_gamemode.TabIndex = 29;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(299, 262);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(64, 13);
+            this.label11.TabIndex = 30;
+            this.label11.Text = "Gamemode:";
             // 
             // UserTopGeneratorView
             // 
@@ -494,5 +521,7 @@
         public System.Windows.Forms.Button button_GenerateUsernames;
         private System.Windows.Forms.Label label_processingStatus;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox comboBox_gamemode;
     }
 }

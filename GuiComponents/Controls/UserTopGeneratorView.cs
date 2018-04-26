@@ -39,6 +39,7 @@ namespace GuiComponents.Controls
         public double AccMax => Convert.ToDouble(numericUpDown_accMax.Value);
         public bool GroupByMods => checkBox_GroupByMods.Checked;
         public bool MergeCollectionsWithSameName => checkBox_mergeCollections.Checked;
+        public int Gamemode => comboBox_gamemode.SelectedIndex;
         public ICollectionListingView CollectionListing => collectionListingView1;
 
         public string ProcessingStatus
@@ -61,7 +62,7 @@ namespace GuiComponents.Controls
         public UserTopGeneratorView()
         {
             InitializeComponent();
-
+            comboBox_gamemode.SelectedIndex = 0;
         }
 
         private void RadioButton_AllowScores_CheckedChanged(object sender, EventArgs e)

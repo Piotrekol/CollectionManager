@@ -21,6 +21,7 @@ namespace GuiComponents.Interfaces
         double AccMax { get; }
         bool GroupByMods { get; }
         bool MergeCollectionsWithSameName { get; }
+        int Gamemode { get; }
 
         ICollectionListingView CollectionListing { get; }
 

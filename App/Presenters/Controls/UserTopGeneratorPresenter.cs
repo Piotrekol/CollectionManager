@@ -47,6 +47,7 @@ namespace App.Presenters.Controls
                 CollectionNameSavePattern = _view.CollectionNamingFormat,
                 Usernames = _view.Usernames.Split(',').ToList(),
                 ApiKey = _view.ApiKey,
+                Gamemode = _view.Gamemode,
                 ScoreSaveConditions = new ScoreSaveConditions()
                 {
                     MinimumPp = _view.PpMin,

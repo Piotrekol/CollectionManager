@@ -20,6 +20,11 @@ namespace CollectionManagerExtensionsDll.DataTypes
         /// api key that should be used to get data
         /// </summary>
         public string ApiKey { get; set; } = "";
+        
+        /// <summary>
+        /// Gamemode to get top scores from
+        /// </summary>
+        public int Gamemode { get; set; }
 
         public ScoreSaveConditions ScoreSaveConditions;
 

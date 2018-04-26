@@ -121,13 +121,23 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 _downloadedBeatmaps.Add(beatmapId, map);
             return map;
         }
+
+        public Beatmap GetBeatmap(int beatmapId, PlayMode gamemode)
+        {
+            if (_downloadedBeatmaps.ContainsKey(beatmapId))
+                return _downloadedBeatmaps[beatmapId];
+            var map = GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId + "&m=" + (int)gamemode);
+            if (map != null)
+                _downloadedBeatmaps.Add(beatmapId, map);
+            return map;
+        }
         public Beatmap GetBeatmap(string hash)
         {
             return GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&h=" + hash);
         }
         public IList<ApiScore> GetUserBest(string username, PlayMode mode, int limit = 100)
         {
-            return GetUserScoresResult(GetUserBestURL + "?k=" + ApiKey + "&u=" + username + "&m=" + mode + "&type=string" + "&limit=" + limit);
+            return GetUserScoresResult(GetUserBestURL + "?k=" + ApiKey + "&u=" + username + "&m=" + (int)mode + "&type=string" + "&limit=" + limit);
         }
         private IList<ApiScore> GetUserScoresResult(string url)
         {
