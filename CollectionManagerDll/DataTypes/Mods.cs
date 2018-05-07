@@ -29,7 +29,7 @@ namespace CollectionManager.DataTypes
         Fi = 1 << 20,
         Rn = 1 << 21,
         Lm = 1 << 22,
-        //= 1 << 23,
+        Tp = 1 << 23,
         K9 = 1 << 24,
         Coop = 1 << 25,
         K1 = 1 << 26,
