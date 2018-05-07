@@ -62,7 +62,7 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Fi, "FI", "Fade In"),
             new OsuMod(Mods.Rn, "RD", "Random"),
             new OsuMod(Mods.Lm, "CN", "Cinema"),
-            new OsuMod(Mods.Tp, "TO", "Target Practice"),
+            new OsuMod(Mods.Tp, "TP", "Target Practice"),
             new OsuMod(Mods.K9, "9K", "9 Keys"),
             new OsuMod(Mods.Coop, "CO", "Co-Op"),
             new OsuMod(Mods.K1, "1K", "1 Key"),
