@@ -39,35 +39,35 @@ namespace CollectionManager.Modules.ModParser
         private readonly List<OsuMod> _mods = new List<OsuMod>()
         {
             new OsuMod(Mods.Omod, "None", "None"),
-            new OsuMod(Mods.Nf, "NF", "NoFail"),
+            new OsuMod(Mods.Nf, "NF", "No Fail"),
             new OsuMod(Mods.Ez, "EZ", "Easy"),
-            new OsuMod(Mods.Nv,"NV","NoVideo"),
+            new OsuMod(Mods.Nv,"NV","NoVideo"), //What's the purpose of this line?; the mod is now used as "Touch Device"
             new OsuMod(Mods.Hd, "HD", "Hidden"),
-            new OsuMod(Mods.Hr, "HR", "HardRock"),
-            new OsuMod(Mods.Sd, "SD", "SuddenDeath"),
-            new OsuMod(Mods.Dt, "DT", "DoubleTime"),
-            new OsuMod(Mods.RX, "RX", "Relax"),
-            new OsuMod(Mods.Ht, "HT", "HalfTime"),
+            new OsuMod(Mods.Hr, "HR", "Hard Rock"),
+            new OsuMod(Mods.Sd, "SD", "Sudden Death"),
+            new OsuMod(Mods.Dt, "DT", "Double Time"),
+            new OsuMod(Mods.RX, "RL", "Relax"),
+            new OsuMod(Mods.Ht, "HT", "Half Time"),
             new OsuMod(Mods.Nc, "NC", "Nightcore"),
             new OsuMod(Mods.Fl, "FL", "Flashlight"),
-            new OsuMod(Mods.Ap, "AP", "Autoplay"),
-            new OsuMod(Mods.So, "SO", "SpunOut"),
-            new OsuMod(Mods.Rx2, "RX2", "Relax2"),
+            new OsuMod(Mods.Ap, "AU", "Auto"),
+            new OsuMod(Mods.So, "SO", "Spun Out"),
+            new OsuMod(Mods.Rx2, "AP", "Autopilot"),
             new OsuMod(Mods.Pf, "PF", "Perfect"),
-            new OsuMod(Mods.K4, "K4", "Key4"),
-            new OsuMod(Mods.K5, "K5", "Key5"),
-            new OsuMod(Mods.K6, "K6", "Key6"),
-            new OsuMod(Mods.K7, "K7", "Key7"),
-            new OsuMod(Mods.K8, "K8", "Key8"),
-            new OsuMod(Mods.Fi, "FI", "FadeIn"),
-            new OsuMod(Mods.Rn, "RN", "Random"),
-            new OsuMod(Mods.Lm, "LM", "LastMod"),
+            new OsuMod(Mods.K4, "4K", "4 Keys"),
+            new OsuMod(Mods.K5, "5K", "5 Keys"),
+            new OsuMod(Mods.K6, "6K", "6 Keys"),
+            new OsuMod(Mods.K7, "7K", "7 Keys"),
+            new OsuMod(Mods.K8, "8K", "8 Keys"),
+            new OsuMod(Mods.Fi, "FI", "Fade In"),
+            new OsuMod(Mods.Rn, "RD", "Random"),
+            new OsuMod(Mods.Lm, "CN", "Cinema"),
             //new OsuMod(Mods.=, "--", "--"),
-            new OsuMod(Mods.K9, "K9", "Key9"),
-            new OsuMod(Mods.Coop, "Coop", "Coop"),
-            new OsuMod(Mods.K1, "K1", "Key1"),
-            new OsuMod(Mods.K3, "K3", "Key3"),
-            new OsuMod(Mods.K2, "K2", "Key2")
+            new OsuMod(Mods.K9, "9K", "9 Keys"),
+            new OsuMod(Mods.Coop, "CO", "Co-Op"),
+            new OsuMod(Mods.K1, "1K", "1 Key"),
+            new OsuMod(Mods.K3, "3K", "3 Keys"),
+            new OsuMod(Mods.K2, "2K", "2 Keys")
         };
 
         public bool IsModHidden(OsuMod mod) => HiddenMods.Exists(m => m.Value == mod.Value);
@@ -102,13 +102,21 @@ namespace CollectionManager.Modules.ModParser
             string retVal;
             if (modStr.Length > 1)
             {
-                modStr.Remove(modStr.Length - 1, 1);
-                retVal = modStr.ToString();
-
                 if (retVal.Contains("NC"))
                 {
                     retVal = retVal.Replace("DT,", "");
                 }
+                if (retVal.Contains("PF"))
+                {
+                    retVal = retVal.Replace("SD,", "");
+                }
+                if (retVal.Contains("CN"))
+                {
+                    retVal = retVal.Replace("AU,", "");
+                }
+                
+                modStr.Remove(modStr.Length - 1, 1);
+                retVal = modStr.ToString();
             }
             else
                 retVal = modStr.Append(shortMod ? _mods[0].ShortMod : _mods[0].LongMod).ToString();
