@@ -41,7 +41,7 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Omod, "None", "None"),
             new OsuMod(Mods.Nf, "NF", "No Fail"),
             new OsuMod(Mods.Ez, "EZ", "Easy"),
-            new OsuMod(Mods.Nv,"NV","NoVideo"), //What's the purpose of this line?; the mod is now used as "Touch Device"
+            new OsuMod(Mods.Nv,"NV","NoVideo"), //What's the purpose of this line?; the mod is now used as "Touch Device" (as seen on the api wiki, NoVideo        = 4, // Not used anymore, but can be found on old plays like Mesita on b/78239)
             new OsuMod(Mods.Hd, "HD", "Hidden"),
             new OsuMod(Mods.Hr, "HR", "Hard Rock"),
             new OsuMod(Mods.Sd, "SD", "Sudden Death"),
@@ -62,7 +62,7 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Fi, "FI", "Fade In"),
             new OsuMod(Mods.Rn, "RD", "Random"),
             new OsuMod(Mods.Lm, "CN", "Cinema"),
-            //new OsuMod(Mods.=, "--", "--"),
+            new OsuMod(Mods.Tp, "TO", "Target Practice"),
             new OsuMod(Mods.K9, "9K", "9 Keys"),
             new OsuMod(Mods.Coop, "CO", "Co-Op"),
             new OsuMod(Mods.K1, "1K", "1 Key"),
