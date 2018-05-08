@@ -17,7 +17,7 @@ namespace CollectionManager.DataTypes
         Ht = 1 << 8,
         Nc = 1 << 9,
         Fl = 1 << 10,
-        Ap = 1 << 11,//autoplay
+        Au = 1 << 11,
         So = 1 << 12,
         Rx2 = 1 << 13,
         Pf = 1 << 14,
@@ -28,7 +28,7 @@ namespace CollectionManager.DataTypes
         K8 = 1 << 19,
         Fi = 1 << 20,
         Rn = 1 << 21,
-        Lm = 1 << 22,
+        Cm = 1 << 22,
         Tp = 1 << 23,
         K9 = 1 << 24,
         Coop = 1 << 25,
