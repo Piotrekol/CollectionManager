@@ -99,7 +99,7 @@ namespace CollectionManager.Modules.ModParser
                 }
             }
 
-            string retVal;
+            string retVal = modStr.ToString();
             if (modStr.Length > 1)
             {
                 if (retVal.Contains("NC"))
