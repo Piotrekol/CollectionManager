@@ -99,9 +99,12 @@ namespace CollectionManager.Modules.ModParser
                 }
             }
 
-            string retVal = modStr.ToString();
+            string retVal;
             if (modStr.Length > 1)
             {
+                modStr.Remove(modStr.Length - 1, 1);
+                retVal = modStr.ToString();
+
                 if (retVal.Contains("NC"))
                 {
                     retVal = retVal.Replace("DT,", "");
@@ -114,9 +117,6 @@ namespace CollectionManager.Modules.ModParser
                 {
                     retVal = retVal.Replace("AU,", "");
                 }
-                
-                modStr.Remove(modStr.Length - 1, 1);
-                retVal = modStr.ToString();
             }
             else
                 retVal = modStr.Append(shortMod ? _mods[0].ShortMod : _mods[0].LongMod).ToString();
