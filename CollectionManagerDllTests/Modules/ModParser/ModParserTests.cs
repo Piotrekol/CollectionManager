@@ -81,6 +81,34 @@ namespace CollectionManager.Modules.ModParser.Tests
             Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Hd).ShortMod));
         }
         [TestMethod()]
+        public void ModsHiding1()
+        {
+            _modParser = new ModParser();
+            var mods = Mods.Dt | Mods.Nc | Mods.Hd | Mods.Hr | Mods.Pf | Mods.Sd | Mods.Cm | Mods.Au;
+
+            var result = _modParser.GetModsFromEnum((int)mods, true);
+
+            Assert.IsTrue(result.Count(s => s == ',') == 4);
+            Assert.IsFalse(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Dt).ShortMod));
+            Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Nc).ShortMod));
+
+            Assert.IsFalse(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Sd).ShortMod));
+            Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Pf).ShortMod));
+
+            Assert.IsFalse(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Au).ShortMod));
+            Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Cm).ShortMod));
+
+
+            Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Hd).ShortMod));
+            Assert.IsTrue(result.Contains(_modParser.AllMods.First(t => t.Value == Mods.Hr).ShortMod));
+
+
+
+
+            Assert.IsTrue(result.Substring(result.Length - 1) != ",");
+            Assert.IsTrue(result.Substring(result.Length - 1) != " ");
+        }
+        [TestMethod()]
         public void NoModText1()
         {
             _modParser = new ModParser();
@@ -95,7 +123,7 @@ namespace CollectionManager.Modules.ModParser.Tests
         {
             _modParser = new ModParser();
             var mods = Mods.Omod;
-            var result = _modParser.GetModsFromEnum((int)mods,true);
+            var result = _modParser.GetModsFromEnum((int)mods, true);
 
             Assert.IsTrue(result.Count(s => s == ',') == 0);
             Assert.IsTrue(result == _modParser.ShortNoModText);
@@ -125,7 +153,7 @@ namespace CollectionManager.Modules.ModParser.Tests
             _modParser.ShortNoModText = "N/A";
             Assert.IsTrue(_modParser.ShortNoModText == "N/A");
 
-            var result = _modParser.GetModsFromEnum((int)mods,true);
+            var result = _modParser.GetModsFromEnum((int)mods, true);
 
             Assert.IsTrue(result.Count(s => s == ',') == 0);
             Assert.IsTrue(result == _modParser.ShortNoModText);
