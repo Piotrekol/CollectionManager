@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using App.Interfaces;
 using App.Misc;
@@ -8,9 +10,11 @@ using App.Models;
 using App.Presenters.Controls;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.DataTypes;
+using CollectionManagerExtensionsDll.Modules.API;
 using CollectionManagerExtensionsDll.Modules.API.osu;
 using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
 using GuiComponents.Interfaces;
@@ -34,6 +38,7 @@ namespace App
         private readonly ILoginFormView _loginForm;
         private CollectionsApiGenerator _collectionGenerator;
         private OsuSite _osuSite = new OsuSite();
+        private BeatmapData BeatmapData = null;
         public SidePanelActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainForm, IBeatmapListingBindingProvider beatmapListingBindingProvider, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
             _osuFileIo = osuFileIo;
@@ -60,18 +65,50 @@ namespace App
             _mainForm.SidePanelView.ShowDownloadManager += (s, a) => ShowDownloadManager();
             _mainForm.SidePanelView.DownloadAllMissing += (s, a) => DownloadAllMissing();
             _mainForm.SidePanelView.GenerateCollections += (s, a) => GenerateCollections();
+            _mainForm.SidePanelView.GetMissingMapData += (s, a) => GetMissingMapData();
 
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
         }
 
+        private void GetMissingMapData()
+        {
+            if (BeatmapData == null)
+                BeatmapData = new BeatmapData("abcd", Initalizer.OsuFileIo.LoadedMaps);
+            var mapsWithMissingData = new Beatmaps();
+
+            foreach (var collection in Initalizer.LoadedCollections)
+            {
+                foreach (var beatmap in collection.UnknownBeatmaps)
+                {
+                    mapsWithMissingData.Add(beatmap);
+                }
+            }
+            var mapHashes = mapsWithMissingData.Where(m => !string.IsNullOrWhiteSpace(m.Md5)).Select(m => m.Md5).Distinct();
+            List<Beatmap> fetchedBeatmaps = new List<Beatmap>();
+            foreach (var mapHash in mapHashes)
+            {
+                var map = BeatmapData.GetBeatmapFromHash(mapHash, PlayMode.Osu);
+                if (map != null)
+                {
+                    fetchedBeatmaps.Add(map);
+                }
+            }
+            foreach (var collection in Initalizer.LoadedCollections)
+            {
+                foreach (var fetchedBeatmap in fetchedBeatmaps)
+                {
+                    collection.ReplaceBeatmap(fetchedBeatmap.Md5, fetchedBeatmap);//TODO: this is really inefficient
+                }
+            }
+        }
         private void GenerateCollections()
         {
             if (_userTopGeneratorForm == null || _userTopGeneratorForm.IsDisposed)
             {
                 _userTopGeneratorForm = GuiComponentsProvider.Instance.GetClassImplementing<IUserTopGeneratorForm>();
-                var model = new UserTopGeneratorModel((a) => 
-                    _collectionGenerator.CreateCollectionName(new ApiScore() {EnabledMods = (int) (Mods.Hr | Mods.Hd)},
+                var model = new UserTopGeneratorModel((a) =>
+                    _collectionGenerator.CreateCollectionName(new ApiScore() { EnabledMods = (int)(Mods.Hr | Mods.Hd) },
                     "Piotrekol", a));
                 model.GenerateUsernames += GenerateUsernames;
                 new UserTopGeneratorFormPresenter(model, _userTopGeneratorForm);

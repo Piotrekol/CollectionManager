@@ -41,7 +41,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionApiGenerator
             public string Username { get; }
             public PlayMode PlayMode { get; }
         }
-        private class BeatmapModePair
+        public class BeatmapModePair
         {
             public BeatmapModePair(int beatmapId, PlayMode playMode)
             {

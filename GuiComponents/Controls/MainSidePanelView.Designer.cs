@@ -45,6 +45,7 @@
             this.button_loadDefaultCollection = new System.Windows.Forms.Button();
             this.button_loadCollection = new System.Windows.Forms.Button();
             this.button_refreshBeatmapList = new System.Windows.Forms.Button();
+            this.button_GetMissingMapData = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox_onlineServices.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -91,11 +92,12 @@
             // 
             this.groupBox_onlineServices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_onlineServices.Controls.Add(this.button_GetMissingMapData);
             this.groupBox_onlineServices.Controls.Add(this.button_downloadAllMissing);
             this.groupBox_onlineServices.Controls.Add(this.button_GenerateCollections);
             this.groupBox_onlineServices.Location = new System.Drawing.Point(3, 340);
             this.groupBox_onlineServices.Name = "groupBox_onlineServices";
-            this.groupBox_onlineServices.Size = new System.Drawing.Size(174, 76);
+            this.groupBox_onlineServices.Size = new System.Drawing.Size(174, 103);
             this.groupBox_onlineServices.TabIndex = 12;
             this.groupBox_onlineServices.TabStop = false;
             this.groupBox_onlineServices.Text = "Online services";
@@ -257,6 +259,18 @@
             this.button_refreshBeatmapList.UseVisualStyleBackColor = true;
             this.button_refreshBeatmapList.Visible = false;
             // 
+            // button_GetMissingMapData
+            // 
+            this.button_GetMissingMapData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_GetMissingMapData.Location = new System.Drawing.Point(4, 74);
+            this.button_GetMissingMapData.Name = "button_GetMissingMapData";
+            this.button_GetMissingMapData.Size = new System.Drawing.Size(170, 23);
+            this.button_GetMissingMapData.TabIndex = 15;
+            this.button_GetMissingMapData.Text = "Get missing map data";
+            this.button_GetMissingMapData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_GetMissingMapData.UseVisualStyleBackColor = true;
+            // 
             // MainSidePanelView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -292,5 +306,6 @@
         public System.Windows.Forms.Button button_unloadCollections;
         public System.Windows.Forms.Button button_refreshBeatmapList;
         public System.Windows.Forms.Button button_downloadAllMissing;
+        public System.Windows.Forms.Button button_GetMissingMapData;
     }
 }

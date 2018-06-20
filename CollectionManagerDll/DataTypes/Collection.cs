@@ -177,7 +177,12 @@ namespace CollectionManager.DataTypes
             }
         }
 
-        public void RemoveBeatmap(string hash)
+        public void ReplaceBeatmap(string hash, Beatmap newBeatmap)
+        {
+            if (RemoveBeatmap(hash))
+                AddBeatmap(newBeatmap);
+        }
+        public bool RemoveBeatmap(string hash)
         {
             if (_beatmapHashes.Contains(hash))
             {
@@ -189,13 +194,11 @@ namespace CollectionManager.DataTypes
                         KnownBeatmaps.Remove(map);
                         DownloadableBeatmaps.Remove(map);
                         _beatmapHashes.Remove(hash);
-                        break;
+                        return true;
                     }
                 }
-
             }
-
-
+            return false;
         }
         public IEnumerator GetEnumerator()
         {

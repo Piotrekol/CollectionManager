@@ -32,7 +32,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         {
             ApiKey = apiKey;
         }
-        
+
         public Beatmaps GetBeatmaps(DateTime fromDate, DateTime toDate)
         {
             var resultBeatmaps = new Beatmaps();
@@ -42,7 +42,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             while (currentDate < toDate)
             {
                 bool exception;
-                RangeObservableCollection<BeatmapExtensionEx> newBeatmaps=null;
+                RangeObservableCollection<BeatmapExtensionEx> newBeatmaps = null;
                 do
                 {
                     exception = false;
@@ -79,7 +79,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         {
             var beatmaps = new RangeObservableCollection<BeatmapExtensionEx>();
 
-             var jsonResponse = _client.DownloadString(url);
+            var jsonResponse = _client.DownloadString(url);
             if (jsonResponse == "Please provide a valid API key.")
                 throw new Exception("Invalid osu!Api key");
             //jsonResponse = jsonResponse.Trim(']', '[');
@@ -131,9 +131,13 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 _downloadedBeatmaps.Add(beatmapId, map);
             return map;
         }
-        public Beatmap GetBeatmap(string hash)
+        public Beatmap GetBeatmap(string hash, PlayMode? gamemode = null)
         {
-            return GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&h=" + hash);
+            var link = GetBeatmapsURL + "?k=" + ApiKey + "&h=" + hash;
+            if (gamemode.HasValue)
+                link += "&m=" + (int) gamemode;
+
+            return GetBeatmapResult(link);
         }
         public IList<ApiScore> GetUserBest(string username, PlayMode mode, int limit = 100)
         {

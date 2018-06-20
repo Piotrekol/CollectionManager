@@ -15,6 +15,7 @@ namespace GuiComponents.Interfaces
         event EventHandler ShowDownloadManager;
         event EventHandler DownloadAllMissing;
         event EventHandler GenerateCollections;
+        event EventHandler GetMissingMapData;
 
     }
 }
