@@ -57,6 +57,7 @@
     <Compile Include="DataTypes\CollectionGeneratorConfiguration.cs" />
     <Compile Include="DataTypes\ScoreSaveConditions.cs" />
     <Compile Include="Enums\CollectionListSaveType.cs" />
+    <Compile Include="Modules\API\BeatmapData.cs" />
     <Compile Include="Modules\API\BeatmapExtensionEx.cs" />
     <Compile Include="Modules\API\osu\OsuApi.cs" />
     <Compile Include="Modules\API\osu\OsuSite.cs" />

@@ -52,7 +52,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Modules\API\osu\OsuSiteTests.cs" />
-    <Compile Include="Modules\TextProcessor\TextProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
