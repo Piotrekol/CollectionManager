@@ -8,8 +8,8 @@ namespace CollectionManagerExtensionsDll.Modules.TextProcessor
 {
     public class TextProcessor
     {
-        private static Regex beatmapSetRegex = new Regex(@"(?:http:\/\/osu.ppy.sh\/s\/)([\d]{0,10})", RegexOptions.Compiled);
-        private static Regex beatmapIdRegex = new Regex(@"(?:http:\/\/osu.ppy.sh\/b\/)([\d]{0,10})", RegexOptions.Compiled);
+        private static Regex beatmapSetRegex = new Regex(@"(?:https:\/\/osu.ppy.sh\/s\/)([\d]{0,10})", RegexOptions.Compiled);
+        private static Regex beatmapIdRegex = new Regex(@"(?:https:\/\/osu.ppy.sh\/b\/)([\d]{0,10})", RegexOptions.Compiled);
 
         private bool LineIsCollectionName(string line) =>
             line.Count(l => l == ' ' || l == '\t') < 3; //arbitary number that works 100% out of 50% times!
@@ -31,7 +31,7 @@ namespace CollectionManagerExtensionsDll.Modules.TextProcessor
                 if (LineIsCollectionName(line.Trim()))
                 {
                     currentCollectionName = line.Trim();
-                    if (ret[currentCollectionName] == null)//In case collection names are repeated in list.
+                    if (!ret.ContainsKey(currentCollectionName))//In case collection names are repeated in list.
                         ret[currentCollectionName] = new List<TextProcessorLinkResult>();
                 }
                 else
