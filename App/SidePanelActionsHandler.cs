@@ -12,7 +12,7 @@ using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Modules.API.osu;
-using CollectionManagerExtensionsDll.Modules.CollectionGenerator;
+using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
 using GuiComponents.Interfaces;
 using NAudio.Codecs;
 
@@ -32,7 +32,7 @@ namespace App
         private readonly IBeatmapListingBindingProvider _beatmapListingBindingProvider;
         private readonly MainFormPresenter _mainFormPresenter;
         private readonly ILoginFormView _loginForm;
-        private CollectionsGenerator _collectionGenerator;
+        private CollectionsApiGenerator _collectionGenerator;
         private OsuSite _osuSite = new OsuSite();
         public SidePanelActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainForm, IBeatmapListingBindingProvider beatmapListingBindingProvider, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
@@ -43,7 +43,7 @@ namespace App
             _beatmapListingBindingProvider = beatmapListingBindingProvider;
             _mainFormPresenter = mainFormPresenter;
             _loginForm = loginForm;
-            _collectionGenerator = new CollectionsGenerator(Initalizer.OsuFileIo.LoadedMaps);
+            _collectionGenerator = new CollectionsApiGenerator(Initalizer.OsuFileIo.LoadedMaps);
 
             BindMainFormActions();
         }

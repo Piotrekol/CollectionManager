@@ -6,11 +6,11 @@ using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO.OsuDb;
+using CollectionManager.Modules.ModParser;
 using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Modules.API.osu;
-using CollectionManager.Modules.ModParser;
 
-namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
+namespace CollectionManagerExtensionsDll.Modules.CollectionApiGenerator
 {
     public class UserTopGenerator
     {

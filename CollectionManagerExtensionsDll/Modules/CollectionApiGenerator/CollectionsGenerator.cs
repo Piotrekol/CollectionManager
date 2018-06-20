@@ -4,9 +4,9 @@ using CollectionManager.DataTypes;
 using CollectionManager.Modules.FileIO.OsuDb;
 using CollectionManagerExtensionsDll.DataTypes;
 
-namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
+namespace CollectionManagerExtensionsDll.Modules.CollectionApiGenerator
 {
-    public class CollectionsGenerator
+    public class CollectionsApiGenerator
     {
         public event EventHandler CollectionsUpdated;
         public event EventHandler StatusUpdated;
@@ -36,7 +36,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionGenerator
                 CollectionsUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
-        public CollectionsGenerator(MapCacher loadedBeatmaps)
+        public CollectionsApiGenerator(MapCacher loadedBeatmaps)
         {
             _loadedBeatmaps = loadedBeatmaps;
         }
