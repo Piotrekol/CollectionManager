@@ -50,6 +50,8 @@ namespace App
                 string contents;
                 using (var wc = new System.Net.WebClient())
                     contents = wc.DownloadString(UpdateUrl);
+                if (contents.Contains("<html>") || contents.Contains("<head>") || contents.Contains("html>"))
+                    return;
                 var splited = contents.Split(new[] { ',' }, 2);
 
                 newVersionLink = splited[1];
