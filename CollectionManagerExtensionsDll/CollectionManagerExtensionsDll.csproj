@@ -82,6 +82,7 @@
     <Compile Include="Modules\DownloadManager\API\LoginData.cs" />
     <Compile Include="Modules\DownloadManager\ILoginForm.cs" />
     <Compile Include="Modules\DownloadManager\OsuDownloader.cs" />
+    <Compile Include="Modules\TextProcessor\TextProcessor.cs" />
     <Compile Include="Utils\BeatmapUtils.cs" />
     <Compile Include="Utils\ImpatientWebClient.cs">
       <SubType>Component</SubType>
