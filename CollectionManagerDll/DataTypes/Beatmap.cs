@@ -458,7 +458,11 @@ namespace CollectionManager.DataTypes
         public override string ToString()
         {
             if (string.IsNullOrEmpty(Artist) && string.IsNullOrEmpty(Title))
-                return Md5;
+            {
+                if(string.IsNullOrEmpty(Md5))
+                    return Md5;
+                return "mapId: "+MapId;
+            }
             var baseStr = Artist + " - " + Title;
             return baseStr;
         }

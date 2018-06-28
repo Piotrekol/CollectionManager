@@ -77,5 +77,14 @@ namespace App.Misc
             }
             catch { }
         }
+        public static string GetClipboardText()
+        {
+            try
+            {
+               return System.Windows.Forms.Clipboard.GetText();
+            }
+            catch { }
+            return "";
+        }
     }
 }

@@ -135,7 +135,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         {
             var link = GetBeatmapsURL + "?k=" + ApiKey + "&h=" + hash;
             if (gamemode.HasValue)
-                link += "&m=" + (int) gamemode;
+                link += "&m=" + (int)gamemode;
 
             return GetBeatmapResult(link);
         }
@@ -207,7 +207,15 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.ArtistRoman = json["artist"].ToString();
                 beatmap.TitleRoman = json["title"].ToString();
                 beatmap.Creator = json["creator"].ToString();
-                beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
+                beatmap.CircleSize = Convert.ToSingle(json["diff_size"].ToString(), CultureInfo.InvariantCulture);
+                beatmap.OverallDifficulty = Convert.ToSingle(json["diff_overall"].ToString(),CultureInfo.InvariantCulture);
+                beatmap.ApproachRate = Convert.ToSingle(json["diff_approach"].ToString(), CultureInfo.InvariantCulture);
+                beatmap.HpDrainRate = Convert.ToSingle(json["diff_drain"].ToString(), CultureInfo.InvariantCulture);
+                beatmap.PlayMode = (PlayMode)Convert.ToUInt32(json["mode"].ToString(), CultureInfo.InvariantCulture);
+                //beatmap.bpm
+                beatmap.Source = json["source"].ToString();
+                beatmap.Tags = json["tags"].ToString();
+                beatmap.ModPpStars.Add(beatmap.PlayMode, new Dictionary<int, double>()
                 {
                     { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
                 });

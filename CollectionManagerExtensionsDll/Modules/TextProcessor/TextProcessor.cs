@@ -12,7 +12,9 @@ namespace CollectionManagerExtensionsDll.Modules.TextProcessor
         private static Regex beatmapIdRegex = new Regex(@"(?:https:\/\/osu.ppy.sh\/b\/)([\d]{0,10})", RegexOptions.Compiled);
 
         private bool LineIsCollectionName(string line) =>
-            line.Count(l => l == ' ' || l == '\t') < 3; //arbitary number that works 100% out of 50% times!
+            !string.IsNullOrWhiteSpace(line) &&
+            line.Count(l => l == ' ' || l == '\t' || l == '\'' || l == '!') < 2 && //arbitary number that works 100% out of 50% times!
+            !line.Contains("osu.ppy.sh/"); 
         public enum MapIdType { Map, Set, None }
 
         public class TextProcessorLinkResult
@@ -26,6 +28,7 @@ namespace CollectionManagerExtensionsDll.Modules.TextProcessor
         {
             var ret = new Dictionary<string, List<TextProcessorLinkResult>>();
             var currentCollectionName = "ParsedText";
+            ret[currentCollectionName] = new List<TextProcessorLinkResult>();
             foreach (var line in lines)
             {
                 if (LineIsCollectionName(line.Trim()))
@@ -37,7 +40,8 @@ namespace CollectionManagerExtensionsDll.Modules.TextProcessor
                 else
                     ret[currentCollectionName].Add(ExtractMapLink(line));
             }
-
+            if (!ret["ParsedText"].Any())
+                ret.Remove("ParsedText");
             return ret;
         }
 

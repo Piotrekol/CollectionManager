@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using App.Interfaces;
 using App.Misc;
 using App.Models;
@@ -11,12 +12,14 @@ using App.Presenters.Controls;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManager.Interfaces;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Modules.API;
 using CollectionManagerExtensionsDll.Modules.API.osu;
 using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
+using CollectionManagerExtensionsDll.Modules.TextProcessor;
 using GuiComponents.Interfaces;
 using NAudio.Codecs;
 
@@ -73,9 +76,30 @@ namespace App
 
         private void GetMissingMapData()
         {
+            //var test = Helpers.GetClipboardText();
+            //var p = new TextProcessor();
+            //var output = p.ParseLines(test.Split('\n').ToList());
+            //foreach (var o in output)
+            //{
+            //    var collection = new Collection(Initalizer.OsuFileIo.LoadedMaps) { Name = o.Key };
+            //    foreach (var mapResult in o.Value)
+            //    {
+            //        if (mapResult.IdType == TextProcessor.MapIdType.Map)
+            //            collection.AddBeatmapByMapId(mapResult.Id);
+            //    }
+            //    _collectionEditor.EditCollection(
+            //        CollectionEditArgs.AddCollections(
+            //            new Collections
+            //            {
+            //                collection
+            //            }));
+            //}
+            //TODO: UI for text parser and map data getter
+
             if (BeatmapData == null)
-                BeatmapData = new BeatmapData("abcd", Initalizer.OsuFileIo.LoadedMaps);
+                BeatmapData = new BeatmapData("SNIP", Initalizer.OsuFileIo.LoadedMaps);
             var mapsWithMissingData = new Beatmaps();
+            
 
             foreach (var collection in Initalizer.LoadedCollections)
             {
@@ -84,21 +108,29 @@ namespace App
                     mapsWithMissingData.Add(beatmap);
                 }
             }
-            var mapHashes = mapsWithMissingData.Where(m => !string.IsNullOrWhiteSpace(m.Md5)).Select(m => m.Md5).Distinct();
+            var maps = mapsWithMissingData.Where(m => !string.IsNullOrWhiteSpace(m.Md5)).Distinct();
             List<Beatmap> fetchedBeatmaps = new List<Beatmap>();
-            foreach (var mapHash in mapHashes)
+            foreach (var map in maps)
             {
-                var map = BeatmapData.GetBeatmapFromHash(mapHash, PlayMode.Osu);
-                if (map != null)
+                Beatmap downloadedBeatmap = null;
+                if (map.MapId > 0)
+                    downloadedBeatmap = BeatmapData.GetBeatmapFromId(map.MapId, PlayMode.Osu);
+                else 
+                if (!map.Md5.Contains("|"))
+                    downloadedBeatmap = BeatmapData.GetBeatmapFromHash(map.Md5, PlayMode.Osu);
+
+                if (downloadedBeatmap != null)
                 {
-                    fetchedBeatmaps.Add(map);
+                    fetchedBeatmaps.Add(downloadedBeatmap);
                 }
             }
             foreach (var collection in Initalizer.LoadedCollections)
             {
                 foreach (var fetchedBeatmap in fetchedBeatmaps)
                 {
-                    collection.ReplaceBeatmap(fetchedBeatmap.Md5, fetchedBeatmap);//TODO: this is really inefficient
+                    //TODO: this is really inefficient
+                    collection.ReplaceBeatmap(fetchedBeatmap.Md5, fetchedBeatmap);
+                    collection.ReplaceBeatmap(fetchedBeatmap.MapId, fetchedBeatmap);
                 }
             }
         }

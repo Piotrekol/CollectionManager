@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using CollectionManager.Annotations;
 using CollectionManager.Exceptions;
 using CollectionManager.Modules.FileIO.OsuDb;
@@ -121,8 +122,11 @@ namespace CollectionManager.DataTypes
 
         public void AddBeatmap(BeatmapExtension map)
         {
+            if (string.IsNullOrEmpty(map.Md5))
+                map.Md5 = "semiRandomHash:" + map.MapId + "|" + map.MapSetId;
             if (_beatmapHashes.Contains(map.Md5))
                 return;
+
             _beatmapHashes.Add(map.Md5);
             ProcessNewlyAddedMap(map);
         }
@@ -133,6 +137,13 @@ namespace CollectionManager.DataTypes
             if (_beatmapHashes.Contains(hash))
                 return;
             this.AddBeatmap(new BeatmapExtension() { Md5 = hash });
+        }
+
+        public void AddBeatmapByMapId(int mapId)
+        {
+            if (AllBeatmaps().Any(m=>m.MapId==mapId))
+                return;
+            this.AddBeatmap(new BeatmapExtension() { MapId = mapId});
         }
 
         private void ProcessAdditionalProps(BeatmapExtension src, BeatmapExtension dest)
@@ -180,6 +191,13 @@ namespace CollectionManager.DataTypes
         public void ReplaceBeatmap(string hash, Beatmap newBeatmap)
         {
             if (RemoveBeatmap(hash))
+                AddBeatmap(newBeatmap);
+        }
+        public void ReplaceBeatmap(int mapId, Beatmap newBeatmap)
+        {
+            var map = AllBeatmaps().FirstOrDefault(m => m.MapId == mapId);
+            
+            if (map != null && RemoveBeatmap(map.Md5))
                 AddBeatmap(newBeatmap);
         }
         public bool RemoveBeatmap(string hash)
