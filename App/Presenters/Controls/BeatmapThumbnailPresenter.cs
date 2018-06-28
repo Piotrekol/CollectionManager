@@ -53,21 +53,25 @@ namespace App.Presenters.Controls
                 if (beatmap.Equals(_currentBeatmap))
                 {
                     Image img = null;
+                    string url = null;
                     if (imgPath != "")
                         img = Image.FromFile(imgPath);
+                    else if (beatmap.MapSetId > 0)
+                        url = "https://assets.ppy.sh//beatmaps/"+beatmap.MapSetId+"/covers/card.jpg";
                     if (currentId != Interlocked.Read(ref changeId))
                     {
                         img?.Dispose();
                         return;
                     }
-                    SetViewData(img, beatmap);
+                    SetViewData(img, beatmap,url);
                 }
             };
             bw.RunWorkerAsync();
         }
-        private void SetViewData(Image image, Beatmap beatmap)
+        private void SetViewData(Image image, Beatmap beatmap,string url=null)
         {
             _view.beatmapImage = image;
+            _view.beatmapImageUrl = url;
             if (beatmap == null)
             {
                 _view.AR = "";

@@ -5,6 +5,7 @@ namespace GuiComponents.Interfaces
     public interface IBeatmapThumbnailView
     {
         Image beatmapImage { set; }
+        string beatmapImageUrl { set; }
         string AR { set; }
         string CS { set; }
         string OD { set; }

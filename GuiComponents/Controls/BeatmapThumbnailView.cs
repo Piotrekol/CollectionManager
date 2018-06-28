@@ -17,7 +17,19 @@ namespace GuiComponents.Controls
             {
                 var oldImage = pictureBox1.Image;
                 pictureBox1.Image = value;
-                oldImage?.Dispose();
+                if(pictureBox1.ImageLocation==null)
+                    oldImage?.Dispose();
+            }
+        }
+
+        public string beatmapImageUrl
+        {
+            set
+            {
+                if (pictureBox1.Image == null)
+                {
+                    pictureBox1.ImageLocation = value;
+                }
             }
         }
 
