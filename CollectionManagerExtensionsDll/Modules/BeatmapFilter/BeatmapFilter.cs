@@ -33,6 +33,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         ");
 
         private bool BeatmapExtensionIsUsed = false;
+        private string _lastSearchString = String.Empty;
         public BeatmapFilter(Beatmaps beatmaps, Beatmap baseBeatmap)
         {
             BeatmapExtensionIsUsed = baseBeatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension));
@@ -42,11 +43,15 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         public void SetBeatmaps(Beatmaps beatmaps)
         {
             _beatmaps = beatmaps;
+            UpdateSearch(_lastSearchString);
         }
         public void UpdateSearch(string searchString)
         {
+            _lastSearchString = searchString;
             searchString = searchString.ToLower();
             string[] words = searchString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (_beatmaps == null)
+                return;
             lock (_beatmaps)
             {
                 foreach (var beatmap in _beatmaps)
