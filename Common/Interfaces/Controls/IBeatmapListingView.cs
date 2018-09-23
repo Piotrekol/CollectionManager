@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
 using Gui.Misc;
 
 namespace GuiComponents.Interfaces
@@ -20,6 +21,8 @@ namespace GuiComponents.Interfaces
         event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
 
+        void SetCurrentPlayMode(PlayMode playMode);
+        void SetCurrentMods(Mods mods);
         void SetBeatmaps(IEnumerable beatmaps);
         void SetFilter(IModelFilter filter);
         void FilteringStarted();

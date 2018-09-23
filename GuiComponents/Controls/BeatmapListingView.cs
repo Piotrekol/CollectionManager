@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
+using CollectionManagerExtensionsDll.Modules;
 using Common;
 using GuiComponents.Interfaces;
 using Gui.Misc;
@@ -37,6 +39,14 @@ namespace GuiComponents.Controls
             }
         }
 
+        public void SetCurrentPlayMode(PlayMode playMode)
+        {
+            _currentPlayMode = playMode;
+        }
+        public void SetCurrentMods(Mods mods)
+        {
+            _currentMods = mods;
+        }
 
         public void SetBeatmaps(IEnumerable beatmaps)
         {
@@ -91,6 +101,9 @@ namespace GuiComponents.Controls
             label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
         }
         public static DateTime d = new DateTime(2006, 1, 1);
+        private Mods _currentMods = Mods.Omod;
+        private PlayMode _currentPlayMode = PlayMode.Osu;
+        private DifficultyCalculator _difficultyCalculator = new DifficultyCalculator();
         private void InitListView()
         {
             //listview
@@ -103,6 +116,48 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.UseNotifyPropertyChanged = true;
             ListViewBeatmaps.ShowItemCountOnGroups = true;
             ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
+
+            column_stars.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return beatmap.Stars(_currentPlayMode, _currentMods);
+                }
+                return null;
+            };
+            
+            column_ar.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return _difficultyCalculator.ApplyMods(beatmap, _currentMods).Ar;
+                }
+                return null;
+            };
+            column_od.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return _difficultyCalculator.ApplyMods(beatmap, _currentMods).Od;
+                }
+                return null;
+            };
+            column_cs.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return _difficultyCalculator.ApplyMods(beatmap, _currentMods).Cs;
+                }
+                return null;
+            };
+            column_hp.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return _difficultyCalculator.ApplyMods(beatmap, _currentMods).Hp;
+                }
+                return null;
+            };
             LastPlayed.AspectToStringConverter = delegate (object cellValue)
             {
                 if (cellValue == null) return "Never";

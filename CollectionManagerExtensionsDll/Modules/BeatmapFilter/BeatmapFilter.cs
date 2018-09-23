@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
@@ -58,9 +59,17 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 {
                     BeatmapHashHidden[beatmap.Md5] = false;
                 }
+
+                if (!words.Any(s => s.Contains("mods")))
+                {
+                    CurrentMods = Mods.Omod;
+                }
+
                 foreach (string w in words)
                 {
                     searchFilter filter = GetSearchFilter(w);
+                    if(filter==null)
+                        continue;
 
                     foreach (var b in _beatmaps)
                     {
@@ -72,6 +81,10 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 }
             }
         }
+
+        public Mods CurrentMods { get; private set; } = Mods.Omod;
+        public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
+        private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
         /// <summary>
         /// Returns beatmapFilter delegate for specified searchWord.
         /// Unimplemented: key/keys/speed/played/unplayed
@@ -96,10 +109,9 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                     num = Double.Parse(matchNum.Groups[0].Value, nfi);
                     switch (key)
                     {
-
                         case "star":
                         case "stars":
-                            return delegate (Beatmap b) { return isPatternMatch(Math.Round(b.StarsNomod, 2), op, num); };
+                            return delegate (Beatmap b) { return isPatternMatch(Math.Round(GetStars(b), 2), op, num); };
 
                         case "cs":
                             return delegate (Beatmap b) { return isPatternMatch(Math.Round((double)b.CircleSize, 1), op, num) && b.PlayMode != PlayMode.OsuMania && b.PlayMode != PlayMode.Taiko; };
@@ -131,6 +143,16 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
                 switch (key)
                 {
+                    case "mods":
+                        var splitMods = Regex.Split(val, @"([A-Za-z]{2})").Where(s=>!string.IsNullOrEmpty(s)).ToList();
+                        Mods mods = Mods.Omod;
+                        foreach (var mod in splitMods)
+                        {
+                            if (Enum.TryParse(mod, true, out Mods parsedMod))
+                                mods |= parsedMod;
+                        }
+                        CurrentMods = mods;
+                        return null;
                     case "artist":
                         var artist = val.Replace(SpaceReplacement, " ");
                         return delegate (Beatmap b) { return isArtistMatch(b, artist); };
@@ -143,6 +165,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                         break;
                     case "mode":
                         num = descriptorToNum(val, ModePairs);
+                        CurrentPlayMode = (PlayMode)num;
                         return delegate (Beatmap b) { return isPatternMatch((double)b.PlayMode, op, num); };
                     case "status":
                         num = descriptorToNum(val, StatusPairs);

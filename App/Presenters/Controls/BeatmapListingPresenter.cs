@@ -1,6 +1,7 @@
 ﻿using System;
 using CollectionManager.DataTypes;
 using App.Interfaces;
+using App.Misc;
 using GuiComponents.Interfaces;
 
 namespace App.Presenters.Controls
@@ -44,6 +45,11 @@ namespace App.Presenters.Controls
         
         private void _model_FilteringFinished(object sender, EventArgs e)
         {
+            if (_model.GetFilter() is BeatmapListFilter filter)
+            {
+                _view.SetCurrentPlayMode(filter.CurrentPlayMode);
+                _view.SetCurrentMods(filter.CurrentMods);
+            }
             _view.FilteringFinished();
         }
 

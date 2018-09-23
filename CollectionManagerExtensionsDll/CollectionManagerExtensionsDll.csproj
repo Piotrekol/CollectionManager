@@ -73,6 +73,7 @@
     <Compile Include="Modules\CollectionListGenerator\ListTypes\RedditCodeGenerator.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\OsuBbCodeGenerator.cs" />
     <Compile Include="Modules\CollectionListGenerator\ListTypes\UserListGenerator.cs" />
+    <Compile Include="Modules\DifficultyCalculator.cs" />
     <Compile Include="Modules\DownloadManager\API\CookieAwareWebClient.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using CollectionManager.Enums;
 using CollectionManagerExtensionsDll.Modules.BeatmapFilter;
 
 namespace App.Misc
@@ -9,6 +10,8 @@ namespace App.Misc
     public class BeatmapListFilter: IModelFilter
     {
         private readonly BeatmapFilter _beatmapFilter;
+        public Mods CurrentMods => _beatmapFilter.CurrentMods;
+        public PlayMode CurrentPlayMode => _beatmapFilter.CurrentPlayMode;
         private string _searchString;
         private readonly object _searchStringLockingObject = new object();
         private Timer timer;
