@@ -116,6 +116,11 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.UseNotifyPropertyChanged = true;
             ListViewBeatmaps.ShowItemCountOnGroups = true;
             ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
+            var format = "{0:0.##}";
+            column_ar.AspectToStringFormat = format;
+            column_cs.AspectToStringFormat = format;
+            column_od.AspectToStringFormat = format;
+            column_hp.AspectToStringFormat = format;
 
             column_stars.AspectGetter = rowObject =>
             {
