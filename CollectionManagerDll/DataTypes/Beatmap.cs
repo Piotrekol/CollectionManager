@@ -143,7 +143,11 @@ namespace CollectionManager.DataTypes
         public int MapId { get; set; }
         public int MapSetId { get; set; }
         public int ThreadId { get; set; }
-        public int MapRating { get; set; }
+        public OsuGrade OsuGrade { get; set; }
+        public OsuGrade TaikoGrade { get; set; }
+        public OsuGrade CatchGrade { get; set; }
+        public OsuGrade ManiaGrade { get; set; }
+        
         public short Offset { get; set; }
         public float StackLeniency { get; set; }
         private PlayMode _playMode;
@@ -216,7 +220,10 @@ namespace CollectionManager.DataTypes
             MapId = b.MapId;
             MapSetId = b.MapSetId;
             ThreadId = b.ThreadId;
-            MapRating = b.MapRating;
+            OsuGrade = b.OsuGrade;
+            TaikoGrade = b.TaikoGrade;
+            CatchGrade = b.CatchGrade;
+            ManiaGrade = b.ManiaGrade;
             Offset = b.Offset;
             StackLeniency = b.StackLeniency;
             PlayMode = b.PlayMode;
@@ -265,7 +272,10 @@ namespace CollectionManager.DataTypes
             MapId = b.MapId;
             MapSetId = b.MapSetId;
             ThreadId = b.ThreadId;
-            MapRating = b.MapRating;
+            OsuGrade = b.OsuGrade;
+            TaikoGrade = b.TaikoGrade;
+            CatchGrade = b.CatchGrade;
+            ManiaGrade = b.ManiaGrade;
             Offset = b.Offset;
             StackLeniency = b.StackLeniency;
             PlayMode = b.PlayMode;
@@ -325,7 +335,11 @@ namespace CollectionManager.DataTypes
             MapId = 0;
             MapSetId = 0;
             ThreadId = 0;
-            MapRating = 0;
+
+            OsuGrade = 0;
+            TaikoGrade = 0;
+            CatchGrade = 0;
+            ManiaGrade = 0;
             Offset = 0;
             StackLeniency = 0;
             PlayMode = PlayMode.Osu;
@@ -415,8 +429,16 @@ namespace CollectionManager.DataTypes
                 return false;
             if (ThreadId != b.ThreadId)
                 return false;
-            if (MapRating != b.MapRating)
+            if (OsuGrade != b.OsuGrade)
                 return false;
+            if (TaikoGrade!= b.TaikoGrade)
+                return false;
+            if (CatchGrade != b.CatchGrade)
+                return false;
+            if (ManiaGrade != b.ManiaGrade)
+                return false;
+            
+
             if (Offset != b.Offset)
                 return false;
             if (StackLeniency != b.StackLeniency)

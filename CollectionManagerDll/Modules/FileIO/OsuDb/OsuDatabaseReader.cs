@@ -104,7 +104,12 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
             beatmap.MapSetId = Math.Abs(_binaryReader.ReadInt32());
             beatmap.ThreadId = Math.Abs(_binaryReader.ReadInt32());
-            beatmap.MapRating = _binaryReader.ReadInt32();
+
+            beatmap.OsuGrade = (OsuGrade)_binaryReader.ReadByte();
+            beatmap.TaikoGrade = (OsuGrade)_binaryReader.ReadByte();
+            beatmap.CatchGrade = (OsuGrade)_binaryReader.ReadByte();
+            beatmap.ManiaGrade = (OsuGrade)_binaryReader.ReadByte();
+
             beatmap.Offset = _binaryReader.ReadInt16();
             beatmap.StackLeniency = _binaryReader.ReadSingle();
             beatmap.PlayMode = (PlayMode)_binaryReader.ReadByte();

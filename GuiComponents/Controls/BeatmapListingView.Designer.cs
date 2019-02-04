@@ -61,6 +61,10 @@
             this.LastPlayed = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewBeatmaps)).BeginInit();
             this.SuspendLayout();
@@ -223,9 +227,13 @@
             this.ListViewBeatmaps.AllColumns.Add(this.column_od);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn3);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn10);
+            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn1);
             this.ListViewBeatmaps.AllColumns.Add(this.LastPlayed);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn12);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn13);
+            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn6);
+            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn7);
+            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn8);
             this.ListViewBeatmaps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -239,6 +247,7 @@
             this.olvColumn5,
             this.olvColumn3,
             this.olvColumn10,
+            this.olvColumn1,
             this.LastPlayed,
             this.olvColumn13});
             this.ListViewBeatmaps.DataSource = null;
@@ -357,6 +366,33 @@
             this.olvColumn13.AspectName = "UserComment";
             this.olvColumn13.Text = "Comment";
             // 
+            // olvColumn1
+            // 
+            this.olvColumn1.AspectName = "OsuGrade";
+            this.olvColumn1.IsEditable = false;
+            this.olvColumn1.Text = "OsuGrade";
+            // 
+            // olvColumn6
+            // 
+            this.olvColumn6.AspectName = "TaikoGrade";
+            this.olvColumn6.IsEditable = false;
+            this.olvColumn6.IsVisible = false;
+            this.olvColumn6.Text = "TaikoGrade";
+            // 
+            // olvColumn7
+            // 
+            this.olvColumn7.AspectName = "CatchGrade";
+            this.olvColumn7.IsEditable = false;
+            this.olvColumn7.IsVisible = false;
+            this.olvColumn7.Text = "CatchGrade";
+            // 
+            // olvColumn8
+            // 
+            this.olvColumn8.AspectName = "ManiaGrade";
+            this.olvColumn8.IsEditable = false;
+            this.olvColumn8.IsVisible = false;
+            this.olvColumn8.Text = "ManiaGrade";
+            // 
             // BeatmapListingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -408,5 +444,9 @@
         private System.Windows.Forms.ToolStripMenuItem copyUrlMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyAsTextMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn13;
+        private BrightIdeasSoftware.OLVColumn olvColumn1;
+        private BrightIdeasSoftware.OLVColumn olvColumn6;
+        private BrightIdeasSoftware.OLVColumn olvColumn7;
+        private BrightIdeasSoftware.OLVColumn olvColumn8;
     }
 }
