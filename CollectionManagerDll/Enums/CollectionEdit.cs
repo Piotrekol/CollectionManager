@@ -10,5 +10,6 @@
         AddBeatmaps=5,
         RemoveBeatmaps=6,
         AddOrMergeIfExists=7,
+        Duplicate=8,
     }
 }

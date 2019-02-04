@@ -37,19 +37,38 @@ namespace App
 
                 if (newCollectionName == "")
                     return;
-                if (e.Action == CollectionEdit.Rename)
-                    e = CollectionEditArgs.RenameCollection(e.OrginalName, newCollectionName);
-                else
-                    e = CollectionEditArgs.AddCollections(new Collections() { new Collection(_mapCacher) { Name = newCollectionName } });
+                switch (e.Action)
+                {
+                    case CollectionEdit.Rename:
+                        e = CollectionEditArgs.RenameCollection(e.OrginalName, newCollectionName);
+                        break;
+                    case CollectionEdit.Add:
+                        e = CollectionEditArgs.AddCollections(new Collections() { new Collection(_mapCacher) { Name = newCollectionName } });
+                        break;
+                }
+            }
 
+            if (e.Action == CollectionEdit.Duplicate)
+            {
+                var newCollection = new Collection(_mapCacher) { Name = GetValidCollectionName(e.OrginalName) };
+
+                _collectionEditor.EditCollection(
+                    CollectionEditArgs.AddCollections(new Collections() { newCollection })
+                );
+
+                var beatmaps = new Beatmaps();
+                beatmaps.AddRange(e.Collections[0].AllBeatmaps());
+
+                e = CollectionEditArgs.AddBeatmaps(newCollection.Name, beatmaps);
             }
 
             _collectionEditor.EditCollection(e);
         }
 
         public bool IsCollectionNameValid(string name)
-        {
-            return _collectionNameValidator.IsCollectionNameValid(name);
-        }
+            => _collectionNameValidator.IsCollectionNameValid(name);
+
+        public string GetValidCollectionName(string desiredName)
+            => _collectionNameValidator.GetValidCollectionName(desiredName);
     }
 }

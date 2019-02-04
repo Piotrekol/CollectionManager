@@ -8,6 +8,7 @@
         OpenBeatmapPages, // Open beatmap pages in (?)default browser
         OpenBeatmapFolder, //Open currently selected beatmap folder(s?)
         CopyBeatmapsAsText, //Copy text representation of selected beatmaps
-        CopyBeatmapsAsUrls //Copy map links of selected beatmaps
+        CopyBeatmapsAsUrls, //Copy map links of selected beatmaps
+        PullWholeMapSet, //Finds all mapsets from selected maps and adds them to current collection
     }
 }

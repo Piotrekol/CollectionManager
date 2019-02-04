@@ -41,6 +41,7 @@
             this.deleteCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
             this.CollectionContextMenuStrip.SuspendLayout();
@@ -123,14 +124,15 @@
             this.renameCollectionMenuStrip,
             this.deleteCollectionMenuStrip,
             this.mergeWithMenuStrip,
-            this.CreateMenuStrip});
+            this.CreateMenuStrip,
+            this.DuplicateMenuStrip});
             this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(155, 114);
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 136);
             // 
             // renameCollectionMenuStrip
             // 
             this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
-            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
+            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.renameCollectionMenuStrip.Tag = "Rename";
             this.renameCollectionMenuStrip.Text = "Rename";
             this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -138,7 +140,7 @@
             // deleteCollectionMenuStrip
             // 
             this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
-            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
+            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.deleteCollectionMenuStrip.Tag = "Delete";
             this.deleteCollectionMenuStrip.Text = "Delete";
             this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -146,7 +148,7 @@
             // mergeWithMenuStrip
             // 
             this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
-            this.mergeWithMenuStrip.Size = new System.Drawing.Size(154, 22);
+            this.mergeWithMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.mergeWithMenuStrip.Tag = "Merge";
             this.mergeWithMenuStrip.Text = "Merge selected";
             this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -154,10 +156,18 @@
             // CreateMenuStrip
             // 
             this.CreateMenuStrip.Name = "CreateMenuStrip";
-            this.CreateMenuStrip.Size = new System.Drawing.Size(154, 22);
+            this.CreateMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.CreateMenuStrip.Tag = "Create";
             this.CreateMenuStrip.Text = "Create";
             this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // DuplicateMenuStrip
+            // 
+            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
+            this.DuplicateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.DuplicateMenuStrip.Tag = "Duplicate";
+            this.DuplicateMenuStrip.Text = "Duplicate";
+            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // CollectionListingView
             // 
@@ -188,5 +198,6 @@
         private System.Windows.Forms.ToolStripMenuItem mergeWithMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem CreateMenuStrip;
         private BrightIdeasSoftware.OLVColumn Total;
+        private System.Windows.Forms.ToolStripMenuItem DuplicateMenuStrip;
     }
 }

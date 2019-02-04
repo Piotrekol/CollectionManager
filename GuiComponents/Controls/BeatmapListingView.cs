@@ -250,6 +250,8 @@ namespace GuiComponents.Controls
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.CopyBeatmapsAsUrls);
             else if (sender == OpenBeatmapFolderMenuStrip)
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapFolder);
+            else if (sender == PullMapsetMenuStrip)
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.PullWholeMapSet);
         }
     }
 

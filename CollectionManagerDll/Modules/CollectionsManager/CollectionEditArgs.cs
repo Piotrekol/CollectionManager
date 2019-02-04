@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using CollectionManager.DataTypes;
+﻿using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace CollectionManager.Modules.CollectionsManager
 {
@@ -75,7 +75,7 @@ namespace CollectionManager.Modules.CollectionsManager
         }
         #endregion
         #region Add Beatmaps to collection
-        public static CollectionEditArgs AddBeatmaps(string collectionName,Beatmaps beatmaps)
+        public static CollectionEditArgs AddBeatmaps(string collectionName, Beatmaps beatmaps)
         {
             return new CollectionEditArgs(CollectionEdit.AddBeatmaps)
             {
@@ -83,7 +83,7 @@ namespace CollectionManager.Modules.CollectionsManager
                 OrginalName = collectionName
             };
         }
-        
+
         #endregion
         #region Remove beatmaps from collection
         public static CollectionEditArgs RemoveBeatmaps(string collectionName, Beatmaps beatmaps)
@@ -103,6 +103,18 @@ namespace CollectionManager.Modules.CollectionsManager
                 Collections = collections
             };
         }
+        #endregion
+
+        #region duplicate
+        public static CollectionEditArgs DuplicateCollection(Collection collection)
+        {
+            return new CollectionEditArgs(CollectionEdit.Duplicate)
+            {
+                OrginalName = collection.Name,
+                Collections = new Collections() { collection }
+            };
+        }
+
         #endregion
 
     }

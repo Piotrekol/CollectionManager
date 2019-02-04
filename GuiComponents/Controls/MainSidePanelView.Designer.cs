@@ -113,7 +113,6 @@
             this.button_GetMissingMapData.Text = "Get missing map data";
             this.button_GetMissingMapData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button_GetMissingMapData.UseVisualStyleBackColor = true;
-            this.button_GetMissingMapData.Visible = false;
             // 
             // button_downloadAllMissing
             // 

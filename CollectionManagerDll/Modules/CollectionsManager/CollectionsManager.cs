@@ -1,4 +1,5 @@
-﻿using App.Interfaces;
+﻿using System;
+using App.Interfaces;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
@@ -108,6 +109,11 @@ namespace CollectionManager.Modules.CollectionsManager
                         }
                     }
                 }
+                else if (action == CollectionEdit.Duplicate)
+                {
+                    throw new NotImplementedException("Call AddCollections followed with AddBeatmaps instead");
+                }
+                
             }
             if (!suspendRefresh)
                 AfterCollectionsEdit();
@@ -133,7 +139,7 @@ namespace CollectionManager.Modules.CollectionsManager
             return null;
         }
 
-        private string GetValidCollectionName(string desiredName)
+        public string GetValidCollectionName(string desiredName)
         {
             var newName = desiredName;
             int c = 0;

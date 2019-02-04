@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using App.Interfaces;
+﻿using App.Interfaces;
 using App.Misc;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
@@ -12,6 +9,10 @@ using CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace App
 {
@@ -39,7 +40,8 @@ namespace App
                 {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
                 {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmaps },
                 {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages },
-                {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder }
+                {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder },
+                {BeatmapListingAction.PullWholeMapSet, PullWholeMapsets },
             };
         }
 
@@ -58,7 +60,29 @@ namespace App
         {
             _beatmapOperationHandlers[args](sender);
         }
+        private void PullWholeMapsets(object sender)
+        {
+            var model = (IBeatmapListingModel)sender;
+            if (model.SelectedBeatmaps?.Count > 0)
+            {
+                var setBeatmaps = new Beatmaps();
 
+                foreach (var selectedBeatmap in model.SelectedBeatmaps)
+                {
+                    IEnumerable<Beatmap> set;
+                    if (selectedBeatmap.MapSetId <= 20)
+                        set = Initalizer.LoadedBeatmaps.Where(b => b.Dir == selectedBeatmap.Dir);
+                    else
+                        set = Initalizer.LoadedBeatmaps.Where(b => b.MapSetId == selectedBeatmap.MapSetId);
+                    setBeatmaps.AddRange(set);
+
+                }
+                Initalizer.CollectionEditor.EditCollection(
+                    CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, setBeatmaps)
+                );
+            }
+
+        }
         private void DownloadBeatmapsManaged(object sender)
         {
             var model = (IBeatmapListingModel)sender;
@@ -72,7 +96,7 @@ namespace App
             var model = (IBeatmapListingModel)sender;
             if (model.SelectedBeatmap != null)
             {
-                var location = ((BeatmapExtension) model.SelectedBeatmap).FullOsuFileLocation();
+                var location = ((BeatmapExtension)model.SelectedBeatmap).FullOsuFileLocation();
                 Process.Start("explorer.exe", $"/select, \"{location}\"");
             }
         }
@@ -84,7 +108,7 @@ namespace App
 
         private void CopyBeatmapsAsUrls(object sender)
         {
-            var dummyCollection =  ((IBeatmapListingModel)sender).AddSelectedBeatmapsToCollection(new Collection(_osuFileIo.LoadedMaps));
+            var dummyCollection = ((IBeatmapListingModel)sender).AddSelectedBeatmapsToCollection(new Collection(_osuFileIo.LoadedMaps));
             Helpers.SetClipboardText(_listGenerator.GetAllMapsList(new Collections() { dummyCollection }, UserUrlListGenerator));
         }
 

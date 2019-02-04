@@ -79,6 +79,12 @@ namespace App.Presenters.Controls
                         return;
                     args = CollectionEditArgs.RenameCollection(_view.SelectedCollection, null);
                     break;
+                case "Duplicate":
+                    if (_view.SelectedCollection == null)
+                        return;
+
+                    args = CollectionEditArgs.DuplicateCollection(_view.SelectedCollection);
+                    break;
                 default:
                     return;
             }
