@@ -17,9 +17,9 @@ namespace CollectionManager.DataTypes
         Ht = 1 << 8,
         Nc = 1 << 9,
         Fl = 1 << 10,
-        Au = 1 << 11,
+        Au = 1 << 11, //auto play
         So = 1 << 12,
-        Rx2 = 1 << 13,
+        Ap = 1 << 13, //Auto pilot
         Pf = 1 << 14,
         K4 = 1 << 15,
         K5 = 1 << 16,
@@ -35,6 +35,8 @@ namespace CollectionManager.DataTypes
         K1 = 1 << 26,
         K3 = 1 << 27,
         K2 = 1 << 28,
+        Sv2 = 1 << 29, //Score V2
+        Lm = 1 << 30, //Last mod
         SpeedChanging = Dt | Ht | Nc,
         MapChanging = Hr | Ez | SpeedChanging
     }

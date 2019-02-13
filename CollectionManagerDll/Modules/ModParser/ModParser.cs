@@ -50,9 +50,9 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Ht, "HT", "Half Time"),
             new OsuMod(Mods.Nc, "NC", "Nightcore"),
             new OsuMod(Mods.Fl, "FL", "Flashlight"),
-            new OsuMod(Mods.Au, "AU", "Auto"),
+            new OsuMod(Mods.Au, "AU", "AutoPlay"),
             new OsuMod(Mods.So, "SO", "Spun Out"),
-            new OsuMod(Mods.Rx2, "AP", "Autopilot"),
+            new OsuMod(Mods.Ap, "AP", "Autopilot"),
             new OsuMod(Mods.Pf, "PF", "Perfect"),
             new OsuMod(Mods.K4, "4K", "4 Keys"),
             new OsuMod(Mods.K5, "5K", "5 Keys"),
@@ -67,7 +67,9 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Coop, "CO", "Co-Op"),
             new OsuMod(Mods.K1, "1K", "1 Key"),
             new OsuMod(Mods.K3, "3K", "3 Keys"),
-            new OsuMod(Mods.K2, "2K", "2 Keys")
+            new OsuMod(Mods.K2, "2K", "2 Keys"),
+            new OsuMod(Mods.Sv2, "SV2", "Score V2"),
+            new OsuMod(Mods.Lm, "LM", "Last mod"),
         };
 
         public bool IsModHidden(OsuMod mod) => HiddenMods.Exists(m => m.Value == mod.Value);
