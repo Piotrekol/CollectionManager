@@ -9,14 +9,6 @@ namespace CollectionManager.Modules.ModParser.Tests
     {
         private ModParser _modParser;
         [TestMethod()]
-        public void IsModHidden1()
-        {
-            _modParser = new ModParser();
-            if (!_modParser.IsModHidden(Mods.Nv))
-                _modParser.HiddenMods.Add(_modParser.AllMods.First(t => t.Value == Mods.Nv));
-            Assert.IsTrue(_modParser.IsModHidden(Mods.Nv));
-        }
-        [TestMethod()]
         public void IsModHidden2()
         {
             _modParser = new ModParser();
