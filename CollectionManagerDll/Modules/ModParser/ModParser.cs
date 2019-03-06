@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CollectionManager.DataTypes;
 
@@ -34,14 +34,13 @@ namespace CollectionManager.Modules.ModParser
         public ReadOnlyCollection<OsuMod> AllMods => _mods.AsReadOnly();
         public List<OsuMod> HiddenMods { get; } = new List<OsuMod>
         {
-            new OsuMod(Mods.Nv,"NV","NoVideo")
         };
         private readonly List<OsuMod> _mods = new List<OsuMod>()
         {
             new OsuMod(Mods.Omod, "None", "None"),
             new OsuMod(Mods.Nf, "NF", "No Fail"),
             new OsuMod(Mods.Ez, "EZ", "Easy"),
-            new OsuMod(Mods.Nv,"NV","NoVideo"), //What's the purpose of this line?; the mod is now used as "Touch Device" (as seen on the api wiki, NoVideo        = 4, // Not used anymore, but can be found on old plays like Mesita on b/78239)
+            new OsuMod(Mods.Td, "TD","Touch Device"),
             new OsuMod(Mods.Hd, "HD", "Hidden"),
             new OsuMod(Mods.Hr, "HR", "Hard Rock"),
             new OsuMod(Mods.Sd, "SD", "Sudden Death"),
@@ -52,7 +51,7 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.Fl, "FL", "Flashlight"),
             new OsuMod(Mods.Au, "AU", "AutoPlay"),
             new OsuMod(Mods.So, "SO", "Spun Out"),
-            new OsuMod(Mods.Ap, "AP", "Autopilot"),
+            new OsuMod(Mods.Ap, "AP", "AutoPilot"),
             new OsuMod(Mods.Pf, "PF", "Perfect"),
             new OsuMod(Mods.K4, "4K", "4 Keys"),
             new OsuMod(Mods.K5, "5K", "5 Keys"),
@@ -69,7 +68,7 @@ namespace CollectionManager.Modules.ModParser
             new OsuMod(Mods.K3, "3K", "3 Keys"),
             new OsuMod(Mods.K2, "2K", "2 Keys"),
             new OsuMod(Mods.Sv2, "SV2", "Score V2"),
-            new OsuMod(Mods.Lm, "LM", "Last mod"),
+            new OsuMod(Mods.Lm, "LM", "Last Mod"),
         };
 
         public bool IsModHidden(OsuMod mod) => HiddenMods.Exists(m => m.Value == mod.Value);

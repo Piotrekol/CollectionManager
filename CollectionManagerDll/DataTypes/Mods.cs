@@ -8,7 +8,7 @@ namespace CollectionManager.DataTypes
         Omod = 0,
         Nf = 1 << 0,
         Ez = 1 << 1,
-        Nv = 1 << 2, //No video
+        Td = 1 << 2, //Touch device
         Hd = 1 << 3,
         Hr = 1 << 4,
         Sd = 1 << 5,
