@@ -14,7 +14,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
         public bool Login(LoginData loginData)
         {
             var loginAddress = @"https://osu.ppy.sh/forum/ucp.php?mode=login";
-            string loginDataStr = string.Format("username={0}&password={1}&login=login&sid=", loginData.Username, loginData.Password);
+            string loginDataStr = string.Format("username={0}&password={1}&login=login&sid=", Uri.EscapeDataString(loginData.Username), Uri.EscapeDataString(loginData.Password));
 
 
             CookieContainer cookies = null;
