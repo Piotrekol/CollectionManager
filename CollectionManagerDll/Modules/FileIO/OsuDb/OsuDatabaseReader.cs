@@ -1,10 +1,10 @@
 ﻿#define GetStarsCombinations
-using System;
-using System.Collections.Generic;
-using System.IO;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
@@ -15,19 +15,9 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         private readonly IMapDataManager _mapDataStorer;
         private FileStream _fileStream;
         private BinaryReader _binaryReader;
-        private Exception _exception;
         private readonly Beatmap _tempBeatmap;
-        private bool _stopProcessing;
 
-        public bool LoadedSuccessfully
-        {
-            get
-            {
-                if (ExpectedNumOfBeatmaps != -1)
-                    return !_stopProcessing;
-                return false;
-            }
-        }
+        public bool LoadedSuccessfully { get; private set; }
 
         public int MapsWithNoId { get; private set; }
         public string Username { get; private set; }
@@ -36,7 +26,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         public int ExpectedNumOfBeatmaps { get; private set; } = -1;
         public int NumberOfLoadedBeatmaps { get; private set; }
 
-        public OsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer,Beatmap tempBeatmap)
+        public OsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer, Beatmap tempBeatmap)
         {
             _tempBeatmap = tempBeatmap;
             _mapDataStorer = mapDataStorer;
@@ -65,35 +55,25 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             _mapDataStorer.StartMassStoring();
             for (NumberOfLoadedBeatmaps = 0; NumberOfLoadedBeatmaps < ExpectedNumOfBeatmaps; NumberOfLoadedBeatmaps++)
             {
-                if(NumberOfLoadedBeatmaps%100==0)
+                if (NumberOfLoadedBeatmaps % 100 == 0)
                     _logger?.Log("Loading {0} of {1}", NumberOfLoadedBeatmaps.ToString(),
                     ExpectedNumOfBeatmaps.ToString());
-                //TODO: check if it is safe to remove all try/catch _stopProcessing stuff
-                if (_stopProcessing)
-                {
-                    throw _exception;
-                }
+
                 ReadNextBeatmap();
             }
             _logger?.Log("Loaded {0} beatmaps", NumberOfLoadedBeatmaps.ToString());
             _mapDataStorer.EndMassStoring();
+            LoadedSuccessfully = true;
         }
         private void ReadNextBeatmap()
         {
             _tempBeatmap.InitEmptyValues();
-            try
-            {
-                ReadMapHeader(_tempBeatmap);
-                ReadMapInfo(_tempBeatmap);
-                ReadTimingPoints(_tempBeatmap);
-                ReadMapMetaData(_tempBeatmap);
-            }
-            catch (Exception e)
-            {
-                _exception = e;
-                _stopProcessing = true;
-                return;
-            }
+
+            ReadMapHeader(_tempBeatmap);
+            ReadMapInfo(_tempBeatmap);
+            ReadTimingPoints(_tempBeatmap);
+            ReadMapMetaData(_tempBeatmap);
+
             _mapDataStorer.StoreBeatmap(_tempBeatmap);
         }
 
@@ -314,16 +294,8 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             {
                 return new DateTime();
             }
-            try
-            {
-                return new DateTime(ticks, DateTimeKind.Utc);
-            }
-            catch (Exception e)
-            {
-                _exception = e;
-                _stopProcessing = true;
-                return new DateTime();
-            }
+
+            return new DateTime(ticks, DateTimeKind.Utc);
         }
         private void ReadMapHeader(Beatmap beatmap)
         {
@@ -340,15 +312,11 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         }
         private string ReadString()
         {
-            try
+            if (_binaryReader.ReadByte() == 11)
             {
-                if (_binaryReader.ReadByte() == 11)
-                {
-                    return _binaryReader.ReadString();
-                }
-                return "";
+                return _binaryReader.ReadString();
             }
-            catch { _stopProcessing = true; return ""; }
+            return "";
         }
         private bool DatabaseContainsData()
         {
