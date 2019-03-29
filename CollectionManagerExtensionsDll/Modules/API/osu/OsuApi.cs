@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using CollectionManager.DataTypes;
+﻿using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
 
 namespace CollectionManagerExtensionsDll.Modules.API.osu
 {
@@ -75,6 +76,15 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             return resultBeatmaps;
         }
 
+        public IList<BeatmapExtensionEx> GetBeatmaps(int beatmapSetId, PlayMode? gamemode)
+        {
+            var link = GetBeatmapsURL + "?k=" + ApiKey + "&s=" + beatmapSetId;
+            if (gamemode.HasValue)
+                link += "&m=" + (int)gamemode;
+
+            return GetBeatmaps(link);
+        }
+
         private RangeObservableCollection<BeatmapExtensionEx> GetBeatmaps(string url)
         {
             var beatmaps = new RangeObservableCollection<BeatmapExtensionEx>();
@@ -97,7 +107,8 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.ArtistRoman = json["artist"].ToString();
                 beatmap.TitleRoman = json["title"].ToString();
                 beatmap.Creator = json["creator"].ToString();
-                beatmap.ApprovedDate = DateTime.ParseExact(json["approved_date"].ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                var approvedDate = json["approved_date"];
+                beatmap.ApprovedDate = approvedDate != null ? approvedDate.Value<DateTime?>() ?? DateTime.MinValue : DateTime.MinValue;
                 beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
                 {
                     { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
@@ -122,13 +133,20 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             return map;
         }
 
-        public Beatmap GetBeatmap(int beatmapId, PlayMode gamemode)
+        public Beatmap GetBeatmap(int beatmapId, PlayMode? gamemode)
         {
-            if (_downloadedBeatmaps.ContainsKey(beatmapId))
+            if (_downloadedBeatmaps.ContainsKey(beatmapId) && _downloadedBeatmaps[beatmapId].PlayMode == gamemode)
                 return _downloadedBeatmaps[beatmapId];
-            var map = GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId + "&m=" + (int)gamemode);
+
+            var link = GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId;
+            if (gamemode.HasValue)
+                link += "&m=" + (int)gamemode;
+
+            var map = GetBeatmapResult(link);
+
             if (map != null)
-                _downloadedBeatmaps.Add(beatmapId, map);
+                _downloadedBeatmaps[beatmapId] = map;
+
             return map;
         }
         public Beatmap GetBeatmap(string hash, PlayMode? gamemode = null)
@@ -208,7 +226,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.TitleRoman = json["title"].ToString();
                 beatmap.Creator = json["creator"].ToString();
                 beatmap.CircleSize = Convert.ToSingle(json["diff_size"].ToString(), CultureInfo.InvariantCulture);
-                beatmap.OverallDifficulty = Convert.ToSingle(json["diff_overall"].ToString(),CultureInfo.InvariantCulture);
+                beatmap.OverallDifficulty = Convert.ToSingle(json["diff_overall"].ToString(), CultureInfo.InvariantCulture);
                 beatmap.ApproachRate = Convert.ToSingle(json["diff_approach"].ToString(), CultureInfo.InvariantCulture);
                 beatmap.HpDrainRate = Convert.ToSingle(json["diff_drain"].ToString(), CultureInfo.InvariantCulture);
                 beatmap.PlayMode = (PlayMode)Convert.ToUInt32(json["mode"].ToString(), CultureInfo.InvariantCulture);
