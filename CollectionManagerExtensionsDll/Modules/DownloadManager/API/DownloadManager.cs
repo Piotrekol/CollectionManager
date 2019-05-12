@@ -177,7 +177,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 else if (e.Error != null)
                 {
                     url.OtherError = true;
-                    url.Error = "Error: " + e.ToString();
+                    url.Error = "Error: " + e.Error.ToString();
                     error = true;
                 }
                 if (error)
