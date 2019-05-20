@@ -41,15 +41,19 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\App\bin\Release\App.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\App.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\Interpolate.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
