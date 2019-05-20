@@ -1,101 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{14768636-102A-4A27-AB5A-9B5D1BA316A6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
-    <OutputPath>bin\Remote Debug\</OutputPath>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyTitle>Common</AssemblyTitle>
+    <Product>Common</Product>
+    <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeatmapListingAction.cs" />
-    <Compile Include="EventArgs\EventArgs.cs" />
-    <Compile Include="EventArgs\FloatEventArgs.cs" />
-    <Compile Include="EventArgs\IntEventArgs.cs" />
-    <Compile Include="GuiHelpers.cs" />
-    <Compile Include="EventArgs\StringEventArgs.cs" />
-    <Compile Include="Interfaces\Controls\ICollectionAddView.cs" />
-    <Compile Include="Interfaces\Controls\ICollectionRenameView.cs" />
-    <Compile Include="Interfaces\Controls\IUsernameGeneratorView.cs" />
-    <Compile Include="Interfaces\Controls\IUserTopGenerator.cs" />
-    <Compile Include="Interfaces\Forms\IBeatmapListingForm.cs" />
-    <Compile Include="Interfaces\Controls\IBeatmapListingView.cs" />
-    <Compile Include="Interfaces\Controls\IBeatmapThumbnailView.cs" />
-    <Compile Include="Interfaces\Controls\ICollectionListingView.cs" />
-    <Compile Include="Interfaces\Controls\ICollectionTextView.cs" />
-    <Compile Include="Interfaces\Controls\ICombinedBeatmapPreviewView.cs" />
-    <Compile Include="Interfaces\Controls\ICombinedListingView.cs" />
-    <Compile Include="Interfaces\Forms\ICollectionAddRenameForm.cs" />
-    <Compile Include="Interfaces\Forms\IDownloadManagerFormView.cs" />
-    <Compile Include="Interfaces\Controls\IDownloadManagerView.cs" />
-    <Compile Include="Interfaces\Forms\IForm.cs" />
-    <Compile Include="Interfaces\Controls\IInfoTextView.cs" />
-    <Compile Include="Interfaces\Forms\ILoginForm.cs" />
-    <Compile Include="Interfaces\Forms\IMainFormView.cs" />
-    <Compile Include="Interfaces\Controls\IMainSidePanelView.cs" />
-    <Compile Include="Interfaces\Controls\IMusicControlView.cs" />
-    <Compile Include="Interfaces\Forms\IUsernameGeneratorForm.cs" />
-    <Compile Include="Interfaces\Forms\IUserTopGeneratorForm.cs" />
-    <Compile Include="Interfaces\IUserDialogs.cs" />
-    <Compile Include="MessageBoxType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
+    <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj" />
+    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj">
-      <Project>{533ab47a-d1b5-45db-a37e-f053fa3699c4}</Project>
-      <Name>CollectionManagerDll</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj">
-      <Project>{2bdf5d5f-1cb0-47a6-8138-e4db961740f2}</Project>
-      <Name>CollectionManagerExtensionsDll</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj">
-      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
-      <Name>ObjectListView2012</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
