@@ -50,7 +50,6 @@ Source: "..\App\bin\Release\net472\MusicPlayer.dll"; DestDir: "{app}"; Flags: ig
 Source: "..\App\bin\Release\net472\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\Interpolate.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
