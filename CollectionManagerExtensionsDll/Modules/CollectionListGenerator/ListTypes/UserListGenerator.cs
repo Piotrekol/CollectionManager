@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CollectionManager.DataTypes;
-using InterpolateLibrary;
+using CollectionManagerExtensionsDll.Utils;
 
 namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes
 {
@@ -71,7 +71,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
                 {
                     if (map.MapId > 0)
                     {
-                        sb.Append(CollectionBodyFormat.HaackFormat(map));
+                        sb.Append(CollectionBodyFormat.RobotoFormat(map));
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
             {
                 foreach (var map in beatmaps)
                 {
-                    sb.Append(CollectionBodyFormat.HaackFormat(map));
+                    sb.Append(CollectionBodyFormat.RobotoFormat(map));
                 }
             }
             sb.Append(_md5Output.ToString());
