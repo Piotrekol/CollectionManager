@@ -20,7 +20,7 @@ namespace GuiComponents.Controls
             {
                 if (value)
                 {
-                    label_UpdateText.Cursor = Cursors.Hand; //TODO: indicate that link is clickable
+                    label_UpdateText.Cursor = Cursors.Hand;
                 }
                 else
                     label_UpdateText.Cursor = DefaultCursor;

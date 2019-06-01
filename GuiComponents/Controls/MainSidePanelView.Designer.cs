@@ -28,284 +28,250 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button_mapDownloads = new System.Windows.Forms.Button();
-            this.button_beatmapListing = new System.Windows.Forms.Button();
-            this.groupBox_onlineServices = new System.Windows.Forms.GroupBox();
-            this.button_GetMissingMapData = new System.Windows.Forms.Button();
-            this.button_downloadAllMissing = new System.Windows.Forms.Button();
-            this.button_GenerateCollections = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button_listMissingMaps = new System.Windows.Forms.Button();
-            this.button_listAllCollections = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button_saveAllCollections = new System.Windows.Forms.Button();
-            this.button_collectionsSplit = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button_unloadCollections = new System.Windows.Forms.Button();
-            this.button_loadDefaultCollection = new System.Windows.Forms.Button();
-            this.button_loadCollection = new System.Windows.Forms.Button();
-            this.button_refreshBeatmapList = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.groupBox_onlineServices.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Opennn = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_loadCollection = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_loadDefaultCollection = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_saveAllCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_collectionsSplit = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_unloadCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.listingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_listAllCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_listMissingMaps = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_mapDownloads = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_downloadAllMissing = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_GenerateCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_GetMissingMapData = new System.Windows.Forms.ToolStripMenuItem();
+            this.osustatsCollectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_osustatsLogin = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_osustatsLoadCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_osustatsSaveCollections = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // menuStrip1
             // 
-            this.panel1.Controls.Add(this.button_mapDownloads);
-            this.panel1.Controls.Add(this.button_beatmapListing);
-            this.panel1.Controls.Add(this.groupBox_onlineServices);
-            this.panel1.Controls.Add(this.groupBox3);
-            this.panel1.Controls.Add(this.groupBox2);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Controls.Add(this.button_refreshBeatmapList);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(184, 512);
-            this.panel1.TabIndex = 9;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.listingToolStripMenuItem,
+            this.onlineToolStripMenuItem,
+            this.osustatsCollectionsToolStripMenuItem,
+            this.Menu_beatmapListing,
+            this.Menu_refreshBeatmapList});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(724, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // button_mapDownloads
+            // fileToolStripMenuItem
             // 
-            this.button_mapDownloads.Location = new System.Drawing.Point(4, 311);
-            this.button_mapDownloads.Name = "button_mapDownloads";
-            this.button_mapDownloads.Size = new System.Drawing.Size(170, 23);
-            this.button_mapDownloads.TabIndex = 13;
-            this.button_mapDownloads.Text = "Show map downloads";
-            this.button_mapDownloads.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_mapDownloads.UseVisualStyleBackColor = true;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_Opennn,
+            this.saveToolStripMenuItem,
+            this.Menu_unloadCollections});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // button_beatmapListing
+            // MenuItem_Opennn
             // 
-            this.button_beatmapListing.Location = new System.Drawing.Point(4, 282);
-            this.button_beatmapListing.Name = "button_beatmapListing";
-            this.button_beatmapListing.Size = new System.Drawing.Size(170, 23);
-            this.button_beatmapListing.TabIndex = 12;
-            this.button_beatmapListing.Text = "Show beatmap listing";
-            this.button_beatmapListing.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_beatmapListing.UseVisualStyleBackColor = true;
+            this.MenuItem_Opennn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_loadCollection,
+            this.Menu_loadDefaultCollection});
+            this.MenuItem_Opennn.Name = "MenuItem_Opennn";
+            this.MenuItem_Opennn.Size = new System.Drawing.Size(103, 22);
+            this.MenuItem_Opennn.Text = "Open";
             // 
-            // groupBox_onlineServices
+            // Menu_loadCollection
             // 
-            this.groupBox_onlineServices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_onlineServices.Controls.Add(this.button_GetMissingMapData);
-            this.groupBox_onlineServices.Controls.Add(this.button_downloadAllMissing);
-            this.groupBox_onlineServices.Controls.Add(this.button_GenerateCollections);
-            this.groupBox_onlineServices.Location = new System.Drawing.Point(3, 340);
-            this.groupBox_onlineServices.Name = "groupBox_onlineServices";
-            this.groupBox_onlineServices.Size = new System.Drawing.Size(174, 103);
-            this.groupBox_onlineServices.TabIndex = 12;
-            this.groupBox_onlineServices.TabStop = false;
-            this.groupBox_onlineServices.Text = "Online services";
+            this.Menu_loadCollection.Name = "Menu_loadCollection";
+            this.Menu_loadCollection.Size = new System.Drawing.Size(185, 22);
+            this.Menu_loadCollection.Text = "collection(.db/.osdb)";
             // 
-            // button_GetMissingMapData
+            // Menu_loadDefaultCollection
             // 
-            this.button_GetMissingMapData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_GetMissingMapData.Location = new System.Drawing.Point(4, 74);
-            this.button_GetMissingMapData.Name = "button_GetMissingMapData";
-            this.button_GetMissingMapData.Size = new System.Drawing.Size(170, 23);
-            this.button_GetMissingMapData.TabIndex = 15;
-            this.button_GetMissingMapData.Text = "Get missing map data";
-            this.button_GetMissingMapData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_GetMissingMapData.UseVisualStyleBackColor = true;
+            this.Menu_loadDefaultCollection.Name = "Menu_loadDefaultCollection";
+            this.Menu_loadDefaultCollection.Size = new System.Drawing.Size(185, 22);
+            this.Menu_loadDefaultCollection.Text = "osu! collection";
             // 
-            // button_downloadAllMissing
+            // saveToolStripMenuItem
             // 
-            this.button_downloadAllMissing.Location = new System.Drawing.Point(4, 18);
-            this.button_downloadAllMissing.Name = "button_downloadAllMissing";
-            this.button_downloadAllMissing.Size = new System.Drawing.Size(170, 23);
-            this.button_downloadAllMissing.TabIndex = 14;
-            this.button_downloadAllMissing.Text = "Download all missing maps";
-            this.button_downloadAllMissing.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_downloadAllMissing.UseVisualStyleBackColor = true;
+            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_saveAllCollections,
+            this.Menu_collectionsSplit});
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Text = "Save";
             // 
-            // button_GenerateCollections
+            // Menu_saveAllCollections
             // 
-            this.button_GenerateCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_GenerateCollections.Location = new System.Drawing.Point(4, 47);
-            this.button_GenerateCollections.Name = "button_GenerateCollections";
-            this.button_GenerateCollections.Size = new System.Drawing.Size(170, 23);
-            this.button_GenerateCollections.TabIndex = 11;
-            this.button_GenerateCollections.Text = "Generate collections";
-            this.button_GenerateCollections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_GenerateCollections.UseVisualStyleBackColor = true;
+            this.Menu_saveAllCollections.Name = "Menu_saveAllCollections";
+            this.Menu_saveAllCollections.Size = new System.Drawing.Size(217, 22);
+            this.Menu_saveAllCollections.Text = "Collections";
             // 
-            // groupBox3
+            // Menu_collectionsSplit
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.button_listMissingMaps);
-            this.groupBox3.Controls.Add(this.button_listAllCollections);
-            this.groupBox3.Location = new System.Drawing.Point(3, 198);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(174, 76);
-            this.groupBox3.TabIndex = 11;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Collections listing";
+            this.Menu_collectionsSplit.Name = "Menu_collectionsSplit";
+            this.Menu_collectionsSplit.Size = new System.Drawing.Size(217, 22);
+            this.Menu_collectionsSplit.Text = "Collections in separate files";
             // 
-            // button_listMissingMaps
+            // Menu_unloadCollections
             // 
-            this.button_listMissingMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_listMissingMaps.Location = new System.Drawing.Point(1, 48);
-            this.button_listMissingMaps.Name = "button_listMissingMaps";
-            this.button_listMissingMaps.Size = new System.Drawing.Size(170, 23);
-            this.button_listMissingMaps.TabIndex = 8;
-            this.button_listMissingMaps.Text = "List missing maps";
-            this.button_listMissingMaps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_listMissingMaps.UseVisualStyleBackColor = true;
+            this.Menu_unloadCollections.Name = "Menu_unloadCollections";
+            this.Menu_unloadCollections.Size = new System.Drawing.Size(103, 22);
+            this.Menu_unloadCollections.Text = "Clear";
             // 
-            // button_listAllCollections
+            // listingToolStripMenuItem
             // 
-            this.button_listAllCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_listAllCollections.Location = new System.Drawing.Point(1, 19);
-            this.button_listAllCollections.Name = "button_listAllCollections";
-            this.button_listAllCollections.Size = new System.Drawing.Size(170, 23);
-            this.button_listAllCollections.TabIndex = 7;
-            this.button_listAllCollections.Text = "List all collections";
-            this.button_listAllCollections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_listAllCollections.UseVisualStyleBackColor = true;
+            this.listingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_listAllCollections,
+            this.Menu_listMissingMaps});
+            this.listingToolStripMenuItem.Name = "listingToolStripMenuItem";
+            this.listingToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.listingToolStripMenuItem.Text = "Listing";
             // 
-            // groupBox2
+            // Menu_listAllCollections
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.button_saveAllCollections);
-            this.groupBox2.Controls.Add(this.button_collectionsSplit);
-            this.groupBox2.Location = new System.Drawing.Point(3, 121);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(174, 76);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Collections saving";
+            this.Menu_listAllCollections.Name = "Menu_listAllCollections";
+            this.Menu_listAllCollections.Size = new System.Drawing.Size(168, 22);
+            this.Menu_listAllCollections.Text = "List all collections";
             // 
-            // button_saveAllCollections
+            // Menu_listMissingMaps
             // 
-            this.button_saveAllCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_saveAllCollections.Location = new System.Drawing.Point(1, 19);
-            this.button_saveAllCollections.Name = "button_saveAllCollections";
-            this.button_saveAllCollections.Size = new System.Drawing.Size(170, 23);
-            this.button_saveAllCollections.TabIndex = 5;
-            this.button_saveAllCollections.Text = "Save Collections";
-            this.button_saveAllCollections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_saveAllCollections.UseVisualStyleBackColor = true;
+            this.Menu_listMissingMaps.Name = "Menu_listMissingMaps";
+            this.Menu_listMissingMaps.Size = new System.Drawing.Size(168, 22);
+            this.Menu_listMissingMaps.Text = "List missing maps";
             // 
-            // button_collectionsSplit
+            // onlineToolStripMenuItem
             // 
-            this.button_collectionsSplit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_collectionsSplit.Location = new System.Drawing.Point(1, 48);
-            this.button_collectionsSplit.Name = "button_collectionsSplit";
-            this.button_collectionsSplit.Size = new System.Drawing.Size(170, 23);
-            this.button_collectionsSplit.TabIndex = 6;
-            this.button_collectionsSplit.Text = "Save collections in separate files";
-            this.button_collectionsSplit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_collectionsSplit.UseVisualStyleBackColor = true;
+            this.onlineToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_mapDownloads,
+            this.Menu_downloadAllMissing,
+            this.Menu_GenerateCollections,
+            this.Menu_GetMissingMapData});
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.onlineToolStripMenuItem.Text = "Online";
             // 
-            // groupBox1
+            // Menu_mapDownloads
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.button_unloadCollections);
-            this.groupBox1.Controls.Add(this.button_loadDefaultCollection);
-            this.groupBox1.Controls.Add(this.button_loadCollection);
-            this.groupBox1.Location = new System.Drawing.Point(3, 7);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(174, 108);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Collection loading";
+            this.Menu_mapDownloads.Name = "Menu_mapDownloads";
+            this.Menu_mapDownloads.Size = new System.Drawing.Size(219, 22);
+            this.Menu_mapDownloads.Text = "Show map downloads";
             // 
-            // button_unloadCollections
+            // Menu_downloadAllMissing
             // 
-            this.button_unloadCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_unloadCollections.Location = new System.Drawing.Point(1, 77);
-            this.button_unloadCollections.Name = "button_unloadCollections";
-            this.button_unloadCollections.Size = new System.Drawing.Size(170, 23);
-            this.button_unloadCollections.TabIndex = 8;
-            this.button_unloadCollections.Text = "Clear collections";
-            this.button_unloadCollections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_unloadCollections.UseVisualStyleBackColor = true;
+            this.Menu_downloadAllMissing.Name = "Menu_downloadAllMissing";
+            this.Menu_downloadAllMissing.Size = new System.Drawing.Size(219, 22);
+            this.Menu_downloadAllMissing.Text = "Download all missing maps";
             // 
-            // button_loadDefaultCollection
+            // Menu_GenerateCollections
             // 
-            this.button_loadDefaultCollection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_loadDefaultCollection.Location = new System.Drawing.Point(1, 48);
-            this.button_loadDefaultCollection.Name = "button_loadDefaultCollection";
-            this.button_loadDefaultCollection.Size = new System.Drawing.Size(170, 23);
-            this.button_loadDefaultCollection.TabIndex = 7;
-            this.button_loadDefaultCollection.Text = "Load osu! collection";
-            this.button_loadDefaultCollection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_loadDefaultCollection.UseVisualStyleBackColor = true;
+            this.Menu_GenerateCollections.Name = "Menu_GenerateCollections";
+            this.Menu_GenerateCollections.Size = new System.Drawing.Size(219, 22);
+            this.Menu_GenerateCollections.Text = "Generate collections";
             // 
-            // button_loadCollection
+            // Menu_GetMissingMapData
             // 
-            this.button_loadCollection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_loadCollection.Location = new System.Drawing.Point(1, 19);
-            this.button_loadCollection.Name = "button_loadCollection";
-            this.button_loadCollection.Size = new System.Drawing.Size(170, 23);
-            this.button_loadCollection.TabIndex = 3;
-            this.button_loadCollection.Text = "Load collection( .db/.osdb)";
-            this.button_loadCollection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_loadCollection.UseVisualStyleBackColor = true;
+            this.Menu_GetMissingMapData.Name = "Menu_GetMissingMapData";
+            this.Menu_GetMissingMapData.Size = new System.Drawing.Size(219, 22);
+            this.Menu_GetMissingMapData.Text = "Get missing map data";
+            this.Menu_GetMissingMapData.Visible = false;
             // 
-            // button_refreshBeatmapList
+            // osustatsCollectionsToolStripMenuItem
             // 
-            this.button_refreshBeatmapList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_refreshBeatmapList.Location = new System.Drawing.Point(114, 475);
-            this.button_refreshBeatmapList.Name = "button_refreshBeatmapList";
-            this.button_refreshBeatmapList.Size = new System.Drawing.Size(60, 23);
-            this.button_refreshBeatmapList.TabIndex = 10;
-            this.button_refreshBeatmapList.Text = "Refresh";
-            this.button_refreshBeatmapList.UseVisualStyleBackColor = true;
-            this.button_refreshBeatmapList.Visible = false;
+            this.osustatsCollectionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_osustatsLogin,
+            this.Menu_osustatsLoadCollections,
+            this.Menu_osustatsSaveCollections});
+            this.osustatsCollectionsToolStripMenuItem.Name = "osustatsCollectionsToolStripMenuItem";
+            this.osustatsCollectionsToolStripMenuItem.Size = new System.Drawing.Size(124, 20);
+            this.osustatsCollectionsToolStripMenuItem.Text = "Osustats collections";
+            this.osustatsCollectionsToolStripMenuItem.Visible = false;
+            // 
+            // Menu_osustatsLogin
+            // 
+            this.Menu_osustatsLogin.Name = "Menu_osustatsLogin";
+            this.Menu_osustatsLogin.Size = new System.Drawing.Size(180, 22);
+            this.Menu_osustatsLogin.Text = "Login...";
+            // 
+            // Menu_osustatsLoadCollections
+            // 
+            this.Menu_osustatsLoadCollections.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.Menu_osustatsLoadCollections.Name = "Menu_osustatsLoadCollections";
+            this.Menu_osustatsLoadCollections.Size = new System.Drawing.Size(180, 22);
+            this.Menu_osustatsLoadCollections.Text = "Load collections";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 22);
+            this.toolStripMenuItem2.Text = "...";
+            // 
+            // Menu_osustatsSaveCollections
+            // 
+            this.Menu_osustatsSaveCollections.Name = "Menu_osustatsSaveCollections";
+            this.Menu_osustatsSaveCollections.Size = new System.Drawing.Size(180, 22);
+            this.Menu_osustatsSaveCollections.Text = "Save collections";
+            // 
+            // Menu_beatmapListing
+            // 
+            this.Menu_beatmapListing.Name = "Menu_beatmapListing";
+            this.Menu_beatmapListing.Size = new System.Drawing.Size(133, 20);
+            this.Menu_beatmapListing.Text = "Show beatmap listing";
+            // 
+            // Menu_refreshBeatmapList
+            // 
+            this.Menu_refreshBeatmapList.Name = "Menu_refreshBeatmapList";
+            this.Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
+            this.Menu_refreshBeatmapList.Text = "Refresh";
             // 
             // MainSidePanelView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip1);
             this.Name = "MainSidePanelView";
-            this.Size = new System.Drawing.Size(184, 512);
-            this.panel1.ResumeLayout(false);
-            this.groupBox_onlineServices.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(724, 23);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        public System.Windows.Forms.Button button_mapDownloads;
-        public System.Windows.Forms.Button button_beatmapListing;
-        public System.Windows.Forms.GroupBox groupBox_onlineServices;
-        public System.Windows.Forms.Button button_GenerateCollections;
-        private System.Windows.Forms.GroupBox groupBox3;
-        public System.Windows.Forms.Button button_listMissingMaps;
-        public System.Windows.Forms.Button button_listAllCollections;
-        private System.Windows.Forms.GroupBox groupBox2;
-        public System.Windows.Forms.Button button_saveAllCollections;
-        public System.Windows.Forms.Button button_collectionsSplit;
-        private System.Windows.Forms.GroupBox groupBox1;
-        public System.Windows.Forms.Button button_loadDefaultCollection;
-        public System.Windows.Forms.Button button_loadCollection;
-        public System.Windows.Forms.Button button_unloadCollections;
-        public System.Windows.Forms.Button button_refreshBeatmapList;
-        public System.Windows.Forms.Button button_downloadAllMissing;
-        public System.Windows.Forms.Button button_GetMissingMapData;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Opennn;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Menu_listAllCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_listMissingMaps;
+        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Menu_mapDownloads;
+        private System.Windows.Forms.ToolStripMenuItem Menu_downloadAllMissing;
+        private System.Windows.Forms.ToolStripMenuItem Menu_GenerateCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_GetMissingMapData;
+        private System.Windows.Forms.ToolStripMenuItem osustatsCollectionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Menu_osustatsLogin;
+        private System.Windows.Forms.ToolStripMenuItem Menu_osustatsLoadCollections;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem Menu_osustatsSaveCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_loadCollection;
+        private System.Windows.Forms.ToolStripMenuItem Menu_loadDefaultCollection;
+        private System.Windows.Forms.ToolStripMenuItem Menu_saveAllCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_collectionsSplit;
+        private System.Windows.Forms.ToolStripMenuItem Menu_unloadCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_beatmapListing;
+        private System.Windows.Forms.ToolStripMenuItem Menu_refreshBeatmapList;
     }
 }

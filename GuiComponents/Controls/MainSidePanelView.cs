@@ -1,97 +1,89 @@
 ﻿using System;
 using System.Windows.Forms;
+using Common;
+using Gui.Misc;
 using GuiComponents.Interfaces;
 
 namespace GuiComponents.Controls
 {
     public partial class MainSidePanelView : UserControl, IMainSidePanelView
     {
-        public event EventHandler LoadCollection;
-        public event EventHandler LoadDefaultCollection;
-        public event EventHandler ClearCollections;
-        public event EventHandler SaveCollections;
-        public event EventHandler SaveInvidualCollections;
-        public event EventHandler ListAllMaps;
-        public event EventHandler ListMissingMaps;
-        public event EventHandler ShowBeatmapListing;
-        public event EventHandler ShowDownloadManager;
-        public event EventHandler DownloadAllMissing;
-        public event EventHandler GenerateCollections;
-        public event EventHandler GetMissingMapData;
+        public event GuiHelpers.SidePanelActionsHandlerArgs SidePanelOperation;
 
         public MainSidePanelView()
         {
             InitializeComponent();
-            button_loadCollection.Click += delegate { OnLoadCollection(); };
-            button_loadDefaultCollection.Click += delegate { OnLoadDefaultCollection(); };
-            button_unloadCollections.Click += delegate { OnClearCollections(); };
-            button_saveAllCollections.Click += delegate { OnSaveCollections(); };
-            button_collectionsSplit.Click += delegate { OnSaveInvidualCollections(); };
-            button_listAllCollections.Click += delegate { OnListAllMaps(); };
-            button_listMissingMaps.Click += delegate { OnListMissingMaps(); };
-            button_beatmapListing.Click += delegate { OnShowBeatmapListing(); };
-            button_mapDownloads.Click += delegate { OnShowDownloadManager(); };
-            button_downloadAllMissing.Click += delegate { OnDownloadAllMissing(); };
-            button_GenerateCollections.Click += delegate { OnGenerateCollections(); };
-            button_GetMissingMapData.Click +=  delegate { OnGetMissingMapData(); };
+            Menu_loadCollection.Click += delegate { OnLoadCollection(); };
+            Menu_loadDefaultCollection.Click += delegate { OnLoadDefaultCollection(); };
+            Menu_unloadCollections.Click += delegate { OnClearCollections(); };
+            Menu_saveAllCollections.Click += delegate { OnSaveCollections(); };
+            Menu_collectionsSplit.Click += delegate { OnSaveInvidualCollections(); };
+            Menu_listAllCollections.Click += delegate { OnListAllMaps(); };
+            Menu_listMissingMaps.Click += delegate { OnListMissingMaps(); };
+            Menu_beatmapListing.Click += delegate { OnShowBeatmapListing(); };
+            Menu_mapDownloads.Click += delegate { OnShowDownloadManager(); };
+            Menu_downloadAllMissing.Click += delegate { OnDownloadAllMissing(); };
+            Menu_GenerateCollections.Click += delegate { OnGenerateCollections(); };
+            Menu_GetMissingMapData.Click += delegate { OnGetMissingMapData(); };
         }
         private void OnLoadCollection()
         {
-            LoadCollection?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this,MainSidePanelActions.LoadCollection);
         }
 
         private void OnLoadDefaultCollection()
         {
-            LoadDefaultCollection?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadDefaultCollection);
         }
 
         private void OnClearCollections()
         {
-            ClearCollections?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.ClearCollections);
         }
 
         private void OnSaveCollections()
         {
-            SaveCollections?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveCollections);
         }
 
         private void OnSaveInvidualCollections()
         {
-            SaveInvidualCollections?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveInvidualCollections);
         }
 
         private void OnListAllMaps()
         {
-            ListAllMaps?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.ListAllBeatmaps);
         }
 
         private void OnListMissingMaps()
         {
-            ListMissingMaps?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.ListMissingMaps);
         }
 
         private void OnShowBeatmapListing()
         {
-            ShowBeatmapListing?.Invoke(this, null);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowBeatmapListing);
         }
-        
+
         private void OnShowDownloadManager()
         {
-            ShowDownloadManager?.Invoke(this, EventArgs.Empty);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowDownloadManager);
         }
 
         protected virtual void OnDownloadAllMissing()
         {
-            DownloadAllMissing?.Invoke(this, EventArgs.Empty);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.DownloadAllMissing);
         }
 
         protected virtual void OnGenerateCollections()
         {
-            GenerateCollections?.Invoke(this, EventArgs.Empty);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.GenerateCollections);
         }
         protected virtual void OnGetMissingMapData()
         {
-            GetMissingMapData?.Invoke(this, EventArgs.Empty);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.GetMissingMapData);
         }
+
     }
 }

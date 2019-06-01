@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,7 +19,9 @@ using CollectionManagerExtensionsDll.DataTypes;
 using CollectionManagerExtensionsDll.Modules.API;
 using CollectionManagerExtensionsDll.Modules.API.osu;
 using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
+using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using CollectionManagerExtensionsDll.Modules.TextProcessor;
+using Common;
 using GuiComponents.Interfaces;
 using NAudio.Codecs;
 
@@ -42,6 +44,8 @@ namespace App
         private CollectionsApiGenerator _collectionGenerator;
         private OsuSite _osuSite = new OsuSite();
         private BeatmapData BeatmapData = null;
+
+        private Dictionary<MainSidePanelActions, Action<object>> _mainSidePanelOperationHandlers;
         public SidePanelActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainForm, IBeatmapListingBindingProvider beatmapListingBindingProvider, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
             _osuFileIo = osuFileIo;
@@ -58,23 +62,55 @@ namespace App
 
         private void BindMainFormActions()
         {
-            _mainForm.SidePanelView.LoadCollection += (s, a) => LoadCollectionFile();
-            _mainForm.SidePanelView.LoadDefaultCollection += (s, a) => LoadDefaultCollection();
-            _mainForm.SidePanelView.ClearCollections += (s, a) => ClearCollections();
-            _mainForm.SidePanelView.SaveCollections += (s, a) => SaveCollections();
-            _mainForm.SidePanelView.SaveInvidualCollections += (s, a) => SaveInvidualCollections();
+            _mainSidePanelOperationHandlers = new Dictionary<MainSidePanelActions, Action<object>>
+            {
+                {MainSidePanelActions.LoadCollection, LoadCollectionFile},
+                {MainSidePanelActions.LoadDefaultCollection, LoadDefaultCollection},
+                {MainSidePanelActions.ClearCollections, ClearCollections},
+                {MainSidePanelActions.SaveCollections, SaveCollections},
+                {MainSidePanelActions.SaveInvidualCollections, SaveInvidualCollections},
+                {MainSidePanelActions.ShowBeatmapListing, ShowBeatmapListing},
+                {MainSidePanelActions.ShowDownloadManager, ShowDownloadManager},
+                {MainSidePanelActions.DownloadAllMissing, DownloadAllMissing},
+                {MainSidePanelActions.GenerateCollections, GenerateCollections},
+                {MainSidePanelActions.GetMissingMapData, GetMissingMapData},
+                {MainSidePanelActions.ListMissingMaps, ListMissingMaps },
+                {MainSidePanelActions.ListAllBeatmaps, ListAllBeatmaps }
+            };
 
-            _mainForm.SidePanelView.ShowBeatmapListing += (s, a) => ShowBeatmapListing();
-            _mainForm.SidePanelView.ShowDownloadManager += (s, a) => ShowDownloadManager();
-            _mainForm.SidePanelView.DownloadAllMissing += (s, a) => DownloadAllMissing();
-            _mainForm.SidePanelView.GenerateCollections += (s, a) => GenerateCollections();
-            _mainForm.SidePanelView.GetMissingMapData += (s, a) => GetMissingMapData();
-
+            _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
         }
 
-        private void GetMissingMapData()
+        private void ListAllBeatmaps(object sender)
+        {
+            var fileLocation = _userDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
+            if (fileLocation == string.Empty) return;
+            var listGenerator = new ListGenerator();
+            var CollectionListSaveType = Path.GetExtension(fileLocation).ToLower() == ".txt"
+                ? CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Txt
+                : CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Html;
+            var contents = listGenerator.GetAllMapsList(Initalizer.LoadedCollections, CollectionListSaveType);
+            File.WriteAllText(fileLocation, contents);
+        }
+        private void ListMissingMaps(object sender)
+        {
+            var fileLocation = _userDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
+            if (fileLocation == string.Empty) return;
+            var listGenerator = new ListGenerator();
+            var CollectionListSaveType = Path.GetExtension(fileLocation).ToLower() == ".txt"
+                ? CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Txt
+                : CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Html;
+            var contents = listGenerator.GetMissingMapsList(Initalizer.LoadedCollections, CollectionListSaveType);
+            File.WriteAllText(fileLocation, contents);
+        }
+        private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args)
+        {
+            _mainSidePanelOperationHandlers[args](sender);
+        }
+
+        private void GetMissingMapData(object sender)
         {
             //var test = Helpers.GetClipboardText();
             //var p = new TextProcessor();
@@ -115,9 +151,9 @@ namespace App
                 Beatmap downloadedBeatmap = null;
                 if (map.MapId > 0)
                     downloadedBeatmap = BeatmapData.GetBeatmapFromId(map.MapId, PlayMode.Osu);
-                else 
+                else
                 if (!map.Md5.Contains("|"))
-                    downloadedBeatmap = BeatmapData.GetBeatmapFromHash(map.Md5, PlayMode.Osu);
+                    downloadedBeatmap = BeatmapData.GetBeatmapFromHash(map.Md5, null);
 
                 if (downloadedBeatmap != null)
                 {
@@ -134,7 +170,7 @@ namespace App
                 }
             }
         }
-        private void GenerateCollections()
+        private void GenerateCollections(object sender)
         {
             if (_userTopGeneratorForm == null || _userTopGeneratorForm.IsDisposed)
             {
@@ -188,7 +224,7 @@ namespace App
             _usernameGeneratorForm.ShowAndBlock();
         }
 
-        private void DownloadAllMissing()
+        private void DownloadAllMissing(object sender)
         {
             var downloadableBeatmaps = new Beatmaps();
             foreach (var collection in Initalizer.LoadedCollections)
@@ -229,7 +265,7 @@ namespace App
                 _downloadManagerForm.Close();
             }
         }
-        private void LoadCollectionFile()
+        private void LoadCollectionFile(object sender)
         {
             var fileLocation = _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb",
                     "collection.db");
@@ -238,7 +274,7 @@ namespace App
             _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
         }
 
-        private void LoadDefaultCollection()
+        private void LoadDefaultCollection(object sender)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
             if (File.Exists(fileLocation))
@@ -248,19 +284,19 @@ namespace App
             }
         }
 
-        private void ClearCollections()
+        private void ClearCollections(object sender)
         {
             _collectionEditor.EditCollection(CollectionEditArgs.ClearCollections());
         }
 
-        private void SaveCollections()
+        private void SaveCollections(object sender)
         {
             var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb");
             if (fileLocation == string.Empty) return;
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
         }
 
-        private void SaveInvidualCollections()
+        private void SaveInvidualCollections(object sender)
         {
             var saveDirectory = _userDialogs.SelectDirectory("Where collection files should be saved?", true);
             if (saveDirectory == string.Empty) return;
@@ -271,7 +307,7 @@ namespace App
             }
         }
 
-        private void ShowBeatmapListing()
+        private void ShowBeatmapListing(object sender)
         {
             if (_beatmapListingForm == null || _beatmapListingForm.IsDisposed)
             {
@@ -291,7 +327,7 @@ namespace App
                 new DownloadManagerFormPresenter(_downloadManagerForm, new DownloadManagerModel(OsuDownloadManager.Instance));
             }
         }
-        private void ShowDownloadManager()
+        private void ShowDownloadManager(object sender = null)
         {
             CreateDownloadManagerForm();
             _downloadManagerForm.Show();

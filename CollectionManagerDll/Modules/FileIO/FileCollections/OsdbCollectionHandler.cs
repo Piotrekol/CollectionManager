@@ -108,7 +108,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 {
                     _binWriter.Write(beatmapHash);
                 }
-
             }
 
             _binWriter.Write("By Piotrekol");

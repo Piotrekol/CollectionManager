@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Forms;
 using App.Interfaces;
@@ -68,9 +68,7 @@ namespace App
 
             var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
             new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
-
-            HandleMainWindowActions(mainForm);
-
+            
             mainForm.ShowAndBlock();
             Quit();
         }
@@ -87,34 +85,6 @@ namespace App
             {
                 model.SetBeatmapCount(LoadedBeatmaps.Count);
             };
-        }
-        private void HandleMainWindowActions(IMainFormView form)
-        {
-
-            //TODO: export Listing of maps to CollectionTextPresenter(and refactor it as needed)
-            form.SidePanelView.ListAllMaps += delegate
-            {
-                var fileLocation = UserDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
-                if (fileLocation == string.Empty) return;
-                var listGenerator = new ListGenerator();
-                var CollectionListSaveType = Path.GetExtension(fileLocation).ToLower() == ".txt"
-                    ? CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Txt
-                    : CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Html;
-                var contents = listGenerator.GetAllMapsList(LoadedCollections, CollectionListSaveType);
-                File.WriteAllText(fileLocation, contents);
-            };
-            form.SidePanelView.ListMissingMaps += delegate
-            {
-                var fileLocation = UserDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
-                if (fileLocation == string.Empty) return;
-                var listGenerator = new ListGenerator();
-                var CollectionListSaveType = Path.GetExtension(fileLocation).ToLower() == ".txt"
-                    ? CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Txt
-                    : CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Html;
-                var contents = listGenerator.GetMissingMapsList(LoadedCollections, CollectionListSaveType);
-                File.WriteAllText(fileLocation, contents);
-            };
-
         }
 
 
