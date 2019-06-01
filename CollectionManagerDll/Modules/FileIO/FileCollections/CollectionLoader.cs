@@ -22,7 +22,9 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
         public Collections LoadOsdbCollections(string fileLocation)
         {
-            return OsdbCollectionHandler.ReadOsdb(fileLocation, _mapCacher);
+            var collections = new Collections();
+            collections.AddRange(OsdbCollectionHandler.ReadOsdb(fileLocation, _mapCacher));
+            return collections;
         }
 
         public void SaveOsuCollection(Collections collections, string saveLocation)

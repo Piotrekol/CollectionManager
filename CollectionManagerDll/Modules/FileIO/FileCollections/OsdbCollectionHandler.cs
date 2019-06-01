@@ -42,9 +42,18 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         {
             //Helpers.Info(message);
         }
+        
         public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool skipMissing = false)
         {
             OpenFile(fullFileDir, true);
+            WriteOsdb(collections, _fileStream, editor, skipMissing);
+            CloseFile(true);
+        }
+
+        public void WriteOsdb(Collections collections, Stream stream, string editor, bool skipMissing = false)
+        {
+            OpenStream(stream, true);
+
             //header
             _binWriter.Write(CurrentVersion);
             //save date
@@ -103,10 +112,9 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             }
 
             _binWriter.Write("By Piotrekol");
-            CloseFile(true);
         }
 
-        public Collections ReadOsdb(string fullFileDir, MapCacher mapCacher)
+        public IEnumerable<Collection> ReadOsdb(string fullFileDir, MapCacher mapCacher)
         {
             int fileVersion = -1;
             DateTime fileDate = DateTime.Now;
@@ -115,8 +123,8 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             _binReader.BaseStream.Seek(0, SeekOrigin.Begin);
             string versionString = _binReader.ReadString();
             //check header
-            if(_versions.ContainsKey(versionString))
-                    fileVersion = _versions[versionString];
+            if (_versions.ContainsKey(versionString))
+                fileVersion = _versions[versionString];
             if (fileVersion == -1)
             {
                 Error("Unrecognized osdb file version");
@@ -150,7 +158,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                             map.UserComment = _binReader.ReadString();
                         if (fileVersion >= 5)
                             map.PlayMode = (PlayMode)_binReader.ReadByte();
-                        if(fileVersion>=6)
+                        if (fileVersion >= 6)
                             map.ModPpStars.Add(map.PlayMode, new Dictionary<int, double>()
                             {
                                 { 0, _binReader.ReadDouble()}
@@ -168,8 +176,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                         }
                     }
 
-
-                    collections.Add(collection);
+                    yield return collection;
                 }
             }
             if (_binReader.ReadString() != "By Piotrekol")
@@ -177,13 +184,10 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 Error("File footer is invalid, with could mean that this file is corrupted. CONTINUE AT YOUR OWN RISK");
             }
 
-
             CloseFile(false);
-
 
             collections = IssuseVersionRelevantProcedures(fileVersion, fileDate, collections);
 
-            return collections;
         }
 
         private Collections IssuseVersionRelevantProcedures(int fileVersion, DateTime fileDate, Collections collections)
@@ -201,6 +205,24 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             return collections;
         }
 
+        private void OpenStream(Stream stream, bool forWriting = false)
+        {
+            if (forWriting)
+            {
+                if (!stream.CanWrite)
+                {
+                    throw new Exception("Provided Stream doesn't support writing");
+                }
+
+                _binWriter = new BinaryWriter(stream);
+            }
+            else
+            {
+                _memStream = new MemoryStream();
+                stream.CopyTo(_memStream);
+                _binReader = new BinaryReader(_memStream);
+            }
+        }
 
         private void OpenFile(string fileDir, bool forWriting = false)
         {
