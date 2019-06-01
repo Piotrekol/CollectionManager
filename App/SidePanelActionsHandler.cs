@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using App.Interfaces;
 using App.Misc;
 using App.Models;
@@ -12,7 +11,6 @@ using App.Presenters.Controls;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
-using CollectionManager.Interfaces;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.DataTypes;
@@ -20,10 +18,8 @@ using CollectionManagerExtensionsDll.Modules.API;
 using CollectionManagerExtensionsDll.Modules.API.osu;
 using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
-using CollectionManagerExtensionsDll.Modules.TextProcessor;
 using Common;
 using GuiComponents.Interfaces;
-using NAudio.Codecs;
 
 namespace App
 {

@@ -78,7 +78,7 @@ namespace CollectionManager
             //true
             bool isNameTaken = collectionManager.CollectionNameExists("Collection created from 2 Example collections");
 
-            Collection ourMergedCollection = collectionManager.GetCollectionByName("Collection created from 2 Example collections");
+            ICollection ourMergedCollection = collectionManager.GetCollectionByName("Collection created from 2 Example collections");
             
             //These are avaliable only when using CollectionsManagerWithCounts
             var TotalBeatmapCount = collectionManager.BeatmapsInCollectionsCount;

@@ -5,6 +5,7 @@ using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
 using Gui.Misc;
 using GuiComponents.Interfaces;
+using ICollection = CollectionManager.DataTypes.ICollection;
 
 namespace GuiComponents.Controls
 {
@@ -13,9 +14,9 @@ namespace GuiComponents.Controls
         public string SearchText => textBox_collectionNameSearch.Text;
         public Collections Collections { set { ListViewCollections.SetObjects(value); } }
 
-        public Collection SelectedCollection
+        public ICollection SelectedCollection
         {
-            get { return (Collection) ListViewCollections.SelectedObject; }
+            get { return (ICollection) ListViewCollections.SelectedObject; }
             set
             {
                 ListViewCollections.SelectedObject = null;

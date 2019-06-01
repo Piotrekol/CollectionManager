@@ -127,7 +127,7 @@ namespace CollectionManager.Modules.CollectionsManager
         {
             LoadedCollections.CallReset();
         }
-        public Collection GetCollectionByName(string collectionName)
+        public ICollection GetCollectionByName(string collectionName)
         {
             for (int i = 0; i < LoadedCollections.Count; i++)
             {

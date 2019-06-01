@@ -11,7 +11,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator
         void StartGenerating();
         void EndGenerating();
         string GetListHeader(Collections collections);
-        string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber);
+        string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber);
         string GetListFooter(Collections collections);
     }
 }

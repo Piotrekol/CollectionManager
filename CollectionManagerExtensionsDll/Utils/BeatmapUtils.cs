@@ -8,7 +8,7 @@ namespace CollectionManagerExtensionsDll.Utils
 {
     public static class BeatmapUtils
     {
-        internal static Dictionary<int, Beatmaps> GetMapSets(this Collection collection, BeatmapListType beatmapListType)
+        internal static Dictionary<int, Beatmaps> GetMapSets(this ICollection collection, BeatmapListType beatmapListType)
         {
             var mapSets = new Dictionary<int, Beatmaps>();
             switch (beatmapListType)

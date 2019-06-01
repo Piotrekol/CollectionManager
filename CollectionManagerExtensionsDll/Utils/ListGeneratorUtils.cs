@@ -13,7 +13,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
         /// Dictionary containing MapSetId as key and corresponding beatmaps in value. 
         /// beatmaps with invalid MapSetId (less than 1) are placed under key "-1"
         /// </returns>
-        internal static Dictionary<int, Beatmaps> GetBeatmapSets(this Collection collection)
+        internal static Dictionary<int, Beatmaps> GetBeatmapSets(this ICollection collection)
         {
             return GetBeatmapSets(collection.AllBeatmaps());
         }

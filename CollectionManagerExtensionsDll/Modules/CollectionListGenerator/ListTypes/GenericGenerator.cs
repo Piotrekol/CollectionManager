@@ -40,7 +40,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
             return MainHeader;
         }
 
-        public virtual string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
+        public virtual string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
         {
             _mainStringBuilder.Clear();
             _md5Output.Clear();

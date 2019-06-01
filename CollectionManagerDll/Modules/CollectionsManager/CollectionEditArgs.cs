@@ -53,7 +53,7 @@ namespace CollectionManager.Modules.CollectionsManager
                 NewName = NewName
             };
         }
-        public static CollectionEditArgs RenameCollection(Collection collection, string newName)
+        public static CollectionEditArgs RenameCollection(ICollection collection, string newName)
         {
             return RenameCollection(collection.Name, newName);
         }
@@ -106,7 +106,7 @@ namespace CollectionManager.Modules.CollectionsManager
         #endregion
 
         #region duplicate
-        public static CollectionEditArgs DuplicateCollection(Collection collection)
+        public static CollectionEditArgs DuplicateCollection(ICollection collection)
         {
             return new CollectionEditArgs(CollectionEdit.Duplicate)
             {

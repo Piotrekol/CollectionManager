@@ -67,7 +67,7 @@ Number of collections listed: {1}<br /></h1>";
             return string.Format(_htmlOutputHeader, "N/A", collections.Count);
         }
 
-        public string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
+        public string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
         {
             _mainStringBuilder.Clear();
 

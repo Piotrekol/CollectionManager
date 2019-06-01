@@ -15,7 +15,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
         }
         
 
-        public string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets,int collectionNumber)
+        public string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets,int collectionNumber)
         {
             _stringBuilder.Clear();
 

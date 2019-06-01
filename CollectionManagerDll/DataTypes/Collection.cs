@@ -8,7 +8,7 @@ using CollectionManager.Modules.FileIO.OsuDb;
 
 namespace CollectionManager.DataTypes
 {
-    public class Collection : IEnumerable
+    public class Collection : IEnumerable, ICollection
     {
         private MapCacher LoadedMaps = null;
 

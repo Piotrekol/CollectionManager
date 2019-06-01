@@ -2,7 +2,6 @@
 using System.Collections;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
-using CollectionManager.Modules.CollectionsManager;
 using Gui.Misc;
 
 namespace GuiComponents.Interfaces
@@ -12,7 +11,7 @@ namespace GuiComponents.Interfaces
         string SearchText { get; }
 
         Collections Collections { set; }
-        Collection SelectedCollection { get; set; }
+        CollectionManager.DataTypes.ICollection SelectedCollection { get; set; }
         ArrayList SelectedCollections { get; }
 
         event EventHandler SearchTextChanged;

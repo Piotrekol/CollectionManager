@@ -34,7 +34,7 @@ namespace App.Models
             }
         }
 
-        public Collection CurrentCollection { get; private set; }
+        public ICollection CurrentCollection { get; private set; }
         private Beatmaps _selectedBeatmaps;
         public Beatmaps SelectedBeatmaps
         {
@@ -78,7 +78,7 @@ namespace App.Models
             OnBeatmapsChanged();
         }
 
-        public void SetCollection(Collection collection)
+        public void SetCollection(ICollection collection)
         {
             if (collection == null)
             {

@@ -19,12 +19,12 @@ namespace App.Interfaces
 
         Beatmaps SelectedBeatmaps { get; set; }
         Beatmap SelectedBeatmap { get; set; }
-        Collection CurrentCollection { get; }
+        ICollection CurrentCollection { get; }
         void EmitBeatmapOperation(BeatmapListingAction args);
         void EmitBeatmapsDropped(object sender,Beatmaps beatmaps);
         Beatmaps GetBeatmaps();
         void SetBeatmaps(Beatmaps beatmaps);
-        void SetCollection(Collection collection);
+        void SetCollection(ICollection collection);
         void FilterBeatmaps(string text);
         IModelFilter GetFilter();
     }

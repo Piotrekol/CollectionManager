@@ -51,7 +51,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
         protected override string CollectionFooter => collectionFooter;
         protected override string CollectionHeaderTemplate => collectionHeaderTemplate;
 
-        public override string GetCollectionBody(Collection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
+        public override string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
         {
             try
             {

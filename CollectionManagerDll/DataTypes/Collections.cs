@@ -8,7 +8,7 @@ namespace CollectionManager.DataTypes
     /// Contents of this collection should be only modified by CollectionManager.
     /// Edits outside of it are not supported and things may break.
     /// </summary>
-    public class Collections :RangeObservableCollection<Collection>
+    public class Collections :RangeObservableCollection<ICollection>
     {
         public IEnumerable<BeatmapExtension> AllBeatmaps()
         {
