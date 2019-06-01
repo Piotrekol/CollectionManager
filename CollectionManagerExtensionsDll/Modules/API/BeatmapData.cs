@@ -52,9 +52,9 @@ namespace CollectionManagerExtensionsDll.Modules.API
             return null;
         }
 
-        public Beatmap GetBeatmapFromHash(string mapHash, PlayMode gamemode)
+        public Beatmap GetBeatmapFromHash(string mapHash, PlayMode? gamemode)
         {
-            var map = CheckInCache(gamemode, -1, mapHash);
+            var map = CheckInCache(gamemode ?? PlayMode.Osu, -1, mapHash);
             if (map != null)
                 return map;
 
@@ -64,17 +64,17 @@ namespace CollectionManagerExtensionsDll.Modules.API
             {
                 result = _osuApi.GetBeatmap(mapHash, gamemode);
             } while (result == null && i++ < 3);
-
+            
             if (result == null)
                 return null;
 
-            _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(result.MapId, gamemode), result);
+            _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(result.MapId, result.PlayMode), result);
             return result;
         }
 
-        public Beatmap GetBeatmapFromId(int beatmapId, PlayMode gamemode)
+        public Beatmap GetBeatmapFromId(int beatmapId, PlayMode? gamemode)
         {
-            var map = CheckInCache(gamemode, beatmapId);
+            var map = CheckInCache(gamemode ?? PlayMode.Osu, beatmapId);
             if (map != null)
                 return map;
 
@@ -88,7 +88,7 @@ namespace CollectionManagerExtensionsDll.Modules.API
             if (result == null)
                 return null;
 
-            _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(beatmapId, gamemode), result);
+            _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(beatmapId, result.PlayMode), result);
             return result;
         }
     }
