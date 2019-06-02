@@ -21,10 +21,11 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-AllowNoIcons=yes
+AllowNoIcons=no
 LicenseFile=.\license.txt
 OutputDir=.\output
 OutputBaseFilename=CollectionManagerSetup
+SetupIconFile=..\App\Resources\logo.ico
 Compression=lzma
 SolidCompression=yes
 

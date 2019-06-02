@@ -16,7 +16,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent />
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\logo.ico" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="2.13.0307" />
   </ItemGroup>
