@@ -26,7 +26,7 @@ namespace App
         public static CollectionEditor CollectionEditor { get; private set; }
         private IUserDialogs UserDialogs { get; set; }// = new GuiComponents.UserDialogs();
         public static OsuStatsApi WebCollectionProvider = new OsuStatsApi("", OsuFileIo.LoadedMaps);
-        public void Run()
+        public void Run(string[] args)
         {
             //IUserDialogs can be implemented in WinForm or WPF or Gtk or Console or...?
             UserDialogs = GuiComponentsProvider.Instance.GetClassImplementing<IUserDialogs>();
@@ -50,6 +50,14 @@ namespace App
 
             var collectionAddRemoveForm = GuiComponentsProvider.Instance.GetClassImplementing<ICollectionAddRenameForm>();
             CollectionEditor = new CollectionEditor(CollectionsManager, CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
+
+            if (args.Length > 0)
+            {
+                if (File.Exists(args[0]))
+                {
+                    CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(OsuFileIo.CollectionLoader.LoadCollection(args[0])));
+                }
+            }
 
             var UpdateChecker = new UpdateChecker();
             UpdateChecker.currentVersion = System.Reflection.Assembly.GetExecutingAssembly()

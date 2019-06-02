@@ -28,6 +28,13 @@ OutputBaseFilename=CollectionManagerSetup
 SetupIconFile=..\App\Resources\logo.ico
 Compression=lzma
 SolidCompression=yes
+ChangesAssociations=yes
+[Registry]
+
+Root: HKCR; Subkey: ".osdb";                             ValueData: "{#MyAppName}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""; Tasks: osdbAssociation
+Root: HKCR; Subkey: "{#MyAppName}";                     ValueData: "Program {#MyAppName}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""; Tasks: osdbAssociation
+Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon";             ValueData: "{app}\{#MyAppExeName},0";               ValueType: string;  ValueName: ""; Tasks: osdbAssociation
+Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#MyAppExeName}"" ""%1""";  ValueType: string;  ValueName: ""; Tasks: osdbAssociation
 
 [CustomMessages]
 MyAppOld=The Setup detected application version 
@@ -39,6 +46,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: osdbAssociation; Description: "Associate "".osdb"" extension"; GroupDescription: File extensions:
+
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
