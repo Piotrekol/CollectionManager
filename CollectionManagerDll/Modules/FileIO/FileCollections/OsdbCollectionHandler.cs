@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuDb;
+using SharpCompress.Archives;
+using SharpCompress.Archives.GZip;
+using SharpCompress.Common;
+using SharpCompress.Writers;
 
 namespace CollectionManager.Modules.FileIO.FileCollections
 {
@@ -16,47 +21,71 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         private BinaryReader _binReader;
         private BinaryWriter _binWriter;
         private FileStream _fileStream;
-        private ILogger _logger;
+        private readonly ILogger _logger;
         private MemoryStream _memStream;
-        private Dictionary<string, int> _versions = new Dictionary<string, int>()
+
+        private readonly Dictionary<string, int> _versions = new Dictionary<string, int>
         {
-            {"o!dm",1 },
-            {"o!dm2",2 },
-            {"o!dm3",3 },
-            {"o!dm4",4 },
-            {"o!dm5",5 },
-            {"o!dm6",6 },
-            {"o!dm7",7 },
+            {"o!dm", 1},
+            {"o!dm2", 2},
+            {"o!dm3", 3},
+            {"o!dm4", 4},
+            {"o!dm5", 5},
+            {"o!dm6", 6},
+            {"o!dm7", 7},
+            {"o!dm7min", 1007}
         };
 
-        private string CurrentVersion => "o!dm7";
         public OsdbCollectionHandler(ILogger logger)
         {
             _logger = logger;
+        }
+
+        public string CurrentVersion(bool minimalWrite = false)
+        {
+            return "o!dm7" + (minimalWrite ? "min" : "");
+        }
+
+        private bool isMinimalCollection(string versionString)
+        {
+            return versionString.EndsWith("min");
         }
 
         protected virtual void Error(string message)
         {
             //Helpers.Error(message);
         }
+
         protected virtual void Info(string message)
         {
             //Helpers.Info(message);
         }
 
-        public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool skipMissing = false)
+        public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool minimalWrite = false)
         {
-            OpenFile(fullFileDir, true);
-            WriteOsdb(collections, _fileStream, editor, skipMissing);
-            CloseFile(true);
+            using (var fileStream = new FileStream(fullFileDir, FileMode.Create, FileAccess.ReadWrite))
+            using (var memoryStream = new MemoryStream())
+            {
+                WriteOsdb(collections, memoryStream, editor, minimalWrite);
+                using (var binaryWriter = new BinaryWriter(fileStream))
+                using (var archive = GZipArchive.Create())
+                {
+                    binaryWriter.Write(CurrentVersion(minimalWrite));
+                    var len = memoryStream.Position;
+                    memoryStream.Position = 0;
+                    archive.AddEntry("collection.osdb", memoryStream, len, DateTime.UtcNow);
+                    archive.SaveTo(fileStream, new WriterOptions(CompressionType.GZip));
+                }
+            }
         }
 
-        public void WriteOsdb(Collections collections, Stream stream, string editor, bool skipMissing = false)
+        public void WriteOsdb(Collections collections, Stream stream, string editor,
+            bool minimalWrite = false)
         {
             OpenStream(stream, true);
 
             //header
-            _binWriter.Write(CurrentVersion);
+            _binWriter.Write(CurrentVersion(minimalWrite));
             //save date
             _binWriter.Write(DateTime.Now.ToOADate());
             //who saved given osdb
@@ -66,13 +95,14 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             //bool ignoreMissingMaps = false;
             foreach (var collection in collections)
             {
-                Beatmaps beatmapsPossibleToSave = new Beatmaps();
-                HashSet<string> beatmapWithHashOnly = new HashSet<string>();
+                var beatmapsPossibleToSave = new Beatmaps();
+                var beatmapWithHashOnly = new HashSet<string>();
 
                 foreach (var beatmap in collection.KnownBeatmaps)
                 {
                     beatmapsPossibleToSave.Add(beatmap);
                 }
+
                 foreach (var beatmap in collection.DownloadableBeatmaps)
                 {
                     beatmapsPossibleToSave.Add(beatmap);
@@ -89,6 +119,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                         beatmapWithHashOnly.Add(partialBeatmap.Md5);
                     }
                 }
+
                 _binWriter.Write(collection.Name);
                 _binWriter.Write(collection.OnlineId);
                 _binWriter.Write(beatmapsPossibleToSave.Count);
@@ -97,14 +128,22 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 {
                     _binWriter.Write(beatmap.MapId);
                     _binWriter.Write(beatmap.MapSetId);
-                    _binWriter.Write(beatmap.ArtistRoman);
-                    _binWriter.Write(beatmap.TitleRoman);
-                    _binWriter.Write(beatmap.DiffName);
+                    if (!minimalWrite)
+                    {
+                        _binWriter.Write(beatmap.ArtistRoman);
+                        _binWriter.Write(beatmap.TitleRoman);
+                        _binWriter.Write(beatmap.DiffName);
+                    }
+
                     _binWriter.Write(beatmap.Md5);
-                    _binWriter.Write(((BeatmapExtension)beatmap).UserComment);
-                    _binWriter.Write((byte)beatmap.PlayMode);
-                    _binWriter.Write(beatmap.StarsNomod);
+                    _binWriter.Write(((BeatmapExtension) beatmap).UserComment);
+                    if (!minimalWrite)
+                    {
+                        _binWriter.Write((byte) beatmap.PlayMode);
+                        _binWriter.Write(beatmap.StarsNomod);
+                    }
                 }
+
                 _binWriter.Write(beatmapWithHashOnly.Count);
                 foreach (var beatmapHash in beatmapWithHashOnly)
                 {
@@ -117,65 +156,104 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
         public IEnumerable<Collection> ReadOsdb(string fullFileDir, MapCacher mapCacher)
         {
-            int fileVersion = -1;
-            DateTime fileDate = DateTime.Now;
+            var fileVersion = -1;
+            var fileDate = DateTime.Now;
             var collections = new Collections();
-            OpenFile(fullFileDir, false);
+            OpenFile(fullFileDir);
             _binReader.BaseStream.Seek(0, SeekOrigin.Begin);
-            string versionString = _binReader.ReadString();
+            var versionString = _binReader.ReadString();
             //check header
             if (_versions.ContainsKey(versionString))
+            {
                 fileVersion = _versions[versionString];
+            }
+
             if (fileVersion == -1)
             {
                 Error("Unrecognized osdb file version");
             }
             else
             {
+                if (fileVersion >= 7)
+                {
+                    using (var archiveReader = GZipArchive.Open(_memStream))
+                    {
+                        var memStream = new MemoryStream();
+                        archiveReader.Entries.First().WriteTo(memStream);
+                        memStream.Position = 0;
+                        _binReader = new BinaryReader(memStream);
+                        _binReader.ReadString(); //version string
+                    }
+                }
+
                 _logger?.Log("Starting file load");
                 fileDate = DateTime.FromOADate(_binReader.ReadDouble());
                 _logger?.Log(">Date: " + fileDate);
-                string lastEditor = _binReader.ReadString();
+                var lastEditor = _binReader.ReadString();
                 _logger?.Log(">LastEditor: " + lastEditor);
-                int numberOfCollections = _binReader.ReadInt32();
+                var numberOfCollections = _binReader.ReadInt32();
                 _logger?.Log(">Collections: " + numberOfCollections);
-                for (int i = 0; i < numberOfCollections; i++)
+                for (var i = 0; i < numberOfCollections; i++)
                 {
                     var name = _binReader.ReadString();
-                    int onlineId = -1;
+                    var onlineId = -1;
                     if (fileVersion >= 7)
+                    {
                         onlineId = _binReader.ReadInt32();
+                    }
+
                     var numberOfBeatmaps = _binReader.ReadInt32();
-                    _logger?.Log(">Number of maps in collection {0}: {1} named:{2}", i.ToString(), numberOfBeatmaps.ToString(), name);
-                    var collection = new Collection(mapCacher) { Name = name, LastEditorUsername = lastEditor, OnlineId = onlineId };
-                    for (int j = 0; j < numberOfBeatmaps; j++)
+                    _logger?.Log(">Number of maps in collection {0}: {1} named:{2}", i.ToString(),
+                        numberOfBeatmaps.ToString(), name);
+                    var collection = new Collection(mapCacher)
+                        {Name = name, LastEditorUsername = lastEditor, OnlineId = onlineId};
+                    for (var j = 0; j < numberOfBeatmaps; j++)
                     {
                         var map = new BeatmapExtension();
                         map.MapId = _binReader.ReadInt32();
                         if (fileVersion >= 2)
+                        {
                             map.MapSetId = _binReader.ReadInt32();
-                        map.ArtistRoman = _binReader.ReadString();
-                        map.TitleRoman = _binReader.ReadString();
-                        map.DiffName = _binReader.ReadString();
+                        }
+
+                        if (!isMinimalCollection(versionString))
+                        {
+                            map.ArtistRoman = _binReader.ReadString();
+                            map.TitleRoman = _binReader.ReadString();
+                            map.DiffName = _binReader.ReadString();
+                        }
+
                         map.Md5 = _binReader.ReadString();
                         if (fileVersion >= 4)
+                        {
                             map.UserComment = _binReader.ReadString();
-                        if (fileVersion >= 5)
-                            map.PlayMode = (PlayMode)_binReader.ReadByte();
-                        if (fileVersion >= 6)
-                            map.ModPpStars.Add(map.PlayMode, new Dictionary<int, double>()
+                        }
+
+                        if (!isMinimalCollection(versionString))
+                        {
+                            if (fileVersion >= 5)
                             {
-                                { 0, _binReader.ReadDouble()}
-                            });
+                                map.PlayMode = (PlayMode) _binReader.ReadByte();
+                            }
+
+                            if (fileVersion >= 6)
+                            {
+                                map.ModPpStars.Add(map.PlayMode, new Dictionary<int, double>
+                                {
+                                    {0, _binReader.ReadDouble()}
+                                });
+                            }
+                        }
+
                         collection.AddBeatmap(map);
                     }
 
                     if (fileVersion >= 3)
                     {
                         var numberOfMapHashes = _binReader.ReadInt32();
-                        for (int j = 0; j < numberOfMapHashes; j++)
+                        for (var j = 0; j < numberOfMapHashes; j++)
                         {
-                            string hash = _binReader.ReadString();
+                            var hash = _binReader.ReadString();
                             collection.AddBeatmapByHash(hash);
                         }
                     }
@@ -183,15 +261,15 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     yield return collection;
                 }
             }
+
             if (_binReader.ReadString() != "By Piotrekol")
             {
                 Error("File footer is invalid, with could mean that this file is corrupted. CONTINUE AT YOUR OWN RISK");
             }
 
-            CloseFile(false);
+            CloseFile();
 
             collections = IssuseVersionRelevantProcedures(fileVersion, fileDate, collections);
-
         }
 
         private Collections IssuseVersionRelevantProcedures(int fileVersion, DateTime fileDate, Collections collections)
@@ -200,12 +278,14 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {
                 if (fileVersion < 3)
                 {
-                    Info("This collection was generated using an older version of Collection Manager." + Environment.NewLine +
-                        "All download links in this collection will not work." + Environment.NewLine +
-                        "File version: " + fileVersion + Environment.NewLine +
-                        "Date: " + fileDate);
+                    Info("This collection was generated using an older version of Collection Manager." +
+                         Environment.NewLine +
+                         "All download links in this collection will not work." + Environment.NewLine +
+                         "File version: " + fileVersion + Environment.NewLine +
+                         "Date: " + fileDate);
                 }
             }
+
             return collections;
         }
 
@@ -234,7 +314,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {
                 _fileStream = new FileStream(fileDir, FileMode.Create, FileAccess.ReadWrite);
                 _binWriter = new BinaryWriter(_fileStream);
-
             }
             else
             {
@@ -243,7 +322,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 _fileStream.CopyTo(_memStream);
                 _fileStream.Close();
                 _binReader = new BinaryReader(_memStream);
-
             }
         }
 
@@ -260,7 +338,9 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _binReader.Close();
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
     }
 }
