@@ -1,9 +1,8 @@
-﻿//#define TestServer
+﻿#define TestServer
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.FileIO.FileCollections;
@@ -16,7 +15,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
     public class OsuStatsApi : IWebCollectionProvider
     {
         private readonly MapCacher _mapCacher;
-        private OsdbCollectionHandler collectionHandler = new OsdbCollectionHandler(null);
+        private readonly OsdbCollectionHandler collectionHandler = new OsdbCollectionHandler(null);
         private string _apiKey;
         public UserInformation UserInformation { get; private set; }
 
@@ -26,7 +25,8 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
         private const string baseUrl = "https://osustats.ppy.sh/apiv2/";
 #endif
 
-        HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient = new HttpClient();
+
         public string ApiKey
         {
             get => _apiKey;
@@ -52,16 +52,28 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
 
         public async Task<bool> IsCurrentKeyValid()
         {
-            return await UpdateUserInformation();
+            if (string.IsNullOrEmpty(ApiKey) || !await UpdateUserInformation())
+            {
+                UserInformation = null;
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<bool> UpdateUserInformation()
         {
-            var data = await httpClient.GetStringAsync($"{baseUrl}account/me");
+            var response = await httpClient.GetAsync($"{baseUrl}account/me");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
 
             try
             {
-                UserInformation = JsonConvert.DeserializeObject<UserInformation>(data);
+                UserInformation =
+                    JsonConvert.DeserializeObject<UserInformation>(await response.Content.ReadAsStringAsync());
             }
             catch
             {
@@ -72,7 +84,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
         }
 
         /// <summary>
-        /// Fetches full blown osdb files with contain all collection metadata and all beatmaps
+        ///     Fetches full blown osdb files with contain all collection metadata and all beatmaps
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -89,27 +101,41 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
 
             return collectionHandler.ReadOsdb(tempFile, _mapCacher);
         }
+
         /// <summary>
-        /// Fetches collection metadata without their beatmaps
+        ///     Fetches collection metadata without their beatmaps
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        protected async Task<IEnumerable<WebCollection>> GetCollectionList(string path)
+        protected async Task<IEnumerable<WebCollection>> FetchCollectionList(string path)
         {
             var stream = await httpClient.GetStringAsync($"{baseUrl}{path}");
+
+            return GetCollectionList(stream);
+        }
+
+        /// <summary>
+        ///     Fetches collection metadata without their beatmaps
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        protected IEnumerable<WebCollection> GetCollectionList(string jsonResponse)
+        {
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
 
-            var apiResponse = JsonConvert.DeserializeObject<ApiCollectionResponse>(stream, jsonSerializerSettings);
+            var apiResponse =
+                JsonConvert.DeserializeObject<ApiCollectionResponse>(jsonResponse, jsonSerializerSettings);
             var webCollections = new List<WebCollection>();
             foreach (var webCollectionToken in apiResponse.Data)
             {
-                webCollections.Add(new WebCollection(path,webCollectionToken["id"].ToObject<int>(),_mapCacher)
+                webCollections.Add(new WebCollection(webCollectionToken["id"].ToObject<int>(), _mapCacher)
                 {
                     Name = webCollectionToken["title"].ToString(),
                     NumberOfBeatmaps = webCollectionToken["totalBeatmapsCount"].ToObject<int>()
                 });
             }
+
             return webCollections;
         }
 
@@ -119,8 +145,9 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
             public int Total { get; set; }
             public int PerPage { get; set; }
         }
+
         /// <summary>
-        /// Returns collection with given online Id
+        ///     Returns collection with given online Id
         /// </summary>
         /// <param name="collectionId"></param>
         /// <returns></returns>
@@ -130,12 +157,12 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
         }
 
         /// <summary>
-        /// Returns all <see cref="WebCollection"/> that user identified by <see cref="ApiKey"/> has ever uploaded.
+        ///     Returns all <see cref="WebCollection" /> that user identified by <see cref="ApiKey" /> has ever uploaded.
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<WebCollection>> GetMyCollectionList()
         {
-            return await GetCollectionList("collection?all=1");
+            return await FetchCollectionList("collection?all=1");
         }
 
         public async Task<ICollection> GetCollection(string path)
@@ -143,9 +170,25 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
             return (await GetCollections(path)).First();
         }
 
-        public Task<bool> SaveCollection(ICollection collection)
+        public async Task<IEnumerable<WebCollection>> SaveCollection(ICollection collection)
         {
-            throw new System.NotImplementedException();
+            using (var memoryStream = new MemoryStream())
+            {
+                collectionHandler.WriteOsdb(new Collections { collection }, memoryStream,
+                    collection.LastEditorUsername ?? "", true);
+                memoryStream.Position = 0;
+
+
+                using (HttpContent osdbContent = new StreamContent(memoryStream))
+                using (MultipartFormDataContent httpContent = new MultipartFormDataContent())
+                {
+                    httpContent.Add(osdbContent, "file",$"{collection.Name}.osdb");
+                    var response = await httpClient.PostAsync($"{baseUrl}collection/import", httpContent);
+
+                    return GetCollectionList(await response.Content.ReadAsStringAsync());
+                }
+
+            }
         }
     }
 }

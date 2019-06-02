@@ -14,6 +14,8 @@
         GenerateCollections,
         GetMissingMapData,
         ListAllBeatmaps,
-        OsustatsLogin
+        OsustatsLogin,
+        AddCollections,
+        UploadCollectionChanges
     }
 }

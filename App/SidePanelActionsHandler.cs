@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using App.Interfaces;
 using App.Misc;
 using App.Models;
@@ -41,7 +42,7 @@ namespace App
         private OsuSite _osuSite = new OsuSite();
         private BeatmapData BeatmapData = null;
 
-        private Dictionary<MainSidePanelActions, Action<object>> _mainSidePanelOperationHandlers;
+        private Dictionary<MainSidePanelActions, Action<object, object>> _mainSidePanelOperationHandlers;
         public SidePanelActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainForm, IBeatmapListingBindingProvider beatmapListingBindingProvider, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
             _osuFileIo = osuFileIo;
@@ -58,7 +59,7 @@ namespace App
 
         private void BindMainFormActions()
         {
-            _mainSidePanelOperationHandlers = new Dictionary<MainSidePanelActions, Action<object>>
+            _mainSidePanelOperationHandlers = new Dictionary<MainSidePanelActions, Action<object, object>>
             {
                 {MainSidePanelActions.LoadCollection, LoadCollectionFile},
                 {MainSidePanelActions.LoadDefaultCollection, LoadDefaultCollection},
@@ -72,7 +73,9 @@ namespace App
                 {MainSidePanelActions.GetMissingMapData, GetMissingMapData},
                 {MainSidePanelActions.ListMissingMaps, ListMissingMaps },
                 {MainSidePanelActions.ListAllBeatmaps, ListAllBeatmaps },
-                {MainSidePanelActions.OsustatsLogin, OsustatsLogin }
+                {MainSidePanelActions.OsustatsLogin, OsustatsLogin },
+                {MainSidePanelActions.AddCollections, AddCollections },
+                {MainSidePanelActions.UploadCollectionChanges, UploadCollectionChanges },
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
@@ -80,13 +83,39 @@ namespace App
             _mainForm.Closing += FormOnClosing;
         }
 
-        private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args)
+        private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args, object data = null)
         {
-            _mainSidePanelOperationHandlers[args](sender);
+            _mainSidePanelOperationHandlers[args](sender, data);
         }
 
-        private async void OsustatsLogin(object sender)
+        private async void UploadCollectionChanges(object sender, object data = null)
         {
+            var collections = (IList<WebCollection>) data;
+
+            foreach (var webCollection in collections)
+            {
+                await webCollection.Save(Initalizer.WebCollectionProvider);
+            }
+        }
+        private void AddCollections(object sender, object data = null)
+        {
+            var webCollections = (IList<WebCollection>)data;
+
+            var collections = new Collections();
+            foreach (var webCollection in webCollections)
+            {
+                if (!Initalizer.CollectionsManager.LoadedCollections.Contains(webCollection))
+                {
+                    collections.Add(webCollection);
+                }
+            }
+
+            Initalizer.CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(collections));
+        }
+        private async void OsustatsLogin(object sender, object data = null)
+        {
+            var onlineListDisplayer = (IOnlineCollectionList)sender;
+
             var osustatsLoginForm = GuiComponentsProvider.Instance.GetClassImplementing<IOsustatsApiLoginFormView>();
 
             osustatsLoginForm.ShowAndBlock();
@@ -95,14 +124,13 @@ namespace App
             provider.ApiKey = osustatsLoginForm.ApiKey;
             if (await provider.IsCurrentKeyValid() && provider.CanFetch())
             {
-                var collections = new Collections();
-                collections.AddRange(await provider.GetMyCollectionList());
-                Initalizer.CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(collections));
+                onlineListDisplayer.Collections.Clear();
+                onlineListDisplayer.Collections.AddRange(await provider.GetMyCollectionList());
+                onlineListDisplayer.Collections.CallReset();
             }
-
         }
 
-        private void ListAllBeatmaps(object sender)
+        private void ListAllBeatmaps(object sender, object data = null)
         {
             var fileLocation = _userDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
             if (fileLocation == string.Empty) return;
@@ -113,7 +141,7 @@ namespace App
             var contents = listGenerator.GetAllMapsList(Initalizer.LoadedCollections, CollectionListSaveType);
             File.WriteAllText(fileLocation, contents);
         }
-        private void ListMissingMaps(object sender)
+        private void ListMissingMaps(object sender, object data = null)
         {
             var fileLocation = _userDialogs.SaveFile("Where list of all maps should be saved?", "Txt(.txt)|*.txt|Html(.html)|*.html");
             if (fileLocation == string.Empty) return;
@@ -125,7 +153,7 @@ namespace App
             File.WriteAllText(fileLocation, contents);
         }
 
-        private void GetMissingMapData(object sender)
+        private void GetMissingMapData(object sender, object data = null)
         {
             //var test = Helpers.GetClipboardText();
             //var p = new TextProcessor();
@@ -150,7 +178,7 @@ namespace App
             if (BeatmapData == null)
                 BeatmapData = new BeatmapData("SNIP", Initalizer.OsuFileIo.LoadedMaps);
             var mapsWithMissingData = new Beatmaps();
-            
+
 
             foreach (var collection in Initalizer.LoadedCollections)
             {
@@ -185,7 +213,7 @@ namespace App
                 }
             }
         }
-        private void GenerateCollections(object sender)
+        private void GenerateCollections(object sender, object data = null)
         {
             if (_userTopGeneratorForm == null || _userTopGeneratorForm.IsDisposed)
             {
@@ -239,7 +267,7 @@ namespace App
             _usernameGeneratorForm.ShowAndBlock();
         }
 
-        private void DownloadAllMissing(object sender)
+        private void DownloadAllMissing(object sender, object data = null)
         {
             var downloadableBeatmaps = new Beatmaps();
             foreach (var collection in Initalizer.LoadedCollections)
@@ -280,7 +308,7 @@ namespace App
                 _downloadManagerForm.Close();
             }
         }
-        private void LoadCollectionFile(object sender)
+        private void LoadCollectionFile(object sender, object data = null)
         {
             var fileLocation = _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb",
                     "collection.db");
@@ -289,7 +317,7 @@ namespace App
             _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
         }
 
-        private void LoadDefaultCollection(object sender)
+        private void LoadDefaultCollection(object sender, object data = null)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
             if (File.Exists(fileLocation))
@@ -299,19 +327,19 @@ namespace App
             }
         }
 
-        private void ClearCollections(object sender)
+        private void ClearCollections(object sender, object data = null)
         {
             _collectionEditor.EditCollection(CollectionEditArgs.ClearCollections());
         }
 
-        private void SaveCollections(object sender)
+        private void SaveCollections(object sender, object data = null)
         {
             var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb");
             if (fileLocation == string.Empty) return;
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
         }
 
-        private void SaveInvidualCollections(object sender)
+        private void SaveInvidualCollections(object sender, object data = null)
         {
             var saveDirectory = _userDialogs.SelectDirectory("Where collection files should be saved?", true);
             if (saveDirectory == string.Empty) return;
@@ -322,7 +350,7 @@ namespace App
             }
         }
 
-        private void ShowBeatmapListing(object sender)
+        private void ShowBeatmapListing(object sender, object data = null)
         {
             if (_beatmapListingForm == null || _beatmapListingForm.IsDisposed)
             {
@@ -342,7 +370,7 @@ namespace App
                 new DownloadManagerFormPresenter(_downloadManagerForm, new DownloadManagerModel(OsuDownloadManager.Instance));
             }
         }
-        private void ShowDownloadManager(object sender = null)
+        private void ShowDownloadManager(object sender = null, object data = null)
         {
             CreateDownloadManagerForm();
             _downloadManagerForm.Show();

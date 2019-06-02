@@ -8,7 +8,7 @@ namespace Gui.Misc
         public delegate void BeatmapsEventArgs(object sender, Beatmaps args);
         public delegate void CollectionBeatmapsEventArgs(object sender, Beatmaps args, string collectionName);
         public delegate void BeatmapListingActionArgs(object sender, BeatmapListingAction args);
-        public delegate void SidePanelActionsHandlerArgs(object sender, MainSidePanelActions args);
+        public delegate void SidePanelActionsHandlerArgs(object sender, MainSidePanelActions args, object data=null);
 
     }
 }
