@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
@@ -74,7 +75,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {
                 WriteOsdb(collections, osdbBinaryWriter, editor, minimalWrite);
 
-                using (var outputBinaryWriter = new BinaryWriter(outputStream))
+                using (var outputBinaryWriter = new BinaryWriter(outputStream, Encoding.UTF8, true))
                 {
                     outputBinaryWriter.Write(CurrentVersion(minimalWrite));
                     CompressStream(osdbMemoryStream, outputStream);
