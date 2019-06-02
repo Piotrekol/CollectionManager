@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using CollectionManager.Modules.FileIO.OsuDb;
 
 namespace CollectionManager.DataTypes
@@ -53,7 +53,20 @@ namespace CollectionManager.DataTypes
             set => OnlineId = value;
         }
 
-        public override int NumberOfBeatmaps { get; set; }
+        private int _numberOfBeatmaps;
+        public override int NumberOfBeatmaps
+        {
+            get
+            {
+                if (this.Loaded)
+                {
+                    return base.NumberOfBeatmaps;
+                }
+
+                return _numberOfBeatmaps;
+            }
+            set => _numberOfBeatmaps = value;
+        }
     }
 
     public interface IWebCollectionProvider
