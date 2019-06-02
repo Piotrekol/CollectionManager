@@ -19,8 +19,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         //TODO: Better way to do .osdb versioning while allowing all versions to be loaded/saved
 
         private BinaryReader _binReader;
-        private BinaryWriter _binWriter;
-        private FileStream _fileStream;
         private readonly ILogger _logger;
         private MemoryStream _memStream;
 
@@ -64,26 +62,39 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool minimalWrite = false)
         {
             using (var fileStream = new FileStream(fullFileDir, FileMode.Create, FileAccess.ReadWrite))
-            using (var memoryStream = new MemoryStream())
             {
-                WriteOsdb(collections, memoryStream, editor, minimalWrite);
-                using (var binaryWriter = new BinaryWriter(fileStream))
-                using (var archive = GZipArchive.Create())
+                WriteOsdb(collections, fileStream, editor, minimalWrite);
+            }
+        }
+
+        public void WriteOsdb(Collections collections, Stream outputStream, string editor, bool minimalWrite = false)
+        {
+            using (var osdbMemoryStream = new MemoryStream())
+            using (var osdbBinaryWriter = new BinaryWriter(osdbMemoryStream))
+            {
+                WriteOsdb(collections, osdbBinaryWriter, editor, minimalWrite);
+
+                using (var outputBinaryWriter = new BinaryWriter(outputStream))
                 {
-                    binaryWriter.Write(CurrentVersion(minimalWrite));
-                    var len = memoryStream.Position;
-                    memoryStream.Position = 0;
-                    archive.AddEntry("collection.osdb", memoryStream, len, DateTime.UtcNow);
-                    archive.SaveTo(fileStream, new WriterOptions(CompressionType.GZip));
+                    outputBinaryWriter.Write(CurrentVersion(minimalWrite));
+                    CompressStream(osdbMemoryStream, outputStream);
                 }
             }
         }
 
-        public void WriteOsdb(Collections collections, Stream stream, string editor,
+        public void CompressStream(Stream inputStream, Stream outputStream)
+        {
+            using (var archive = GZipArchive.Create())
+            {
+                var inputLength = inputStream.Position;
+                inputStream.Position = 0;
+                archive.AddEntry("collection.osdb", inputStream, inputLength, DateTime.UtcNow);
+                archive.SaveTo(outputStream, new WriterOptions(CompressionType.GZip));
+            }
+        }
+        private void WriteOsdb(Collections collections, BinaryWriter _binWriter, string editor,
             bool minimalWrite = false)
         {
-            OpenStream(stream, true);
-
             //header
             _binWriter.Write(CurrentVersion(minimalWrite));
             //save date
@@ -136,10 +147,10 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     }
 
                     _binWriter.Write(beatmap.Md5);
-                    _binWriter.Write(((BeatmapExtension) beatmap).UserComment);
+                    _binWriter.Write(((BeatmapExtension)beatmap).UserComment);
                     if (!minimalWrite)
                     {
-                        _binWriter.Write((byte) beatmap.PlayMode);
+                        _binWriter.Write((byte)beatmap.PlayMode);
                         _binWriter.Write(beatmap.StarsNomod);
                     }
                 }
@@ -159,7 +170,15 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             var fileVersion = -1;
             var fileDate = DateTime.Now;
             var collections = new Collections();
-            OpenFile(fullFileDir);
+
+            using (var fileStream = new FileStream(fullFileDir, FileMode.Open, FileAccess.Read))
+            {
+                _memStream = new MemoryStream();
+                fileStream.CopyTo(_memStream);
+                _binReader = new BinaryReader(_memStream);
+            }
+
+
             _binReader.BaseStream.Seek(0, SeekOrigin.Begin);
             var versionString = _binReader.ReadString();
             //check header
@@ -206,7 +225,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     _logger?.Log(">Number of maps in collection {0}: {1} named:{2}", i.ToString(),
                         numberOfBeatmaps.ToString(), name);
                     var collection = new Collection(mapCacher)
-                        {Name = name, LastEditorUsername = lastEditor, OnlineId = onlineId};
+                    { Name = name, LastEditorUsername = lastEditor, OnlineId = onlineId };
                     for (var j = 0; j < numberOfBeatmaps; j++)
                     {
                         var map = new BeatmapExtension();
@@ -233,7 +252,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                         {
                             if (fileVersion >= 5)
                             {
-                                map.PlayMode = (PlayMode) _binReader.ReadByte();
+                                map.PlayMode = (PlayMode)_binReader.ReadByte();
                             }
 
                             if (fileVersion >= 6)
@@ -267,7 +286,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 Error("File footer is invalid, with could mean that this file is corrupted. CONTINUE AT YOUR OWN RISK");
             }
 
-            CloseFile();
+            _binReader.Close();
 
             collections = IssuseVersionRelevantProcedures(fileVersion, fileDate, collections);
         }
@@ -287,60 +306,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             }
 
             return collections;
-        }
-
-        private void OpenStream(Stream stream, bool forWriting = false)
-        {
-            if (forWriting)
-            {
-                if (!stream.CanWrite)
-                {
-                    throw new Exception("Provided Stream doesn't support writing");
-                }
-
-                _binWriter = new BinaryWriter(stream);
-            }
-            else
-            {
-                _memStream = new MemoryStream();
-                stream.CopyTo(_memStream);
-                _binReader = new BinaryReader(_memStream);
-            }
-        }
-
-        private void OpenFile(string fileDir, bool forWriting = false)
-        {
-            if (forWriting)
-            {
-                _fileStream = new FileStream(fileDir, FileMode.Create, FileAccess.ReadWrite);
-                _binWriter = new BinaryWriter(_fileStream);
-            }
-            else
-            {
-                _fileStream = new FileStream(fileDir, FileMode.Open, FileAccess.Read);
-                _memStream = new MemoryStream();
-                _fileStream.CopyTo(_memStream);
-                _fileStream.Close();
-                _binReader = new BinaryReader(_memStream);
-            }
-        }
-
-        private void CloseFile(bool forWriting = false)
-        {
-            try
-            {
-                if (forWriting)
-                {
-                    _binWriter.Close();
-                }
-                else
-                {
-                    _binReader.Close();
-                }
-            }
-            catch
-            {
-            }
         }
     }
 }
