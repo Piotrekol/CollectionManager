@@ -102,6 +102,13 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
             return collectionHandler.ReadOsdb(tempFile, _mapCacher);
         }
 
+        public async Task<bool> RemoveCollection(int collectionId)
+        {
+            var response = await httpClient.DeleteAsync($"{baseUrl}collection/{collectionId}");
+
+            return response.IsSuccessStatusCode;
+        }
+
         /// <summary>
         ///     Fetches collection metadata without their beatmaps
         /// </summary>

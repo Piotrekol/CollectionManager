@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using App.Interfaces;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
@@ -29,9 +30,13 @@ namespace CollectionManager.Modules.CollectionsManager
             var action = args.Action;
             if (action == CollectionEdit.Add)
             {
+                List<string> collectionNames = new List<string>();
                 foreach (var collection in args.Collections)
                 {
-                    collection.Name = GetValidCollectionName(collection.Name);
+                    var name = GetValidCollectionName(collection.Name, collectionNames);
+
+                    collection.Name = name;
+                    collectionNames.Add(name);
                 }
                 LoadedCollections.AddRange(args.Collections);
             }
@@ -41,7 +46,7 @@ namespace CollectionManager.Modules.CollectionsManager
                 {
                     if (CollectionNameExists(collection.Name))
                         EditCollection(CollectionEditArgs.MergeCollections(
-                            new Collections() { GetCollectionByName(collection.Name),collection }, collection.Name), true);
+                            new Collections() { GetCollectionByName(collection.Name), collection }, collection.Name), true);
                     else
                         EditCollection(CollectionEditArgs.AddCollections(new Collections() { collection }), true);
                 }
@@ -113,7 +118,7 @@ namespace CollectionManager.Modules.CollectionsManager
                 {
                     throw new NotImplementedException("Call AddCollections followed with AddBeatmaps instead");
                 }
-                
+
             }
             if (!suspendRefresh)
                 AfterCollectionsEdit();
@@ -139,14 +144,15 @@ namespace CollectionManager.Modules.CollectionsManager
             return null;
         }
 
-        public string GetValidCollectionName(string desiredName)
+        public string GetValidCollectionName(string desiredName, List<string> aditionalNames = null)
         {
             var newName = desiredName;
             int c = 0;
-            while (CollectionNameExists(newName))
+            while (CollectionNameExists(newName) || (aditionalNames != null && aditionalNames.Contains(newName)))
             {
                 newName = desiredName + "_" + c++;
             }
+
             return newName;
         }
 

@@ -207,7 +207,7 @@ namespace CollectionManager.DataTypes
             if (map != null && RemoveBeatmap(map.Md5))
                 AddBeatmap(newBeatmap);
         }
-        public bool RemoveBeatmap(string hash)
+        public virtual bool RemoveBeatmap(string hash)
         {
             if (_beatmapHashes.Contains(hash))
             {

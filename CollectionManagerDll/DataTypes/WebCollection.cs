@@ -8,9 +8,11 @@ namespace CollectionManager.DataTypes
     {
         public bool Loading { get; private set; }
         public bool Loaded { get; private set; }
-        public WebCollection(int onlineId, MapCacher instance) : base(instance)
+        public bool Modified { get; private set; }
+        public WebCollection(int onlineId, MapCacher instance, bool loaded = false) : base(instance)
         {
             OnlineId = onlineId;
+            Loaded = loaded;
         }
         /// <summary>
         /// Fetches this collection data from internet
@@ -35,9 +37,9 @@ namespace CollectionManager.DataTypes
             Loading = false;
         }
 
-        public async Task Save(IWebCollectionProvider provider)
+        public async Task<IEnumerable<WebCollection>> Save(IWebCollectionProvider provider)
         {
-            await provider.SaveCollection(this);
+            return await provider.SaveCollection(this);
         }
 
         public string Description { get; set; }
@@ -54,7 +56,7 @@ namespace CollectionManager.DataTypes
             set => OnlineId = value;
         }
 
-        private int _numberOfBeatmaps;
+        public int OriginalNumberOfBeatmaps { get; private set; }
         public override int NumberOfBeatmaps
         {
             get
@@ -64,9 +66,9 @@ namespace CollectionManager.DataTypes
                     return base.NumberOfBeatmaps;
                 }
 
-                return _numberOfBeatmaps;
+                return OriginalNumberOfBeatmaps;
             }
-            set => _numberOfBeatmaps = value;
+            set => OriginalNumberOfBeatmaps = value;
         }
 
         protected override void ProcessNewlyAddedMap(BeatmapExtension map)
@@ -75,6 +77,18 @@ namespace CollectionManager.DataTypes
             {
                 base.ProcessNewlyAddedMap(map);
             }
+
+            if (Loaded)
+            {
+                Modified = true;
+            }
+        }
+
+        public override bool RemoveBeatmap(string hash)
+        {
+            Modified = true;
+
+            return base.RemoveBeatmap(hash);
         }
     }
 

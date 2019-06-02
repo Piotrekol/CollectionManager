@@ -16,6 +16,8 @@
         ListAllBeatmaps,
         OsustatsLogin,
         AddCollections,
-        UploadCollectionChanges
+        UploadCollectionChanges,
+        UploadNewCollections,
+        RemoveWebCollection
     }
 }

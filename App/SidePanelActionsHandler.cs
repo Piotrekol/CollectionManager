@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -76,11 +77,73 @@ namespace App
                 {MainSidePanelActions.OsustatsLogin, OsustatsLogin },
                 {MainSidePanelActions.AddCollections, AddCollections },
                 {MainSidePanelActions.UploadCollectionChanges, UploadCollectionChanges },
+                {MainSidePanelActions.UploadNewCollections, UploadNewCollections },
+                {MainSidePanelActions.RemoveWebCollection ,RemoveWebCollection },
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
+        }
+
+        private async void RemoveWebCollection(object sender, object data = null)
+        {
+            var collectionList = (IList<WebCollection>)data;
+            var sidePanel = (IOnlineCollectionList)_mainForm.SidePanelView;
+
+            foreach (var collection in collectionList)
+            {
+                if (await Initalizer.WebCollectionProvider.RemoveCollection(collection.OnlineId))
+                {
+                    _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(new[] { collection.Name }));
+                    sidePanel.WebCollections.Remove(collection);
+                }
+                else
+                {
+                    _userDialogs.OkMessageBox($"Couldn't remove collection {collection.Name}", "Error", MessageBoxType.Error);
+                }
+            }
+        }
+
+
+        private async void UploadNewCollections(object sender, object data = null)
+        {
+            var collectionList = (IList<ICollection>)data;
+
+            var oldCollections = new Collections();
+            oldCollections.AddRange(collectionList);
+
+            var newCollections = new Collections();
+            foreach (var c in collectionList)
+            {
+                var webCollection = new WebCollection(0, _osuFileIo.LoadedMaps, true);
+                webCollection.Name = c.Name;
+                webCollection.LastEditorUsername = c.LastEditorUsername;
+
+                foreach (var collectionBeatmap in c.AllBeatmaps())
+                {
+                    webCollection.AddBeatmap(collectionBeatmap);
+                }
+
+                newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
+            }
+
+            _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(oldCollections));
+            _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(newCollections));
+
+            var sidePanel = (IOnlineCollectionList)_mainForm.SidePanelView;
+
+            sidePanel.WebCollections.AddRange(newCollections.OfType<WebCollection>());
+            sidePanel.WebCollections.CallReset();
+
+            if (newCollections.Count > 0)
+            {
+                _userDialogs.OkMessageBox($"Collections uploaded", "Info", MessageBoxType.Success);
+            }
+            if (newCollections.Count == 1)
+            {
+                Process.Start($"https://osustats.ppy.sh/collection/{newCollections[0].OnlineId}");
+            }
         }
 
         private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args, object data = null)
@@ -90,13 +153,28 @@ namespace App
 
         private async void UploadCollectionChanges(object sender, object data = null)
         {
-            var collections = (IList<WebCollection>) data;
+            var collections = (IList<WebCollection>)data;
+            var sidePanel = (IOnlineCollectionList)_mainForm.SidePanelView;
 
             foreach (var webCollection in collections)
             {
-                await webCollection.Save(Initalizer.WebCollectionProvider);
+                if (webCollection.Loaded && webCollection.Modified)
+                {
+                    var newCollection = (await webCollection.Save(Initalizer.WebCollectionProvider)).First();
+
+                    webCollection.NumberOfBeatmaps = newCollection.OriginalNumberOfBeatmaps;
+                    sidePanel.WebCollections.CallReset();
+
+                    _userDialogs.OkMessageBox("Collection was uploaded", "Info", MessageBoxType.Success);
+
+                }
+                else
+                {
+                    _userDialogs.OkMessageBox("This collection is already up to date", "Info");
+                }
             }
         }
+
         private void AddCollections(object sender, object data = null)
         {
             var webCollections = (IList<WebCollection>)data;
@@ -124,9 +202,10 @@ namespace App
             provider.ApiKey = osustatsLoginForm.ApiKey;
             if (await provider.IsCurrentKeyValid() && provider.CanFetch())
             {
-                onlineListDisplayer.Collections.Clear();
-                onlineListDisplayer.Collections.AddRange(await provider.GetMyCollectionList());
-                onlineListDisplayer.Collections.CallReset();
+                onlineListDisplayer.UserInformation = provider.UserInformation;
+                onlineListDisplayer.WebCollections.Clear();
+                onlineListDisplayer.WebCollections.AddRange(await provider.GetMyCollectionList());
+                onlineListDisplayer.WebCollections.CallReset();
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using App.Interfaces;
+﻿using System.Collections.Generic;
+using App.Interfaces;
 using App.Misc;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
@@ -68,7 +69,7 @@ namespace App
         public bool IsCollectionNameValid(string name)
             => _collectionNameValidator.IsCollectionNameValid(name);
 
-        public string GetValidCollectionName(string desiredName)
-            => _collectionNameValidator.GetValidCollectionName(desiredName);
+        public string GetValidCollectionName(string desiredName, List<string> aditionalNames = null)
+            => _collectionNameValidator.GetValidCollectionName(desiredName, aditionalNames);
     }
 }

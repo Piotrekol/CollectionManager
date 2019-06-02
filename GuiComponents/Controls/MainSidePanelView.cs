@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Windows.Forms;
 using CollectionManager.DataTypes;
+using CollectionManagerExtensionsDll.Modules.API.osustats;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
@@ -12,7 +14,24 @@ namespace GuiComponents.Controls
     public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlineCollectionList
     {
         public event GuiHelpers.SidePanelActionsHandlerArgs SidePanelOperation;
-        public RangeObservableCollection<WebCollection> Collections { get; private set; } = new RangeObservableCollection<WebCollection>();
+        public RangeObservableCollection<WebCollection> WebCollections { get; private set; } = new RangeObservableCollection<WebCollection>();
+
+        public RangeObservableCollection<Collection> Collections
+        {
+            set { CollectionsOnCollectionChanged(value); }
+        }
+
+
+        public UserInformation UserInformation
+        {
+            set
+            {
+                if (value != null)
+                {
+                    Menu_osustatsLogin.Text = $"Logged in as {value.UserName}";
+                }
+            }
+        }
 
         public MainSidePanelView()
         {
@@ -31,26 +50,48 @@ namespace GuiComponents.Controls
             Menu_GetMissingMapData.Click += delegate { OnGetMissingMapData(); };
             Menu_osustatsLogin.Click += delegate { SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin); };
 
-            Collections.CollectionChanged += CollectionsOnCollectionChanged;
+            WebCollections.CollectionChanged += WebCollectionsOnCollectionChanged;
         }
 
-        private void CollectionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void CollectionsOnCollectionChanged(RangeObservableCollection<Collection> collections)
         {
-            var rootMenu = Menu_osustatsLoadCollections;
+            Menu_newCollection.DropDownItems.Clear();
+            if (collections.Count == 0)
+            {
+                Menu_newCollection.DropDownItems.Add("No new collections loaded");
+                return;
+            }
+            foreach (var c in collections)
+            {
+                var item = new ToolStripMenuItem
+                {
+                    Text = $"{c.Name} ({c.NumberOfBeatmaps})"
+                };
+                item.Click += (s, a) =>
+                {
+                    SidePanelOperation?.Invoke(this, MainSidePanelActions.UploadNewCollections, new List<ICollection> { c });
+                };
+                Menu_newCollection.DropDownItems.Add(item);
+            }
+        }
+
+        private void WebCollectionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var rootMenu = Menu_osustatsCollections;
             rootMenu.DropDownItems.Clear();
             rootMenu.DropDownItems.Add("Click any collection to add it to main view");
             rootMenu.DropDownItems.Add(new ToolStripSeparator());
             rootMenu.DropDownItems.Add("Add all", null, (s, a) =>
              {
-                 SidePanelOperation?.Invoke(this, MainSidePanelActions.AddCollections, Collections);
+                 SidePanelOperation?.Invoke(this, MainSidePanelActions.AddCollections, WebCollections);
              });
             rootMenu.DropDownItems.Add(new ToolStripSeparator());
 
-            foreach (var c in Collections)
+            foreach (var c in WebCollections)
             {
                 var item = new ToolStripMenuItem
                 {
-                    Text = $"{c.Name} ({c.NumberOfBeatmaps})"
+                    Text = $"{c.Name} (Online:{c.OriginalNumberOfBeatmaps}, Local:{c.NumberOfBeatmaps})"
                 };
                 item.Click += (s, a) =>
                 {
@@ -79,8 +120,24 @@ namespace GuiComponents.Controls
             {
                 SidePanelOperation?.Invoke(this, MainSidePanelActions.UploadCollectionChanges, new List<WebCollection> { webCollection });
             };
-
-            return new ToolStripItem[] { loadCollection, uploadChanges };
+            var deleteCollection = new ToolStripMenuItem
+            {
+                Text = $"Delete"
+            };
+            deleteCollection.Click += (s, a) =>
+            {
+                SidePanelOperation?.Invoke(this, MainSidePanelActions.RemoveWebCollection, new List<WebCollection> { webCollection });
+            };
+            var openOnWeb = new ToolStripMenuItem
+            {
+                Text = $"Open in browser"
+            };
+            openOnWeb.Click += (s, a) =>
+            {
+                Process.Start($"https://osustats.ppy.sh/collection/{webCollection.OnlineId}");
+            };
+            
+            return new ToolStripItem[] { loadCollection, uploadChanges, deleteCollection, openOnWeb };
         }
 
         private void OnLoadCollection()
