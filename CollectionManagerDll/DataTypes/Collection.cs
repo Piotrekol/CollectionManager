@@ -133,7 +133,6 @@ namespace CollectionManager.DataTypes
             if (_beatmapHashes.Contains(map.Md5))
                 return;
 
-            _beatmapHashes.Add(map.Md5);
             ProcessNewlyAddedMap(map);
         }
 
@@ -156,10 +155,12 @@ namespace CollectionManager.DataTypes
         {
             dest.UserComment = src.UserComment;
         }
-        private void ProcessNewlyAddedMap(BeatmapExtension map)
+        protected virtual void ProcessNewlyAddedMap(BeatmapExtension map)
         {
             lock (LoadedMaps.LockingObject)
             {
+                _beatmapHashes.Add(map.Md5);
+
                 var knownMap = (BeatmapExtension)LoadedMaps.GetByHash(map.Md5);
                 if (knownMap != null)
                 {

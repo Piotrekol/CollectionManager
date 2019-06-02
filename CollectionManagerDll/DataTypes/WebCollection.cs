@@ -1,3 +1,4 @@
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CollectionManager.Modules.FileIO.OsuDb;
 
@@ -5,12 +6,10 @@ namespace CollectionManager.DataTypes
 {
     public class WebCollection : Collection
     {
-        private readonly string _loadPath;
         public bool Loading { get; private set; }
         public bool Loaded { get; private set; }
-        public WebCollection(string loadPath, int onlineId, MapCacher instance) : base(instance)
+        public WebCollection(int onlineId, MapCacher instance) : base(instance)
         {
-            _loadPath = loadPath;
             OnlineId = onlineId;
         }
         /// <summary>
@@ -20,8 +19,10 @@ namespace CollectionManager.DataTypes
         /// <returns></returns>
         public async Task Load(IWebCollectionProvider provider)
         {
-            if(Loading || Loaded || !provider.CanFetch())
+            if (Loading || Loaded || !provider.CanFetch())
                 return;
+
+            Loading = true;
 
             var collection = await provider.GetCollection(OnlineId);
 
@@ -34,9 +35,9 @@ namespace CollectionManager.DataTypes
             Loading = false;
         }
 
-        public async Task Save()
+        public async Task Save(IWebCollectionProvider provider)
         {
-
+            await provider.SaveCollection(this);
         }
 
         public string Description { get; set; }
@@ -67,12 +68,20 @@ namespace CollectionManager.DataTypes
             }
             set => _numberOfBeatmaps = value;
         }
+
+        protected override void ProcessNewlyAddedMap(BeatmapExtension map)
+        {
+            if (Loading || Loaded)
+            {
+                base.ProcessNewlyAddedMap(map);
+            }
+        }
     }
 
     public interface IWebCollectionProvider
     {
         Task<ICollection> GetCollection(int collectionId);
-        Task<bool> SaveCollection(ICollection collection);
+        Task<IEnumerable<WebCollection>> SaveCollection(ICollection collection);
         bool CanFetch();
     }
 }

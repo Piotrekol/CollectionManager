@@ -69,6 +69,19 @@ namespace GuiComponents.Controls
             ListViewCollections.ModelDropped += ListViewCollections_ModelDropped;
 
             ListViewCollections.CellRightClick += ListViewCollectionsOnCellRightClick;
+            dropsink.ModelCanDrop+=DropsinkOnModelCanDrop;
+        }
+
+        private void DropsinkOnModelCanDrop(object sender, ModelDropEventArgs e)
+        {
+            if (e.TargetModel != null)
+            {
+                if (e.TargetModel is WebCollection wb && !wb.Loaded)
+                {
+                    e.Handled = true;
+                    e.Effect = DragDropEffects.None;
+                }
+            }
         }
 
         private void ListViewCollectionsOnCellRightClick(object sender, CellRightClickEventArgs cellRightClickEventArgs)
