@@ -37,13 +37,19 @@ namespace CollectionManager.DataTypes
         /// <summary>
         /// Total number of beatmaps contained in this collection
         /// </summary>
-        public int NumberOfBeatmaps { get { return UnknownBeatmaps.Count + KnownBeatmaps.Count + DownloadableBeatmaps.Count; } }
+        public virtual int NumberOfBeatmaps
+        {
+            get { return UnknownBeatmaps.Count + KnownBeatmaps.Count + DownloadableBeatmaps.Count; }
+            set { }
+        }
 
-        public int NumberOfMissingBeatmaps { get { return UnknownBeatmaps.Count + DownloadableBeatmaps.Count; } }
+        public virtual int NumberOfMissingBeatmaps { get { return UnknownBeatmaps.Count + DownloadableBeatmaps.Count; } }
         /// <summary>
         /// Username of last person editing this collection
         /// </summary>
         public string LastEditorUsername { get; set; }
+
+        public int OnlineId { get; set; }
 
         public void SetLoadedMaps(MapCacher instance)
         {

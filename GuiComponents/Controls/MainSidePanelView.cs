@@ -25,10 +25,11 @@ namespace GuiComponents.Controls
             Menu_downloadAllMissing.Click += delegate { OnDownloadAllMissing(); };
             Menu_GenerateCollections.Click += delegate { OnGenerateCollections(); };
             Menu_GetMissingMapData.Click += delegate { OnGetMissingMapData(); };
+            Menu_osustatsLogin.Click += delegate { SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin); };
         }
         private void OnLoadCollection()
         {
-            SidePanelOperation?.Invoke(this,MainSidePanelActions.LoadCollection);
+            SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadCollection);
         }
 
         private void OnLoadDefaultCollection()

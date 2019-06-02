@@ -26,9 +26,10 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {"o!dm4",4 },
             {"o!dm5",5 },
             {"o!dm6",6 },
+            {"o!dm7",7 },
         };
 
-        private string CurrentVersion => "o!dm6";
+        private string CurrentVersion => "o!dm7";
         public OsdbCollectionHandler(ILogger logger)
         {
             _logger = logger;
@@ -42,7 +43,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
         {
             //Helpers.Info(message);
         }
-        
+
         public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool skipMissing = false)
         {
             OpenFile(fullFileDir, true);
@@ -89,6 +90,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                     }
                 }
                 _binWriter.Write(collection.Name);
+                _binWriter.Write(collection.OnlineId);
                 _binWriter.Write(beatmapsPossibleToSave.Count);
                 //Save beatmaps
                 foreach (var beatmap in beatmapsPossibleToSave)
@@ -140,9 +142,12 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 for (int i = 0; i < numberOfCollections; i++)
                 {
                     var name = _binReader.ReadString();
+                    int onlineId = -1;
+                    if (fileVersion >= 7)
+                        onlineId = _binReader.ReadInt32();
                     var numberOfBeatmaps = _binReader.ReadInt32();
                     _logger?.Log(">Number of maps in collection {0}: {1} named:{2}", i.ToString(), numberOfBeatmaps.ToString(), name);
-                    var collection = new Collection(mapCacher) { Name = name, LastEditorUsername = lastEditor };
+                    var collection = new Collection(mapCacher) { Name = name, LastEditorUsername = lastEditor, OnlineId = onlineId };
                     for (int j = 0; j < numberOfBeatmaps; j++)
                     {
                         var map = new BeatmapExtension();

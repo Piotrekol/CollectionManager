@@ -13,6 +13,7 @@
         DownloadAllMissing,
         GenerateCollections,
         GetMissingMapData,
-        ListAllBeatmaps
+        ListAllBeatmaps,
+        OsustatsLogin
     }
 }

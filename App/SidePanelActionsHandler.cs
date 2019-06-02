@@ -71,12 +71,35 @@ namespace App
                 {MainSidePanelActions.GenerateCollections, GenerateCollections},
                 {MainSidePanelActions.GetMissingMapData, GetMissingMapData},
                 {MainSidePanelActions.ListMissingMaps, ListMissingMaps },
-                {MainSidePanelActions.ListAllBeatmaps, ListAllBeatmaps }
+                {MainSidePanelActions.ListAllBeatmaps, ListAllBeatmaps },
+                {MainSidePanelActions.OsustatsLogin, OsustatsLogin }
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
+        }
+
+        private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args)
+        {
+            _mainSidePanelOperationHandlers[args](sender);
+        }
+
+        private async void OsustatsLogin(object sender)
+        {
+            var osustatsLoginForm = GuiComponentsProvider.Instance.GetClassImplementing<IOsustatsApiLoginFormView>();
+
+            osustatsLoginForm.ShowAndBlock();
+
+            var provider = Initalizer.WebCollectionProvider;
+            provider.ApiKey = osustatsLoginForm.ApiKey;
+            if (await provider.IsCurrentKeyValid() && provider.CanFetch())
+            {
+                var collections = new Collections();
+                collections.AddRange(await provider.GetMyCollectionList());
+                Initalizer.CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(collections));
+            }
+
         }
 
         private void ListAllBeatmaps(object sender)
@@ -100,10 +123,6 @@ namespace App
                 : CollectionManagerExtensionsDll.Enums.CollectionListSaveType.Html;
             var contents = listGenerator.GetMissingMapsList(Initalizer.LoadedCollections, CollectionListSaveType);
             File.WriteAllText(fileLocation, contents);
-        }
-        private void SidePanelViewOnSidePanelOperation(object sender, MainSidePanelActions args)
-        {
-            _mainSidePanelOperationHandlers[args](sender);
         }
 
         private void GetMissingMapData(object sender)

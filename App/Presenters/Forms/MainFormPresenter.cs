@@ -21,7 +21,7 @@ namespace App.Presenters.Forms
         public readonly IBeatmapListingModel BeatmapListingModel;
         public readonly ICollectionListingModel CollectionListingModel;
 
-        public MainFormPresenter(IMainFormView view, IMainFormModel mainFormModel, IInfoTextModel infoTextModel)
+        public MainFormPresenter(IMainFormView view, IMainFormModel mainFormModel, IInfoTextModel infoTextModel, IWebCollectionProvider webCollectionProvider)
         {
             _view = view;
             _mainFormModel = mainFormModel;
@@ -33,14 +33,14 @@ namespace App.Presenters.Forms
             CollectionListingModel = new CollectionListingModel(Initalizer.LoadedCollections);
             CollectionListingModel.CollectionEditing += CollectionListing_CollectionEditing;
             CollectionListingModel.SelectedCollectionsChanged += CollectionListing_SelectedCollectionsChanged;
-            new CombinedListingPresenter(_view.CombinedListingView, CollectionListingModel, BeatmapListingModel);
-            
+            new CombinedListingPresenter(_view.CombinedListingView, CollectionListingModel, BeatmapListingModel, webCollectionProvider);
+
             //Beatmap preview stuff (images, beatmap info like ar,cs,stars...)
             _combinedBeatmapPreviewModel = new CombinedBeatmapPreviewModel();
             var presenter = new CombinedBeatmapPreviewPresenter(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);
 
             presenter.MusicControlModel.NextMapRequest += (s, a) => { _view.CombinedListingView.beatmapListingView.SelectNextOrFirst(); };
-            
+
             _collectionTextModel = new CollectionTextModel();
             new CollectionTextPresenter(_view.CollectionTextView, _collectionTextModel);
 

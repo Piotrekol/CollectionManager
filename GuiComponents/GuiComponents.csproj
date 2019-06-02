@@ -130,6 +130,9 @@
     <Compile Update="Forms\MainFormView.Designer.cs">
       <DependentUpon>MainFormView.cs</DependentUpon>
     </Compile>
+    <Compile Update="Forms\OsustatsApiLoginFormView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\UsernameGeneratorForm.cs">
       <SubType>Form</SubType>
     </Compile>

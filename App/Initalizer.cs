@@ -9,7 +9,7 @@ using App.Presenters.Forms;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
-using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
+using CollectionManagerExtensionsDll.Modules.API.osustats;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
@@ -25,8 +25,7 @@ namespace App
         public static string OsuDirectory;
         public static CollectionEditor CollectionEditor { get; private set; }
         private IUserDialogs UserDialogs { get; set; }// = new GuiComponents.UserDialogs();
-
-
+        public static OsuStatsApi WebCollectionProvider = new OsuStatsApi("", OsuFileIo.LoadedMaps);
         public void Run()
         {
             //IUserDialogs can be implemented in WinForm or WPF or Gtk or Console or...?
@@ -60,7 +59,7 @@ namespace App
             var infoTextModel = new InfoTextModel(UpdateChecker);
 
             var mainForm = GuiComponentsProvider.Instance.GetClassImplementing<IMainFormView>();
-            var mainPresenter = new MainFormPresenter(mainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel);
+            var mainPresenter = new MainFormPresenter(mainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel, WebCollectionProvider);
 
             //set initial text info and update events
             SetTextData(infoTextModel);
@@ -68,7 +67,7 @@ namespace App
 
             var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
             new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
-            
+
             mainForm.ShowAndBlock();
             Quit();
         }

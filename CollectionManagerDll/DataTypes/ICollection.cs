@@ -41,6 +41,11 @@ namespace CollectionManager.DataTypes
         /// </summary>
         string Name { get; set; }
 
+        /// <summary>
+        /// Osu!Stats collection Id
+        /// </summary>
+        int OnlineId { get; set; }
+
         void SetLoadedMaps(MapCacher instance);
         IEnumerable<BeatmapExtension> AllBeatmaps();
         IEnumerable<BeatmapExtension> NotKnownBeatmaps();

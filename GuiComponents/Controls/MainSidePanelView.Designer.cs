@@ -194,7 +194,6 @@
             this.osustatsCollectionsToolStripMenuItem.Name = "osustatsCollectionsToolStripMenuItem";
             this.osustatsCollectionsToolStripMenuItem.Size = new System.Drawing.Size(124, 20);
             this.osustatsCollectionsToolStripMenuItem.Text = "Osustats collections";
-            this.osustatsCollectionsToolStripMenuItem.Visible = false;
             // 
             // Menu_osustatsLogin
             // 

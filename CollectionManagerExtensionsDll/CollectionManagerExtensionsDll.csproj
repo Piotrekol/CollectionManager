@@ -4,6 +4,7 @@
     <AssemblyTitle>CollectionManagerExtensionsDll</AssemblyTitle>
     <Product>CollectionManagerExtensionsDll</Product>
     <Copyright>Copyright ©  2017</Copyright>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
