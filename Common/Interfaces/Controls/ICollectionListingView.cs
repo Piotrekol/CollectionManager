@@ -8,6 +8,8 @@ namespace GuiComponents.Interfaces
 {
     public interface ICollectionListingView
     {
+        event GuiHelpers.LoadFileArgs OnLoadFile;
+
         string SearchText { get; }
 
         Collections Collections { set; }

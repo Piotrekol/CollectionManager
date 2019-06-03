@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
@@ -11,6 +12,7 @@ namespace GuiComponents.Controls
 {
     public partial class CollectionListingView : UserControl, ICollectionListingView
     {
+        public event GuiHelpers.LoadFileArgs OnLoadFile;
         public string SearchText => textBox_collectionNameSearch.Text;
         public Collections Collections { set { ListViewCollections.SetObjects(value); } }
 
@@ -70,6 +72,26 @@ namespace GuiComponents.Controls
 
             ListViewCollections.CellRightClick += ListViewCollectionsOnCellRightClick;
             dropsink.ModelCanDrop+=DropsinkOnModelCanDrop;
+            dropsink.CanDrop+=DropsinkOnCanDrop;
+            dropsink.Dropped+=DropsinkOnDropped;
+        }
+
+        private void DropsinkOnDropped(object sender, OlvDropEventArgs e)
+        {
+            if (e.DataObject is DataObject dataObject && dataObject.GetFormats().Any(f => f == "FileDrop"))
+            {
+                var files = (string[])dataObject.GetData(DataFormats.FileDrop);
+                OnLoadFile?.Invoke(this, files);
+            }
+        }
+
+        private void DropsinkOnCanDrop(object sender, OlvDropEventArgs e)
+        {
+            if (e.DataObject is DataObject dataObject && dataObject.GetFormats().Any(f => f == "FileDrop"))
+            {
+                e.Effect = DragDropEffects.Copy;
+                e.Handled = true;
+            }
         }
 
         private void DropsinkOnModelCanDrop(object sender, ModelDropEventArgs e)

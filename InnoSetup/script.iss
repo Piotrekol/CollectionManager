@@ -46,7 +46,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: osdbAssociation; Description: "Associate "".osdb"" extension"; GroupDescription: File extensions:
+Name: osdbAssociation; Description: "Associate "".osdb"" extension (Collection files)"; GroupDescription: File extensions:
 
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 

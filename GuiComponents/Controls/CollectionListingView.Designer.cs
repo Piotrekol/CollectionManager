@@ -72,6 +72,7 @@
             this.ListViewCollections.AllColumns.Add(this.olvColumn1);
             this.ListViewCollections.AllColumns.Add(this.Total);
             this.ListViewCollections.AllColumns.Add(this.olvColumn2);
+            this.ListViewCollections.AllowDrop = true;
             this.ListViewCollections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -127,12 +128,12 @@
             this.CreateMenuStrip,
             this.DuplicateMenuStrip});
             this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 136);
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(155, 114);
             // 
             // renameCollectionMenuStrip
             // 
             this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
-            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
             this.renameCollectionMenuStrip.Tag = "Rename";
             this.renameCollectionMenuStrip.Text = "Rename";
             this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -140,7 +141,7 @@
             // deleteCollectionMenuStrip
             // 
             this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
-            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
             this.deleteCollectionMenuStrip.Tag = "Delete";
             this.deleteCollectionMenuStrip.Text = "Delete";
             this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -148,7 +149,7 @@
             // mergeWithMenuStrip
             // 
             this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
-            this.mergeWithMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.mergeWithMenuStrip.Size = new System.Drawing.Size(154, 22);
             this.mergeWithMenuStrip.Tag = "Merge";
             this.mergeWithMenuStrip.Text = "Merge selected";
             this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -156,7 +157,7 @@
             // CreateMenuStrip
             // 
             this.CreateMenuStrip.Name = "CreateMenuStrip";
-            this.CreateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.CreateMenuStrip.Size = new System.Drawing.Size(154, 22);
             this.CreateMenuStrip.Tag = "Create";
             this.CreateMenuStrip.Text = "Create";
             this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
@@ -164,7 +165,7 @@
             // DuplicateMenuStrip
             // 
             this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
-            this.DuplicateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.DuplicateMenuStrip.Size = new System.Drawing.Size(154, 22);
             this.DuplicateMenuStrip.Tag = "Duplicate";
             this.DuplicateMenuStrip.Text = "Duplicate";
             this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);

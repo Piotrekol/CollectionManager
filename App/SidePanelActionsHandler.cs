@@ -82,8 +82,22 @@ namespace App
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
+            _mainForm.OnLoadFile += OnLoadFile;
+            _mainForm.CombinedListingView.CollectionListingView.OnLoadFile += OnLoadFile;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
+        }
+
+        private void OnLoadFile(object sender, string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                var lowercaseFilepath = filePath.ToLowerInvariant();
+                if (lowercaseFilepath.EndsWith(".osdb") || lowercaseFilepath.EndsWith(".db"))
+                {
+                    LoadCollectionFile(sender, filePath);
+                }
+            }
         }
 
         private async void RemoveWebCollection(object sender, object data = null)
@@ -389,9 +403,9 @@ namespace App
         }
         private void LoadCollectionFile(object sender, object data = null)
         {
-            var fileLocation = _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb",
+            string fileLocation = data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb",
                     "collection.db");
-            if (fileLocation == string.Empty) return;
+            if (string.IsNullOrEmpty(fileLocation)) return;
             var loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
             _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
         }
