@@ -49,10 +49,11 @@
             this.Menu_osustatsLogin = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_osustatsCollections = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_newCollection = new System.Windows.Forms.ToolStripMenuItem();
             this.noCollectionsLoadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menu_saveOsuCollection = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,14 +88,14 @@
             this.Menu_loadCollection,
             this.Menu_loadDefaultCollection});
             this.MenuItem_Opennn.Name = "MenuItem_Opennn";
-            this.MenuItem_Opennn.Size = new System.Drawing.Size(103, 22);
+            this.MenuItem_Opennn.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_Opennn.Text = "Open";
             // 
             // Menu_loadCollection
             // 
             this.Menu_loadCollection.Name = "Menu_loadCollection";
-            this.Menu_loadCollection.Size = new System.Drawing.Size(185, 22);
-            this.Menu_loadCollection.Text = "collection(.db/.osdb)";
+            this.Menu_loadCollection.Size = new System.Drawing.Size(187, 22);
+            this.Menu_loadCollection.Text = "Collection(.db/.osdb)";
             // 
             // Menu_loadDefaultCollection
             // 
@@ -106,16 +107,17 @@
             // 
             this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Menu_saveAllCollections,
+            this.Menu_saveOsuCollection,
             this.Menu_collectionsSplit});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // Menu_saveAllCollections
             // 
             this.Menu_saveAllCollections.Name = "Menu_saveAllCollections";
             this.Menu_saveAllCollections.Size = new System.Drawing.Size(217, 22);
-            this.Menu_saveAllCollections.Text = "Collections";
+            this.Menu_saveAllCollections.Text = "Collection(.db/.osdb)";
             // 
             // Menu_collectionsSplit
             // 
@@ -126,7 +128,7 @@
             // Menu_unloadCollections
             // 
             this.Menu_unloadCollections.Name = "Menu_unloadCollections";
-            this.Menu_unloadCollections.Size = new System.Drawing.Size(103, 22);
+            this.Menu_unloadCollections.Size = new System.Drawing.Size(180, 22);
             this.Menu_unloadCollections.Text = "Clear";
             // 
             // listingToolStripMenuItem
@@ -213,20 +215,8 @@
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(127, 22);
             this.toolStripMenuItem2.Text = "Login first";
-            // 
-            // Menu_beatmapListing
-            // 
-            this.Menu_beatmapListing.Name = "Menu_beatmapListing";
-            this.Menu_beatmapListing.Size = new System.Drawing.Size(133, 20);
-            this.Menu_beatmapListing.Text = "Show beatmap listing";
-            // 
-            // Menu_refreshBeatmapList
-            // 
-            this.Menu_refreshBeatmapList.Name = "Menu_refreshBeatmapList";
-            this.Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
-            this.Menu_refreshBeatmapList.Text = "Refresh";
             // 
             // Menu_newCollection
             // 
@@ -241,6 +231,24 @@
             this.noCollectionsLoadedToolStripMenuItem.Name = "noCollectionsLoadedToolStripMenuItem";
             this.noCollectionsLoadedToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.noCollectionsLoadedToolStripMenuItem.Text = "No new collections loaded";
+            // 
+            // Menu_beatmapListing
+            // 
+            this.Menu_beatmapListing.Name = "Menu_beatmapListing";
+            this.Menu_beatmapListing.Size = new System.Drawing.Size(133, 20);
+            this.Menu_beatmapListing.Text = "Show beatmap listing";
+            // 
+            // Menu_refreshBeatmapList
+            // 
+            this.Menu_refreshBeatmapList.Name = "Menu_refreshBeatmapList";
+            this.Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
+            this.Menu_refreshBeatmapList.Text = "Refresh";
+            // 
+            // Menu_saveOsuCollection
+            // 
+            this.Menu_saveOsuCollection.Name = "Menu_saveOsuCollection";
+            this.Menu_saveOsuCollection.Size = new System.Drawing.Size(217, 22);
+            this.Menu_saveOsuCollection.Text = "osu! collection";
             // 
             // MainSidePanelView
             // 
@@ -282,5 +290,6 @@
         private System.Windows.Forms.ToolStripMenuItem Menu_refreshBeatmapList;
         private System.Windows.Forms.ToolStripMenuItem Menu_newCollection;
         private System.Windows.Forms.ToolStripMenuItem noCollectionsLoadedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Menu_saveOsuCollection;
     }
 }

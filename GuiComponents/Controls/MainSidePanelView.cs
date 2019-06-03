@@ -48,7 +48,8 @@ namespace GuiComponents.Controls
             Menu_downloadAllMissing.Click += delegate { OnDownloadAllMissing(); };
             Menu_GenerateCollections.Click += delegate { OnGenerateCollections(); };
             Menu_GetMissingMapData.Click += delegate { OnGetMissingMapData(); };
-            Menu_osustatsLogin.Click += delegate { SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin); };
+            Menu_osustatsLogin.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
+            Menu_saveOsuCollection.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
 
             WebCollections.CollectionChanged += WebCollectionsOnCollectionChanged;
         }
@@ -136,7 +137,7 @@ namespace GuiComponents.Controls
             {
                 Process.Start($"https://osustats.ppy.sh/collection/{webCollection.OnlineId}");
             };
-            
+
             return new ToolStripItem[] { loadCollection, uploadChanges, deleteCollection, openOnWeb };
         }
 

@@ -18,6 +18,7 @@
         AddCollections,
         UploadCollectionChanges,
         UploadNewCollections,
-        RemoveWebCollection
+        RemoveWebCollection,
+        SaveDefaultCollection
     }
 }

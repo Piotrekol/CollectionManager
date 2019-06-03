@@ -66,7 +66,8 @@ namespace App
                 {MainSidePanelActions.LoadDefaultCollection, LoadDefaultCollection},
                 {MainSidePanelActions.ClearCollections, ClearCollections},
                 {MainSidePanelActions.SaveCollections, SaveCollections},
-                {MainSidePanelActions.SaveInvidualCollections, SaveInvidualCollections},
+                {MainSidePanelActions.SaveDefaultCollection, SaveDefaultCollection},
+            {MainSidePanelActions.SaveInvidualCollections, SaveInvidualCollections},
                 {MainSidePanelActions.ShowBeatmapListing, ShowBeatmapListing},
                 {MainSidePanelActions.ShowDownloadManager, ShowDownloadManager},
                 {MainSidePanelActions.DownloadAllMissing, DownloadAllMissing},
@@ -418,6 +419,22 @@ namespace App
                 var loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
                 _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
             }
+        }
+
+        private void SaveDefaultCollection(object sender, object data = null)
+        {
+            var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+
+            if (Process.GetProcessesByName("osu!").Any(p =>
+                p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
+                Initalizer.OsuDirectory.ToLowerInvariant()))
+            {
+                _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
+                return;
+            }
+
+            _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
+            _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Info);
         }
 
         private void ClearCollections(object sender, object data = null)
