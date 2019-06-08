@@ -169,7 +169,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
         /// <returns></returns>
         public async Task<IEnumerable<WebCollection>> GetMyCollectionList()
         {
-            return await FetchCollectionList("collection?all=1");
+            return await FetchCollectionList($"collection?user={UserInformation.OsuUserId}&all=1");
         }
 
         public async Task<ICollection> GetCollection(string path)
@@ -189,7 +189,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
                 using (HttpContent osdbContent = new StreamContent(memoryStream))
                 using (MultipartFormDataContent httpContent = new MultipartFormDataContent())
                 {
-                    httpContent.Add(osdbContent, "file",$"{collection.Name}.osdb");
+                    httpContent.Add(osdbContent, "file", $"{collection.Name}.osdb");
                     var response = await httpClient.PostAsync($"{baseUrl}collection/import", httpContent);
 
                     return GetCollectionList(await response.Content.ReadAsStringAsync());
