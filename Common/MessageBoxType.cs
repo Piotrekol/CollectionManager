@@ -2,6 +2,6 @@
 {
     public enum MessageBoxType
     {
-        Info, Question, Error, Success
+        Info, Question, Error, Success, Warning
     }
 }

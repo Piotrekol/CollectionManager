@@ -433,8 +433,16 @@ namespace App
                 return;
             }
 
-            _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
-            _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Info);
+            if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
+                "Are you sure?", MessageBoxType.Question))
+            {
+                _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
+                _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Success);
+            }
+            else
+            {
+                _userDialogs.OkMessageBox("Save Aborted", "Info", MessageBoxType.Warning);
+            }
         }
 
         private void ClearCollections(object sender, object data = null)

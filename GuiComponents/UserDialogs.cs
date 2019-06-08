@@ -66,7 +66,7 @@ namespace GuiComponents
         {
             var icon = GetMessageBoxIcon(messageBoxType);
 
-            var dialogResult = MessageBox.Show(null, caption, text, MessageBoxButtons.YesNo,icon);
+            var dialogResult = MessageBox.Show(null, text, caption, MessageBoxButtons.YesNo, icon);
 
             return dialogResult == DialogResult.Yes;
         }
@@ -90,6 +90,9 @@ namespace GuiComponents
                     break;
                 case MessageBoxType.Question:
                     icon = MessageBoxIcon.Question;
+                    break;
+                case MessageBoxType.Warning:
+                    icon = MessageBoxIcon.Warning;
                     break;
                 default:
                     icon = MessageBoxIcon.Information;
