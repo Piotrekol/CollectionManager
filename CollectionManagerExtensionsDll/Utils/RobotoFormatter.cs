@@ -51,6 +51,11 @@ namespace CollectionManagerExtensionsDll.Utils
             object result = @object;
             foreach (var name in descriptor.Names)
             {
+                if (@object is Dictionary<string, string> dict)
+                {
+                    return dict[name];
+                }
+
                 PropertyInfo descriptionInfo = result.GetType().GetProperty(name);
                 if (descriptionInfo == null)
                 {
