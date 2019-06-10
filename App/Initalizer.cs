@@ -86,7 +86,7 @@ namespace App
             CollectionsManager.LoadedCollections.CollectionChanged += (s, a) =>
             {
                 model.SetCollectionCount(CollectionsManager.CollectionsCount, CollectionsManager.BeatmapsInCollectionsCount);
-                model.SetMissingBeatmapCount(CollectionsManager.MissingBeatmapCount);
+                model.SetMissingMapSetsCount(CollectionsManager.MissingMapSetsCount);
             };
             LoadedBeatmaps.CollectionChanged += (s, a) =>
             {

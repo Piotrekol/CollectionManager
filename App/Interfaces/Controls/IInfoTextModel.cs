@@ -6,10 +6,10 @@ namespace App.Interfaces
     {
         void SetBeatmapCount(int beatmapCount);
         void SetCollectionCount(int collectionsCount, int beatmapsInCollectionsCount);
-        void SetMissingBeatmapCount(int missingBeatmapsCount);
+        void SetMissingMapSetsCount(int missingBeatmapsCount);
         int BeatmapCount { get; }
         int BeatmapsInCollectionsCount { get; }
-        int MissingBeatmapsCount { get; }
+        int MissingMapSetsCount { get; }
         int CollectionsCount { get; }
         IUpdateModel GetUpdater();
         void EmitUpdateTextClicked();

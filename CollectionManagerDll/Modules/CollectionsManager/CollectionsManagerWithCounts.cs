@@ -7,7 +7,7 @@ namespace CollectionManager.Modules.CollectionsManager
     {
         private readonly HashSet<string> _missingBeatmapHashes = new HashSet<string>();
         private readonly HashSet<int> _downloadableMapSetIds = new HashSet<int>();
-        public int MissingBeatmapCount => _missingBeatmapHashes.Count + DownloadableBeatmapsCount;
+        public int MissingMapSetsCount => _missingBeatmapHashes.Count + DownloadableBeatmapsCount;
         public int DownloadableBeatmapsCount => _downloadableMapSetIds.Count;
         public int BeatmapsInCollectionsCount { get; private set; }
         public int CollectionsCount => LoadedCollections.Count;

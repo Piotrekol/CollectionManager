@@ -82,7 +82,7 @@ namespace CollectionManager
             
             //These are avaliable only when using CollectionsManagerWithCounts
             var TotalBeatmapCount = collectionManager.BeatmapsInCollectionsCount;
-            var MissingBeatmapsCount = collectionManager.MissingBeatmapCount;
+            var MissingBeatmapsCount = collectionManager.MissingMapSetsCount;
 
             //Lets save our collections after edits
             //as .osdb

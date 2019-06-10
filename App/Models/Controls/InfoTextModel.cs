@@ -12,7 +12,7 @@ namespace App.Models
 
         public int BeatmapCount { get; set; }
         public int BeatmapsInCollectionsCount { get; set; }
-        public int MissingBeatmapsCount { get; set; }
+        public int MissingMapSetsCount { get; set; }
         public int CollectionsCount { get; set; }
         private IUpdateModel UpdateModel { get; }
         public IUpdateModel GetUpdater()
@@ -41,9 +41,9 @@ namespace App.Models
             OnCountsUpdated();
         }
 
-        public void SetMissingBeatmapCount(int missingBeatmapsCount)
+        public void SetMissingMapSetsCount(int missingBeatmapsCount)
         {
-            MissingBeatmapsCount = missingBeatmapsCount;
+            MissingMapSetsCount = missingBeatmapsCount;
             OnCountsUpdated();
         }
 

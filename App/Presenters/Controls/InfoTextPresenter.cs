@@ -18,7 +18,7 @@ namespace App.Presenters.Controls
         private const string LoadedCollectionsBeatmaps = "With {0} beatmaps";
 
 
-        private const string MissingBeatmaps = "Missing {0} beatmaps";
+        private const string MissingBeatmaps = "Missing {0} map sets";
 
         public InfoTextPresenter(IInfoTextView view, IInfoTextModel model)
         {
@@ -44,7 +44,7 @@ namespace App.Presenters.Controls
             _view.BeatmapLoaded = string.Format(LoadedBeatmaps, Model.BeatmapCount);
             _view.CollectionsLoaded = string.Format(LoadedCollections, Model.CollectionsCount);
             _view.BeatmapsInCollections = string.Format(LoadedCollectionsBeatmaps, Model.BeatmapsInCollectionsCount);
-            _view.BeatmapsMissing = string.Format(MissingBeatmaps, Model.MissingBeatmapsCount);
+            _view.BeatmapsMissing = string.Format(MissingBeatmaps, Model.MissingMapSetsCount);
             SetUpdateText();
         }
 
