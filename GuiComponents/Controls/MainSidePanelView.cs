@@ -50,6 +50,7 @@ namespace GuiComponents.Controls
             Menu_GetMissingMapData.Click += delegate { OnGetMissingMapData(); };
             Menu_osustatsLogin.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
             Menu_saveOsuCollection.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
+            Menu_resetSettings.Click += (s, a) => SidePanelOperation?.Invoke(this,MainSidePanelActions.ResetApplicationSettings);
 
             WebCollections.CollectionChanged += WebCollectionsOnCollectionChanged;
         }

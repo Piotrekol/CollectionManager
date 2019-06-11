@@ -97,6 +97,9 @@
     <Compile Update="Controls\UserTopGeneratorView.Designer.cs">
       <DependentUpon>UserTopGeneratorView.cs</DependentUpon>
     </Compile>
+    <Compile Update="YesNoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>

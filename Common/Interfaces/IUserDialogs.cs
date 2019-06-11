@@ -10,6 +10,7 @@ namespace GuiComponents.Interfaces
         string SelectFile(string text, string types = "", string filename = "");
         string SaveFile(string title, string types = "all|*.*");
         bool YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
+        (bool Result, bool doNotAskAgain) YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info,string doNotAskAgainText = null);
         void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
     }
 }

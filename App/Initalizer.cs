@@ -6,6 +6,7 @@ using App.Misc;
 using App.Models;
 using App.Models.Forms;
 using App.Presenters.Forms;
+using App.Properties;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
@@ -31,8 +32,18 @@ namespace App
             //IUserDialogs can be implemented in WinForm or WPF or Gtk or Console or...?
             UserDialogs = GuiComponentsProvider.Instance.GetClassImplementing<IUserDialogs>();
 
-            //Get osu! directory, or end if it can't be found
-            OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(UserDialogs.IsThisPathCorrect, UserDialogs.SelectDirectory);
+            if (Settings.Default.DontAskAboutOsuDirectory)
+                OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(null, UserDialogs.SelectDirectory);
+            else
+                OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(dir =>
+                {
+                    var result = UserDialogs.YesNoMessageBox($"Detected osu! in \"{dir}\"{Environment.NewLine}Is that correct?", "osu! directory", MessageBoxType.Question,
+                        "Don't ask me again");
+                    Settings.Default.DontAskAboutOsuDirectory = result.doNotAskAgain;
+                    Settings.Default.Save();
+                    return result.Result;
+                }, UserDialogs.SelectDirectory);
+
             if (OsuDirectory == string.Empty)
             {
                 UserDialogs.OkMessageBox("Valid osu! directory is required to run Collection Manager" + Environment.NewLine + "Exiting...", "Error", MessageBoxType.Error);

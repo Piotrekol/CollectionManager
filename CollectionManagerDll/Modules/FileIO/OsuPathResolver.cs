@@ -38,6 +38,9 @@ namespace CollectionManager.Modules.FileIO
             var dir = _getRunningOsuDir();
             if (dir != string.Empty)
             {
+                if (thisPathIsCorrect == null)
+                    return dir;
+
                 var result = thisPathIsCorrect(dir);
                 if (result)
                     return dir;

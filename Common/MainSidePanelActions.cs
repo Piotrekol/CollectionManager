@@ -19,6 +19,7 @@
         UploadCollectionChanges,
         UploadNewCollections,
         RemoveWebCollection,
-        SaveDefaultCollection
+        SaveDefaultCollection,
+        ResetApplicationSettings
     }
 }

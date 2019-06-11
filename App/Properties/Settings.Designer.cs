@@ -22,5 +22,17 @@ namespace App.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DontAskAboutOsuDirectory {
+            get {
+                return ((bool)(this["DontAskAboutOsuDirectory"]));
+            }
+            set {
+                this["DontAskAboutOsuDirectory"] = value;
+            }
+        }
     }
 }

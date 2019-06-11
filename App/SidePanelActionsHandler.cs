@@ -11,6 +11,7 @@ using App.Misc;
 using App.Models;
 using App.Presenters.Controls;
 using App.Presenters.Forms;
+using App.Properties;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Modules.CollectionsManager;
@@ -80,6 +81,7 @@ namespace App
                 {MainSidePanelActions.UploadCollectionChanges, UploadCollectionChanges },
                 {MainSidePanelActions.UploadNewCollections, UploadNewCollections },
                 {MainSidePanelActions.RemoveWebCollection ,RemoveWebCollection },
+                {MainSidePanelActions.ResetApplicationSettings,ResetApplicationSettings }
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
@@ -87,6 +89,22 @@ namespace App
             _mainForm.CombinedListingView.CollectionListingView.OnLoadFile += OnLoadFile;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
+        }
+
+        private void ResetApplicationSettings(object arg1, object arg2)
+        {
+            if (_userDialogs.YesNoMessageBox(
+                "Are you sure that you want to reset all Collection Manager settings?", "Settings reset",
+                MessageBoxType.Question))
+            {
+                Settings.Default.Reset();
+                Settings.Default.Save();
+                _userDialogs.OkMessageBox("Settings were set to their defaults", "Settings reset");
+            }
+            else
+            {
+                _userDialogs.OkMessageBox("Settings were not reset","Settings reset");
+            }
         }
 
         private void OnLoadFile(object sender, string[] filePaths)

@@ -70,6 +70,15 @@ namespace GuiComponents
 
             return dialogResult == DialogResult.Yes;
         }
+
+        public (bool Result, bool doNotAskAgain) YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info,
+            string doNotAskAgainText = null)
+        {
+            var result = YesNoForm.ShowDialog(text, caption, doNotAskAgainText);
+
+            return (result.dialogResult == DialogResult.Yes, result.doNotAskAgain);
+        }
+
         public void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
         {
             var icon = GetMessageBoxIcon(messageBoxType);
