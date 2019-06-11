@@ -54,6 +54,7 @@
             this.noCollectionsLoadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_resetSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +68,7 @@
             this.osustatsCollectionsToolStripMenuItem,
             this.Menu_beatmapListing,
             this.Menu_refreshBeatmapList,
-            this.Menu_resetSettings});
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(724, 24);
@@ -252,11 +253,19 @@
             this.Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
             this.Menu_refreshBeatmapList.Text = "Refresh";
             // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Menu_resetSettings});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
             // Menu_resetSettings
             // 
             this.Menu_resetSettings.Name = "Menu_resetSettings";
-            this.Menu_resetSettings.Size = new System.Drawing.Size(91, 20);
-            this.Menu_resetSettings.Text = "Reset settings";
+            this.Menu_resetSettings.Size = new System.Drawing.Size(180, 22);
+            this.Menu_resetSettings.Text = "Reset";
             // 
             // MainSidePanelView
             // 
@@ -299,6 +308,7 @@
         private System.Windows.Forms.ToolStripMenuItem Menu_newCollection;
         private System.Windows.Forms.ToolStripMenuItem noCollectionsLoadedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Menu_saveOsuCollection;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Menu_resetSettings;
     }
 }

@@ -85,7 +85,10 @@ namespace App
 
 
             var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
-            new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
+            var guiActionsHandler = new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
+
+            if (!string.IsNullOrWhiteSpace(Settings.Default.Osustats_apiKey))
+                guiActionsHandler.SidePanelActionsHandler.OsustatsLogin(null, Settings.Default.Osustats_apiKey);
 
             mainForm.ShowAndBlock();
             Quit();

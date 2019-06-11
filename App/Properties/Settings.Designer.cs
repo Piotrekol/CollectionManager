@@ -70,5 +70,17 @@ namespace App.Properties {
                 this["Audio_volume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Osustats_apiKey {
+            get {
+                return ((string)(this["Osustats_apiKey"]));
+            }
+            set {
+                this["Osustats_apiKey"] = value;
+            }
+        }
     }
 }

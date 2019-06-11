@@ -103,7 +103,7 @@ namespace App
             }
             else
             {
-                _userDialogs.OkMessageBox("Settings were not reset","Settings reset");
+                _userDialogs.OkMessageBox("Settings were not reset", "Settings reset");
             }
         }
 
@@ -223,18 +223,30 @@ namespace App
 
             Initalizer.CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(collections));
         }
-        private async void OsustatsLogin(object sender, object data = null)
+        public async void OsustatsLogin(object sender, object data = null)
         {
+            if (sender == null)
+                sender = _mainForm.SidePanelView;
+
             var onlineListDisplayer = (IOnlineCollectionList)sender;
-
-            var osustatsLoginForm = GuiComponentsProvider.Instance.GetClassImplementing<IOsustatsApiLoginFormView>();
-
-            osustatsLoginForm.ShowAndBlock();
-
             var provider = Initalizer.WebCollectionProvider;
-            provider.ApiKey = osustatsLoginForm.ApiKey;
+
+            if (data == null)
+            {
+                var osustatsLoginForm = GuiComponentsProvider.Instance.GetClassImplementing<IOsustatsApiLoginFormView>();
+
+                osustatsLoginForm.ShowAndBlock();
+
+                provider.ApiKey = osustatsLoginForm.ApiKey;
+            }
+            else
+            {
+                provider.ApiKey = (string)data;
+            }
+
             if (await provider.IsCurrentKeyValid() && provider.CanFetch())
             {
+                Settings.Default.Osustats_apiKey = provider.ApiKey;
                 onlineListDisplayer.UserInformation = provider.UserInformation;
                 onlineListDisplayer.WebCollections.Clear();
                 onlineListDisplayer.WebCollections.AddRange(await provider.GetMyCollectionList());

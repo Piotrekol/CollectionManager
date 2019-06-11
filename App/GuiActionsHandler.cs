@@ -12,14 +12,14 @@ namespace App
     {
         private readonly IMainFormView _mainFormView;
 
-        private SidePanelActionsHandler _sidePanelActionsHandler;
+        public SidePanelActionsHandler SidePanelActionsHandler { get; private set; }
         private BeatmapListingActionsHandler _beatmapListingActionsHandler;
 
 
         public GuiActionsHandler(OsuFileIo osuFileIo, ICollectionEditor collectionEditor, IUserDialogs userDialogs, IMainFormView mainFormView, MainFormPresenter mainFormPresenter, ILoginFormView loginForm)
         {
             _mainFormView = mainFormView;
-            _sidePanelActionsHandler = new SidePanelActionsHandler(osuFileIo, collectionEditor, userDialogs, mainFormView, this, mainFormPresenter, loginForm);
+            SidePanelActionsHandler = new SidePanelActionsHandler(osuFileIo, collectionEditor, userDialogs, mainFormView, this, mainFormPresenter, loginForm);
 
             _beatmapListingActionsHandler = new BeatmapListingActionsHandler(collectionEditor, userDialogs, loginForm, osuFileIo);
             _beatmapListingActionsHandler.Bind(mainFormPresenter.BeatmapListingModel);

@@ -14,5 +14,8 @@
     <Setting Name="Audio_volume" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.25</Value>
     </Setting>
+    <Setting Name="Osustats_apiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
