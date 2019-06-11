@@ -34,5 +34,41 @@ namespace App.Properties {
                 this["DontAskAboutOsuDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Audio_autoPlay {
+            get {
+                return ((bool)(this["Audio_autoPlay"]));
+            }
+            set {
+                this["Audio_autoPlay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Audio_playerMode {
+            get {
+                return ((bool)(this["Audio_playerMode"]));
+            }
+            set {
+                this["Audio_playerMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.25")]
+        public float Audio_volume {
+            get {
+                return ((float)(this["Audio_volume"]));
+            }
+            set {
+                this["Audio_volume"] = value;
+            }
+        }
     }
 }

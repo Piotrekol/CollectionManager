@@ -7,7 +7,12 @@ namespace GuiComponents.Controls
 {
     public partial class MusicControlView : UserControl, IMusicControlView
     {
-        public float Volume => trackBar_Volume.Value / 100f;
+        public float Volume
+        {
+            get => trackBar_Volume.Value / 100f;
+            set => trackBar_Volume.Value = Convert.ToInt32(value * 100f);
+        }
+
         public int Position
         {
             get { return trackBar_position.Value; }
@@ -24,8 +29,18 @@ namespace GuiComponents.Controls
                     catch { }
             }
         }
-        public bool IsMusicPlayerMode => checkBox_musicPlayer.Checked;
-        public bool IsAutoPlayEnabled => checkBox_autoPlay.Checked;
+        public bool IsMusicPlayerMode
+        {
+            get => checkBox_musicPlayer.Checked;
+            set => checkBox_musicPlayer.Checked = value;
+        }
+
+        public bool IsAutoPlayEnabled
+        {
+            get => checkBox_autoPlay.Checked;
+            set => checkBox_autoPlay.Checked = value;
+        }
+
         public bool IsDTEnabled => checkBox_DT.Checked;
         public bool IsUserSeeking { get; set; }
         private bool DTIsAvaliable = true;

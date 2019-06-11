@@ -12,10 +12,10 @@ namespace GuiComponents.Interfaces
         event EventHandler<FloatEventArgs> VolumeChanged;
         event EventHandler Disposed;
 
-        float Volume { get; }
+        float Volume { get; set; }
         int Position { get; set; }
-        bool IsMusicPlayerMode { get; }
-        bool IsAutoPlayEnabled { get; }
+        bool IsMusicPlayerMode { get; set; }
+        bool IsAutoPlayEnabled { get; set; }
         bool IsDTEnabled { get; }
         bool IsUserSeeking { get; }
 

@@ -108,6 +108,8 @@ namespace App
 
         private static void Quit()
         {
+            Settings.Default.Save();
+
             if (System.Windows.Forms.Application.MessageLoop)
             {
                 System.Windows.Forms.Application.Exit();

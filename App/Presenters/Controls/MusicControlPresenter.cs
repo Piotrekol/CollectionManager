@@ -6,6 +6,7 @@ using System.Timers;
 using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.Utils;
 using App.Interfaces;
+using App.Properties;
 using Gui.Misc;
 using GuiComponents.Interfaces;
 using MusicPlayer;
@@ -33,7 +34,14 @@ namespace App.Presenters.Controls
             {
                 _view.disableDt();
             }
+
+            var settings = Settings.Default;
+            _view.IsAutoPlayEnabled = settings.Audio_autoPlay;
+            _view.IsMusicPlayerMode = settings.Audio_playerMode;
+
             _view.CheckboxChanged += ViewOnCheckboxChanged;
+
+            _view.Volume = settings.Audio_volume;
 
             trackPositionTimer = new Timer(500);
             trackPositionTimer.Elapsed += TrackPositionTimer_Elapsed;
@@ -51,8 +59,8 @@ namespace App.Presenters.Controls
                 musicPlayer.SetSpeed(_view.IsDTEnabled ? 1.5f : 1.0f);
             }
 
-
-
+            Settings.Default.Audio_autoPlay = _view.IsAutoPlayEnabled;
+            Settings.Default.Audio_playerMode = _view.IsMusicPlayerMode;
         }
 
 
@@ -89,6 +97,7 @@ namespace App.Presenters.Controls
         private void ViewOnVolumeChanged(object sender, FloatEventArgs floatEventArgs)
         {
             musicPlayer.SetVolume(floatEventArgs.Value);
+            Settings.Default.Audio_volume = floatEventArgs.Value;
         }
 
         private void ViewOnPositionChanged(object sender, IntEventArgs intEventArgs)
