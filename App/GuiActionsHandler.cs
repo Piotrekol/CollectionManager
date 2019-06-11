@@ -40,8 +40,7 @@ namespace App
 
             sidePanel.Collections = collections;
 
-            sidePanel.WebCollections.Clear();
-            sidePanel.WebCollections.AddRange(Initalizer.CollectionsManager.LoadedCollections.Except(collections).Select(c => (WebCollection)c));
+            sidePanel.WebCollections.AddRange(Initalizer.CollectionsManager.LoadedCollections.Except(collections).Except(sidePanel.WebCollections).Select(c => (WebCollection)c));
             sidePanel.WebCollections.CallReset();
 
         }
