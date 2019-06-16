@@ -402,12 +402,16 @@ namespace App
                 }
             }
 
-            if (downloadableBeatmaps.Count > 0)
-                if (OsuDownloadManager.Instance.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
-                {
-                    OsuDownloadManager.Instance.DownloadBeatmaps(downloadableBeatmaps);
-                    ShowDownloadManager();
-                }
+            if (downloadableBeatmaps.Count == 0)
+            {
+                _userDialogs.OkMessageBox("You don't have any missing maps that CM is able to download", "Info", MessageBoxType.Info);
+            }
+
+            if (OsuDownloadManager.Instance.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
+            {
+                OsuDownloadManager.Instance.DownloadBeatmaps(downloadableBeatmaps);
+                ShowDownloadManager();
+            }
         }
 
         private void FormUpdateTextClicked(object sender, EventArgs args)
