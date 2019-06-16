@@ -405,6 +405,7 @@ namespace App
             if (downloadableBeatmaps.Count == 0)
             {
                 _userDialogs.OkMessageBox("You don't have any missing maps that CM is able to download", "Info", MessageBoxType.Info);
+                return;
             }
 
             if (OsuDownloadManager.Instance.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
