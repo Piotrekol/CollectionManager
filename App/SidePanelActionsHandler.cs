@@ -413,6 +413,10 @@ namespace App
                 OsuDownloadManager.Instance.DownloadBeatmaps(downloadableBeatmaps);
                 ShowDownloadManager();
             }
+            else
+            {
+                _userDialogs.OkMessageBox("Invalid directory or osu! login/password supplied", "Error", MessageBoxType.Error);
+            }
         }
 
         private void FormUpdateTextClicked(object sender, EventArgs args)
