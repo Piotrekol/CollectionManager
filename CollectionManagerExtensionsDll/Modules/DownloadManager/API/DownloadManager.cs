@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 {
@@ -172,13 +173,45 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                     url.DownloadAborted = true;//Progress = "download cancelled";
                     error = true;
                     lock (_urlsToDownload)
+                    {
                         _urlsToDownload.AddFirst(url);
+                    }
                 }
                 else if (e.Error != null)
                 {
                     url.OtherError = true;
                     url.Error = "Error: " + e.Error.ToString();
                     error = true;
+                }
+                else if (url.BytesRecived<10000)
+                {
+                    //check if that's a disabled dl or download cap
+                    var tempFileLocation = GetFullTempLocation(url.FileName);
+                    var tempFileContents = File.ReadAllText(tempFileLocation);
+                    if (tempFileContents.Contains("disabled")) // "This download has been disabled (<some url>)"
+                    {
+                        error = true;
+                        url.Error = tempFileContents;
+                    }
+                    else if(tempFileContents.Contains("slow down")) // "slow down, play more."
+                    {
+                        //We've hit download cap, lets chill a little 
+                        if (!_stopDownloads)
+                        {
+                            StopDownloads();
+                            Task.Run(async () =>
+                            {
+                                //Stop downloads for 6 minutes - user can try to resume these earlier, but it'll just get paused again if limit is still in place.
+                                await Task.Delay(60 * 1000 * 6);
+                                ResumeNewDownloads();
+                            });
+                        }
+
+                        lock (_urlsToDownload)
+                        {
+                            _urlsToDownload.AddFirst(url);
+                        }
+                    }
                 }
                 if (error)
                 {
