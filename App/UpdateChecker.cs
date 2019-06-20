@@ -16,7 +16,7 @@ namespace App
         public UpdateChecker()
         {
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-            CurrentVersion = new Version(version.ProductVersion);
+            CurrentVersion = new Version(version.FileVersion);
         }
 
         public bool Error { get; private set; }
