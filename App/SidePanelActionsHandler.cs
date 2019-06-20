@@ -422,10 +422,10 @@ namespace App
         private void FormUpdateTextClicked(object sender, EventArgs args)
         {
             var updater = _mainFormPresenter.InfoTextModel.GetUpdater();
-            if (updater.IsUpdateAvaliable())
+            if (updater.UpdateIsAvailable)
             {
-                if (!string.IsNullOrWhiteSpace(updater.newVersionLink))
-                    Process.Start(updater.newVersionLink);
+                if (!string.IsNullOrWhiteSpace(updater.NewVersionLink))
+                    Process.Start(updater.NewVersionLink);
             }
 
         }

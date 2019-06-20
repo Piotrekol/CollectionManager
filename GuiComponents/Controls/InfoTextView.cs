@@ -14,16 +14,22 @@ namespace GuiComponents.Controls
             label_UpdateText.Click += (s, a) => { UpdateTextClicked?.Invoke(this, EventArgs.Empty); };
         }
 
-        public bool UpdateTextIsClickable
+        public bool ColorUpdateText
         {
             set
             {
                 if (value)
                 {
                     label_UpdateText.Cursor = Cursors.Hand;
+                    label_UpdateText.ForeColor = Color.Crimson;
+                    label_UpdateText.Font = new Font(label_UpdateText.Font, FontStyle.Bold);
                 }
                 else
+                {
                     label_UpdateText.Cursor = DefaultCursor;
+                    label_UpdateText.ForeColor = DefaultForeColor;
+                    label_UpdateText.Font = new Font(label_UpdateText.Font, FontStyle.Regular);
+                }
             }
         }
 

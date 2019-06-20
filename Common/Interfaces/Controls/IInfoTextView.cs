@@ -4,7 +4,7 @@ namespace GuiComponents.Interfaces
 {
     public interface IInfoTextView
     {
-        bool UpdateTextIsClickable { set; }
+        bool ColorUpdateText { set; }
         string UpdateText { set; }
         string BeatmapLoaded { set; }
         string CollectionsLoaded { set; }

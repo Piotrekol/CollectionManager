@@ -11,7 +11,7 @@ namespace App.Presenters.Controls
 
         private const string UpdateAvaliable = "Update is avaliable!({0})";
         private const string UpdateError = "Error while checking for updates.";
-        private const string UpdateNewestVersion = "No updates avaliable ({0})";
+        private const string NoUpdatesAvailable = "No updates avaliable ({0})";
 
         private const string LoadedBeatmaps = "Loaded {0} beatmaps";
         private const string LoadedCollections = "Loaded {0} collections";
@@ -32,10 +32,10 @@ namespace App.Presenters.Controls
         private void ViewOnUpdateTextClicked(object sender, EventArgs eventArgs)
         {
             var updater = Model.GetUpdater();
-            updater.CheckIfUpdateIsAvaliable();
+            updater.CheckForUpdates();
 
             Model.EmitUpdateTextClicked();
-
+            SetUpdateText();
         }
 
 
@@ -53,9 +53,11 @@ namespace App.Presenters.Controls
             var updater = Model.GetUpdater();
             if (updater != null)
             {
-                if (updater.IsUpdateAvaliable())
+                _view.ColorUpdateText = true;
+
+                if (updater.UpdateIsAvailable)
                 {
-                    _view.UpdateText = string.Format(UpdateAvaliable, updater.newVersion);
+                    _view.UpdateText = string.Format(UpdateAvaliable, updater.OnlineVersion);
                 }
                 else if (updater.Error)
                 {
@@ -63,11 +65,13 @@ namespace App.Presenters.Controls
                 }
                 else
                 {
-                    _view.UpdateText = string.Format(UpdateNewestVersion, updater.currentVersion);
+                    _view.ColorUpdateText = false;
+                    _view.UpdateText = string.Format(NoUpdatesAvailable, updater.CurrentVersion);
                 }
             }
             else
             {
+                _view.ColorUpdateText = false;
                 _view.UpdateText = "";
             }
         }

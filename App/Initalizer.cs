@@ -70,12 +70,9 @@ namespace App
                 }
             }
 
-            var UpdateChecker = new UpdateChecker();
-            UpdateChecker.currentVersion = System.Reflection.Assembly.GetExecutingAssembly()
-                                           .GetName()
-                                           .Version
-                                           .ToString();
-            var infoTextModel = new InfoTextModel(UpdateChecker);
+            var updateChecker = new UpdateChecker();
+            updateChecker.CheckForUpdates();
+            var infoTextModel = new InfoTextModel(updateChecker);
 
             var mainForm = GuiComponentsProvider.Instance.GetClassImplementing<IMainFormView>();
             var mainPresenter = new MainFormPresenter(mainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel, WebCollectionProvider);

@@ -1,12 +1,14 @@
-﻿namespace App.Interfaces
+﻿using System;
+
+namespace App.Interfaces
 {
     public interface IUpdateModel
     {
-        bool IsUpdateAvaliable();
+        bool UpdateIsAvailable { get; }
         bool Error { get; }
-        string newVersion { get; }
-        string newVersionLink { get; }
-        string currentVersion { get; }
-        void CheckIfUpdateIsAvaliable();
+        Version OnlineVersion { get; }
+        string NewVersionLink { get; }
+        Version CurrentVersion { get; }
+        bool CheckForUpdates();
     }
 }
