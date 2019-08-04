@@ -292,7 +292,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             long ticks = _binaryReader.ReadInt64();
             if (ticks < 0L)
             {
-                return new DateTime();
+                return DateTime.MinValue;
             }
 
             return new DateTime(ticks, DateTimeKind.Utc);
