@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CollectionManager.Enums;
-using CollectionManager.Modules.ModParser;
 
 namespace CollectionManager.DataTypes
 {
@@ -367,7 +366,60 @@ namespace CollectionManager.DataTypes
 
         public override int GetHashCode()
         {
-            return Md5.GetHashCode();
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + TitleUnicode.GetHashCode();
+                hash = hash * 23 + TitleRoman.GetHashCode();
+                hash = hash * 23 + ArtistUnicode.GetHashCode();
+                hash = hash * 23 + ArtistRoman.GetHashCode();
+                hash = hash * 23 + Creator.GetHashCode();
+                hash = hash * 23 + DiffName.GetHashCode();
+                hash = hash * 23 + Mp3Name.GetHashCode();
+                hash = hash * 23 + Md5.GetHashCode();
+                hash = hash * 23 + OsuFileName.GetHashCode();
+                hash = hash * 23 + Tags.GetHashCode();
+                hash = hash * 23 + Somestuff.GetHashCode();
+                hash = hash * 23 + _state.GetHashCode();
+                hash = hash * 23 + Circles.GetHashCode();
+                hash = hash * 23 + Sliders.GetHashCode();
+                hash = hash * 23 + Spinners.GetHashCode();
+                hash = hash * 23 + EditDate.GetHashCode();
+                hash = hash * 23 + ApproachRate.GetHashCode();
+                hash = hash * 23 + CircleSize.GetHashCode();
+                hash = hash * 23 + HpDrainRate.GetHashCode();
+                hash = hash * 23 + OverallDifficulty.GetHashCode();
+                hash = hash * 23 + SliderVelocity.GetHashCode();
+                hash = hash * 23 + DrainingTime.GetHashCode();
+                hash = hash * 23 + TotalTime.GetHashCode();
+                hash = hash * 23 + PreviewTime.GetHashCode();
+                hash = hash * 23 + MapId.GetHashCode();
+                hash = hash * 23 + MapSetId.GetHashCode();
+                hash = hash * 23 + ThreadId.GetHashCode();
+                hash = hash * 23 + OsuGrade.GetHashCode();
+                hash = hash * 23 + TaikoGrade.GetHashCode();
+                hash = hash * 23 + CatchGrade.GetHashCode();
+                hash = hash * 23 + ManiaGrade.GetHashCode();
+                hash = hash * 23 + Offset.GetHashCode();
+                hash = hash * 23 + StackLeniency.GetHashCode();
+                hash = hash * 23 + PlayMode.GetHashCode();
+                hash = hash * 23 + Source.GetHashCode();
+                hash = hash * 23 + AudioOffset.GetHashCode();
+                hash = hash * 23 + LetterBox.GetHashCode();
+                hash = hash * 23 + Played.GetHashCode();
+                hash = hash * 23 + LastPlayed.GetHashCode();
+                hash = hash * 23 + IsOsz2.GetHashCode();
+                hash = hash * 23 + Dir.GetHashCode();
+                hash = hash * 23 + LastSync.GetHashCode();
+                hash = hash * 23 + DisableHitsounds.GetHashCode();
+                hash = hash * 23 + DisableSkin.GetHashCode();
+                hash = hash * 23 + DisableSb.GetHashCode();
+                hash = hash * 23 + BgDim.GetHashCode();
+                hash = hash * 23 + ModPpStars.GetHashCode();
+                hash = hash * 23 + MaxBpm.GetHashCode();
+                hash = hash * 23 + MinBpm.GetHashCode();
+                return hash;
+            }
         }
 
         public override bool Equals(object obj)
