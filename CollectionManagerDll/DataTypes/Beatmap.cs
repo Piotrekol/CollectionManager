@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CollectionManager.Enums;
 
@@ -24,38 +24,28 @@ namespace CollectionManager.DataTypes
         }
         public string TitleRoman { get; set; }
         public string ArtistRoman { get; set; }
-        private string _artist;
         public string Artist
         {
             get
             {
-                if (_artist == null)
-                {
-                    if (!string.IsNullOrEmpty(ArtistRoman))
-                        _artist = ArtistRoman;
-                    else if (!string.IsNullOrEmpty(ArtistUnicode))
-                        _artist = ArtistUnicode;
-                    else
-                        _artist = "";
-                }
-                return _artist;
+                if (!string.IsNullOrEmpty(ArtistRoman))
+                    return ArtistRoman;
+                if (!string.IsNullOrEmpty(ArtistUnicode))
+                    return ArtistUnicode;
+
+                return "";
             }
         }
-        private string _title;
         public string Title
         {
             get
             {
-                if (_title == null)
-                {
-                    if (!string.IsNullOrEmpty(TitleRoman))
-                        _title = TitleRoman;
-                    else if (!string.IsNullOrEmpty(TitleUnicode))
-                        _title = TitleUnicode;
-                    else
-                        _title = "";
-                }
-                return _title;
+                if (!string.IsNullOrEmpty(TitleRoman))
+                    return TitleRoman;
+                if (!string.IsNullOrEmpty(TitleUnicode))
+                    return TitleUnicode;
+
+                return "";
             }
         }
 
