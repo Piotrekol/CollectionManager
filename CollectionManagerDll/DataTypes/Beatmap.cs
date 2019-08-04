@@ -132,11 +132,11 @@ namespace CollectionManager.DataTypes
         public int MapId { get; set; }
         public int MapSetId { get; set; }
         public int ThreadId { get; set; }
-        public OsuGrade OsuGrade { get; set; }
-        public OsuGrade TaikoGrade { get; set; }
-        public OsuGrade CatchGrade { get; set; }
-        public OsuGrade ManiaGrade { get; set; }
-        
+        public OsuGrade OsuGrade { get; set; } = OsuGrade.Null;
+        public OsuGrade TaikoGrade { get; set; } = OsuGrade.Null;
+        public OsuGrade CatchGrade { get; set; } = OsuGrade.Null;
+        public OsuGrade ManiaGrade { get; set; } = OsuGrade.Null;
+
         public short Offset { get; set; }
         public float StackLeniency { get; set; }
         private PlayMode _playMode;
@@ -325,10 +325,10 @@ namespace CollectionManager.DataTypes
             MapSetId = 0;
             ThreadId = 0;
 
-            OsuGrade = 0;
-            TaikoGrade = 0;
-            CatchGrade = 0;
-            ManiaGrade = 0;
+            OsuGrade = OsuGrade.Null;
+            TaikoGrade = OsuGrade.Null;
+            CatchGrade = OsuGrade.Null;
+            ManiaGrade = OsuGrade.Null;
             Offset = 0;
             StackLeniency = 0;
             PlayMode = PlayMode.Osu;
