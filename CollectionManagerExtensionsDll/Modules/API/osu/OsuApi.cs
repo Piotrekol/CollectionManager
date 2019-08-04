@@ -109,7 +109,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 beatmap.Creator = json["creator"].ToString();
                 var approvedDate = json["approved_date"];
                 beatmap.ApprovedDate = approvedDate != null ? approvedDate.Value<DateTime?>() ?? DateTime.MinValue : DateTime.MinValue;
-                beatmap.ModPpStars.Add(PlayMode.Osu, new Dictionary<int, double>()
+                beatmap.ModPpStars.Add(PlayMode.Osu, new StarRating
                 {
                     { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
                 });
@@ -233,7 +233,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
                 //beatmap.bpm
                 beatmap.Source = json["source"].ToString();
                 beatmap.Tags = json["tags"].ToString();
-                beatmap.ModPpStars.Add(beatmap.PlayMode, new Dictionary<int, double>()
+                beatmap.ModPpStars.Add(beatmap.PlayMode, new StarRating()
                 {
                     { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
                 });
