@@ -166,7 +166,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 return;
             }
             if (!beatmap.ModPpStars.ContainsKey(playMode))
-                beatmap.ModPpStars.Add(playMode, new Dictionary<int, double>());
+                beatmap.ModPpStars.Add(playMode, new StarRating());
             var modPpStars = beatmap.ModPpStars[playMode];
             for (int j = 0; j < num; j++)
             {

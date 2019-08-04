@@ -258,10 +258,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
                             if (fileVersion >= 6)
                             {
-                                map.ModPpStars.Add(map.PlayMode, new Dictionary<int, double>
-                                {
-                                    {0, _binReader.ReadDouble()}
-                                });
+                                map.ModPpStars.Add(map.PlayMode, new StarRating { { 0, _binReader.ReadDouble() } });
                             }
                         }
 

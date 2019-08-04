@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using CollectionManager.Enums;
 
@@ -49,10 +50,6 @@ namespace CollectionManager.DataTypes
             }
         }
 
-
-
-
-
         public string Creator { get; set; }
         public string DiffName { get; set; }
         public string Mp3Name { get; set; }
@@ -78,10 +75,10 @@ namespace CollectionManager.DataTypes
             }
         }
         //TODO: add helper functions for adding/removing star values
-        public Dictionary<PlayMode, Dictionary<int, double>> ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
+        public PlayModeStars ModPpStars = new PlayModeStars();
         public double StarsNomod => Stars(PlayMode);
 
-        public double Stars(PlayMode playMode, Mods mods=Mods.Omod)
+        public double Stars(PlayMode playMode, Mods mods = Mods.Omod)
         {
             mods = mods & Mods.MapChanging;
             if (ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods))
@@ -91,7 +88,6 @@ namespace CollectionManager.DataTypes
 
         public double MaxBpm { get; set; }
         public double MinBpm { get; set; }
-
 
         public string Tags { get; set; }
         public string StateStr { get; private set; }
@@ -173,7 +169,6 @@ namespace CollectionManager.DataTypes
         public bool DisableSb { get; set; }
         public short BgDim { get; set; }
         public int Somestuff { get; set; }
-        public string VideoDir { get; set; }
 
         public Beatmap()
         {
@@ -296,7 +291,7 @@ namespace CollectionManager.DataTypes
         }
         public void InitEmptyValues()
         {
-            ModPpStars = new Dictionary<PlayMode, Dictionary<int, double>>();
+            ModPpStars = new PlayModeStars();
             TitleUnicode = string.Empty;
             TitleRoman = string.Empty;
             ArtistUnicode = string.Empty;
@@ -473,13 +468,13 @@ namespace CollectionManager.DataTypes
                 return false;
             if (OsuGrade != b.OsuGrade)
                 return false;
-            if (TaikoGrade!= b.TaikoGrade)
+            if (TaikoGrade != b.TaikoGrade)
                 return false;
             if (CatchGrade != b.CatchGrade)
                 return false;
             if (ManiaGrade != b.ManiaGrade)
                 return false;
-            
+
 
             if (Offset != b.Offset)
                 return false;
@@ -523,9 +518,9 @@ namespace CollectionManager.DataTypes
         {
             if (string.IsNullOrEmpty(Artist) && string.IsNullOrEmpty(Title))
             {
-                if(string.IsNullOrEmpty(Md5))
+                if (string.IsNullOrEmpty(Md5))
                     return Md5;
-                return "mapId: "+MapId;
+                return "mapId: " + MapId;
             }
             var baseStr = Artist + " - " + Title;
             return baseStr;
