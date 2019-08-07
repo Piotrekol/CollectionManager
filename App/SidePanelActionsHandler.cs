@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using App.Interfaces;
 using App.Misc;
@@ -460,7 +461,7 @@ namespace App
             }
         }
 
-        private void SaveDefaultCollection(object sender, object data = null)
+        private async void SaveDefaultCollection(object sender, object data = null)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
 
@@ -475,6 +476,7 @@ namespace App
             if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
                 "Are you sure?", MessageBoxType.Question))
             {
+                await BeforeCollectionSave(Initalizer.LoadedCollections);
                 _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
                 _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Success);
             }
@@ -489,17 +491,33 @@ namespace App
             _collectionEditor.EditCollection(CollectionEditArgs.ClearCollections());
         }
 
-        private void SaveCollections(object sender, object data = null)
+        private Task BeforeCollectionSave(IList<ICollection> collections)
+        {
+            List<Task> tasks = new List<Task>();
+
+            foreach (var collection in collections)
+            {
+                if (collection is WebCollection wc)
+                {
+                    tasks.Add(wc.Load(Initalizer.WebCollectionProvider));
+                }
+            }
+            
+            return Task.WhenAll(tasks);
+        }
+        private async void SaveCollections(object sender, object data = null)
         {
             var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb");
             if (fileLocation == string.Empty) return;
+            await BeforeCollectionSave(Initalizer.LoadedCollections);
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
         }
 
-        private void SaveInvidualCollections(object sender, object data = null)
+        private async void SaveInvidualCollections(object sender, object data = null)
         {
             var saveDirectory = _userDialogs.SelectDirectory("Where collection files should be saved?", true);
             if (saveDirectory == string.Empty) return;
+            await BeforeCollectionSave(Initalizer.LoadedCollections);
             foreach (var collection in Initalizer.LoadedCollections)
             {
                 var filename = Helpers.StripInvalidCharacters(collection.Name);
