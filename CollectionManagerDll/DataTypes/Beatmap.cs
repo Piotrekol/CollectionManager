@@ -349,6 +349,11 @@ namespace CollectionManager.DataTypes
             return this.MemberwiseClone();
         }
 
+        public string GetChecksum()
+        {
+            //Md5 ensures checksum uniqueness while hashcode provides a way of checking for map contents(updates) in .db
+            return $"{Md5}{GetHashCode()}";
+        }
         public override int GetHashCode()
         {
             unchecked
