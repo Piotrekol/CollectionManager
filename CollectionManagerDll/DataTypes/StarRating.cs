@@ -17,7 +17,7 @@ namespace CollectionManager.DataTypes
         {
             foreach (var kvPair in Values)
             {
-                yield return new KeyValuePair<int, double>(kvPair.Key, kvPair.Value);
+                yield return kvPair;
             }
         }
 
