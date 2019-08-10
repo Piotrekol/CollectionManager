@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
@@ -13,8 +13,8 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
 
         public bool Login(LoginData loginData)
         {
-            var loginAddress = @"https://osu.ppy.sh/forum/ucp.php?mode=login";
-            string loginDataStr = string.Format("username={0}&password={1}&login=login&sid=", Uri.EscapeDataString(loginData.Username), Uri.EscapeDataString(loginData.Password));
+            var loginAddress = @"https://osu.ppy.sh/session";
+            string loginDataStr = string.Format("username={0}&password={1}", Uri.EscapeDataString(loginData.Username), Uri.EscapeDataString(loginData.Password));
 
 
             CookieContainer cookies = null;

@@ -30,7 +30,7 @@ namespace App
         public string DownloadDirectory { get; set; } = "";
         public bool DownloadDirectoryIsSet => DownloadDirectory != "";
         private long _downloadId = 0;
-        private const string BaseDownloadUrl = "https://osu.ppy.sh/d/{0}";
+        private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
 
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDIalogs, ILoginFormView loginForm)
         {

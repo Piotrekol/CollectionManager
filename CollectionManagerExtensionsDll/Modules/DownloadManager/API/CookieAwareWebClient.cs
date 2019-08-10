@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 
 namespace System.Net
 {
@@ -10,21 +15,23 @@ namespace System.Net
         public int ClientId = -1;
         public string Login(string loginPageAddress, string loginData)
         {
-            CookieContainer container;
+            var homePageRequest = (HttpWebRequest)WebRequest.Create("https://osu.ppy.sh/home");
+            homePageRequest.CookieContainer = CookieContainer;
+            homePageRequest.GetResponse();
+            var token = CookieContainer.ToList().First(x => x.Name == "XSRF-TOKEN");
 
             var request = (HttpWebRequest)WebRequest.Create(loginPageAddress);
 
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             var data = loginData.ToString();
-            var buffer = Encoding.ASCII.GetBytes(loginData.ToString());
+            var buffer = Encoding.ASCII.GetBytes("_token=" + token + "&" + loginData.ToString());
             request.ContentLength = buffer.Length;
+            request.CookieContainer = CookieContainer;
             var requestStream = request.GetRequestStream();
             requestStream.Write(buffer, 0, buffer.Length);
             requestStream.Close();
-
-            container = request.CookieContainer = new CookieContainer();
-
+            
             var response = request.GetResponse();
             string ResponseText = "";
             using (StreamReader sr = new StreamReader(response.GetResponseStream()))
@@ -32,7 +39,6 @@ namespace System.Net
                 ResponseText = sr.ReadToEnd();
             }
             response.Close();
-            CookieContainer = container;
             return ResponseText;
         }
 
@@ -40,7 +46,6 @@ namespace System.Net
         {
             CookieContainer = container;
         }
-
 
         public CookieAwareWebClient()
           : this(new CookieContainer())
