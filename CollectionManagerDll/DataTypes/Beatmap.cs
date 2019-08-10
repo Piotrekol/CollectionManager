@@ -400,7 +400,7 @@ namespace CollectionManager.DataTypes
                 hash = hash * 23 + LastPlayed.GetHashCode();
                 hash = hash * 23 + IsOsz2.GetHashCode();
                 hash = hash * 23 + Dir.GetHashCode();
-                hash = hash * 23 + LastSync.GetHashCode();
+                //hash = hash * 23 + LastSync.GetHashCode(); //This value is updated by osu even if no changes were made to the actual data
                 hash = hash * 23 + DisableHitsounds.GetHashCode();
                 hash = hash * 23 + DisableSkin.GetHashCode();
                 hash = hash * 23 + DisableSb.GetHashCode();
