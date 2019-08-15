@@ -28,7 +28,7 @@
     <Content Include="Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.13.0307" />
+    <PackageReference Include="ILMerge" Version="3.0.29" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
