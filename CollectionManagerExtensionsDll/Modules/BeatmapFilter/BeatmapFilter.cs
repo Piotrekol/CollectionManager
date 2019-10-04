@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -124,7 +124,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
                         case "key":
                         case "keys":
-                            return delegate (Beatmap b) { return RetFalse(); };
+                            return delegate(Beatmap b) { return isPatternMatch(GetManiaColumns(b), op, num); };
 
                         case "speed":
                             return delegate (Beatmap b) { return RetFalse(); };
@@ -255,6 +255,14 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             return Double.NaN;
         }
 
+        private double GetManiaColumns(Beatmap beatmap)
+        {
+            if (beatmap.PlayMode == PlayMode.OsuMania)
+                return beatmap.CircleSize;
+
+            //TODO; need help: no clue how to figure out mania columns for converted maps
+            return 0;
+        }
         private bool RetFalse()
         {
             return false;
