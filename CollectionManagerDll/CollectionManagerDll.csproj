@@ -3,11 +3,21 @@
     <ProjectGuid>{533AB47A-D1B5-45DB-A37E-F053FA3699C4}</ProjectGuid>
     <RootNamespace>CollectionManager</RootNamespace>
     <AssemblyName>CollectionManager</AssemblyName>
-    <TargetFramework>netstandard20</TargetFramework>
+    <TargetFrameworks>netstandard20;net471</TargetFrameworks>
     <AssemblyTitle>CollectionManager</AssemblyTitle>
-    <Product>CollectionManager</Product>
-    <Description>Implements read/write access to db/osdb files, along with ability to edit these in a reasonable manner</Description>
-    <Copyright>Copyright Piotrekol©  2019</Copyright>
+    <Product></Product>
+    <Description>Implements read/write access to osu! db &amp; osdb collection files, along with ability to edit these in a reasonable manner</Description>
+    <Copyright>Copyright © 2019</Copyright>
+    <Authors>Piotrekol</Authors>
+    <Company />
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Piotrekol/CollectionManager/tree/master/CollectionManagerDll</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Piotrekol/CollectionManager/tree/master/CollectionManagerDll</RepositoryUrl>
+    <PackageTags>osu!</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
+    <IncludeSymbols>true</IncludeSymbols> 
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
