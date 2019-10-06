@@ -47,6 +47,7 @@
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyUrlMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.copyAsTextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.PullMapsetMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.ListViewBeatmaps = new BrightIdeasSoftware.FastDataListView();
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -58,16 +59,16 @@
             this.column_od = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.LastPlayed = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.PullMapsetMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.MainBpm = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewBeatmaps)).BeginInit();
             this.SuspendLayout();
@@ -208,16 +209,23 @@
             // copyUrlMenuStrip
             // 
             this.copyUrlMenuStrip.Name = "copyUrlMenuStrip";
-            this.copyUrlMenuStrip.Size = new System.Drawing.Size(109, 22);
+            this.copyUrlMenuStrip.Size = new System.Drawing.Size(110, 22);
             this.copyUrlMenuStrip.Text = "url(s)";
             this.copyUrlMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // copyAsTextMenuStrip
             // 
             this.copyAsTextMenuStrip.Name = "copyAsTextMenuStrip";
-            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(109, 22);
+            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(110, 22);
             this.copyAsTextMenuStrip.Text = "As text";
             this.copyAsTextMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // PullMapsetMenuStrip
+            // 
+            this.PullMapsetMenuStrip.Name = "PullMapsetMenuStrip";
+            this.PullMapsetMenuStrip.Size = new System.Drawing.Size(171, 22);
+            this.PullMapsetMenuStrip.Text = "Pull whole mapset";
+            this.PullMapsetMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // ListViewBeatmaps
             // 
@@ -240,6 +248,7 @@
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn8);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn9);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn11);
+            this.ListViewBeatmaps.AllColumns.Add(this.MainBpm);
             this.ListViewBeatmaps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -354,6 +363,12 @@
             this.olvColumn10.Text = "N/U";
             this.olvColumn10.Width = 35;
             // 
+            // olvColumn1
+            // 
+            this.olvColumn1.AspectName = "OsuGrade";
+            this.olvColumn1.IsEditable = false;
+            this.olvColumn1.Text = "OsuGrade";
+            // 
             // LastPlayed
             // 
             this.LastPlayed.AspectName = "LastPlayed";
@@ -371,12 +386,6 @@
             // 
             this.olvColumn13.AspectName = "UserComment";
             this.olvColumn13.Text = "Comment";
-            // 
-            // olvColumn1
-            // 
-            this.olvColumn1.AspectName = "OsuGrade";
-            this.olvColumn1.IsEditable = false;
-            this.olvColumn1.Text = "OsuGrade";
             // 
             // olvColumn6
             // 
@@ -399,13 +408,6 @@
             this.olvColumn8.IsVisible = false;
             this.olvColumn8.Text = "ManiaGrade";
             // 
-            // PullMapsetMenuStrip
-            // 
-            this.PullMapsetMenuStrip.Name = "PullMapsetMenuStrip";
-            this.PullMapsetMenuStrip.Size = new System.Drawing.Size(180, 22);
-            this.PullMapsetMenuStrip.Text = "Pull whole mapset";
-            this.PullMapsetMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
             // olvColumn9
             // 
             this.olvColumn9.AspectName = "MapSetId";
@@ -419,6 +421,14 @@
             this.olvColumn11.IsEditable = false;
             this.olvColumn11.IsVisible = false;
             this.olvColumn11.Text = "MapId";
+            // 
+            // MainBpm
+            // 
+            this.MainBpm.AspectName = "MainBpm";
+            this.MainBpm.DisplayIndex = 11;
+            this.MainBpm.IsEditable = false;
+            this.MainBpm.IsVisible = false;
+            this.MainBpm.Text = "MainBpm";
             // 
             // BeatmapListingView
             // 
@@ -478,5 +488,6 @@
         private System.Windows.Forms.ToolStripMenuItem PullMapsetMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn9;
         private BrightIdeasSoftware.OLVColumn olvColumn11;
+        private BrightIdeasSoftware.OLVColumn MainBpm;
     }
 }

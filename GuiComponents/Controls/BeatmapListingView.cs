@@ -169,6 +169,11 @@ namespace GuiComponents.Controls
                 var val = (DateTime)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
+            MainBpm.AspectToStringConverter = delegate (object cellValue)
+            {
+                if (cellValue == null) return string.Empty;
+                return $"{cellValue:0.##}";
+            };
 
             var dropsink = new RearrangingDropSink();
             dropsink.CanDropBetween = false;
