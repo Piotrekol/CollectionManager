@@ -88,6 +88,7 @@ namespace CollectionManager.DataTypes
 
         public double MaxBpm { get; set; }
         public double MinBpm { get; set; }
+        public double MainBpm { get; set; }
 
         public string Tags { get; set; }
         public string StateStr { get; private set; }
@@ -226,6 +227,7 @@ namespace CollectionManager.DataTypes
             ModPpStars = b.ModPpStars;
             MaxBpm = b.MaxBpm;
             MinBpm = b.MinBpm;
+            MainBpm = b.MainBpm;
         }
         public Beatmap(Beatmap b)
         {
@@ -278,6 +280,7 @@ namespace CollectionManager.DataTypes
             ModPpStars = b.ModPpStars;
             MaxBpm = b.MaxBpm;
             MinBpm = b.MinBpm;
+            MainBpm = b.MainBpm;
         }
         public Beatmap(string artist)
         {
@@ -341,6 +344,7 @@ namespace CollectionManager.DataTypes
             BgDim = 0;
             MinBpm = 0.0f;
             MaxBpm = 0.0f;
+            MainBpm = 0.0f;
         }
 
 
@@ -408,6 +412,7 @@ namespace CollectionManager.DataTypes
                 hash = hash * 23 + ModPpStars.GetHashCode();
                 hash = hash * 23 + MaxBpm.GetHashCode();
                 hash = hash * 23 + MinBpm.GetHashCode();
+                hash = hash * 23 + MainBpm.GetHashCode();
                 return hash;
             }
         }
@@ -516,6 +521,8 @@ namespace CollectionManager.DataTypes
             if (MaxBpm != b.MaxBpm)
                 return false;
             if (MinBpm != b.MinBpm)
+                return false;
+            if (MainBpm != b.MainBpm)
                 return false;
             return true;
         }

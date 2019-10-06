@@ -5,6 +5,7 @@ using CollectionManager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
@@ -113,28 +114,70 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             else
                 _binaryReader.BaseStream.Seek(8, SeekOrigin.Current);
         }
+
+        private class TimingPoint
+        {
+            public bool InheritsBpm;
+            public double Offset;
+            public double BpmDuration;
+
+            public TimingPoint(double bpmDuration, double offset, bool inheritsBpm)
+            {
+                Offset = offset;
+                BpmDuration = bpmDuration;
+                InheritsBpm = inheritsBpm;
+            }
+        }
         private void ReadTimingPoints(Beatmap beatmap)
         {
             int amountOfTimingPoints = _binaryReader.ReadInt32();
-            double minBpm = double.MaxValue,
-            maxBpm = double.MinValue;
-            double bpmDelay, time;
-            bool InheritsBPM;
+
+            List<TimingPoint> timingPoints = new List<TimingPoint>(amountOfTimingPoints);
             for (int i = 0; i < amountOfTimingPoints; i++)
             {
-                bpmDelay = _binaryReader.ReadDouble();
-                time = _binaryReader.ReadDouble();
-                InheritsBPM = _binaryReader.ReadBoolean();
-                if (InheritsBPM)
-                {
-                    if (60000 / bpmDelay < minBpm)
-                        minBpm = 60000 / bpmDelay;
-                    if (60000 / bpmDelay > maxBpm)
-                        maxBpm = 60000 / bpmDelay;
-                }
+                timingPoints.Add(new TimingPoint(_binaryReader.ReadDouble(), _binaryReader.ReadDouble(), _binaryReader.ReadBoolean()));
             }
-            beatmap.MaxBpm = maxBpm;
-            beatmap.MinBpm = minBpm;
+
+            double minBpm = double.MaxValue,
+                maxBpm = double.MinValue,
+                currentBpmLength = 0,
+                lastTime = beatmap.TotalTime;
+            Dictionary<double, int> bpmTimes = new Dictionary<double, int>();
+            for (var i = timingPoints.Count - 1; i >= 0; i--)
+            {
+                var tp = timingPoints[i];
+
+                if (tp.InheritsBpm)
+                    currentBpmLength = tp.BpmDuration;
+
+                if (currentBpmLength == 0 || tp.Offset > lastTime || (!tp.InheritsBpm && i > 0))
+                    continue;
+
+                if (currentBpmLength < minBpm)
+                    minBpm = currentBpmLength;
+
+                if (currentBpmLength > maxBpm)
+                    maxBpm = currentBpmLength;
+
+                if (!bpmTimes.ContainsKey(currentBpmLength))
+                    bpmTimes[currentBpmLength] = 0;
+
+                bpmTimes[currentBpmLength] += (int)(lastTime - (i == 0 ? 0 : tp.Offset));
+
+                lastTime = tp.Offset;
+            }
+
+            beatmap.MaxBpm = Math.Round(60000 / maxBpm);
+            beatmap.MinBpm = Math.Round(60000 / minBpm);
+
+            if (Math.Abs(beatmap.MaxBpm - beatmap.MinBpm) < double.Epsilon)
+            {
+                beatmap.MainBpm = beatmap.MaxBpm;
+            }
+            else if (bpmTimes.Count != 0)
+            {
+                beatmap.MainBpm = Math.Round(60000 / bpmTimes.Aggregate((i1, i2) => i1.Value > i2.Value ? i1 : i2).Key);
+            }
         }
         private void ReadMapInfo(Beatmap beatmap)
         {
