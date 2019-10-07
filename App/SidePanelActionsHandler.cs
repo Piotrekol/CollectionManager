@@ -145,6 +145,7 @@ namespace App
             if (!await Initalizer.WebCollectionProvider.IsCurrentKeyValid())
             {
                 _userDialogs.OkMessageBox("You need to login before uploading collections", "Error", MessageBoxType.Error);
+                return;
             }
 
             var collectionList = (IList<ICollection>)data;
@@ -173,8 +174,7 @@ namespace App
                     webCollection.AddBeatmap(collectionBeatmap);
                 }
 
-                if (webCollection.AllBeatmaps().Any())
-                    newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
+                newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
             }
 
             _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(oldCollections));
