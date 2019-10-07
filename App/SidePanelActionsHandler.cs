@@ -142,7 +142,21 @@ namespace App
 
         private async void UploadNewCollections(object sender, object data = null)
         {
+            if (!await Initalizer.WebCollectionProvider.IsCurrentKeyValid())
+            {
+                _userDialogs.OkMessageBox("You need to login before uploading collections", "Error", MessageBoxType.Error);
+            }
+
             var collectionList = (IList<ICollection>)data;
+
+            foreach (var c in collectionList)
+            {
+                if (!c.AllBeatmaps().Any())
+                {
+                    _userDialogs.OkMessageBox("Empty collection - upload aborted", "Error", MessageBoxType.Error);
+                    return;
+                }
+            }
 
             var oldCollections = new Collections();
             oldCollections.AddRange(collectionList);
@@ -159,7 +173,8 @@ namespace App
                     webCollection.AddBeatmap(collectionBeatmap);
                 }
 
-                newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
+                if (webCollection.AllBeatmaps().Any())
+                    newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
             }
 
             _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(oldCollections));
@@ -502,7 +517,7 @@ namespace App
                     tasks.Add(wc.Load(Initalizer.WebCollectionProvider));
                 }
             }
-            
+
             return Task.WhenAll(tasks);
         }
         private async void SaveCollections(object sender, object data = null)
