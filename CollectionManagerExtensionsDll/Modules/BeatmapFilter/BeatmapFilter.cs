@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -68,7 +68,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 foreach (string w in words)
                 {
                     searchFilter filter = GetSearchFilter(w);
-                    if(filter==null)
+                    if (filter == null)
                         continue;
 
                     foreach (var b in _beatmaps)
@@ -124,7 +124,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
                         case "key":
                         case "keys":
-                            return delegate(Beatmap b) { return isPatternMatch(GetManiaColumns(b), op, num); };
+                            return delegate (Beatmap b) { return b.PlayMode == PlayMode.OsuMania && isPatternMatch(b.CircleSize, op, num); };
 
                         case "speed":
                             return delegate (Beatmap b) { return RetFalse(); };
@@ -144,7 +144,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 switch (key)
                 {
                     case "mods":
-                        var splitMods = Regex.Split(val, @"([A-Za-z]{2})").Where(s=>!string.IsNullOrEmpty(s)).ToList();
+                        var splitMods = Regex.Split(val, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
                         Mods mods = Mods.Omod;
                         foreach (var mod in splitMods)
                         {
@@ -255,14 +255,6 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             return Double.NaN;
         }
 
-        private double GetManiaColumns(Beatmap beatmap)
-        {
-            if (beatmap.PlayMode == PlayMode.OsuMania)
-                return beatmap.CircleSize;
-
-            //TODO; need help: no clue how to figure out mania columns for converted maps
-            return 0;
-        }
         private bool RetFalse()
         {
             return false;
