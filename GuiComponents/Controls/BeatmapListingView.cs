@@ -211,6 +211,7 @@ namespace GuiComponents.Controls
         {
             ListViewBeatmaps.UpdateColumnFiltering();
             ListViewBeatmaps.EndUpdate();
+            UpdateResultsCount();
         }
 
         public void ClearSelection()
