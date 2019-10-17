@@ -59,13 +59,13 @@
             this.column_od = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.OsuGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.LastPlayed = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.TaikoGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.CatchGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ManiaGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.MainBpm = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -239,13 +239,13 @@
             this.ListViewBeatmaps.AllColumns.Add(this.column_od);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn3);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn10);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn1);
+            this.ListViewBeatmaps.AllColumns.Add(this.OsuGrade);
             this.ListViewBeatmaps.AllColumns.Add(this.LastPlayed);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn12);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn13);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn6);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn7);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn8);
+            this.ListViewBeatmaps.AllColumns.Add(this.TaikoGrade);
+            this.ListViewBeatmaps.AllColumns.Add(this.CatchGrade);
+            this.ListViewBeatmaps.AllColumns.Add(this.ManiaGrade);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn9);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn11);
             this.ListViewBeatmaps.AllColumns.Add(this.MainBpm);
@@ -262,7 +262,7 @@
             this.olvColumn5,
             this.olvColumn3,
             this.olvColumn10,
-            this.olvColumn1,
+            this.OsuGrade,
             this.LastPlayed,
             this.olvColumn13});
             this.ListViewBeatmaps.DataSource = null;
@@ -363,11 +363,11 @@
             this.olvColumn10.Text = "N/U";
             this.olvColumn10.Width = 35;
             // 
-            // olvColumn1
+            // OsuGrade
             // 
-            this.olvColumn1.AspectName = "OsuGrade";
-            this.olvColumn1.IsEditable = false;
-            this.olvColumn1.Text = "OsuGrade";
+            this.OsuGrade.AspectName = "OsuGrade";
+            this.OsuGrade.IsEditable = false;
+            this.OsuGrade.Text = "OsuGrade";
             // 
             // LastPlayed
             // 
@@ -387,26 +387,26 @@
             this.olvColumn13.AspectName = "UserComment";
             this.olvColumn13.Text = "Comment";
             // 
-            // olvColumn6
+            // TaikoGrade
             // 
-            this.olvColumn6.AspectName = "TaikoGrade";
-            this.olvColumn6.IsEditable = false;
-            this.olvColumn6.IsVisible = false;
-            this.olvColumn6.Text = "TaikoGrade";
+            this.TaikoGrade.AspectName = "TaikoGrade";
+            this.TaikoGrade.IsEditable = false;
+            this.TaikoGrade.IsVisible = false;
+            this.TaikoGrade.Text = "TaikoGrade";
             // 
-            // olvColumn7
+            // CatchGrade
             // 
-            this.olvColumn7.AspectName = "CatchGrade";
-            this.olvColumn7.IsEditable = false;
-            this.olvColumn7.IsVisible = false;
-            this.olvColumn7.Text = "CatchGrade";
+            this.CatchGrade.AspectName = "CatchGrade";
+            this.CatchGrade.IsEditable = false;
+            this.CatchGrade.IsVisible = false;
+            this.CatchGrade.Text = "CatchGrade";
             // 
-            // olvColumn8
+            // ManiaGrade
             // 
-            this.olvColumn8.AspectName = "ManiaGrade";
-            this.olvColumn8.IsEditable = false;
-            this.olvColumn8.IsVisible = false;
-            this.olvColumn8.Text = "ManiaGrade";
+            this.ManiaGrade.AspectName = "ManiaGrade";
+            this.ManiaGrade.IsEditable = false;
+            this.ManiaGrade.IsVisible = false;
+            this.ManiaGrade.Text = "ManiaGrade";
             // 
             // olvColumn9
             // 
@@ -481,10 +481,10 @@
         private System.Windows.Forms.ToolStripMenuItem copyUrlMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyAsTextMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn13;
-        private BrightIdeasSoftware.OLVColumn olvColumn1;
-        private BrightIdeasSoftware.OLVColumn olvColumn6;
-        private BrightIdeasSoftware.OLVColumn olvColumn7;
-        private BrightIdeasSoftware.OLVColumn olvColumn8;
+        private BrightIdeasSoftware.OLVColumn OsuGrade;
+        private BrightIdeasSoftware.OLVColumn TaikoGrade;
+        private BrightIdeasSoftware.OLVColumn CatchGrade;
+        private BrightIdeasSoftware.OLVColumn ManiaGrade;
         private System.Windows.Forms.ToolStripMenuItem PullMapsetMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn9;
         private BrightIdeasSoftware.OLVColumn olvColumn11;

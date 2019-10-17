@@ -175,6 +175,18 @@ namespace GuiComponents.Controls
                 return $"{cellValue:0.##}";
             };
 
+            var gradeConverter = new AspectToStringConverterDelegate(cellValue =>
+            {
+                if (cellValue == null || (OsuGrade)cellValue == CollectionManager.Enums.OsuGrade.Null)
+                    return "";
+
+                return cellValue.ToString();
+            });
+            OsuGrade.AspectToStringConverter = gradeConverter;
+            TaikoGrade.AspectToStringConverter = gradeConverter;
+            CatchGrade.AspectToStringConverter = gradeConverter;
+            ManiaGrade.AspectToStringConverter = gradeConverter;
+
             var dropsink = new RearrangingDropSink();
             dropsink.CanDropBetween = false;
             dropsink.CanDropOnItem = false;
