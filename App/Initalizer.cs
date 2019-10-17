@@ -44,17 +44,22 @@ namespace App
                     return result.Result;
                 }, UserDialogs.SelectDirectory);
 
-            if (OsuDirectory == string.Empty)
+            if (string.IsNullOrEmpty(OsuDirectory) && UserDialogs.YesNoMessageBox(
+                    "osu! could not be found. Do you want to continue regardless?" + Environment.NewLine +
+                    "This will cause all .db collections to show only as beatmap hashes.", "osu! location",
+                    MessageBoxType.Question) == false)
             {
-                UserDialogs.OkMessageBox("Valid osu! directory is required to run Collection Manager" + Environment.NewLine + "Exiting...", "Error", MessageBoxType.Error);
                 Quit();
             }
 
-            //Load osu database and setting files
-            var osuDbFile = Path.Combine(OsuDirectory, @"osu!.db");
-            OsuFileIo.OsuDatabase.Load(osuDbFile);
-            OsuFileIo.OsuSettings.Load(OsuDirectory);
-            BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
+            if (!string.IsNullOrEmpty(OsuDirectory))
+            {
+                //Load osu database and setting files
+                var osuDbFile = Path.Combine(OsuDirectory, @"osu!.db");
+                OsuFileIo.OsuDatabase.Load(osuDbFile);
+                OsuFileIo.OsuSettings.Load(OsuDirectory);
+                BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
+            }
 
             //Init "main" classes
             CollectionsManager = new CollectionsManagerWithCounts(LoadedBeatmaps);
