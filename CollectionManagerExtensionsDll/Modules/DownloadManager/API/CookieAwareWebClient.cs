@@ -13,7 +13,7 @@ namespace System.Net
     public class CookieAwareWebClient : WebClient
     {
         public int ClientId = -1;
-        public string Login(string loginPageAddress, string loginData)
+        public bool Login(string loginPageAddress, string loginData)
         {
             var homePageRequest = (HttpWebRequest)WebRequest.Create("https://osu.ppy.sh/home");
             homePageRequest.CookieContainer = CookieContainer;
@@ -31,15 +31,28 @@ namespace System.Net
             var requestStream = request.GetRequestStream();
             requestStream.Write(buffer, 0, buffer.Length);
             requestStream.Close();
-            
-            var response = request.GetResponse();
-            string ResponseText = "";
+            WebResponse response = null;
+            try
+            {
+                response = request.GetResponse();
+            }
+            catch (WebException e)
+            {
+                if (e.Response is HttpWebResponse resp && resp.StatusCode.GetHashCode() == 422)
+                {
+                    return false;
+                }
+
+                throw;
+            }
+
+            string responseText;
             using (StreamReader sr = new StreamReader(response.GetResponseStream()))
             {
-                ResponseText = sr.ReadToEnd();
+                responseText = sr.ReadToEnd();
             }
             response.Close();
-            return ResponseText;
+            return !(responseText.IndexOf("Log me on automatically each visit", StringComparison.InvariantCultureIgnoreCase) > 0);
         }
 
         public CookieAwareWebClient(CookieContainer container)

@@ -26,9 +26,9 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                 var client = this.Clients.Dequeue();
                 if (i == clientCount)
                 {
-                    var response = client.Login(loginAddress, loginDataStr);
-                    if (response.IndexOf("Log me on automatically each visit", StringComparison.InvariantCultureIgnoreCase) > 0)
+                    if (!client.Login(loginAddress, loginDataStr))
                         return false;
+
                     cookies = client.CookieContainer;
                 }
                 else
