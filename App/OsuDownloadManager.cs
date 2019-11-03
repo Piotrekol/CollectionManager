@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using App.Misc;
 using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.Modules.DownloadManager;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
+using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
 
@@ -31,14 +32,20 @@ namespace App
         public bool DownloadDirectoryIsSet => DownloadDirectory != "";
         private long _downloadId = 0;
         private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
-
-        public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDIalogs, ILoginFormView loginForm)
+        public bool? DownloadWithVideo { get; set; }
+        public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
             if (!DownloadDirectoryIsSet)
             {
-                SetDownloadDirectory(userDIalogs.SelectDirectory("Select directory for saved beatmaps", true));
+                SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
                 if (!DownloadDirectoryIsSet)
                     return false;
+            }
+
+            if (!DownloadWithVideo.HasValue)
+            {
+                DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
+                    MessageBoxType.Question);
             }
             if (!IsLoggedIn)
             {
@@ -89,7 +96,7 @@ namespace App
 
         public void LogIn(LoginData loginData)
         {
-            if (loginData!=null && loginData.isValid())
+            if (loginData != null && loginData.isValid())
             {
                 IsLoggedIn = _osuDownloader.Login(loginData);
             }
@@ -116,7 +123,7 @@ namespace App
                 return null;
             long currentId = ++_downloadId;
             var oszFileName = CreateFileName(beatmap);
-            var downloadUrl = string.Format(BaseDownloadUrl, beatmap.MapSetId);
+            var downloadUrl = string.Format(BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
             var downloadItem = _osuDownloader.DownloadFileAsync(downloadUrl, oszFileName, currentId);
             downloadItem.Id = currentId;
