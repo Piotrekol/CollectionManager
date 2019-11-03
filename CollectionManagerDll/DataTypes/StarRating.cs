@@ -6,7 +6,7 @@ namespace CollectionManager.DataTypes
 {
     public class StarRating : IEnumerable<KeyValuePair<int, double>>
     {
-        public SortedDictionary<int, double> Values { get; } = new SortedDictionary<int, double>();
+        public SortedList<int, double> Values { get; } = new SortedList<int, double>();
         public void Add(int key, double value)
             => this[key] = value;
 
