@@ -54,10 +54,17 @@ namespace App
 
         private string GetStringData(string url)
         {
-            using (var wc = new ImpatientWebClient())
+            try
             {
-                wc.Headers.Add("user-agent", $"CollectionManager_Updater_{CurrentVersion}");
-                return wc.DownloadString(url);
+                using (var wc = new ImpatientWebClient())
+                {
+                    wc.Headers.Add("user-agent", $"CollectionManager_Updater_{CurrentVersion}");
+                    return wc.DownloadString(url);
+                }
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
     }
