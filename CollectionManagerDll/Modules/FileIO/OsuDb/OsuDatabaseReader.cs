@@ -1,4 +1,4 @@
-﻿#define GetStarsCombinations
+#define GetStarsCombinations
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
@@ -333,7 +333,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         private DateTime GetDate()
         {
             long ticks = _binaryReader.ReadInt64();
-            if (ticks < 0L)
+            if (ticks < 0L || ticks > DateTime.MaxValue.Ticks || ticks < DateTime.MinValue.Ticks)
             {
                 return DateTime.MinValue;
             }
