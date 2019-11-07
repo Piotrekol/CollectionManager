@@ -107,12 +107,12 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             beatmap.DisableSkin = _binaryReader.ReadBoolean();
             beatmap.DisableSb = _binaryReader.ReadBoolean();
             _binaryReader.ReadBoolean();
-            beatmap.BgDim = _binaryReader.ReadInt16();
+            _binaryReader.ReadBoolean();
+            if(FileDate < 20140609)
+                beatmap.BgDim = (short)_binaryReader.ReadInt16();
             //bytes not analysed.
-            if (FileDate <= 20160403)
-                _binaryReader.BaseStream.Seek(4, SeekOrigin.Current);
-            else
-                _binaryReader.BaseStream.Seek(8, SeekOrigin.Current);
+            _binaryReader.ReadInt32();
+            _binaryReader.ReadByte();
         }
 
         private class TimingPoint
@@ -373,8 +373,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 _binaryReader.BaseStream.Seek(1, SeekOrigin.Current);
                 Username = _binaryReader.ReadString();
                 ExpectedNumOfBeatmaps = _binaryReader.ReadInt32();
-                if (FileDate > 20160403)
-                    _binaryReader.BaseStream.Seek(4, SeekOrigin.Current);
+
                 _logger?.Log(string.Format("Expected number of beatmaps: {0}", ExpectedNumOfBeatmaps));
 
                 if (ExpectedNumOfBeatmaps < 0)
