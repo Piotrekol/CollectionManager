@@ -138,6 +138,14 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
                         case "played":
                             break;
+                        case "objects":
+                            return delegate (Beatmap b) { return isPatternMatch(b.Circles + b.Sliders + b.Spinners, op, num); };
+                        case "circles":
+                            return delegate (Beatmap b) { return isPatternMatch(b.Circles, op, num); };
+                        case "sliders":
+                            return delegate (Beatmap b) { return isPatternMatch(b.Sliders, op, num); };
+                        case "spinners":
+                            return delegate (Beatmap b) { return isPatternMatch(b.Spinners, op, num); };
                     }
                 }
 
