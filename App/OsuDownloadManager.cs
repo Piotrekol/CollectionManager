@@ -31,7 +31,7 @@ namespace App
         public string DownloadDirectory { get; set; } = "";
         public bool DownloadDirectoryIsSet => DownloadDirectory != "";
         private long _downloadId = 0;
-        private const string BaseDownloadUrl = "https://osustats.ppy.sh/set/{0}/download";
+        private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
         public bool? DownloadWithVideo { get; set; }
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
@@ -42,8 +42,7 @@ namespace App
                     return false;
             }
 
-            DownloadWithVideo = false;
-            /*if (!DownloadWithVideo.HasValue)
+            if (!DownloadWithVideo.HasValue)
             {
                 DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
                     MessageBoxType.Question);
@@ -53,7 +52,7 @@ namespace App
                 LogIn(loginForm.GetLoginData());
                 if (!IsLoggedIn)
                     return false;
-            }*/
+            }
             return true;
         }
         public void DownloadBeatmap(Beatmap beatmap)
