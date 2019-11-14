@@ -75,6 +75,7 @@ namespace System.Net
             var request = (HttpWebRequest)base.GetWebRequest(address);
             request.CookieContainer = CookieContainer;
             request.Timeout = 5 * 1000;
+            request.UserAgent = "CollectionManager";
             return request;
         }
     }
