@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 {
-    
+
     public abstract class DownloadManager
     {
         protected Queue<CookieAwareWebClient> Clients = new Queue<CookieAwareWebClient>();
@@ -23,7 +23,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         Dictionary<int, DownloadProgress> downloadCheck = new Dictionary<int, DownloadProgress>();
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressUpdated;
         private static object _lockingObject = "";
-        public DownloadManager(string saveLocation,int downloadThreads)
+        public DownloadManager(string saveLocation, int downloadThreads)
         {
             _saveLocation = saveLocation;
 
@@ -144,7 +144,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 string filePath = Path.Combine(_saveLocation, downloadItem.FileName);
                 if (File.Exists(filePath))
                 {
-                    downloadItem.FileAlreadyExists=true;// = "File already exists";
+                    downloadItem.FileAlreadyExists = true;// = "File already exists";
                     Clients.Enqueue(downloadItem.WebClient);
                     return;
                 }
@@ -166,7 +166,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         {
             lock (_lockingObject)
             {
-                var url = (DownloadItem) e.UserState;
+                var url = (DownloadItem)e.UserState;
                 bool error = false;
                 if (e.Cancelled)
                 {
@@ -179,40 +179,48 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 }
                 else if (e.Error != null)
                 {
-                    url.OtherError = true;
-                    url.Error = "Error: " + e.Error.ToString();
-                    error = true;
-                }
-                else if (url.BytesRecived<10000)
-                {
-                    //check if that's a disabled dl or download cap
-                    var tempFileLocation = GetFullTempLocation(url.FileName);
-                    var tempFileContents = File.ReadAllText(tempFileLocation);
-                    if (tempFileContents.Contains("disabled")) // "This download has been disabled (<some url>)"
+                    bool handled = false;
+                    if (e.Error is WebException ex && ex.Response is HttpWebResponse response)
                     {
-                        error = true;
-                        url.Error = tempFileContents;
-                    }
-                    else if(tempFileContents.Contains("slow down")) // "slow down, play more."
-                    {
-                        //We've hit download cap, lets chill a little 
-                        if (!_stopDownloads)
+                        if (response.StatusCode == HttpStatusCode.NotFound)
                         {
-                            StopDownloads();
-                            Task.Run(async () =>
+                            //deleted download
+                            url.Error = "This beatmap is not available for download";
+                            handled = error = true;
+                        }
+                        else if (response.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            url.OtherError = true;
+                            url.Error = "Download limit hit - download has been paused (next check in 10minutes)";
+                            if (!_stopDownloads)
                             {
-                                //Stop downloads for 6 minutes - user can try to resume these earlier, but it'll just get paused again if limit is still in place.
-                                await Task.Delay(60 * 1000 * 6);
-                                ResumeNewDownloads();
-                            });
-                        }
+                                StopDownloads();
+                                Task.Run(async () =>
+                                {
+                                    await Task.Delay(60 * 1000 * 10);
+                                    ResumeNewDownloads();
+                                });
+                            }
 
-                        lock (_urlsToDownload)
-                        {
-                            _urlsToDownload.AddFirst(url);
+                            lock (_urlsToDownload)
+                            {
+                                _urlsToDownload.AddFirst(url);
+                            }
+
+                            handled = true;
                         }
                     }
+
+                    if (!handled)
+                    {
+                        url.OtherError = true;
+                        url.Error = "Fatal error: " + e.Error;
+                        error = true;
+                    }
+
+
                 }
+
                 if (error)
                 {
                     string tempFileLocation = GetFullTempLocation(url.FileName);
@@ -274,7 +282,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 
         protected virtual void OnProgressUpdated(DownloadProgressChangedEventArgs e)
         {
-            var dlItem = (DownloadItem) e.UserState;
+            var dlItem = (DownloadItem)e.UserState;
             dlItem.BytesRecived = e.BytesReceived;
             dlItem.TotalBytes = e.TotalBytesToReceive;
             dlItem.ProgressPrecentage = e.ProgressPercentage;
