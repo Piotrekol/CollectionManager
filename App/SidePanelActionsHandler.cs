@@ -535,8 +535,8 @@ namespace App
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             foreach (var collection in Initalizer.LoadedCollections)
             {
-                var filename = Helpers.StripInvalidCharacters(collection.Name);
-                _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, saveDirectory + filename);
+                var filename = $"{Helpers.StripInvalidCharacters(collection.Name)}.db";
+                _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, Path.Combine(saveDirectory, filename) );
             }
         }
 
