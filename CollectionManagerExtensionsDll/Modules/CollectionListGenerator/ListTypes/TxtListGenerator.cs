@@ -4,18 +4,18 @@ using CollectionManager.DataTypes;
 
 namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes
 {
-    internal class TxtListGenerator: IListGenerator
+    internal class TxtListGenerator : IListGenerator
     {
         internal string Lb = "\r\n";
         private StringBuilder _stringBuilder = new StringBuilder();
-        
+
         public string GetListHeader(Collections collections)
         {
             return "";
         }
-        
 
-        public string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets,int collectionNumber)
+
+        public string GetCollectionBody(ICollection collection, Dictionary<int, Beatmaps> mapSets, int collectionNumber)
         {
             _stringBuilder.Clear();
 
@@ -67,10 +67,10 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTyp
             }
             else
             {
-                sb.AppendFormat("{0} {1} - {2}", beatmaps[0].MapLink, beatmaps[0].ArtistRoman, beatmaps[0].TitleRoman);
+                sb.AppendFormat("{0} {1} - {2}", beatmaps[0].MapSetLink, beatmaps[0].ArtistRoman, beatmaps[0].TitleRoman);
                 foreach (var map in beatmaps)
                 {
-                    sb.AppendFormat(" [{0}] {1}★", map.DiffName, map.StarsNomod);
+                    sb.AppendFormat(" [{0}] {1}★({2})", map.DiffName, map.StarsNomod, map.MapId);
                 }
                 sb.Append(Lb);
             }
