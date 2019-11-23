@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{533AB47A-D1B5-45DB-A37E-F053FA3699C4}</ProjectGuid>
     <RootNamespace>CollectionManager</RootNamespace>
@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/Piotrekol/CollectionManager/tree/master/CollectionManagerDll</RepositoryUrl>
     <PackageTags>osu!</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.0.5</Version>
     <IncludeSymbols>true</IncludeSymbols> 
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>

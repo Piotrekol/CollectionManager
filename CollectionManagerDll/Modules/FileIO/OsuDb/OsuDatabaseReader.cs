@@ -108,7 +108,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             beatmap.DisableSb = _binaryReader.ReadBoolean();
             _binaryReader.ReadBoolean();
             _binaryReader.ReadBoolean();
-            if(FileDate < 20140609)
+            if (FileDate < 20140609)
                 beatmap.BgDim = (short)_binaryReader.ReadInt16();
             //bytes not analysed.
             _binaryReader.ReadInt32();
@@ -364,6 +364,11 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         private bool DatabaseContainsData()
         {
             FileDate = _binaryReader.ReadInt32();
+            if (FileDate < 20191105)
+            {
+                _logger?.Log(string.Format("Outdated osu!.db version({0}). Load failed.", FileDate.ToString()));
+                return false;
+            }
             ExpectedNumberOfMapSets = _binaryReader.ReadInt32();
             _logger?.Log(string.Format("Expected number of mapSets: {0}", ExpectedNumberOfMapSets));
             try
