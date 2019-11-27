@@ -532,11 +532,15 @@ namespace App
         {
             var saveDirectory = _userDialogs.SelectDirectory("Where collection files should be saved?", true);
             if (saveDirectory == string.Empty) return;
+            var fileFormat = _userDialogs.YesNoMessageBox("Save collections in osdb format?", "Collection save format", MessageBoxType.Question)
+                ? "osdb"
+                : "db";
+
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             foreach (var collection in Initalizer.LoadedCollections)
             {
-                var filename = $"{Helpers.StripInvalidCharacters(collection.Name)}.db";
-                _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, Path.Combine(saveDirectory, filename) );
+                var filename = $"{Helpers.StripInvalidCharacters(collection.Name)}.{fileFormat}";
+                _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, Path.Combine(saveDirectory, filename));
             }
         }
 
