@@ -15,6 +15,7 @@ using App.Presenters.Forms;
 using App.Properties;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManager.Exceptions;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
 using CollectionManagerExtensionsDll.DataTypes;
@@ -457,22 +458,26 @@ namespace App
                 _downloadManagerForm.Close();
             }
         }
+
         private void LoadCollectionFile(object sender, object data = null)
-        {
-            string fileLocation = data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb",
-                    "collection.db");
-            if (string.IsNullOrEmpty(fileLocation)) return;
-            var loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
-            _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
-        }
+            => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb", "collection.db"));
 
         private void LoadDefaultCollection(object sender, object data = null)
+            => LoadCollection(Path.Combine(Initalizer.OsuDirectory, "collection.db"));
+
+        private void LoadCollection(string fileLocation)
         {
-            var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-            if (File.Exists(fileLocation))
+            if (string.IsNullOrEmpty(fileLocation) || !File.Exists(fileLocation))
+                return;
+
+            try
             {
                 var loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
                 _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
+            }
+            catch (CorruptedFileException ex)
+            {
+                _userDialogs.OkMessageBox(ex.Message, "Error", MessageBoxType.Error);
             }
         }
 

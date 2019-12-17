@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManager.Exceptions;
 using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuDb;
 using SharpCompress.Archives;
@@ -32,7 +33,9 @@ namespace CollectionManager.Modules.FileIO.FileCollections
             {"o!dm5", 5},
             {"o!dm6", 6},
             {"o!dm7", 7},
-            {"o!dm7min", 1007}
+            {"o!dm8", 8},
+            {"o!dm7min", 1007},
+            {"o!dm8min", 1008},
         };
 
         public OsdbCollectionHandler(ILogger logger)
@@ -42,24 +45,14 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
         public string CurrentVersion(bool minimalWrite = false)
         {
-            return "o!dm7" + (minimalWrite ? "min" : "");
+            return "o!dm8" + (minimalWrite ? "min" : "");
         }
 
+        private bool IsFullCollection(string versionString)
+            => !isMinimalCollection(versionString);
         private bool isMinimalCollection(string versionString)
-        {
-            return versionString.EndsWith("min");
-        }
-
-        protected virtual void Error(string message)
-        {
-            //Helpers.Error(message);
-        }
-
-        protected virtual void Info(string message)
-        {
-            //Helpers.Info(message);
-        }
-
+            => versionString.EndsWith("min");
+        
         public void WriteOsdb(Collections collections, string fullFileDir, string editor, bool minimalWrite = false)
         {
             using (var fileStream = new FileStream(fullFileDir, FileMode.Create, FileAccess.ReadWrite))
@@ -149,11 +142,8 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
                     _binWriter.Write(beatmap.Md5);
                     _binWriter.Write(((BeatmapExtension)beatmap).UserComment);
-                    if (!minimalWrite)
-                    {
-                        _binWriter.Write((byte)beatmap.PlayMode);
-                        _binWriter.Write(beatmap.StarsNomod);
-                    }
+                    _binWriter.Write((byte)beatmap.PlayMode);
+                    _binWriter.Write(beatmap.StarsNomod);
                 }
 
                 _binWriter.Write(beatmapWithHashOnly.Count);
@@ -179,7 +169,6 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                 _binReader = new BinaryReader(_memStream);
             }
 
-
             _binReader.BaseStream.Seek(0, SeekOrigin.Begin);
             var versionString = _binReader.ReadString();
             //check header
@@ -190,7 +179,7 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
             if (fileVersion == -1)
             {
-                Error("Unrecognized osdb file version");
+                throw new CorruptedFileException($"Unrecognized osdb file version (got: {versionString})");
             }
             else
             {
@@ -249,17 +238,14 @@ namespace CollectionManager.Modules.FileIO.FileCollections
                             map.UserComment = _binReader.ReadString();
                         }
 
-                        if (!isMinimalCollection(versionString))
+                        if (fileVersion >= 8 || (fileVersion >= 5 && IsFullCollection(versionString)))
                         {
-                            if (fileVersion >= 5)
-                            {
-                                map.PlayMode = (PlayMode)_binReader.ReadByte();
-                            }
+                            map.PlayMode = (PlayMode)_binReader.ReadByte();
+                        }
 
-                            if (fileVersion >= 6)
-                            {
-                                map.ModPpStars.Add(map.PlayMode, new StarRating { { 0, _binReader.ReadDouble() } });
-                            }
+                        if (fileVersion >= 8 || (fileVersion >= 6 && IsFullCollection(versionString)))
+                        {
+                            map.ModPpStars.Add(map.PlayMode, new StarRating { { 0, _binReader.ReadDouble() } });
                         }
 
                         collection.AddBeatmap(map);
@@ -281,29 +267,11 @@ namespace CollectionManager.Modules.FileIO.FileCollections
 
             if (_binReader.ReadString() != "By Piotrekol")
             {
-                Error("File footer is invalid, with could mean that this file is corrupted. CONTINUE AT YOUR OWN RISK");
+                _binReader.Close();
+                throw new CorruptedFileException("File footer is invalid, this collection might be corrupted.");
             }
 
             _binReader.Close();
-
-            collections = IssuseVersionRelevantProcedures(fileVersion, fileDate, collections);
-        }
-
-        private Collections IssuseVersionRelevantProcedures(int fileVersion, DateTime fileDate, Collections collections)
-        {
-            if (fileVersion != -1)
-            {
-                if (fileVersion < 3)
-                {
-                    Info("This collection was generated using an older version of Collection Manager." +
-                         Environment.NewLine +
-                         "All download links in this collection will not work." + Environment.NewLine +
-                         "File version: " + fileVersion + Environment.NewLine +
-                         "Date: " + fileDate);
-                }
-            }
-
-            return collections;
         }
     }
 }
