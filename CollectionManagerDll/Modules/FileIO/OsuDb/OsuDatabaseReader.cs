@@ -138,8 +138,8 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 timingPoints.Add(new TimingPoint(_binaryReader.ReadDouble(), _binaryReader.ReadDouble(), _binaryReader.ReadBoolean()));
             }
 
-            double minBpm = double.MaxValue,
-                maxBpm = double.MinValue,
+            double minBpm = double.MinValue,
+                maxBpm = double.MaxValue,
                 currentBpmLength = 0,
                 lastTime = beatmap.TotalTime;
             Dictionary<double, int> bpmTimes = new Dictionary<double, int>();
@@ -153,10 +153,10 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 if (currentBpmLength == 0 || tp.Offset > lastTime || (!tp.InheritsBpm && i > 0))
                     continue;
 
-                if (currentBpmLength < minBpm)
+                if (currentBpmLength > minBpm)
                     minBpm = currentBpmLength;
 
-                if (currentBpmLength > maxBpm)
+                if (currentBpmLength < maxBpm)
                     maxBpm = currentBpmLength;
 
                 if (!bpmTimes.ContainsKey(currentBpmLength))
