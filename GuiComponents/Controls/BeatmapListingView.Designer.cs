@@ -119,7 +119,7 @@
             this.OpenBeatmapDownloadMapMenuStrip,
             this.OpenBeatmapFolderMenuStrip});
             this.OpenDlMapMenuStrip.Name = "OpenDlMapMenuStrip";
-            this.OpenDlMapMenuStrip.Size = new System.Drawing.Size(171, 22);
+            this.OpenDlMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.OpenDlMapMenuStrip.Text = "Open";
             // 
             // OpenBeatmapPageMapMenuStrip
@@ -164,7 +164,7 @@
             this.DeleteMapMenuStrip.Enabled = false;
             this.DeleteMapMenuStrip.Name = "DeleteMapMenuStrip";
             this.DeleteMapMenuStrip.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.DeleteMapMenuStrip.Size = new System.Drawing.Size(171, 22);
+            this.DeleteMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.DeleteMapMenuStrip.Text = "Delete";
             this.DeleteMapMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
@@ -176,25 +176,25 @@
             this.SearchTitleMapMenuStrip});
             this.searchToolStripMenuItem.Enabled = false;
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.searchToolStripMenuItem.Text = "Search";
             // 
             // SearchMapsetMapMenuStrip
             // 
             this.SearchMapsetMapMenuStrip.Name = "SearchMapsetMapMenuStrip";
-            this.SearchMapsetMapMenuStrip.Size = new System.Drawing.Size(113, 22);
+            this.SearchMapsetMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.SearchMapsetMapMenuStrip.Text = "mapset";
             // 
             // SearchArtistMapMenuStrip
             // 
             this.SearchArtistMapMenuStrip.Name = "SearchArtistMapMenuStrip";
-            this.SearchArtistMapMenuStrip.Size = new System.Drawing.Size(113, 22);
+            this.SearchArtistMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.SearchArtistMapMenuStrip.Text = "artist";
             // 
             // SearchTitleMapMenuStrip
             // 
             this.SearchTitleMapMenuStrip.Name = "SearchTitleMapMenuStrip";
-            this.SearchTitleMapMenuStrip.Size = new System.Drawing.Size(113, 22);
+            this.SearchTitleMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.SearchTitleMapMenuStrip.Text = "title";
             // 
             // copyToolStripMenuItem
@@ -203,27 +203,27 @@
             this.copyUrlMenuStrip,
             this.copyAsTextMenuStrip});
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // copyUrlMenuStrip
             // 
             this.copyUrlMenuStrip.Name = "copyUrlMenuStrip";
-            this.copyUrlMenuStrip.Size = new System.Drawing.Size(110, 22);
+            this.copyUrlMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.copyUrlMenuStrip.Text = "url(s)";
             this.copyUrlMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // copyAsTextMenuStrip
             // 
             this.copyAsTextMenuStrip.Name = "copyAsTextMenuStrip";
-            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(110, 22);
+            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.copyAsTextMenuStrip.Text = "As text";
             this.copyAsTextMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // PullMapsetMenuStrip
             // 
             this.PullMapsetMenuStrip.Name = "PullMapsetMenuStrip";
-            this.PullMapsetMenuStrip.Size = new System.Drawing.Size(171, 22);
+            this.PullMapsetMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.PullMapsetMenuStrip.Text = "Pull whole mapset";
             this.PullMapsetMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
@@ -280,6 +280,7 @@
             this.ListViewBeatmaps.UseCustomSelectionColors = true;
             this.ListViewBeatmaps.View = System.Windows.Forms.View.Details;
             this.ListViewBeatmaps.VirtualMode = true;
+            this.ListViewBeatmaps.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewBeatmaps_KeyUp);
             // 
             // olvColumn2
             // 

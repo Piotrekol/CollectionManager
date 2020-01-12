@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -270,6 +270,16 @@ namespace GuiComponents.Controls
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapFolder);
             else if (sender == PullMapsetMenuStrip)
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.PullWholeMapSet);
+        }
+
+        private void ListViewBeatmaps_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (ListViewBeatmaps.SelectedObjects.Count == 0)
+                return;
+            if (AllowForDeletion && e.KeyCode == Keys.Delete)
+            {
+                MenuStripClick(DeleteMapMenuStrip, e);
+            }
         }
     }
 
