@@ -53,7 +53,16 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.SetObjects(beatmaps);
             UpdateResultsCount();
         }
-        public Beatmap SelectedBeatmap => (Beatmap)ListViewBeatmaps.SelectedObject;
+
+        public Beatmap SelectedBeatmap
+        {
+            get => (Beatmap) ListViewBeatmaps.SelectedObject;
+            private set
+            {
+                ListViewBeatmaps.SelectedObject = value;
+                ListViewBeatmaps.EnsureSelectionIsVisible();
+            }
+        }
 
         public Beatmaps SelectedBeatmaps
         {
@@ -81,7 +90,7 @@ namespace GuiComponents.Controls
              {
                  OnSearchTextChanged();
              };
-            ListViewBeatmaps.SelectionChanged += delegate
+            ListViewBeatmaps.SelectionChanged += (_,__)=>
             {
                 OnSelectedBeatmapChanged();
                 OnSelectedBeatmapsChanged();
@@ -197,7 +206,6 @@ namespace GuiComponents.Controls
 
         }
 
-
         private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)
         {
             modelDropEventArgs.Handled = true;
@@ -221,9 +229,12 @@ namespace GuiComponents.Controls
 
         public void FilteringFinished()
         {
+            var selectedBeatmap = SelectedBeatmap;
             ListViewBeatmaps.UpdateColumnFiltering();
             ListViewBeatmaps.EndUpdate();
             UpdateResultsCount();
+
+            SelectedBeatmap = selectedBeatmap;
         }
 
         public void ClearSelection()
