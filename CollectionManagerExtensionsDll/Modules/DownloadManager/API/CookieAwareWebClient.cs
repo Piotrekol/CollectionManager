@@ -17,9 +17,9 @@ namespace System.Net
         {
             var homePageRequest = (HttpWebRequest)WebRequest.Create("https://osu.ppy.sh/home");
             homePageRequest.CookieContainer = CookieContainer;
-            homePageRequest.GetResponse();
-            var token = CookieContainer.ToList().First(x => x.Name == "XSRF-TOKEN");
-
+            var homeResponse = (HttpWebResponse)homePageRequest.GetResponse();
+            var token = homeResponse.Cookies["XSRF-TOKEN"].Value;
+            
             var request = (HttpWebRequest)WebRequest.Create(loginPageAddress);
 
             request.Method = "POST";
