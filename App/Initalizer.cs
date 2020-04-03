@@ -56,8 +56,10 @@ namespace App
             {
                 //Load osu database and setting files
                 var osuDbFile = Path.Combine(OsuDirectory, @"osu!.db");
+                var osuScoresFile = Path.Combine(OsuDirectory, @"scores.db");
                 OsuFileIo.OsuDatabase.Load(osuDbFile);
                 OsuFileIo.OsuSettings.Load(OsuDirectory);
+                OsuFileIo.ScoresLoader.ReadDb(osuScoresFile);
                 BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
             }
 

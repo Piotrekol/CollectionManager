@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
@@ -7,7 +7,7 @@ using CollectionManagerExtensionsDll.Modules.BeatmapFilter;
 
 namespace App.Misc
 {
-    public class BeatmapListFilter: IModelFilter
+    public class BeatmapListFilter : IModelFilter
     {
         private readonly BeatmapFilter _beatmapFilter;
         public Mods CurrentMods => _beatmapFilter.CurrentMods;
@@ -17,18 +17,20 @@ namespace App.Misc
         private Timer timer;
         public event EventHandler FilteringStarted;
         public event EventHandler FilteringFinished;
-        public BeatmapListFilter(Beatmaps beatmaps)
+        public BeatmapListFilter(Beatmaps beatmaps, Scores scores)
         {
-            _beatmapFilter = new BeatmapFilter(beatmaps,new BeatmapExtension());
+            _beatmapFilter = new BeatmapFilter(beatmaps, scores, new BeatmapExtension());
             timer = new Timer();
             timer.Interval = 400;
             timer.Tick += Timer_Tick;
         }
 
         public void SetBeatmaps(Beatmaps beatmaps)
-        {
-            _beatmapFilter.SetBeatmaps(beatmaps);
-        }
+            => _beatmapFilter.SetBeatmaps(beatmaps);
+
+        public void SetScores(Scores scores)
+            => _beatmapFilter.SetScores(scores);
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             lock (timer)

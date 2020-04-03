@@ -3,6 +3,7 @@ using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
 using App.Interfaces;
 using App.Misc;
+using CollectionManager.Modules.FileIO;
 using Common;
 using Gui.Misc;
 
@@ -63,7 +64,7 @@ namespace App.Models
         public BeatmapListingModel(Beatmaps dataSource)
         {
             SetBeatmaps(dataSource);
-            _beatmapListFilter = new BeatmapListFilter(GetBeatmaps());
+            _beatmapListFilter = new BeatmapListFilter(GetBeatmaps(), Initalizer.OsuFileIo.ScoresDatabase.Scores);
             _beatmapListFilter.FilteringStarted += delegate { OnFilteringStarted(); };
             _beatmapListFilter.FilteringFinished += delegate { OnFilteringFinished(); };
         }
@@ -114,8 +115,12 @@ namespace App.Models
 
         protected virtual void OnBeatmapsChanged()
         {
-            if (_beatmapsDataSource != null)
-                _beatmapListFilter?.SetBeatmaps(_beatmapsDataSource);
+            if (_beatmapsDataSource != null && _beatmapListFilter != null)
+            {
+                _beatmapListFilter.SetBeatmaps(_beatmapsDataSource);
+                _beatmapListFilter.SetScores(Initalizer.OsuFileIo.ScoresDatabase.Scores);
+            }
+
             BeatmapsChanged?.Invoke(this, EventArgs.Empty);
         }
 

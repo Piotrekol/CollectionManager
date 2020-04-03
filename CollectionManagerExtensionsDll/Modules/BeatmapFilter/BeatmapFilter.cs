@@ -35,9 +35,13 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
         private bool BeatmapExtensionIsUsed = false;
         private string _lastSearchString = String.Empty;
-        public BeatmapFilter(Beatmaps beatmaps, Beatmap baseBeatmap)
+        private Dictionary<string, Scores> _scores = new Dictionary<string, Scores>();
+
+
+        public BeatmapFilter(Beatmaps beatmaps, Scores scores, Beatmap baseBeatmap)
         {
             BeatmapExtensionIsUsed = baseBeatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension));
+            SetScores(scores);
             SetBeatmaps(beatmaps);
         }
 
@@ -45,6 +49,17 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         {
             _beatmaps = beatmaps;
             UpdateSearch(_lastSearchString);
+        }
+
+        public void SetScores(Scores scores)
+        {
+            foreach (var score in scores)
+            {
+                if (!_scores.ContainsKey(score.MapHash))
+                    _scores[score.MapHash] = new Scores { score };
+                else
+                    _scores[score.MapHash].Add(score);
+            }
         }
         public void UpdateSearch(string searchString)
         {
@@ -85,6 +100,15 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         public Mods CurrentMods { get; private set; } = Mods.Omod;
         public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
         private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
+
+        private Score GetTopScore(string mapHash)
+        {
+            return _scores.ContainsKey(mapHash)
+                ? _scores[mapHash].Aggregate((i, j) => i.TotalScore > j.TotalScore ? i : j)
+                : null;
+
+        }
+
         /// <summary>
         /// Returns beatmapFilter delegate for specified searchWord.
         /// Unimplemented: key/keys/speed/played/unplayed
@@ -109,6 +133,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                     num = Double.Parse(matchNum.Groups[0].Value, nfi);
                     switch (key)
                     {
+                        //beatmap keys
                         case "star":
                         case "stars":
                             return delegate (Beatmap b) { return isPatternMatch(Math.Round(GetStars(b), 2), op, num); };
@@ -146,6 +171,25 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                             return delegate (Beatmap b) { return isPatternMatch(b.Sliders, op, num); };
                         case "spinners":
                             return delegate (Beatmap b) { return isPatternMatch(b.Spinners, op, num); };
+
+                        //Score keys
+                        case "miss":
+                        case "misses":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.Miss, op, num);
+                        case "c300":
+                        case "count300":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.C300, op, num);
+                        case "c100":
+                        case "count100":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.C100, op, num);
+                        case "c50":
+                        case "count50":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.C50, op, num);
+                        case "combo":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.MaxCombo, op, num);
+                        case "perfect":
+                            return b => isScorePatternMatch(b.Md5, (s) => s.Perfect ? 1 : 0, op, num);
+
                     }
                 }
 
@@ -316,6 +360,12 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 default:
                     return false;
             }
+        }
+
+        private bool isScorePatternMatch<T>(string mapHash, Func<Score, T> propGetter, string op, T num) where T : IComparable<T>
+        {
+            var score = GetTopScore(mapHash);
+            return score != null && isPatternMatch(propGetter(score), op, num);
         }
     }
 }
