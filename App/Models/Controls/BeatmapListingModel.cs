@@ -117,8 +117,8 @@ namespace App.Models
         {
             if (_beatmapsDataSource != null && _beatmapListFilter != null)
             {
-                _beatmapListFilter.SetBeatmaps(_beatmapsDataSource);
                 _beatmapListFilter.SetScores(Initalizer.OsuFileIo.ScoresDatabase.Scores);
+                _beatmapListFilter.SetBeatmaps(_beatmapsDataSource);
             }
 
             BeatmapsChanged?.Invoke(this, EventArgs.Empty);

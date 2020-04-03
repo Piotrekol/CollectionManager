@@ -53,6 +53,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
         public void SetScores(Scores scores)
         {
+            _scores.Clear();
             foreach (var score in scores)
             {
                 if (!_scores.ContainsKey(score.MapHash))
