@@ -190,7 +190,12 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                             return b => isScorePatternMatch(b.Md5, (s) => s.MaxCombo, op, num);
                         case "perfect":
                             return b => isScorePatternMatch(b.Md5, (s) => s.Perfect ? 1 : 0, op, num);
-
+                        case "hasscore":
+                            return b =>
+                            {
+                                var topScore = GetTopScore(b.Md5);
+                                return isPatternMatch(topScore == null ? 0 : 1, op, num);
+                            };
                     }
                 }
 
