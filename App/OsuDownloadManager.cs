@@ -66,7 +66,7 @@ namespace App
         }
         public void ResumeDownloads()
         {
-            _osuDownloader.ResumeNewDownloads();
+            _osuDownloader?.ResumeNewDownloads();
         }
 
         public void SetDownloadDirectory(string path)

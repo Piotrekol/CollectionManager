@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -117,6 +117,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                         {
                             dlItemCheck.Value.downloadItem.WebClient.CancelAsync();
                             dlItemCheck.Value.Reset();
+                            Clients.Enqueue(dlItemCheck.Value.downloadItem.WebClient);
                         }
                     }
                 }
