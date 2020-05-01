@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +15,6 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         protected Queue<CookieAwareWebClient> Clients = new Queue<CookieAwareWebClient>();
         readonly LinkedList<DownloadItem> _urlsToDownload = new LinkedList<DownloadItem>();
         ConcurrentQueue<FileWorkerArgs> FileOperations = new ConcurrentQueue<FileWorkerArgs>();
-        ConcurrentBag<DownloadItem> CurrentlyProcessedUrls = new ConcurrentBag<DownloadItem>();
         private Timer _urlWatcher;
         private Timer _ProgressWatcher;
         private string _saveLocation;
@@ -127,8 +126,12 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                         {
                             if (Clients.Count > 0)
                             {
-                                var client = Clients.Dequeue();
                                 var downloadItem = _urlsToDownload.First.Value;
+                                if (!CanDownload(downloadItem))
+                                    return;
+
+                                var client = Clients.Dequeue();
+                                downloadItem.DownloadSlotStatus = null;
                                 _urlsToDownload.RemoveFirst();
                                 downloadItem.WebClient = client;
                                 DownloadFile(downloadItem);
@@ -138,22 +141,26 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 
         }
 
-        private void DownloadFile(DownloadItem downloadItem)
+        public abstract bool CanDownload(DownloadItem downloadItem);
+
+        protected virtual bool DownloadFile(DownloadItem downloadItem)
         {
             lock (_lockingObject)
             {
                 string filePath = Path.Combine(_saveLocation, downloadItem.FileName);
                 if (File.Exists(filePath))
                 {
-                    downloadItem.FileAlreadyExists = true;// = "File already exists";
+                    downloadItem.FileAlreadyExists = true;
                     Clients.Enqueue(downloadItem.WebClient);
-                    return;
+                    return false;
                 }
                 downloadCheck[downloadItem.WebClient.ClientId].Reset();
                 downloadItem.ResetErrorState();
                 downloadCheck[downloadItem.WebClient.ClientId].downloadItem = downloadItem;
+                downloadItem.WebClient.Headers["Referer"] = downloadItem.Referer;
                 downloadItem.WebClient.DownloadFileAsync(new Uri(downloadItem.Url),
                     GetFullTempLocation(downloadItem.FileName), downloadItem);
+                return true;
             }
         }
 
@@ -273,9 +280,9 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 OnProgressUpdated(e);
             }
         }
-        public DownloadItem DownloadFileAsync(string url, string filename, object token)
+        public DownloadItem DownloadFileAsync(string url, string filename, string referer, object token)
         {
-            var dlItem = new DownloadItem() { FileName = filename, Url = url, UserToken = token };
+            var dlItem = new DownloadItem() { FileName = filename, Url = url, Referer = referer, UserToken = token };
             lock (_urlsToDownload)
                 _urlsToDownload.AddLast(dlItem);
             return dlItem;

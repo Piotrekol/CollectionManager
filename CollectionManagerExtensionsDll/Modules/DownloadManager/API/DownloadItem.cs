@@ -20,6 +20,8 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                     return Error;
                 if (DownloadAborted)
                     return "Download cancelled";
+                if (WaitingForDownloadSlot)
+                    return DownloadSlotStatus;
                 if (FileAlreadyExists)
                     return "File already exists";
                 return string.Format("{0}/{1}MB {2}%", ((BytesRecived / 1024f) / 1024f).ToString("F"),
@@ -41,11 +43,14 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 
         public bool DownloadAborted { get; set; }
         public bool FileAlreadyExists { get; set; }
+        public bool WaitingForDownloadSlot => !string.IsNullOrEmpty(DownloadSlotStatus);
+        public string DownloadSlotStatus { get; set; }
         public bool OtherError { get; set; }
         public string Error { get; set; }
         public CookieAwareWebClient WebClient { get; set; }
         public int lastShownDlState { get; set; } = -1;
         public object UserToken { get; set; }
+        public string Referer { get; set; }
 
         public void ResetErrorState()
         {

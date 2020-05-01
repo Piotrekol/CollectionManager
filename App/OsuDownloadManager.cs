@@ -125,10 +125,11 @@ namespace App
             var oszFileName = CreateFileName(beatmap);
             var downloadUrl = string.Format(BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
-            var downloadItem = _osuDownloader.DownloadFileAsync(downloadUrl, oszFileName, currentId);
+            var downloadItem = _osuDownloader.DownloadFileAsync(downloadUrl, oszFileName, "https://osu.ppy.sh/", currentId);
             downloadItem.Id = currentId;
             return downloadItem;
         }
+
         private string CreateFileName(Beatmap map)
         {
             var filename = map.MapSetId + " " + map.ArtistRoman + " - " + map.TitleRoman;

@@ -2,11 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
+using Newtonsoft.Json;
 
 namespace CollectionManagerExtensionsDll.Modules.DownloadManager
 {
     public class OsuDownloader : API.DownloadManager
     {
+        public DownloadThrottler DownloadThrottler { get; } = new DownloadThrottler(5, 170);
+        public string QuotaCheckUrl => @"https://osu.ppy.sh/home/download-quota-check";
+        private CookieAwareWebClient webClient;
+        public int GetUsedQuota()
+        {
+            if(webClient==null)
+                return -1;
+
+            var data = webClient.DownloadString(QuotaCheckUrl);
+            var deserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
+            if (deserialized.ContainsKey("quota_used"))
+                return Convert.ToInt32(deserialized["quota_used"]);
+
+            return -1;
+        }
+
         public OsuDownloader(string saveLocation, int downloadThreads) : base(saveLocation, downloadThreads)
         {
         }
@@ -30,6 +47,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                         return false;
 
                     cookies = client.CookieContainer;
+                    webClient = client;
                 }
                 else
                 {
@@ -42,7 +60,38 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
             {
                 this.Clients.Enqueue(client);
             }
+
+            var currentDownloadQuota = GetUsedQuota();
+            if (currentDownloadQuota > 0)
+            {
+                for (int i = 0; i < currentDownloadQuota; i++)
+                {
+                    DownloadThrottler.RegisterDownload();
+                }
+            }
+
             return true;
+        }
+
+        public override bool CanDownload(DownloadItem downloadItem)
+        {
+            if (DownloadThrottler.CanDownload())
+            {
+                downloadItem.DownloadSlotStatus = null;
+                return true;
+            }
+
+            downloadItem.DownloadSlotStatus = DownloadThrottler.GetStatus();
+            return false;
+        }
+
+        protected override bool DownloadFile(DownloadItem downloadItem)
+        {
+            var downloadStarted = base.DownloadFile(downloadItem);
+            if(downloadStarted)
+                DownloadThrottler.RegisterDownload();
+
+            return downloadStarted;
         }
     }
 }
