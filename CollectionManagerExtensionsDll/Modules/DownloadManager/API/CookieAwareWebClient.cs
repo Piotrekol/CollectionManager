@@ -52,7 +52,7 @@ namespace System.Net
                 responseText = sr.ReadToEnd();
             }
             response.Close();
-            return !(responseText.IndexOf("Log me on automatically each visit", StringComparison.InvariantCultureIgnoreCase) > 0);
+            return !(responseText.IndexOf("Sign in", StringComparison.InvariantCultureIgnoreCase) > 0);
         }
 
         public CookieAwareWebClient(CookieContainer container)
