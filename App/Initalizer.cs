@@ -33,7 +33,7 @@ namespace App
             UserDialogs = GuiComponentsProvider.Instance.GetClassImplementing<IUserDialogs>();
 
             if (Settings.Default.DontAskAboutOsuDirectory)
-                OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(null, UserDialogs.SelectDirectory);
+                OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(_ => false, _ => Settings.Default.OsuDirectory);
             else
                 OsuDirectory = OsuFileIo.OsuPathResolver.GetOsuDir(dir =>
                 {
@@ -54,6 +54,8 @@ namespace App
 
             if (!string.IsNullOrEmpty(OsuDirectory))
             {
+                Settings.Default.OsuDirectory = OsuDirectory;
+                Settings.Default.Save();
                 //Load osu database and setting files
                 var osuDbFile = Path.Combine(OsuDirectory, @"osu!.db");
                 var osuScoresFile = Path.Combine(OsuDirectory, @"scores.db");
