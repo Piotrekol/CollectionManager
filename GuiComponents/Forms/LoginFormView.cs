@@ -17,6 +17,7 @@ namespace GuiComponents.Forms
 
         public string Login => ClickedLogin ? textBox_login.Text : "";
         public string Password => ClickedLogin ? textBox_password.Text : "";
+        public string OsuCookies => ClickedLogin ? textBox_osuCookies.Text : "";
         public bool ClickedLogin { get; set; }
         public event EventHandler LoginClick;
         public event EventHandler CancelClick;

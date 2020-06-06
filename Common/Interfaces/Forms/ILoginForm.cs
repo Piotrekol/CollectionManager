@@ -6,6 +6,7 @@ namespace GuiComponents.Interfaces
     {
         string Login { get; }
         string Password { get; }
+        string OsuCookies { get; }
         bool ClickedLogin { get; }
         event EventHandler LoginClick;
         event EventHandler CancelClick;

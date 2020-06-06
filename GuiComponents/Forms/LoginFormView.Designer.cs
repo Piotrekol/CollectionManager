@@ -34,11 +34,14 @@
             this.textBox_password = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_login = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox_osuCookies = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_Cancel
             // 
-            this.button_Cancel.Location = new System.Drawing.Point(183, 72);
+            this.button_Cancel.Location = new System.Drawing.Point(183, 106);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 11;
@@ -47,7 +50,7 @@
             // 
             // button_Login
             // 
-            this.button_Login.Location = new System.Drawing.Point(77, 72);
+            this.button_Login.Location = new System.Drawing.Point(77, 106);
             this.button_Login.Name = "button_Login";
             this.button_Login.Size = new System.Drawing.Size(75, 23);
             this.button_Login.TabIndex = 10;
@@ -87,11 +90,39 @@
             this.textBox_login.Size = new System.Drawing.Size(100, 20);
             this.textBox_login.TabIndex = 6;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(156, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "OR";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(75, 80);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "osu! cookies:";
+            // 
+            // textBox_osuCookies
+            // 
+            this.textBox_osuCookies.Location = new System.Drawing.Point(159, 77);
+            this.textBox_osuCookies.Name = "textBox_osuCookies";
+            this.textBox_osuCookies.Size = new System.Drawing.Size(100, 20);
+            this.textBox_osuCookies.TabIndex = 14;
+            // 
             // LoginFormView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 101);
+            this.ClientSize = new System.Drawing.Size(334, 141);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBox_osuCookies);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_Login);
             this.Controls.Add(this.label2);
@@ -99,7 +130,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_login);
             this.Name = "LoginFormView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Collection Manager - osu! login form";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -114,5 +144,8 @@
         private System.Windows.Forms.TextBox textBox_password;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_login;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox_osuCookies;
     }
 }

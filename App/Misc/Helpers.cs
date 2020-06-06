@@ -43,6 +43,7 @@ namespace App.Misc
             {
                 loginData.Username = loginForm.Login;
                 loginData.Password = loginForm.Password;
+                loginData.OsuCookies = loginForm.OsuCookies;
             }
 
             return loginData.isValid() ? loginData : null;

@@ -13,7 +13,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
         private CookieAwareWebClient webClient;
         public int GetUsedQuota()
         {
-            if(webClient==null)
+            if (webClient == null)
                 return -1;
 
             var data = webClient.DownloadString(QuotaCheckUrl);
@@ -33,7 +33,6 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
             var loginAddress = @"https://osu.ppy.sh/session";
             string loginDataStr = string.Format("username={0}&password={1}", Uri.EscapeDataString(loginData.Username), Uri.EscapeDataString(loginData.Password));
 
-
             CookieContainer cookies = null;
             //Take all webClients and login/set correct cookies
             List<CookieAwareWebClient> webClients = new List<CookieAwareWebClient>();
@@ -43,8 +42,17 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                 var client = this.Clients.Dequeue();
                 if (i == clientCount)
                 {
-                    if (!client.Login(loginAddress, loginDataStr))
-                        return false;
+                    if (!string.IsNullOrEmpty(loginData.OsuCookies))
+                    {
+                        client.SetCookies(loginData.OsuCookies, new[] { "_encid" }, ".ppy.sh");
+                        if (!client.IsLoggedIn(@"https://osu.ppy.sh/home", "Sign in"))
+                            return false;
+                    }
+                    else
+                    {
+                        if (!client.Login(loginAddress, loginDataStr))
+                            return false;
+                    }
 
                     cookies = client.CookieContainer;
                     webClient = client;
@@ -88,7 +96,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
         protected override bool DownloadFile(DownloadItem downloadItem)
         {
             var downloadStarted = base.DownloadFile(downloadItem);
-            if(downloadStarted)
+            if (downloadStarted)
                 DownloadThrottler.RegisterDownload();
 
             return downloadStarted;
