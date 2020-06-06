@@ -8,6 +8,7 @@ using System.Threading;
 
 namespace CollectionManagerExtensionsDll.Modules.API.osu
 {
+    //TODO: old.ppy.sh/p is not avaliable anymore. modify to use https://osu.ppy.sh/rankings/osu/performance
     public class OsuSite
     {
         private static readonly string parsingPage = "Getting page {0} of {1}";

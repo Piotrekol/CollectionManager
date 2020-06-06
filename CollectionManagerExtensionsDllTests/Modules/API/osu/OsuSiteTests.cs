@@ -1,12 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CollectionManagerExtensionsDll.Modules.API.osu;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CollectionManagerExtensionsDll.Modules.API.osu.Tests
 {
+    [Ignore("old performance page is not avaliable anymore, url is now https://osu.ppy.sh/rankings/osu/performance")]
     [TestClass()]
     public class OsuSiteTests
     {
