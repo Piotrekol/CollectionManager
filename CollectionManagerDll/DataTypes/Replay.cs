@@ -23,6 +23,7 @@ namespace CollectionManager.DataTypes
         public short MaxCombo { get; set; }
         public bool Perfect { get; set; }
         public int Mods { get; set; }
+        public double AdditionalMods { get; set; }
         public virtual string ReplayData { get; set; }
         public DateTime Date { get; set; }
         public long DateTicks { get; set; }
@@ -63,6 +64,9 @@ namespace CollectionManager.DataTypes
             }
             if (outobj.Version >= 20140721)
                 outobj.OnlineScoreId = reader.ReadInt64();
+
+            if((((Mods)outobj.Mods) & DataTypes.Mods.Tp )!= 0)
+                outobj.AdditionalMods = reader.ReadInt64();
             return outobj;
         }
 

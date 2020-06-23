@@ -20,6 +20,7 @@ namespace CollectionManager.Interfaces
         short MaxCombo { get; set; }
         bool Perfect { get; set; }
         int Mods { get; set; }
+        double AdditionalMods { get; set; }
         string ReplayData { get; set; }
         DateTime Date { get; set; }
         long DateTicks { get; set; }
