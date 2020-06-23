@@ -65,8 +65,9 @@ namespace CollectionManager.DataTypes
             if (outobj.Version >= 20140721)
                 outobj.OnlineScoreId = reader.ReadInt64();
 
-            if((((Mods)outobj.Mods) & DataTypes.Mods.Tp )!= 0)
-                outobj.AdditionalMods = reader.ReadInt64();
+            if ((((Mods)outobj.Mods) & DataTypes.Mods.Tp) != 0)
+                outobj.AdditionalMods = reader.ReadDouble();
+
             return outobj;
         }
 
