@@ -7,7 +7,7 @@ namespace GuiComponents.Interfaces
         event EventHandler CollectionNameChanged;
         event EventHandler Submited;
         event EventHandler Canceled;
-        string NewCollectionName { get; }
+        string NewCollectionName { get; set; }
         string ErrorText { set; }
         bool CanSubmit { set; }
     }

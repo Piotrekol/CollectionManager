@@ -56,6 +56,7 @@ namespace App.Misc
             new CollectionAddRenameFormPresenter(form, model);
             form.IsRenameForm = isRenameForm;
             form.CollectionRenameView.OrginalCollectionName = orginalName;
+            form.CollectionRenameView.NewCollectionName = orginalName;
             form.ShowAndBlock();
 
             return model.NewCollectionNameIsValid ? model.NewCollectionName : "";

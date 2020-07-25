@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -58,7 +58,11 @@ namespace GuiComponents.Controls
         public event EventHandler Submited;
         public event EventHandler Canceled;
 
-        public string NewCollectionName => textBox_newCollectionName.Text;
+        public string NewCollectionName
+        {
+            get => textBox_newCollectionName.Text;
+            set => textBox_newCollectionName.Text = value;
+        }
 
         public string OrginalCollectionName
         {
