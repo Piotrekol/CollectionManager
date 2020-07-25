@@ -81,6 +81,7 @@
             this.Total,
             this.olvColumn2});
             this.ListViewCollections.EmptyListMsg = "No collections loaded";
+            this.ListViewCollections.HideSelection = false;
             this.ListViewCollections.Location = new System.Drawing.Point(1, 39);
             this.ListViewCollections.Name = "ListViewCollections";
             this.ListViewCollections.ShowGroups = false;
@@ -91,6 +92,7 @@
             this.ListViewCollections.UseCustomSelectionColors = true;
             this.ListViewCollections.View = System.Windows.Forms.View.Details;
             this.ListViewCollections.VirtualMode = true;
+            this.ListViewCollections.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewCollections_KeyUp);
             // 
             // olvColumn1
             // 

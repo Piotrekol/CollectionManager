@@ -160,5 +160,24 @@ namespace GuiComponents.Controls
             OnRightClick(new StringEventArgs((string)menuItem.Tag));
         }
 
+        private void ListViewCollections_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (ListViewCollections.SelectedObjects.Count == 0)
+                return;
+
+            var eventData = string.Empty;
+            switch (e.KeyCode)
+            {
+                case Keys.F2:
+                    eventData = "Rename";
+                    break;
+                case Keys.Delete:
+                    eventData = "Delete";
+                    break;
+            }
+
+            if(!string.IsNullOrEmpty(eventData))
+                OnRightClick(new StringEventArgs(eventData));
+        }
     }
 }
