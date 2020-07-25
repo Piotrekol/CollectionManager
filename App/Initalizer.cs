@@ -61,7 +61,15 @@ namespace App
                 var osuScoresFile = Path.Combine(OsuDirectory, @"scores.db");
                 OsuFileIo.OsuDatabase.Load(osuDbFile);
                 OsuFileIo.OsuSettings.Load(OsuDirectory);
-                OsuFileIo.ScoresLoader.ReadDb(osuScoresFile);
+                try
+                {
+                    OsuFileIo.ScoresLoader.ReadDb(osuScoresFile);
+                }
+                catch (Exception e)
+                {
+                    UserDialogs.OkMessageBox("Warning","osu! scores database could not be loaded. Score related searches will not work in this session."+ Environment.NewLine + Environment.NewLine + e);
+                }
+
                 BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
             }
 
