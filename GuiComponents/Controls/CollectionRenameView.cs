@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,8 +13,21 @@ namespace GuiComponents.Controls
             InitializeComponent();
 
             textBox_newCollectionName.TextChanged += (s, a) => CollectionNameChanged?.Invoke(this, EventArgs.Empty);
-            button_rename.Click += (s, a) => Submited?.Invoke(this, EventArgs.Empty);
-            button_cancel.Click += (s, a) => Canceled?.Invoke(this, EventArgs.Empty);
+            button_rename.Click +=Button_renameOnClick;
+            button_cancel.Click += OnButton_CancelOnClick;
+            ActiveControl = textBox_newCollectionName;
+        }
+
+        private void OnButton_CancelOnClick(object s, EventArgs a)
+        {
+            ActiveControl = textBox_newCollectionName;
+            Canceled?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Button_renameOnClick(object sender, EventArgs e)
+        {
+            ActiveControl = textBox_newCollectionName;
+            Submited?.Invoke(this, EventArgs.Empty);
         }
 
         private bool _isRenameView = true;

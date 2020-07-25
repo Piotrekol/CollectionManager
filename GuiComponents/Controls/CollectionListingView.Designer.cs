@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.Total = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.textBox_collectionNameSearch = new System.Windows.Forms.TextBox();
             this.CollectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.renameCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,9 +38,13 @@
             this.mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.Total = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
             this.CollectionContextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -66,6 +66,68 @@
             this.label1.Size = new System.Drawing.Size(154, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Search using collection names:";
+            // 
+            // textBox_collectionNameSearch
+            // 
+            this.textBox_collectionNameSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 16);
+            this.textBox_collectionNameSearch.Name = "textBox_collectionNameSearch";
+            this.textBox_collectionNameSearch.Size = new System.Drawing.Size(463, 20);
+            this.textBox_collectionNameSearch.TabIndex = 1;
+            // 
+            // CollectionContextMenuStrip
+            // 
+            this.CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renameCollectionMenuStrip,
+            this.deleteCollectionMenuStrip,
+            this.mergeWithMenuStrip,
+            this.CreateMenuStrip,
+            this.DuplicateMenuStrip});
+            this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 136);
+            // 
+            // renameCollectionMenuStrip
+            // 
+            this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
+            this.renameCollectionMenuStrip.ShortcutKeyDisplayString = "F2";
+            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.renameCollectionMenuStrip.Tag = "Rename";
+            this.renameCollectionMenuStrip.Text = "Rename";
+            this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // deleteCollectionMenuStrip
+            // 
+            this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
+            this.deleteCollectionMenuStrip.ShortcutKeyDisplayString = "Del";
+            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.deleteCollectionMenuStrip.Tag = "Delete";
+            this.deleteCollectionMenuStrip.Text = "Delete";
+            this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // mergeWithMenuStrip
+            // 
+            this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
+            this.mergeWithMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.mergeWithMenuStrip.Tag = "Merge";
+            this.mergeWithMenuStrip.Text = "Merge selected";
+            this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // CreateMenuStrip
+            // 
+            this.CreateMenuStrip.Name = "CreateMenuStrip";
+            this.CreateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.CreateMenuStrip.Tag = "Create";
+            this.CreateMenuStrip.Text = "Create";
+            this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // DuplicateMenuStrip
+            // 
+            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
+            this.DuplicateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.DuplicateMenuStrip.Tag = "Duplicate";
+            this.DuplicateMenuStrip.Text = "Duplicate";
+            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // ListViewCollections
             // 
@@ -112,66 +174,6 @@
             this.olvColumn2.AspectName = "NumberOfMissingBeatmaps";
             this.olvColumn2.Text = "Missing";
             // 
-            // textBox_collectionNameSearch
-            // 
-            this.textBox_collectionNameSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 16);
-            this.textBox_collectionNameSearch.Name = "textBox_collectionNameSearch";
-            this.textBox_collectionNameSearch.Size = new System.Drawing.Size(463, 20);
-            this.textBox_collectionNameSearch.TabIndex = 1;
-            // 
-            // CollectionContextMenuStrip
-            // 
-            this.CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.renameCollectionMenuStrip,
-            this.deleteCollectionMenuStrip,
-            this.mergeWithMenuStrip,
-            this.CreateMenuStrip,
-            this.DuplicateMenuStrip});
-            this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(155, 114);
-            // 
-            // renameCollectionMenuStrip
-            // 
-            this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
-            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.renameCollectionMenuStrip.Tag = "Rename";
-            this.renameCollectionMenuStrip.Text = "Rename";
-            this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // deleteCollectionMenuStrip
-            // 
-            this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
-            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.deleteCollectionMenuStrip.Tag = "Delete";
-            this.deleteCollectionMenuStrip.Text = "Delete";
-            this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // mergeWithMenuStrip
-            // 
-            this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
-            this.mergeWithMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.mergeWithMenuStrip.Tag = "Merge";
-            this.mergeWithMenuStrip.Text = "Merge selected";
-            this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // CreateMenuStrip
-            // 
-            this.CreateMenuStrip.Name = "CreateMenuStrip";
-            this.CreateMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.CreateMenuStrip.Tag = "Create";
-            this.CreateMenuStrip.Text = "Create";
-            this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // DuplicateMenuStrip
-            // 
-            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
-            this.DuplicateMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.DuplicateMenuStrip.Tag = "Duplicate";
-            this.DuplicateMenuStrip.Text = "Duplicate";
-            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
             // CollectionListingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,8 +183,8 @@
             this.Size = new System.Drawing.Size(464, 384);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).EndInit();
             this.CollectionContextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).EndInit();
             this.ResumeLayout(false);
 
         }
