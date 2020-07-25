@@ -122,7 +122,7 @@ namespace CollectionManager.DataTypes
         public float CircleSize { get; set; }
         public float HpDrainRate { get; set; }
         public float OverallDifficulty { get; set; }
-        public double SliderVelocity { get; set; }
+        public double? SliderVelocity { get; set; }
         public int DrainingTime { get; set; }
         public int TotalTime { get; set; }
         public int PreviewTime { get; set; }
@@ -135,7 +135,7 @@ namespace CollectionManager.DataTypes
         public OsuGrade ManiaGrade { get; set; } = OsuGrade.Null;
 
         public short Offset { get; set; }
-        public float StackLeniency { get; set; }
+        public float? StackLeniency { get; set; }
         private PlayMode _playMode;
         public PlayMode PlayMode
         {
