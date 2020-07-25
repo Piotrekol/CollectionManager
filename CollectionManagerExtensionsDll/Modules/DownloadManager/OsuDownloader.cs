@@ -69,15 +69,6 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                 this.Clients.Enqueue(client);
             }
 
-            var currentDownloadQuota = GetUsedQuota();
-            if (currentDownloadQuota > 0)
-            {
-                for (int i = 0; i < currentDownloadQuota; i++)
-                {
-                    DownloadThrottler.RegisterDownload();
-                }
-            }
-
             return true;
         }
 
