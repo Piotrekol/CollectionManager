@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Newtonsoft.Json;
@@ -84,13 +85,12 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
             return false;
         }
 
-        protected override bool DownloadFile(DownloadItem downloadItem)
+        protected override void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            var downloadStarted = base.DownloadFile(downloadItem);
-            if (downloadStarted)
+            if(e.Error == null)
                 DownloadThrottler.RegisterDownload();
 
-            return downloadStarted;
+            base.DownloadCompleted(sender, e);
         }
     }
 }

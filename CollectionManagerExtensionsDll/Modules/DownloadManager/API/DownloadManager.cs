@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -170,7 +170,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
             public string orginalLocation { get; set; }
             public string desiredLocation { get; set; }
         }
-        private void Completed(object sender, AsyncCompletedEventArgs e)
+        protected virtual void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             lock (_lockingObject)
             {
