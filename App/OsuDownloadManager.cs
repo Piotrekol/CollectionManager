@@ -62,11 +62,13 @@ namespace App
 
         public void PauseDownloads()
         {
-            _osuDownloader?.StopDownloads();
+            if(_osuDownloader!=null)
+                _osuDownloader.StopDownloads = true;
         }
         public void ResumeDownloads()
         {
-            _osuDownloader?.ResumeNewDownloads();
+            if (_osuDownloader != null)
+                _osuDownloader.StopDownloads = false;
         }
 
         public void SetDownloadDirectory(string path)

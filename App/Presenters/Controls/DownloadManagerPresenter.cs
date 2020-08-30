@@ -51,7 +51,6 @@ namespace App.Presenters.Controls
         {
             enableButtonTimer.Stop();
             _view.DownloadButtonIsEnabled = true;
-            _model.EmitStopDownloads();
         }
 
         private void ToggleDownloads()

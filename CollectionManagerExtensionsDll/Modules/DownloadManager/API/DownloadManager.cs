@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,10 +19,23 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         private Timer _urlWatcher;
         private Timer _ProgressWatcher;
         private string _saveLocation;
-        private bool _stopDownloads { get; set; }
+
+        public bool StopDownloads
+        {
+            get => _stopDownloads;
+            set
+            {
+                lock (_lockingObject)
+                {
+                    _stopDownloads = value;
+                }
+            }
+        }
+
         Dictionary<int, DownloadProgress> downloadCheck = new Dictionary<int, DownloadProgress>();
+        private bool _stopDownloads;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressUpdated;
-        private static object _lockingObject = "";
+        private static object _lockingObject = new object();
         public DownloadManager(string saveLocation, int downloadThreads)
         {
             _saveLocation = saveLocation;
@@ -31,7 +45,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 var webClient = new CookieAwareWebClient();
                 webClient.ClientId = i;
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompleted);
                 Clients.Enqueue(webClient);
                 downloadCheck.Add(i, new DownloadProgress());
             }
@@ -45,17 +59,6 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         public void ChangeDefaultConnectionPolicy(int maxConnectionsToSameServer)
         {
             ServicePointManager.DefaultConnectionLimit = maxConnectionsToSameServer;
-        }
-        public void StopDownloads()
-        {
-            lock (_lockingObject)
-                _stopDownloads = true;
-        }
-
-        public void ResumeNewDownloads()
-        {
-            lock (_lockingObject)
-                _stopDownloads = false;
         }
 
         private void ProgressWatcher(object state)
@@ -108,16 +111,11 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
             //Main async download loop
             lock (_lockingObject)
             {
-                if (_stopDownloads)
+                if (StopDownloads)
                 {
                     foreach (var dlItemCheck in downloadCheck)
                     {
-                        if (dlItemCheck.Value.downloadItem != null)
-                        {
-                            dlItemCheck.Value.downloadItem.WebClient.CancelAsync();
-                            dlItemCheck.Value.Reset();
-                            Clients.Enqueue(dlItemCheck.Value.downloadItem.WebClient);
-                        }
+                        dlItemCheck.Value.downloadItem?.WebClient.CancelAsync();
                     }
                 }
                 else
@@ -200,13 +198,13 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                         {
                             url.OtherError = true;
                             url.Error = "Download limit hit - download has been paused (next check in 10minutes)";
-                            if (!_stopDownloads)
+                            if (!StopDownloads)
                             {
-                                StopDownloads();
+                                StopDownloads = true;
                                 Task.Run(async () =>
                                 {
                                     await Task.Delay(60 * 1000 * 10);
-                                    ResumeNewDownloads();
+                                    StopDownloads = false;
                                 });
                             }
 
