@@ -530,9 +530,9 @@ namespace CollectionManager.DataTypes
         {
             if (string.IsNullOrEmpty(Artist) && string.IsNullOrEmpty(Title))
             {
-                if (string.IsNullOrEmpty(Md5))
-                    return Md5;
-                return "mapId: " + MapId;
+                if (MapId > 0)
+                    return "mapId: " + MapId;
+                return $"unknown: {Md5}";
             }
             var baseStr = Artist + " - " + Title;
             return baseStr;
