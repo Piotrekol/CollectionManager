@@ -79,14 +79,6 @@ namespace App
             var collectionAddRemoveForm = GuiComponentsProvider.Instance.GetClassImplementing<ICollectionAddRenameForm>();
             CollectionEditor = new CollectionEditor(CollectionsManager, CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
 
-            if (args.Length > 0)
-            {
-                if (File.Exists(args[0]))
-                {
-                    CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(OsuFileIo.CollectionLoader.LoadCollection(args[0])));
-                }
-            }
-
             var updateChecker = new UpdateChecker();
             updateChecker.CheckForUpdates();
             var infoTextModel = new InfoTextModel(updateChecker);
@@ -97,6 +89,14 @@ namespace App
             //set initial text info and update events
             SetTextData(infoTextModel);
 
+
+            if (args.Length > 0)
+            {
+                if (File.Exists(args[0]))
+                {
+                    CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(OsuFileIo.CollectionLoader.LoadCollection(args[0])));
+                }
+            }
 
             var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
             var guiActionsHandler = new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
