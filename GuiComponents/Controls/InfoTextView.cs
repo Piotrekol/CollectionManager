@@ -34,10 +34,7 @@ namespace GuiComponents.Controls
         }
 
         public string UpdateText { set { label_UpdateText.Text = value; } }
-        public string BeatmapLoaded { set { label_LoadedBeatmaps.Text = value; } }
-        public string CollectionsLoaded { set { label_LoadedCollections.Text = value; } }
-        public string BeatmapsInCollections { set { label_BeatmapsInCollections.Text = value; } }
-        public string BeatmapsMissing { set { label_beatmapsMissing.Text = value; } }
+        public string CollectionManagerStatus { set { label_CollectionManagerStatus.Text = value; } }
 
         public event EventHandler UpdateTextClicked;
     }

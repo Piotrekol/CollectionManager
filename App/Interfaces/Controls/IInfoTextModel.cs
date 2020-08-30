@@ -4,13 +4,11 @@ namespace App.Interfaces
 {
     public interface IInfoTextModel
     {
-        void SetBeatmapCount(int beatmapCount);
-        void SetCollectionCount(int collectionsCount, int beatmapsInCollectionsCount);
-        void SetMissingMapSetsCount(int missingBeatmapsCount);
-        int BeatmapCount { get; }
-        int BeatmapsInCollectionsCount { get; }
-        int MissingMapSetsCount { get; }
-        int CollectionsCount { get; }
+        int BeatmapCount { get; set; }
+        int BeatmapsInCollectionsCount { get; set; }
+        int MissingMapSetsCount { get; set; }
+        int CollectionsCount { get; set; }
+        int UnknownMapCount { get; set; }
         IUpdateModel GetUpdater();
         void EmitUpdateTextClicked();
         event EventHandler CountsUpdated;

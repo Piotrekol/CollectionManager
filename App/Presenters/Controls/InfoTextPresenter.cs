@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using App.Interfaces;
 using GuiComponents.Interfaces;
 
@@ -41,10 +41,7 @@ namespace App.Presenters.Controls
 
         private void ModelOnCountsUpdated(object sender, EventArgs eventArgs)
         {
-            _view.BeatmapLoaded = string.Format(LoadedBeatmaps, Model.BeatmapCount);
-            _view.CollectionsLoaded = string.Format(LoadedCollections, Model.CollectionsCount);
-            _view.BeatmapsInCollections = string.Format(LoadedCollectionsBeatmaps, Model.BeatmapsInCollectionsCount);
-            _view.BeatmapsMissing = string.Format(MissingBeatmaps, Model.MissingMapSetsCount);
+            _view.CollectionManagerStatus = $"Loaded {Model.BeatmapCount} beatmaps && {Model.CollectionsCount} collections with {Model.BeatmapsInCollectionsCount} beatmaps. Missing {Model.MissingMapSetsCount} downloadable map sets. {Model.UnknownMapCount} unknown maps.";
             SetUpdateText();
         }
 

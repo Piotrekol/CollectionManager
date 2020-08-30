@@ -6,10 +6,7 @@ namespace GuiComponents.Interfaces
     {
         bool ColorUpdateText { set; }
         string UpdateText { set; }
-        string BeatmapLoaded { set; }
-        string CollectionsLoaded { set; }
-        string BeatmapsInCollections { set; }
-        string BeatmapsMissing { set; }
+        string CollectionManagerStatus { set; }
 
         event EventHandler UpdateTextClicked;
     }

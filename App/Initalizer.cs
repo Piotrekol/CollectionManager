@@ -67,7 +67,7 @@ namespace App
                 }
                 catch (Exception e)
                 {
-                    UserDialogs.OkMessageBox("Warning","osu! scores database could not be loaded. Score related searches will not work in this session."+ Environment.NewLine + Environment.NewLine + e);
+                    UserDialogs.OkMessageBox("Warning", "osu! scores database could not be loaded. Score related searches will not work in this session." + Environment.NewLine + Environment.NewLine + e);
                 }
 
                 BeatmapUtils.OsuSongsDirectory = OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
@@ -110,15 +110,17 @@ namespace App
 
         private void SetTextData(IInfoTextModel model)
         {
-            model.SetBeatmapCount(LoadedBeatmaps.Count);
+            model.BeatmapCount = LoadedBeatmaps.Count;
             CollectionsManager.LoadedCollections.CollectionChanged += (s, a) =>
             {
-                model.SetCollectionCount(CollectionsManager.CollectionsCount, CollectionsManager.BeatmapsInCollectionsCount);
-                model.SetMissingMapSetsCount(CollectionsManager.MissingMapSetsCount);
+                model.CollectionsCount = CollectionsManager.CollectionsCount;
+                model.BeatmapsInCollectionsCount = CollectionsManager.BeatmapsInCollectionsCount;
+                model.MissingMapSetsCount = CollectionsManager.MissingMapSetsCount;
+                model.UnknownMapCount = CollectionsManager.UnknownMapCount;
             };
             LoadedBeatmaps.CollectionChanged += (s, a) =>
             {
-                model.SetBeatmapCount(LoadedBeatmaps.Count);
+                model.BeatmapCount = LoadedBeatmaps.Count;
             };
         }
 

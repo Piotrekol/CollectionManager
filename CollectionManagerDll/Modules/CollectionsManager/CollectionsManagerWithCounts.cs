@@ -7,15 +7,14 @@ namespace CollectionManager.Modules.CollectionsManager
     {
         private readonly HashSet<string> _missingBeatmapHashes = new HashSet<string>();
         private readonly HashSet<int> _downloadableMapSetIds = new HashSet<int>();
-        public int MissingMapSetsCount => _missingBeatmapHashes.Count + DownloadableBeatmapsCount;
-        public int DownloadableBeatmapsCount => _downloadableMapSetIds.Count;
+        public int MissingMapSetsCount => _downloadableMapSetIds.Count;
+        public int UnknownMapCount => _missingBeatmapHashes.Count;
         public int BeatmapsInCollectionsCount { get; private set; }
         public int CollectionsCount => LoadedCollections.Count;
 
         public CollectionsManagerWithCounts(Beatmaps loadedBeatmaps) : base(loadedBeatmaps)
         {
         }
-
 
         protected override void AfterCollectionsEdit()
         {

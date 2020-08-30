@@ -5,15 +5,67 @@ namespace App.Models
 {
     public class InfoTextModel : IInfoTextModel
     {
+        private int _beatmapCount;
+        private int _beatmapsInCollectionsCount;
+        private int _missingMapSetsCount;
+        private int _collectionsCount;
+        private int _unknownMapCount;
+
         public InfoTextModel(IUpdateModel updateModel)
         {
             UpdateModel = updateModel;
         }
 
-        public int BeatmapCount { get; set; }
-        public int BeatmapsInCollectionsCount { get; set; }
-        public int MissingMapSetsCount { get; set; }
-        public int CollectionsCount { get; set; }
+        public int BeatmapCount
+        {
+            get => _beatmapCount;
+            set
+            {
+                _beatmapCount = value;
+                OnCountsUpdated();
+            }
+        }
+
+        public int BeatmapsInCollectionsCount
+        {
+            get => _beatmapsInCollectionsCount;
+            set
+            {
+                _beatmapsInCollectionsCount = value;
+                OnCountsUpdated();
+            }
+        }
+
+        public int MissingMapSetsCount
+        {
+            get => _missingMapSetsCount;
+            set
+            {
+                _missingMapSetsCount = value;
+                OnCountsUpdated();
+            }
+        }
+
+        public int CollectionsCount
+        {
+            get => _collectionsCount;
+            set
+            {
+                _collectionsCount = value;
+                OnCountsUpdated();
+            }
+        }
+
+        public int UnknownMapCount
+        {
+            get => _unknownMapCount;
+            set
+            {
+                _unknownMapCount = value;
+                OnCountsUpdated();
+            }
+        }
+
         private IUpdateModel UpdateModel { get; }
         public IUpdateModel GetUpdater()
         {
@@ -27,25 +79,6 @@ namespace App.Models
 
         public event EventHandler CountsUpdated;
         public event EventHandler UpdateTextClicked;
-
-        public void SetBeatmapCount(int beatmapCount)
-        {
-            BeatmapCount = beatmapCount;
-            OnCountsUpdated();
-        }
-
-        public void SetCollectionCount(int collectionsCount, int beatmapsInCollectionsCount)
-        {
-            CollectionsCount = collectionsCount;
-            BeatmapsInCollectionsCount = beatmapsInCollectionsCount;
-            OnCountsUpdated();
-        }
-
-        public void SetMissingMapSetsCount(int missingBeatmapsCount)
-        {
-            MissingMapSetsCount = missingBeatmapsCount;
-            OnCountsUpdated();
-        }
 
         protected virtual void OnCountsUpdated()
         {
