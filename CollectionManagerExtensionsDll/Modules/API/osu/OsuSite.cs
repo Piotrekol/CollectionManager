@@ -60,14 +60,14 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             var usernames = new List<string>();
             if (pageContents.Length > 0)
             {
-                var match = Regex.Matches(pageContents, ".*?href=\'\\/u\\/(\\d+)\'>(.*)<\\/a>");
+                var match = Regex.Matches(pageContents, ".*?href=\".*?\\/users\\/(\\d+)\\/osu\"\n.*\n.*\n.*\n.*>\n(.*)\n.*<\\/a>");
                 if (match.Count > 0)
                 {
                     for (int i = startUserIndex; i <= endUserIndex; i++)
                     {
                         var entry = match[i];
                         //var userId = entry.Groups[1].Value;
-                        var username = entry.Groups[2].Value;
+                        var username = entry.Groups[2].Value.Trim();
                         usernames.Add(username);
                     }
                 }
