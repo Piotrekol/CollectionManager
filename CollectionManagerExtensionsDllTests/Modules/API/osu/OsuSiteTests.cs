@@ -3,7 +3,6 @@ using System;
 
 namespace CollectionManagerExtensionsDll.Modules.API.osu.Tests
 {
-    [Ignore("old performance page is not avaliable anymore, url is now https://osu.ppy.sh/rankings/osu/performance")]
     [TestClass()]
     public class OsuSiteTests
     {

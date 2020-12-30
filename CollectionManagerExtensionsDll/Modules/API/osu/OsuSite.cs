@@ -14,8 +14,8 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
         private static readonly string parsingPage = "Getting page {0} of {1}";
         private static readonly string parsingComplete = "Finished Processing of {0} pages";
 
-        private static readonly string _baseUrl = "https://old.ppy.sh/p";
-        private static readonly string UserPpRankingUrl = _baseUrl + "/pp/?m=0&s=3&o=1&f=0&page={0}";
+        private static readonly string _baseUrl = "https://osu.ppy.sh/rankings/osu/performance";
+        private static readonly string UserPpRankingUrl = _baseUrl + "?m=0&s=3&o=1&f=0&page={0}";
         private static readonly int UsersPerPage = 50;
         public delegate void LogUsernameGeneration(string logMessage, int completionPrecentage);
 
@@ -60,14 +60,14 @@ namespace CollectionManagerExtensionsDll.Modules.API.osu
             var usernames = new List<string>();
             if (pageContents.Length > 0)
             {
-                var match = Regex.Matches(pageContents, ".*?href=\'\\/u\\/(\\d+)\'>(.*)<\\/a>");
+                var match = Regex.Matches(pageContents, ".*?href=\".*?\\/users\\/(\\d+)\\/osu\"\n.*\n.*\n.*\n.*>\n(.*)\n.*<\\/a>");
                 if (match.Count > 0)
                 {
                     for (int i = startUserIndex; i <= endUserIndex; i++)
                     {
                         var entry = match[i];
                         //var userId = entry.Groups[1].Value;
-                        var username = entry.Groups[2].Value;
+                        var username = entry.Groups[2].Value.Trim();
                         usernames.Add(username);
                     }
                 }
