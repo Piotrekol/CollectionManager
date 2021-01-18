@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/Piotrekol/CollectionManager/tree/master/CollectionManagerDll</RepositoryUrl>
     <PackageTags>osu!</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5</Version>
+    <Version>1.0.8</Version>
     <IncludeSymbols>true</IncludeSymbols> 
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
