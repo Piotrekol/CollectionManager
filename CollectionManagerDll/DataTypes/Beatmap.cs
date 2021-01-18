@@ -363,16 +363,16 @@ namespace CollectionManager.DataTypes
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + TitleUnicode.GetDeterministicHashCode();
-                hash = hash * 23 + TitleRoman.GetDeterministicHashCode();
-                hash = hash * 23 + ArtistUnicode.GetDeterministicHashCode();
-                hash = hash * 23 + ArtistRoman.GetDeterministicHashCode();
-                hash = hash * 23 + Creator.GetDeterministicHashCode();
-                hash = hash * 23 + DiffName.GetDeterministicHashCode();
-                hash = hash * 23 + Mp3Name.GetDeterministicHashCode();
-                hash = hash * 23 + Md5.GetDeterministicHashCode();
-                hash = hash * 23 + OsuFileName.GetDeterministicHashCode();
-                hash = hash * 23 + Tags.GetDeterministicHashCode();
+                hash = hash * 23 + TitleUnicode.GetHashCode();
+                hash = hash * 23 + TitleRoman.GetHashCode();
+                hash = hash * 23 + ArtistUnicode.GetHashCode();
+                hash = hash * 23 + ArtistRoman.GetHashCode();
+                hash = hash * 23 + Creator.GetHashCode();
+                hash = hash * 23 + DiffName.GetHashCode();
+                hash = hash * 23 + Mp3Name.GetHashCode();
+                hash = hash * 23 + Md5.GetHashCode();
+                hash = hash * 23 + OsuFileName.GetHashCode();
+                hash = hash * 23 + Tags.GetHashCode();
                 hash = hash * 23 + Somestuff.GetHashCode();
                 hash = hash * 23 + _state.GetHashCode();
                 hash = hash * 23 + Circles.GetHashCode();
@@ -397,13 +397,13 @@ namespace CollectionManager.DataTypes
                 hash = hash * 23 + Offset.GetHashCode();
                 hash = hash * 23 + StackLeniency.GetHashCode();
                 hash = hash * 23 + PlayMode.GetHashCode();
-                hash = hash * 23 + Source.GetDeterministicHashCode();
+                hash = hash * 23 + Source.GetHashCode();
                 hash = hash * 23 + AudioOffset.GetHashCode();
-                hash = hash * 23 + LetterBox.GetDeterministicHashCode();
+                hash = hash * 23 + LetterBox.GetHashCode();
                 hash = hash * 23 + Played.GetHashCode();
                 hash = hash * 23 + LastPlayed.GetHashCode();
                 hash = hash * 23 + IsOsz2.GetHashCode();
-                hash = hash * 23 + Dir.GetDeterministicHashCode();
+                hash = hash * 23 + Dir.GetHashCode();
                 //hash = hash * 23 + LastSync.GetHashCode(); //This value is updated by osu even if no changes were made to the actual data
                 hash = hash * 23 + DisableHitsounds.GetHashCode();
                 hash = hash * 23 + DisableSkin.GetHashCode();
