@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
@@ -54,7 +54,10 @@ namespace CollectionManagerExtensionsDll.Utils
                     return string.Empty;
             }
             var osuFileLocation = beatmap.FullOsuFileLocation();
-            string ImageLocation = string.Empty;
+            if (!File.Exists(osuFileLocation))
+                return string.Empty;
+
+            var imageLocation = string.Empty;
             using (StreamReader file = new StreamReader(osuFileLocation))
             {
                 string line;
@@ -63,8 +66,8 @@ namespace CollectionManagerExtensionsDll.Utils
                     if (line.ToLower().Contains(".jpg") || line.ToLower().Contains(".png"))
                     {
                         var splited = line.Split(',');
-                        ImageLocation = Path.Combine(beatmap.BeatmapDirectory(), splited[2].Trim('"'));
-                        if (!File.Exists(ImageLocation))
+                        imageLocation = Path.Combine(beatmap.BeatmapDirectory(), splited[2].Trim('"'));
+                        if (!File.Exists(imageLocation))
                         {
                             return string.Empty;
                         }
@@ -72,7 +75,7 @@ namespace CollectionManagerExtensionsDll.Utils
                     }
                 }
             }
-            return ImageLocation;
+            return imageLocation;
         }
         public static string BeatmapDirectory(this Beatmap beatmap)
         {
