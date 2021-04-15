@@ -32,7 +32,7 @@ namespace CollectionManager.DataTypes
         public long OnlineScoreId { get; set; } = -1;
 
 
-        public static IReplay Read(OsuBinaryReader reader, IReplay outobj = null, bool minimalLoad = true)
+        public static IReplay Read(OsuBinaryReader reader, IReplay outobj = null, bool minimalLoad = true, int? version = null)
         {
             if (outobj == null)
                 outobj = new Replay();
@@ -62,8 +62,12 @@ namespace CollectionManager.DataTypes
                 else
                     outobj.CompressedReplay = reader.ReadBytes(outobj.CompressedReplayLength);
             }
-            if (outobj.Version >= 20140721)
+
+            version = version ?? outobj.Version;
+            if (version >= 20140721)
                 outobj.OnlineScoreId = reader.ReadInt64();
+            else if (version >= 20121008)
+                outobj.OnlineScoreId = reader.ReadInt32();
 
             if ((((Mods)outobj.Mods) & DataTypes.Mods.Tp) != 0)
                 outobj.AdditionalMods = reader.ReadDouble();

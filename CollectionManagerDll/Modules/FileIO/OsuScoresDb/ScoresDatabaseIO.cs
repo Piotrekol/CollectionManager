@@ -35,7 +35,7 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
                         int scoresCount = _binaryReader.ReadInt32();
                         for (int j = 0; j < scoresCount; j++)
                         {
-                            _scoreDataStorer.Store(Score.ReadScore(_binaryReader));
+                            _scoreDataStorer.Store(Score.ReadScore(_binaryReader, true, Version));
                         }
                     }
                     _scoreDataStorer.EndMassStoring();
