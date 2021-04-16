@@ -71,6 +71,11 @@ namespace App.Presenters.Controls
                         return;
                     args = CollectionEditArgs.MergeCollections(selectedCollections, selectedCollections[0].Name);
                     break;
+                case "Intersect":
+                    if (selectedCollections == null)
+                        return;
+                    args = CollectionEditArgs.IntersectCollections(selectedCollections, selectedCollections[0].Name);
+                    break;
                 case "Create":
                     args = CollectionEditArgs.AddCollections(null);
                     break;
@@ -88,8 +93,8 @@ namespace App.Presenters.Controls
                 default:
                     return;
             }
-            _model.EmitCollectionEditing(args);
 
+            _model.EmitCollectionEditing(args);
         }
 
         private void ModelOnCollectionsChanged(object sender, EventArgs eventArgs)

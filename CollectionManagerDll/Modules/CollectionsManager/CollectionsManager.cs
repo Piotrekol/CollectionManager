@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using App.Interfaces;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
@@ -20,6 +21,7 @@ namespace CollectionManager.Modules.CollectionsManager
          remove collection
          edit collection name
          merge x collections
+         intersect x collections
          clear collections
          add beatmaps to collection
          remove beatmaps from collection
@@ -81,6 +83,23 @@ namespace CollectionManager.Modules.CollectionsManager
                     masterCollection.Name = GetValidCollectionName(newCollectionName);
                     EditCollection(CollectionEditArgs.AddCollections(new Collections() { masterCollection }), true);
                 }
+            }
+            else if (action == CollectionEdit.Intersect)
+            {
+                var targetCollection = args.Collections.Last();
+                args.Collections.RemoveAt(args.Collections.Count - 1);
+                var mainCollection = args.Collections[0];
+                args.Collections.RemoveAt(0);
+
+                foreach (var collection in args.Collections)
+                {
+                    foreach (var beatmap in mainCollection.AllBeatmaps().Intersect(collection.AllBeatmaps(), new CollectionBeatmapComparer()))
+                    {
+                        targetCollection.AddBeatmap(beatmap);
+                    }
+                }
+
+                EditCollection(CollectionEditArgs.AddCollections(new Collections() { targetCollection }), true);
             }
             else if (action == CollectionEdit.Clear)
             {

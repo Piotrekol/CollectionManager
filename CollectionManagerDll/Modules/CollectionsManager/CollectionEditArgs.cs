@@ -68,6 +68,16 @@ namespace CollectionManager.Modules.CollectionsManager
             };
         }
         #endregion
+        #region intersect Collections
+        public static CollectionEditArgs IntersectCollections(Collections collections, string newName)
+        {
+            return new CollectionEditArgs(CollectionEdit.Intersect)
+            {
+                Collections = collections,
+                NewName = newName
+            };
+        }
+        #endregion
         #region Clear Collections
         public static CollectionEditArgs ClearCollections()
         {

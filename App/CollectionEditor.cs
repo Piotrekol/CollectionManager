@@ -48,15 +48,20 @@ namespace App
                         break;
                 }
             }
+            else if (e.Action == CollectionEdit.Intersect)
+            {
+                if (e.Collections.Count < 2)
+                    return;
 
-            if (e.Action == CollectionEdit.Duplicate)
+                var newCollection = new Collection(_mapCacher) { Name = GetValidCollectionName(e.Collections[0].Name) };
+                e.Collections.Add(newCollection);
+            }
+            else if (e.Action == CollectionEdit.Duplicate)
             {
                 var newCollection = new Collection(_mapCacher) { Name = GetValidCollectionName(e.OrginalName) };
-
                 _collectionEditor.EditCollection(
                     CollectionEditArgs.AddCollections(new Collections() { newCollection })
                 );
-
                 var beatmaps = new Beatmaps();
                 beatmaps.AddRange(e.Collections[0].AllBeatmaps());
 
