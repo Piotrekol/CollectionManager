@@ -90,13 +90,15 @@ namespace CollectionManager.Modules.CollectionsManager
                 args.Collections.RemoveAt(args.Collections.Count - 1);
                 var mainCollection = args.Collections[0];
                 args.Collections.RemoveAt(0);
-
+                var beatmaps = mainCollection.AllBeatmaps().ToList();
                 foreach (var collection in args.Collections)
                 {
-                    foreach (var beatmap in mainCollection.AllBeatmaps().Intersect(collection.AllBeatmaps(), new CollectionBeatmapComparer()))
-                    {
-                        targetCollection.AddBeatmap(beatmap);
-                    }
+                    beatmaps = beatmaps.Intersect(collection.AllBeatmaps(), new CollectionBeatmapComparer()).ToList();
+                }
+
+                foreach (var beatmap in beatmaps)
+                {
+                    targetCollection.AddBeatmap(beatmap);
                 }
 
                 EditCollection(CollectionEditArgs.AddCollections(new Collections() { targetCollection }), true);

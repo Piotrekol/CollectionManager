@@ -53,7 +53,7 @@ namespace App
                 if (e.Collections.Count < 2)
                     return;
 
-                var newCollection = new Collection(_mapCacher) { Name = GetValidCollectionName(e.Collections[0].Name) };
+                var newCollection = new Collection(_mapCacher) { Name = GetValidCollectionName(e.NewName) };
                 e.Collections.Add(newCollection);
             }
             else if (e.Action == CollectionEdit.Duplicate)
