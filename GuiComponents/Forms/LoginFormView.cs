@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GuiComponents.Interfaces;
 
 namespace GuiComponents.Forms
@@ -21,5 +22,10 @@ namespace GuiComponents.Forms
         public bool ClickedLogin { get; set; }
         public event EventHandler LoginClick;
         public event EventHandler CancelClick;
+
+        private void linkLabel1_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://discord.gg/N854wYZ");
+        }
     }
 }
