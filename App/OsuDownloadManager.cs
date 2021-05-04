@@ -58,16 +58,13 @@ namespace App
             }
             if (!IsLoggedIn)
             {
-                if (!String.IsNullOrEmpty(Settings.Default.DownloadManager_AuthorizationCookies))
-                {
-                    //Do not forget change it once you change LoginData class
-                    LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
-                }
-                else
+                //Do not forget change it once you change LoginData class
+                LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
+                if (!IsLoggedIn)
                 {
                     LoginData ld = loginForm.GetLoginData();
                     LogIn(ld);
-                    Settings.Default.DownloadManager_AuthorizationCookies = ld.OsuCookies;
+                    Settings.Default.DownloadManager_AuthorizationCookies = ld?.OsuCookies;
                 }
             }
             return IsLoggedIn;
