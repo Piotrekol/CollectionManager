@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using App.Misc;
@@ -9,7 +8,6 @@ using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
-using Newtonsoft.Json;
 
 namespace App
 {
@@ -35,47 +33,26 @@ namespace App
         private long _downloadId = 0;
         private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
         public bool? DownloadWithVideo { get; set; }
-
-        private String CacheFile = "cache.json";
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
-            Dictionary<String, String> dict = null;
-            if (File.Exists(this.CacheFile))
-            {
-                using (StreamReader file = File.OpenText(this.CacheFile))
-                    dict = (Dictionary<string,string>)JsonConvert.DeserializeObject<Dictionary<string, string>>(file.ReadToEnd());
-                SetDownloadDirectory(dict["DownloadDirectory"]);
-                DownloadWithVideo = Convert.ToBoolean(dict["DownloadWithVideo"]);
-                LogIn(new LoginData() { Password = "5252353252", Username = "634636346242", OsuCookies = dict["Cookies"] });
-                if(IsLoggedIn)
-                    return true;
-            }
-            dict = new Dictionary<string, string>();
             if (!DownloadDirectoryIsSet)
             {
                 SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
                 if (!DownloadDirectoryIsSet)
                     return false;
-                dict.Add("DownloadDirectory", this.DownloadDirectory);
             }
 
             if (!DownloadWithVideo.HasValue)
             {
                 DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
                     MessageBoxType.Question);
-                dict.Add("DownloadWithVideo", DownloadWithVideo.ToString());
             }
             if (!IsLoggedIn)
             {
-		LoginData data = loginForm.GetLoginData();
-                LogIn(data);
+                LogIn(loginForm.GetLoginData());
                 if (!IsLoggedIn)
                     return false;
-                dict.Add("Cookies", data.OsuCookies);
             }
-            using(StreamWriter file = File.CreateText(this.CacheFile))
-                file.Write(JsonConvert.SerializeObject(dict));
-
             return true;
         }
         public void DownloadBeatmap(Beatmap beatmap)
