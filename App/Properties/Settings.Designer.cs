@@ -94,5 +94,35 @@ namespace App.Properties {
                 this["OsuDirectory"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadManager_SaveDirectory
+        {
+            get
+            {
+                return ((string)(this["DownloadManager_SaveDirectory"]));
+            }
+            set
+            {
+                this["DownloadManager_SaveDirectory"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadManager_AuthorizationCookies
+        {
+            get
+            {
+                return ((string)(this["DownloadManager_AuthorizationCookies"]));
+            }
+            set
+            {
+                this["DownloadManager_AuthorizationCookies"] = value;
+            }
+        }
     }
 }

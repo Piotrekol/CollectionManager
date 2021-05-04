@@ -20,6 +20,7 @@
         UploadNewCollections,
         RemoveWebCollection,
         SaveDefaultCollection,
-        ResetApplicationSettings
+        ResetApplicationSettings,
+        ChangeDownloadDirectory
     }
 }

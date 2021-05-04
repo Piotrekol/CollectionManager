@@ -8,6 +8,8 @@ using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
+using App.Properties;
+using System.IO;
 
 namespace App
 {
@@ -37,11 +39,18 @@ namespace App
         {
             if (!DownloadDirectoryIsSet)
             {
-                SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
+                if(!String.IsNullOrEmpty(Settings.Default.DownloadManager_SaveDirectory))
+                {
+                    SetDownloadDirectory(Settings.Default.DownloadManager_SaveDirectory);
+                }
+                else
+                {
+                    SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
+                }
                 if (!DownloadDirectoryIsSet)
                     return false;
+                Settings.Default.DownloadManager_SaveDirectory = DownloadDirectory;
             }
-
             if (!DownloadWithVideo.HasValue)
             {
                 DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
@@ -49,12 +58,21 @@ namespace App
             }
             if (!IsLoggedIn)
             {
-                LogIn(loginForm.GetLoginData());
-                if (!IsLoggedIn)
-                    return false;
+                if (!String.IsNullOrEmpty(Settings.Default.DownloadManager_AuthorizationCookies))
+                {
+                    //Do not forget change it once you change LoginData class
+                    LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
+                }
+                else
+                {
+                    LoginData ld = loginForm.GetLoginData();
+                    LogIn(ld);
+                    Settings.Default.DownloadManager_AuthorizationCookies = ld.OsuCookies;
+                }
             }
-            return true;
+            return IsLoggedIn;
         }
+
         public void DownloadBeatmap(Beatmap beatmap)
         {
             DownloadBeatmap(beatmap, true);
