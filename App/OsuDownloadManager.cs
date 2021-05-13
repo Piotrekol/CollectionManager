@@ -47,8 +47,10 @@ namespace App
                 {
                     SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
                 }
+
                 if (!DownloadDirectoryIsSet)
                     return false;
+
                 Settings.Default.DownloadManager_SaveDirectory = DownloadDirectory;
             }
             if (!DownloadWithVideo.HasValue)
