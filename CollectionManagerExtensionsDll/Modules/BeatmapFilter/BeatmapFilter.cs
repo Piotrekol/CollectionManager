@@ -217,6 +217,9 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                     case "title":
                         var title = val.Replace(SpaceReplacement, " ");
                         return delegate (Beatmap b) { return isTitleMatch(b, title); };
+                    case "creator":
+                        var creator = val.Replace(SpaceReplacement, " ");
+                        return delegate (Beatmap b) { return b.Creator.IndexOf(creator, StringComparison.CurrentCultureIgnoreCase) >= 0; };
                     case "unplayed":
                         if (String.IsNullOrEmpty(val))
                             return delegate { return RetFalse(); };
