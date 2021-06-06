@@ -8,6 +8,8 @@ using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
+using App.Properties;
+using System.IO;
 
 namespace App
 {
@@ -28,8 +30,8 @@ namespace App
         public event EventHandler<EventArgs<DownloadItem>> DownloadItemUpdated;
 
         public bool IsLoggedIn { get; private set; } = false;
-        public string DownloadDirectory { get; set; } = "";
-        public bool DownloadDirectoryIsSet => DownloadDirectory != "";
+        public string DownloadDirectory { get; set; } = string.Empty;
+        public bool DownloadDirectoryIsSet => !string.IsNullOrEmpty(DownloadDirectory);
         private long _downloadId = 0;
         private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
         public bool? DownloadWithVideo { get; set; }
@@ -37,11 +39,16 @@ namespace App
         {
             if (!DownloadDirectoryIsSet)
             {
-                SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
+                var downloadDirectory = string.IsNullOrEmpty(Settings.Default.DownloadManager_SaveDirectory)
+                    ? userDialogs.SelectDirectory("Select directory for saved beatmaps", true)
+                    : Settings.Default.DownloadManager_SaveDirectory;
+                SetDownloadDirectory(downloadDirectory);
+
                 if (!DownloadDirectoryIsSet)
                     return false;
-            }
 
+                Settings.Default.DownloadManager_SaveDirectory = DownloadDirectory;
+            }
             if (!DownloadWithVideo.HasValue)
             {
                 DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
@@ -49,12 +56,17 @@ namespace App
             }
             if (!IsLoggedIn)
             {
-                LogIn(loginForm.GetLoginData());
+                LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
                 if (!IsLoggedIn)
-                    return false;
+                {
+                    LoginData ld = loginForm.GetLoginData();
+                    LogIn(ld);
+                    Settings.Default.DownloadManager_AuthorizationCookies = ld?.OsuCookies;
+                }
             }
-            return true;
+            return IsLoggedIn;
         }
+
         public void DownloadBeatmap(Beatmap beatmap)
         {
             DownloadBeatmap(beatmap, true);
@@ -62,7 +74,7 @@ namespace App
 
         public void PauseDownloads()
         {
-            if(_osuDownloader!=null)
+            if (_osuDownloader != null)
                 _osuDownloader.StopDownloads = true;
         }
         public void ResumeDownloads()
