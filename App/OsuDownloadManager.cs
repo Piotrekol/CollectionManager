@@ -30,8 +30,8 @@ namespace App
         public event EventHandler<EventArgs<DownloadItem>> DownloadItemUpdated;
 
         public bool IsLoggedIn { get; private set; } = false;
-        public string DownloadDirectory { get; set; } = "";
-        public bool DownloadDirectoryIsSet => DownloadDirectory != "";
+        public string DownloadDirectory { get; set; } = string.Empty;
+        public bool DownloadDirectoryIsSet => !string.IsNullOrEmpty(DownloadDirectory);
         private long _downloadId = 0;
         private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
         public bool? DownloadWithVideo { get; set; }
@@ -39,14 +39,10 @@ namespace App
         {
             if (!DownloadDirectoryIsSet)
             {
-                if(!String.IsNullOrEmpty(Settings.Default.DownloadManager_SaveDirectory))
-                {
-                    SetDownloadDirectory(Settings.Default.DownloadManager_SaveDirectory);
-                }
-                else
-                {
-                    SetDownloadDirectory(userDialogs.SelectDirectory("Select directory for saved beatmaps", true));
-                }
+                var downloadDirectory = string.IsNullOrEmpty(Settings.Default.DownloadManager_SaveDirectory)
+                    ? userDialogs.SelectDirectory("Select directory for saved beatmaps", true)
+                    : Settings.Default.DownloadManager_SaveDirectory;
+                SetDownloadDirectory(downloadDirectory);
 
                 if (!DownloadDirectoryIsSet)
                     return false;
@@ -79,7 +75,7 @@ namespace App
 
         public void PauseDownloads()
         {
-            if(_osuDownloader!=null)
+            if (_osuDownloader != null)
                 _osuDownloader.StopDownloads = true;
         }
         public void ResumeDownloads()

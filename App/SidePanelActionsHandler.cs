@@ -96,7 +96,7 @@ namespace App
 
         private void ChangeDownloadDirectory(object arg1, object arg2)
         {
-            Settings.Default.DownloadManager_SaveDirectory = _userDialogs.SelectDirectory("Select new download directory. Changes take effect only after reboot application.");
+            Settings.Default.DownloadManager_SaveDirectory = _userDialogs.SelectDirectory("Select new download directory. Restart Collection Manager for the changes to take effect.");
         }
 
         private void ResetApplicationSettings(object arg1, object arg2)
