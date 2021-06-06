@@ -56,7 +56,6 @@ namespace App
             }
             if (!IsLoggedIn)
             {
-                //Do not forget change it once you change LoginData class
                 LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
                 if (!IsLoggedIn)
                 {
