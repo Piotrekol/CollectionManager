@@ -52,6 +52,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\App\bin\Release\net472\App.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net472\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net472\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
