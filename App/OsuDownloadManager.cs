@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using App.Misc;
 using CollectionManager.DataTypes;
-using CollectionManagerExtensionsDll.Modules.DownloadManager;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
 using App.Properties;
 using System.IO;
+using App.Models;
+using Common.Interfaces;
+using Newtonsoft.Json;
 
 namespace App
 {
@@ -24,8 +27,18 @@ namespace App
         /// </summary>
         public ICollection<DownloadItem> DownloadItems { get; private set; } = new List<DownloadItem>();
 
-        private OsuDownloader _osuDownloader = null;
+        private DownloadManager _mapDownloader = null;
+        private Lazy<List<DownloadSource>> _downloadSources = new Lazy<List<DownloadSource>>(() =>
+        {
+            const string configurationFileName = "downloadSources.json";
+            if (!File.Exists(configurationFileName))
+                throw new NotImplementedException("download sources configuration is missing!");
 
+            return JsonConvert.DeserializeObject<List<DownloadSource>>(File.ReadAllText(configurationFileName));
+        });
+
+        private IReadOnlyList<IDownloadSource> DownloadSources => _downloadSources.Value;
+        public IDownloadSource SelectedDownloadSource { get; private set; }
         public event EventHandler DownloadItemsChanged;
         public event EventHandler<EventArgs<DownloadItem>> DownloadItemUpdated;
 
@@ -33,7 +46,6 @@ namespace App
         public string DownloadDirectory { get; set; } = string.Empty;
         public bool DownloadDirectoryIsSet => !string.IsNullOrEmpty(DownloadDirectory);
         private long _downloadId = 0;
-        private const string BaseDownloadUrl = "https://osu.ppy.sh/beatmapsets/{0}/download";
         public bool? DownloadWithVideo { get; set; }
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
@@ -49,19 +61,34 @@ namespace App
 
                 Settings.Default.DownloadManager_SaveDirectory = DownloadDirectory;
             }
+
             if (!DownloadWithVideo.HasValue)
-            {
                 DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
                     MessageBoxType.Question);
-            }
+
             if (!IsLoggedIn)
             {
-                LogIn(new LoginData() { Password = "", Username = "", OsuCookies = Settings.Default.DownloadManager_AuthorizationCookies });
-                if (!IsLoggedIn)
+                var sourceName = Settings.Default.DownloadManager_DownloadSourceName;
+                LoginData loginData = null;
+                if (!string.IsNullOrEmpty(sourceName))
                 {
-                    LoginData ld = loginForm.GetLoginData();
-                    LogIn(ld);
-                    Settings.Default.DownloadManager_AuthorizationCookies = ld?.OsuCookies;
+                    loginData = new LoginData
+                    {
+                        DownloadSource = sourceName,
+                        SiteCookies = Settings.Default.DownloadManager_AuthorizationCookies
+                    };
+                    LogIn(loginData);
+                }
+
+                if (!IsLoggedIn)
+                    LogIn(loginData = loginForm.GetLoginData(DownloadSources));
+
+                if (IsLoggedIn)
+                {
+                    if (SelectedDownloadSource.RequiresLogin)
+                        Settings.Default.DownloadManager_AuthorizationCookies = loginData?.SiteCookies;
+
+                    Settings.Default.DownloadManager_DownloadSourceName = loginData?.DownloadSource;
                 }
             }
             return IsLoggedIn;
@@ -74,13 +101,13 @@ namespace App
 
         public void PauseDownloads()
         {
-            if (_osuDownloader != null)
-                _osuDownloader.StopDownloads = true;
+            if (_mapDownloader != null)
+                _mapDownloader.StopDownloads = true;
         }
         public void ResumeDownloads()
         {
-            if (_osuDownloader != null)
-                _osuDownloader.StopDownloads = false;
+            if (_mapDownloader != null)
+                _mapDownloader.StopDownloads = false;
         }
 
         public void SetDownloadDirectory(string path)
@@ -88,11 +115,9 @@ namespace App
             if (DownloadDirectory != "")
                 throw new NotImplementedException("Changing of download directory while it has been set before is not supported.");
             DownloadDirectory = path;
-            _osuDownloader = new OsuDownloader(DownloadDirectory, 3);
-            _osuDownloader.ProgressUpdated += OsuDownloaderOnProgressUpdated;
         }
 
-        private void OsuDownloaderOnProgressUpdated(object sender, DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
+        private void MapDownloaderOnProgressUpdated(object sender, DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
         {
             var item = (DownloadItem)downloadProgressChangedEventArgs.UserState;
             if (item.ProgressPrecentage % 10 == 0)
@@ -108,12 +133,24 @@ namespace App
             DownloadBeatmap(null, true);
         }
 
-        public void LogIn(LoginData loginData)
+        public bool LogIn(LoginData loginData)
         {
-            if (loginData != null && loginData.isValid())
+            if (string.IsNullOrEmpty(loginData.DownloadSource))
+                return false;
+
+            SelectedDownloadSource = DownloadSources.First(s => s.Name == loginData.DownloadSource);
+            var downloaderType = Type.GetType(SelectedDownloadSource.FullyQualifiedHandlerName);
+            if (downloaderType == null)
+                throw new NotImplementedException($"Download manager of type \"{SelectedDownloadSource.FullyQualifiedHandlerName}\" could not be found.");
+
+            _mapDownloader = (DownloadManager)Activator.CreateInstance(downloaderType, DownloadDirectory, SelectedDownloadSource.DownloadThreads, SelectedDownloadSource.DownloadsPerMinute, SelectedDownloadSource.DownloadsPerHour);
+            _mapDownloader.ProgressUpdated += MapDownloaderOnProgressUpdated;
+            if (SelectedDownloadSource.RequiresLogin)
             {
-                IsLoggedIn = _osuDownloader.Login(loginData);
+                return IsLoggedIn = loginData.isValid() && _mapDownloader.Login(loginData);
             }
+
+            return IsLoggedIn = true;
         }
 
         private void DownloadBeatmap(Beatmap beatmap, bool fireUpdateEvent)
@@ -137,9 +174,9 @@ namespace App
                 return null;
             long currentId = ++_downloadId;
             var oszFileName = CreateFileName(beatmap);
-            var downloadUrl = string.Format(BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
+            var downloadUrl = string.Format(SelectedDownloadSource.BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
-            var downloadItem = _osuDownloader.DownloadFileAsync(downloadUrl, oszFileName, "https://osu.ppy.sh/", currentId);
+            var downloadItem = _mapDownloader.DownloadFileAsync(downloadUrl, oszFileName, "https://osu.ppy.sh/", currentId);
             downloadItem.Id = currentId;
             return downloadItem;
         }

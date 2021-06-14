@@ -56,6 +56,11 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 
         }
 
+        public virtual bool Login(LoginData loginData)
+        {
+            return true;
+        }
+
         public void ChangeDefaultConnectionPolicy(int maxConnectionsToSameServer)
         {
             ServicePointManager.DefaultConnectionLimit = maxConnectionsToSameServer;

@@ -64,6 +64,9 @@
     <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="downloadSources.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

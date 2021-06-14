@@ -1,0 +1,27 @@
+﻿[
+  {
+    "Name": "osu!",
+    "Description": "official map download source.\r\nIn order to download maps you need to login using osu! cookies.\r\nJoin discord and read pinned message in #cm-help for instructions.\r\nhttps://discord.gg/N854wYZ",
+    "BaseDownloadUrl": "https://osu.ppy.sh/beatmapsets/{0}/download",
+    "ThrottleDownloads": true,
+    "DownloadsPerMinute": 5,
+    "DownloadsPerHour": 170,
+    "DownloadThreads": 3,
+    "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.OsuDownloader, CollectionManagerExtensionsDll",
+    "RequiresLogin": true,
+    "UseCookiesLogin": true
+
+  },
+  {
+    "Name": "beatconnect.io",
+    "Description": "beatconnect.io beatmap mirror",
+    "BaseDownloadUrl": "https://beatconnect.io/b/{0}/",
+    "ThrottleDownloads": true,
+    "DownloadsPerMinute": 20,
+    "DownloadsPerHour": 400,
+    "DownloadThreads": 1,
+    "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.GenericMapDownloader, CollectionManagerExtensionsDll",
+    "RequiresLogin": false,
+    "UseCookiesLogin": false
+  }
+]

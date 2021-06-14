@@ -26,5 +26,8 @@
     <Setting Name="DownloadManager_AuthorizationCookies" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DownloadManager_DownloadSourceName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

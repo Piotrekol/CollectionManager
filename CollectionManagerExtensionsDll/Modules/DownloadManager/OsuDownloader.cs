@@ -9,7 +9,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
 {
     public class OsuDownloader : API.DownloadManager
     {
-        public DownloadThrottler DownloadThrottler { get; } = new DownloadThrottler(5, 170);
+        public DownloadThrottler DownloadThrottler { get; private set; }
         public string QuotaCheckUrl => @"https://osu.ppy.sh/home/download-quota-check";
         private CookieAwareWebClient webClient;
         public int GetUsedQuota()
@@ -25,11 +25,12 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
             return -1;
         }
 
-        public OsuDownloader(string saveLocation, int downloadThreads) : base(saveLocation, downloadThreads)
+        public OsuDownloader(string saveLocation, int downloadThreads, int downloadsPerMinute, int downloadsPerHour) : base(saveLocation, downloadThreads)
         {
+            DownloadThrottler = new DownloadThrottler(downloadsPerMinute, downloadsPerHour);
         }
 
-        public bool Login(LoginData loginData)
+        public override bool Login(LoginData loginData)
         {
             var loginAddress = @"https://osu.ppy.sh/session";
             string loginDataStr = string.Format("username={0}&password={1}", Uri.EscapeDataString(loginData.Username), Uri.EscapeDataString(loginData.Password));
@@ -43,9 +44,9 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                 var client = this.Clients.Dequeue();
                 if (i == clientCount)
                 {
-                    if (!string.IsNullOrEmpty(loginData.OsuCookies))
+                    if (!string.IsNullOrEmpty(loginData.SiteCookies))
                     {
-                        client.SetCookies(loginData.OsuCookies, new[] { "_encid" }, ".ppy.sh");
+                        client.SetCookies(loginData.SiteCookies, new[] { "_encid" }, ".ppy.sh");
                         if (!client.IsLoggedIn(@"https://osu.ppy.sh/home", "Sign in"))
                             return false;
                     }

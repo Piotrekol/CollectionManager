@@ -118,5 +118,17 @@ namespace App.Properties {
                 this["DownloadManager_AuthorizationCookies"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadManager_DownloadSourceName {
+            get {
+                return ((string)(this["DownloadManager_DownloadSourceName"]));
+            }
+            set {
+                this["DownloadManager_DownloadSourceName"] = value;
+            }
+        }
     }
 }

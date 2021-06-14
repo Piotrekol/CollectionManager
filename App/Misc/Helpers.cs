@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +8,7 @@ using App.Models;
 using App.Presenters.Forms;
 using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
+using Common.Interfaces;
 using GuiComponents.Interfaces;
 
 namespace App.Misc
@@ -35,18 +36,21 @@ namespace App.Misc
             }
         }
 
-        public static LoginData GetLoginData(this ILoginFormView loginForm)
+        public static LoginData GetLoginData(this ILoginFormView loginForm,
+            IReadOnlyList<IDownloadSource> downloadSources)
         {
+            loginForm.SetDownloadSources(downloadSources);
             loginForm.ShowAndBlock();
-            LoginData loginData = new LoginData();
+            var loginData = new LoginData();
             if (loginForm.ClickedLogin)
             {
                 loginData.Username = loginForm.Login;
                 loginData.Password = loginForm.Password;
-                loginData.OsuCookies = loginForm.OsuCookies;
+                loginData.SiteCookies = loginForm.OsuCookies;
+                loginData.DownloadSource = loginForm.DownloadSource;
             }
 
-            return loginData.isValid() ? loginData : null;
+            return loginData;
         }
 
         public static string GetCollectionName(this ICollectionAddRenameForm form, Func<string, bool> isCollectionNameValid, string orginalName = "",
