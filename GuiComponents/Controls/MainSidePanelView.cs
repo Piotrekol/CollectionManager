@@ -51,7 +51,6 @@ namespace GuiComponents.Controls
             Menu_osustatsLogin.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
             Menu_saveOsuCollection.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
             Menu_resetSettings.Click += (s, a) => SidePanelOperation?.Invoke(this,MainSidePanelActions.ResetApplicationSettings);
-            Menu_changeSaveDirectory.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ChangeDownloadDirectory);
 
             WebCollections.CollectionChanged += WebCollectionsOnCollectionChanged;
         }

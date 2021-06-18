@@ -84,7 +84,6 @@ namespace App
                 {MainSidePanelActions.UploadNewCollections, UploadNewCollections },
                 {MainSidePanelActions.RemoveWebCollection ,RemoveWebCollection },
                 {MainSidePanelActions.ResetApplicationSettings,ResetApplicationSettings },
-                {MainSidePanelActions.ChangeDownloadDirectory,ChangeDownloadDirectory }
             };
 
             _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
@@ -92,11 +91,6 @@ namespace App
             _mainForm.CombinedListingView.CollectionListingView.OnLoadFile += OnLoadFile;
             _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
             _mainForm.Closing += FormOnClosing;
-        }
-
-        private void ChangeDownloadDirectory(object arg1, object arg2)
-        {
-            Settings.Default.DownloadManager_SaveDirectory = _userDialogs.SelectDirectory("Select new download directory. Restart Collection Manager for the changes to take effect.");
         }
 
         private void ResetApplicationSettings(object arg1, object arg2)

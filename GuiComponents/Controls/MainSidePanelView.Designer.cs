@@ -44,7 +44,6 @@
             this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_mapDownloads = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_downloadAllMissing = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_changeSaveDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_GenerateCollections = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_GetMissingMapData = new System.Windows.Forms.ToolStripMenuItem();
             this.osustatsCollectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -167,7 +166,6 @@
             this.onlineToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Menu_mapDownloads,
             this.Menu_downloadAllMissing,
-            this.Menu_changeSaveDirectory,
             this.Menu_GenerateCollections,
             this.Menu_GetMissingMapData});
             this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
@@ -185,13 +183,6 @@
             this.Menu_downloadAllMissing.Name = "Menu_downloadAllMissing";
             this.Menu_downloadAllMissing.Size = new System.Drawing.Size(219, 22);
             this.Menu_downloadAllMissing.Text = "Download all missing maps";
-            // 
-            // Menu_changeSaveDirectory
-            // 
-            this.Menu_changeSaveDirectory.AccessibleName = "";
-            this.Menu_changeSaveDirectory.Name = "Menu_changeSaveDirectory";
-            this.Menu_changeSaveDirectory.Size = new System.Drawing.Size(219, 22);
-            this.Menu_changeSaveDirectory.Text = "Change save directory";
             // 
             // Menu_GenerateCollections
             // 
@@ -273,7 +264,7 @@
             // Menu_resetSettings
             // 
             this.Menu_resetSettings.Name = "Menu_resetSettings";
-            this.Menu_resetSettings.Size = new System.Drawing.Size(180, 22);
+            this.Menu_resetSettings.Size = new System.Drawing.Size(102, 22);
             this.Menu_resetSettings.Text = "Reset";
             // 
             // MainSidePanelView
@@ -319,6 +310,5 @@
         private System.Windows.Forms.ToolStripMenuItem Menu_saveOsuCollection;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Menu_resetSettings;
-        private System.Windows.Forms.ToolStripMenuItem Menu_changeSaveDirectory;
     }
 }

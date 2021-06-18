@@ -30,6 +30,7 @@ namespace GuiComponents.Forms
         public void SetDownloadSources(IReadOnlyList<IDownloadSource> downloadSources)
         {
             _downloadSources = downloadSources;
+            comboBox_downloadSources.Items.Clear();
             comboBox_downloadSources.Items.AddRange(downloadSources.Select(s => s.Name).ToArray());
             comboBox_downloadSources.SelectedIndex = 0;
         }

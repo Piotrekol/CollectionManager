@@ -97,37 +97,13 @@ namespace App.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DownloadManager_SaveDirectory {
+        [global::System.Configuration.DefaultSettingValueAttribute("{}")]
+        public string DownloadManager_DownloaderSettings {
             get {
-                return ((string)(this["DownloadManager_SaveDirectory"]));
+                return ((string)(this["DownloadManager_DownloaderSettings"]));
             }
             set {
-                this["DownloadManager_SaveDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DownloadManager_AuthorizationCookies {
-            get {
-                return ((string)(this["DownloadManager_AuthorizationCookies"]));
-            }
-            set {
-                this["DownloadManager_AuthorizationCookies"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DownloadManager_DownloadSourceName {
-            get {
-                return ((string)(this["DownloadManager_DownloadSourceName"]));
-            }
-            set {
-                this["DownloadManager_DownloadSourceName"] = value;
+                this["DownloadManager_DownloaderSettings"] = value;
             }
         }
     }

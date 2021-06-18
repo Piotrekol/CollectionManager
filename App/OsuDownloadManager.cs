@@ -49,48 +49,31 @@ namespace App
         public bool? DownloadWithVideo { get; set; }
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
+            var downloaderSettings = JsonConvert.DeserializeObject<DownloaderSettings>(Settings.Default.DownloadManager_DownloaderSettings);
+            var useExistingSettings = IsLoggedIn || downloaderSettings.IsValid(DownloadSources) && userDialogs.YesNoMessageBox($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
+            if (useExistingSettings)
+            {
+                DownloadDirectory = downloaderSettings.DownloadDirectory;
+                DownloadWithVideo = downloaderSettings.DownloadWithVideo;
+                return LogIn(downloaderSettings.LoginData);
+            }
+
+            DownloadDirectory = userDialogs.SelectDirectory("Select directory for saved beatmaps", true);
             if (!DownloadDirectoryIsSet)
+                return false;
+
+            DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader", MessageBoxType.Question);
+            var userLoginData = loginForm.GetLoginData(DownloadSources);
+            if (LogIn(userLoginData))
             {
-                var downloadDirectory = string.IsNullOrEmpty(Settings.Default.DownloadManager_SaveDirectory)
-                    ? userDialogs.SelectDirectory("Select directory for saved beatmaps", true)
-                    : Settings.Default.DownloadManager_SaveDirectory;
-                SetDownloadDirectory(downloadDirectory);
-
-                if (!DownloadDirectoryIsSet)
-                    return false;
-
-                Settings.Default.DownloadManager_SaveDirectory = DownloadDirectory;
+                Settings.Default.DownloadManager_DownloaderSettings = JsonConvert.SerializeObject(new DownloaderSettings
+                {
+                    DownloadWithVideo = DownloadWithVideo,
+                    DownloadDirectory = DownloadDirectory,
+                    LoginData = userLoginData
+                });
             }
 
-            if (!DownloadWithVideo.HasValue)
-                DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader",
-                    MessageBoxType.Question);
-
-            if (!IsLoggedIn)
-            {
-                var sourceName = Settings.Default.DownloadManager_DownloadSourceName;
-                LoginData loginData = null;
-                if (!string.IsNullOrEmpty(sourceName))
-                {
-                    loginData = new LoginData
-                    {
-                        DownloadSource = sourceName,
-                        SiteCookies = Settings.Default.DownloadManager_AuthorizationCookies
-                    };
-                    LogIn(loginData);
-                }
-
-                if (!IsLoggedIn)
-                    LogIn(loginData = loginForm.GetLoginData(DownloadSources));
-
-                if (IsLoggedIn)
-                {
-                    if (SelectedDownloadSource.RequiresLogin)
-                        Settings.Default.DownloadManager_AuthorizationCookies = loginData?.SiteCookies;
-
-                    Settings.Default.DownloadManager_DownloadSourceName = loginData?.DownloadSource;
-                }
-            }
             return IsLoggedIn;
         }
 
@@ -108,13 +91,6 @@ namespace App
         {
             if (_mapDownloader != null)
                 _mapDownloader.StopDownloads = false;
-        }
-
-        public void SetDownloadDirectory(string path)
-        {
-            if (DownloadDirectory != "")
-                throw new NotImplementedException("Changing of download directory while it has been set before is not supported.");
-            DownloadDirectory = path;
         }
 
         private void MapDownloaderOnProgressUpdated(object sender, DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
@@ -147,7 +123,7 @@ namespace App
             _mapDownloader.ProgressUpdated += MapDownloaderOnProgressUpdated;
             if (SelectedDownloadSource.RequiresLogin)
             {
-                return IsLoggedIn = loginData.isValid() && _mapDownloader.Login(loginData);
+                return IsLoggedIn = loginData.IsValid() && _mapDownloader.Login(loginData);
             }
 
             return IsLoggedIn = true;

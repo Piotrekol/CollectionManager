@@ -21,6 +21,5 @@
         RemoveWebCollection,
         SaveDefaultCollection,
         ResetApplicationSettings,
-        ChangeDownloadDirectory
     }
 }
