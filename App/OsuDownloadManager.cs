@@ -49,8 +49,11 @@ namespace App
         public bool? DownloadWithVideo { get; set; }
         public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
         {
+            if (IsLoggedIn)
+                return true;
+
             var downloaderSettings = JsonConvert.DeserializeObject<DownloaderSettings>(Settings.Default.DownloadManager_DownloaderSettings);
-            var useExistingSettings = IsLoggedIn || downloaderSettings.IsValid(DownloadSources) && userDialogs.YesNoMessageBox($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
+            var useExistingSettings = downloaderSettings.IsValid(DownloadSources) && userDialogs.YesNoMessageBox($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
             if (useExistingSettings)
             {
                 DownloadDirectory = downloaderSettings.DownloadDirectory;
