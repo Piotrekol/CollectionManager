@@ -10,3 +10,8 @@ it can also help you with generating beatmap lists in various formats like osu f
 
 ![l](https://i.imgur.com/4sU8Hi9.jpg)
 ![l](https://i.imgur.com/b3zUSuf.jpg)
+
+### Dependencies
+ If you want to run the Collection Manager under linux, choose your wineprefix containing osu! and install the following:
+
+ - dotnet 4.7.2
