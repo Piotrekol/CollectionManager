@@ -53,6 +53,9 @@ namespace App
                 return true;
 
             var downloaderSettings = JsonConvert.DeserializeObject<DownloaderSettings>(Settings.Default.DownloadManager_DownloaderSettings);
+            if (downloaderSettings.LoginData == null)
+                downloaderSettings.LoginData = new LoginData();
+
             var useExistingSettings = downloaderSettings.IsValid(DownloadSources) && userDialogs.YesNoMessageBox($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
             if (useExistingSettings)
             {
