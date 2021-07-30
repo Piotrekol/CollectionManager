@@ -473,6 +473,7 @@ namespace App
             try
             {
                 var loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
+                //var cc = string.Join("\n",loadedCollections.SelectMany(c => c.AllBeatmaps()).Select(bb => bb.Md5));
                 _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
             }
             catch (CorruptedFileException ex)
@@ -544,7 +545,7 @@ namespace App
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             foreach (var collection in Initalizer.LoadedCollections)
             {
-                var filename = $"{Helpers.StripInvalidCharacters(collection.Name)}.{fileFormat}";
+                var filename = $"{Helpers.StripInvalidFileNameCharacters(collection.Name, "_")}.{fileFormat}";
                 _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, Path.Combine(saveDirectory, filename));
             }
         }

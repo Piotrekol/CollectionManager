@@ -15,14 +15,16 @@ namespace App.Misc
 {
     public static class Helpers
     {
-        public static string StripInvalidCharacters(string name)
+        public static string StripInvalidFileNameCharacters(string name, string replacementString = "")
         {
             foreach (var invalidChar in Path.GetInvalidFileNameChars())
             {
-                name = name.Replace(invalidChar.ToString(), string.Empty);
+                name = name.Replace(invalidChar.ToString(), replacementString);
             }
-            return name.Replace(".", string.Empty);
+
+            return name;
         }
+        
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
