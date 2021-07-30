@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using App.Interfaces;
+using CollectionManager.DataTypes;
 using CollectionManagerExtensionsDll.DataTypes;
 using GuiComponents.Interfaces;
 
@@ -42,6 +45,28 @@ namespace App.Presenters.Controls
             //TODO: show some sort of error on missing api key
             if (string.IsNullOrEmpty(_view.ApiKey))
                 return;
+
+            var modCombinations = new List<Mods>();
+            if (!string.IsNullOrWhiteSpace(_view.AllowedModCombinations) &&
+                _view.AllowedModCombinations.Trim().ToLowerInvariant() != "all")
+            {
+                var strMods = _view.AllowedModCombinations.Trim().ToLowerInvariant();
+                var splitModCombinations = strMods.Split(',');
+                foreach (var splitModCombination in splitModCombinations)
+                {
+                    var splitMods = Regex.Split(splitModCombination, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
+                    Mods mods = Mods.Omod;
+                    foreach (var mod in splitMods)
+                    {
+                        if (Enum.TryParse(mod, true, out Mods parsedMod))
+                            mods |= parsedMod;
+                    }
+
+                    modCombinations.Add(mods);
+                }
+            }
+
+
             _model.GeneratorConfiguration = new CollectionGeneratorConfiguration()
             {
                 CollectionNameSavePattern = _view.CollectionNamingFormat,
@@ -54,7 +79,8 @@ namespace App.Presenters.Controls
                     MaximumPp = _view.PpMax,
                     MinimumAcc = _view.AccMin,
                     MaximumAcc = _view.AccMax,
-                    RanksToGet = (RankTypes)_view.AllowedScores
+                    RanksToGet = (RankTypes)_view.AllowedScores,
+                    ModCombinations = modCombinations
                 }
             };
             _model.EmitStart();

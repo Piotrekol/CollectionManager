@@ -32,13 +32,12 @@ namespace GuiComponents.Controls
         }
 
         public int AllowedScores { get; private set; } = 0;
+        public string AllowedModCombinations => textBox_allowedMods.Text;
         public string ApiKey => textBox_apiKey.Text;
         public double PpMin => Convert.ToDouble(numericUpDown_minimumPP.Value);
         public double PpMax => Convert.ToDouble(numericUpDown_maximumPP.Value);
         public double AccMin => Convert.ToDouble(numericUpDown_accMin.Value);
         public double AccMax => Convert.ToDouble(numericUpDown_accMax.Value);
-        public bool GroupByMods => checkBox_GroupByMods.Checked;
-        public bool MergeCollectionsWithSameName => checkBox_mergeCollections.Checked;
         public int Gamemode => comboBox_gamemode.SelectedIndex;
         public ICollectionListingView CollectionListing => collectionListingView1;
 

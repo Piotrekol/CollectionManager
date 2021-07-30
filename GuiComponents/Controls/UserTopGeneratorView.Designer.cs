@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox_configuration = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox_gamemode = new System.Windows.Forms.ComboBox();
             this.button_GenerateUsernames = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox_apiKey = new System.Windows.Forms.TextBox();
@@ -38,8 +40,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown_maximumPP = new System.Windows.Forms.NumericUpDown();
-            this.checkBox_mergeCollections = new System.Windows.Forms.CheckBox();
-            this.checkBox_GroupByMods = new System.Windows.Forms.CheckBox();
             this.rb_scores_Adown = new System.Windows.Forms.RadioButton();
             this.rb_scores_Sup = new System.Windows.Forms.RadioButton();
             this.rb_scores_all = new System.Windows.Forms.RadioButton();
@@ -60,8 +60,8 @@
             this.button_Start = new System.Windows.Forms.Button();
             this.collectionListingView1 = new GuiComponents.Controls.CollectionListingView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.comboBox_gamemode = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.textBox_allowedMods = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox_configuration.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maximumPP)).BeginInit();
@@ -89,10 +89,33 @@
             this.groupBox_configuration.Controls.Add(this.label1);
             this.groupBox_configuration.Location = new System.Drawing.Point(3, 3);
             this.groupBox_configuration.Name = "groupBox_configuration";
-            this.groupBox_configuration.Size = new System.Drawing.Size(535, 306);
+            this.groupBox_configuration.Size = new System.Drawing.Size(535, 372);
             this.groupBox_configuration.TabIndex = 0;
             this.groupBox_configuration.TabStop = false;
             this.groupBox_configuration.Text = "Configuration";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(299, 327);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(64, 13);
+            this.label11.TabIndex = 30;
+            this.label11.Text = "Gamemode:";
+            // 
+            // comboBox_gamemode
+            // 
+            this.comboBox_gamemode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_gamemode.FormattingEnabled = true;
+            this.comboBox_gamemode.Items.AddRange(new object[] {
+            "osu",
+            "taiko",
+            "ctb",
+            "mania"});
+            this.comboBox_gamemode.Location = new System.Drawing.Point(302, 344);
+            this.comboBox_gamemode.Name = "comboBox_gamemode";
+            this.comboBox_gamemode.Size = new System.Drawing.Size(121, 21);
+            this.comboBox_gamemode.TabIndex = 29;
             // 
             // button_GenerateUsernames
             // 
@@ -107,7 +130,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 263);
+            this.label6.Location = new System.Drawing.Point(16, 328);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(89, 13);
             this.label6.TabIndex = 25;
@@ -115,7 +138,7 @@
             // 
             // textBox_apiKey
             // 
-            this.textBox_apiKey.Location = new System.Drawing.Point(19, 279);
+            this.textBox_apiKey.Location = new System.Drawing.Point(19, 344);
             this.textBox_apiKey.Name = "textBox_apiKey";
             this.textBox_apiKey.PasswordChar = '*';
             this.textBox_apiKey.Size = new System.Drawing.Size(231, 20);
@@ -123,13 +146,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.textBox_allowedMods);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.numericUpDown_maximumPP);
-            this.groupBox3.Controls.Add(this.checkBox_mergeCollections);
-            this.groupBox3.Controls.Add(this.checkBox_GroupByMods);
             this.groupBox3.Controls.Add(this.rb_scores_Adown);
             this.groupBox3.Controls.Add(this.rb_scores_Sup);
             this.groupBox3.Controls.Add(this.rb_scores_all);
@@ -140,7 +163,7 @@
             this.groupBox3.Controls.Add(this.numericUpDown_minimumPP);
             this.groupBox3.Location = new System.Drawing.Point(19, 163);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(496, 96);
+            this.groupBox3.Size = new System.Drawing.Size(496, 129);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Conditions";
@@ -203,26 +226,6 @@
             0,
             0,
             0});
-            // 
-            // checkBox_mergeCollections
-            // 
-            this.checkBox_mergeCollections.AutoSize = true;
-            this.checkBox_mergeCollections.Location = new System.Drawing.Point(283, 65);
-            this.checkBox_mergeCollections.Name = "checkBox_mergeCollections";
-            this.checkBox_mergeCollections.Size = new System.Drawing.Size(188, 17);
-            this.checkBox_mergeCollections.TabIndex = 19;
-            this.checkBox_mergeCollections.Text = "Merge collections with same name";
-            this.checkBox_mergeCollections.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_GroupByMods
-            // 
-            this.checkBox_GroupByMods.AutoSize = true;
-            this.checkBox_GroupByMods.Location = new System.Drawing.Point(283, 42);
-            this.checkBox_GroupByMods.Name = "checkBox_GroupByMods";
-            this.checkBox_GroupByMods.Size = new System.Drawing.Size(150, 17);
-            this.checkBox_GroupByMods.TabIndex = 18;
-            this.checkBox_GroupByMods.Text = "Group collections by mods";
-            this.checkBox_GroupByMods.UseVisualStyleBackColor = true;
             // 
             // rb_scores_Adown
             // 
@@ -424,10 +427,10 @@
             this.collectionListingView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.collectionListingView1.Location = new System.Drawing.Point(0, 409);
+            this.collectionListingView1.Location = new System.Drawing.Point(0, 475);
             this.collectionListingView1.Name = "collectionListingView1";
             this.collectionListingView1.SelectedCollection = null;
-            this.collectionListingView1.Size = new System.Drawing.Size(538, 267);
+            this.collectionListingView1.Size = new System.Drawing.Size(538, 328);
             this.collectionListingView1.TabIndex = 1;
             // 
             // panel1
@@ -436,33 +439,27 @@
             this.panel1.Controls.Add(this.label_processingStatus);
             this.panel1.Controls.Add(this.button_Abort);
             this.panel1.Controls.Add(this.progressBar_usernames);
-            this.panel1.Location = new System.Drawing.Point(0, 315);
+            this.panel1.Location = new System.Drawing.Point(0, 381);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(538, 88);
             this.panel1.TabIndex = 2;
             // 
-            // comboBox_gamemode
+            // textBox_allowedMods
             // 
-            this.comboBox_gamemode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_gamemode.FormattingEnabled = true;
-            this.comboBox_gamemode.Items.AddRange(new object[] {
-            "osu",
-            "taiko",
-            "ctb",
-            "mania"});
-            this.comboBox_gamemode.Location = new System.Drawing.Point(302, 279);
-            this.comboBox_gamemode.Name = "comboBox_gamemode";
-            this.comboBox_gamemode.Size = new System.Drawing.Size(121, 21);
-            this.comboBox_gamemode.TabIndex = 29;
+            this.textBox_allowedMods.Location = new System.Drawing.Point(195, 95);
+            this.textBox_allowedMods.Name = "textBox_allowedMods";
+            this.textBox_allowedMods.Size = new System.Drawing.Size(228, 20);
+            this.textBox_allowedMods.TabIndex = 31;
+            this.textBox_allowedMods.Text = "All";
             // 
-            // label11
+            // label12
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(299, 262);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(64, 13);
-            this.label11.TabIndex = 30;
-            this.label11.Text = "Gamemode:";
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 98);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(187, 13);
+            this.label12.TabIndex = 31;
+            this.label12.Text = "comma separated list of mods to save:";
             // 
             // UserTopGeneratorView
             // 
@@ -472,7 +469,7 @@
             this.Controls.Add(this.collectionListingView1);
             this.Controls.Add(this.groupBox_configuration);
             this.Name = "UserTopGeneratorView";
-            this.Size = new System.Drawing.Size(538, 676);
+            this.Size = new System.Drawing.Size(538, 803);
             this.groupBox_configuration.ResumeLayout(false);
             this.groupBox_configuration.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -492,8 +489,6 @@
         private System.Windows.Forms.GroupBox groupBox_configuration;
         private System.Windows.Forms.GroupBox groupBox3;
         public System.Windows.Forms.NumericUpDown numericUpDown_maximumPP;
-        public System.Windows.Forms.CheckBox checkBox_mergeCollections;
-        public System.Windows.Forms.CheckBox checkBox_GroupByMods;
         public System.Windows.Forms.RadioButton rb_scores_Adown;
         public System.Windows.Forms.RadioButton rb_scores_Sup;
         public System.Windows.Forms.RadioButton rb_scores_all;
@@ -523,5 +518,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox comboBox_gamemode;
+        private System.Windows.Forms.Label label12;
+        public System.Windows.Forms.TextBox textBox_allowedMods;
     }
 }

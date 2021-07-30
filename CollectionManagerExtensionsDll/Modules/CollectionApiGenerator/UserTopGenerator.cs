@@ -116,7 +116,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionApiGenerator
             var collections = new Collections();
             foreach (var s in validScores)
             {
-                if (configuration.IsEgibleForSaving(s))
+                if (configuration.IsEligibleForSaving(s))
                 {
                     string collectionName = CreateCollectionName(s, username, collectionNameSavePattern);
                     if (collectionsDict.ContainsKey(collectionName))
@@ -198,7 +198,7 @@ namespace CollectionManagerExtensionsDll.Modules.CollectionApiGenerator
             _scoreCache.Add(new UserModePair(username, gamemode), scores);
             foreach (var s in scores)
             {
-                if (configuration.IsEgibleForSaving(s))
+                if (configuration.IsEligibleForSaving(s))
                     egibleScores.Add(s);
             }
             return egibleScores;

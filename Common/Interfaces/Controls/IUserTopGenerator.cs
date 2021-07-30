@@ -15,12 +15,11 @@ namespace GuiComponents.Interfaces
         string CollectionNamingFormat { get; }
         string CollectionNamingExample { set; }
         int AllowedScores { get; }
+        string AllowedModCombinations { get; }
         double PpMin { get; }
         double PpMax { get; }
         double AccMin { get; }
         double AccMax { get; }
-        bool GroupByMods { get; }
-        bool MergeCollectionsWithSameName { get; }
         int Gamemode { get; }
 
         ICollectionListingView CollectionListing { get; }
