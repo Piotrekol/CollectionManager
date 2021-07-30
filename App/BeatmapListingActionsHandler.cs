@@ -87,6 +87,11 @@ namespace App
         {
             var model = (IBeatmapListingModel)sender;
             var manager = OsuDownloadManager.Instance;
+            if (model.SelectedBeatmaps == null || !model.SelectedBeatmaps.Any())
+            {
+                _userDialogs.OkMessageBox("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
+                return;
+            }
 
             if (manager.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
                 OsuDownloadManager.Instance.DownloadBeatmaps(model.SelectedBeatmaps);
