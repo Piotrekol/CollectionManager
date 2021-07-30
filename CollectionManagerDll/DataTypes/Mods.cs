@@ -5,7 +5,7 @@ namespace CollectionManager.DataTypes
     [Flags]
     public enum Mods
     {
-        Omod = 0,
+        Nm = 0,
         Nf = 1 << 0,
         Ez = 1 << 1,
         Td = 1 << 2, //Touch device

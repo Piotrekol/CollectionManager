@@ -23,13 +23,13 @@ namespace CollectionManager.Modules.ModParser
 
         public string ShortNoModText
         {
-            get { return _mods.Find(f => f.Value == Mods.Omod).ShortMod; }
-            set { _mods.Find(f => f.Value == Mods.Omod).ShortMod = value; }
+            get { return _mods.Find(f => f.Value == Mods.Nm).ShortMod; }
+            set { _mods.Find(f => f.Value == Mods.Nm).ShortMod = value; }
         }
         public string LongNoModText
         {
-            get { return _mods.Find(f => f.Value == Mods.Omod).LongMod; }
-            set { _mods.Find(f => f.Value == Mods.Omod).LongMod = value; }
+            get { return _mods.Find(f => f.Value == Mods.Nm).LongMod; }
+            set { _mods.Find(f => f.Value == Mods.Nm).LongMod = value; }
         }
         public ReadOnlyCollection<OsuMod> AllMods => _mods.AsReadOnly();
         public List<OsuMod> HiddenMods { get; } = new List<OsuMod>
@@ -37,7 +37,7 @@ namespace CollectionManager.Modules.ModParser
         };
         private readonly List<OsuMod> _mods = new List<OsuMod>()
         {
-            new OsuMod(Mods.Omod, "None", "None"),
+            new OsuMod(Mods.Nm, "None", "None"),
             new OsuMod(Mods.Nf, "NF", "No Fail"),
             new OsuMod(Mods.Ez, "EZ", "Easy"),
             new OsuMod(Mods.Td, "TD","Touch Device"),
@@ -76,7 +76,7 @@ namespace CollectionManager.Modules.ModParser
 
         public Mods GetModsFromInt(int mods)
         {
-            Mods eMods = Mods.Omod;
+            Mods eMods = Mods.Nm;
             foreach (var mod in _mods)
             {
                 if (!IsModHidden(mod) && (mods & (int)mod.Value) > 0)

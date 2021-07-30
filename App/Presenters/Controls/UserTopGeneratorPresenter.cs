@@ -55,7 +55,7 @@ namespace App.Presenters.Controls
                 foreach (var splitModCombination in splitModCombinations)
                 {
                     var splitMods = Regex.Split(splitModCombination, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
-                    Mods mods = Mods.Omod;
+                    Mods mods = Mods.Nm;
                     foreach (var mod in splitMods)
                     {
                         if (Enum.TryParse(mod, true, out Mods parsedMod))

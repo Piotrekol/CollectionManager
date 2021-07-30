@@ -78,7 +78,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
                 if (!words.Any(s => s.Contains("mods")))
                 {
-                    CurrentMods = Mods.Omod;
+                    CurrentMods = Mods.Nm;
                 }
 
                 foreach (string w in words)
@@ -98,7 +98,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             }
         }
 
-        public Mods CurrentMods { get; private set; } = Mods.Omod;
+        public Mods CurrentMods { get; private set; } = Mods.Nm;
         public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
         private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
 
@@ -203,7 +203,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 {
                     case "mods":
                         var splitMods = Regex.Split(val, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
-                        Mods mods = Mods.Omod;
+                        Mods mods = Mods.Nm;
                         foreach (var mod in splitMods)
                         {
                             if (Enum.TryParse(mod, true, out Mods parsedMod))

@@ -110,7 +110,7 @@ namespace GuiComponents.Controls
             label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
         }
         public static DateTime d = new DateTime(2006, 1, 1);
-        private Mods _currentMods = Mods.Omod;
+        private Mods _currentMods = Mods.Nm;
         private PlayMode _currentPlayMode = PlayMode.Osu;
         private DifficultyCalculator _difficultyCalculator = new DifficultyCalculator();
         private void InitListView()

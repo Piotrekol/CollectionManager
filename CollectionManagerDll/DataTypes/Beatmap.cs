@@ -78,7 +78,7 @@ namespace CollectionManager.DataTypes
         public PlayModeStars ModPpStars = new PlayModeStars();
         public double StarsNomod => Stars(PlayMode);
 
-        public double Stars(PlayMode playMode, Mods mods = Mods.Omod)
+        public double Stars(PlayMode playMode, Mods mods = Mods.Nm)
         {
             mods = mods & Mods.MapChanging;
             if (ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods))

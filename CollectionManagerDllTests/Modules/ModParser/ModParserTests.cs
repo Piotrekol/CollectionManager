@@ -104,7 +104,7 @@ namespace CollectionManager.Modules.ModParser.Tests
         public void NoModText1()
         {
             _modParser = new ModParser();
-            var mods = Mods.Omod;
+            var mods = Mods.Nm;
             var result = _modParser.GetModsFromEnum((int)mods);
 
             Assert.IsTrue(result.Count(s => s == ',') == 0);
@@ -114,7 +114,7 @@ namespace CollectionManager.Modules.ModParser.Tests
         public void NoModText2()
         {
             _modParser = new ModParser();
-            var mods = Mods.Omod;
+            var mods = Mods.Nm;
             var result = _modParser.GetModsFromEnum((int)mods, true);
 
             Assert.IsTrue(result.Count(s => s == ',') == 0);
@@ -124,7 +124,7 @@ namespace CollectionManager.Modules.ModParser.Tests
         public void NoModText3()
         {
             _modParser = new ModParser();
-            var mods = Mods.Omod;
+            var mods = Mods.Nm;
             _modParser.LongNoModText = "No mods enabled";
             Assert.IsTrue(_modParser.LongNoModText == "No mods enabled");
             _modParser.ShortNoModText = "N/A";
@@ -139,7 +139,7 @@ namespace CollectionManager.Modules.ModParser.Tests
         public void NoModText4()
         {
             _modParser = new ModParser();
-            var mods = Mods.Omod;
+            var mods = Mods.Nm;
             _modParser.LongNoModText = "No mods enabled";
             Assert.IsTrue(_modParser.LongNoModText == "No mods enabled");
             _modParser.ShortNoModText = "N/A";
