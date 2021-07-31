@@ -78,6 +78,16 @@ namespace CollectionManager.Modules.CollectionsManager
             };
         }
         #endregion
+        #region Inverse Collections
+        public static CollectionEditArgs InverseCollections(Collections collections, string newName)
+        {
+            return new CollectionEditArgs(CollectionEdit.Inverse)
+            {
+                Collections = collections,
+                NewName = newName
+            };
+        }
+        #endregion
         #region Clear Collections
         public static CollectionEditArgs ClearCollections()
         {

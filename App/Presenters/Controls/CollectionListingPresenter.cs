@@ -76,6 +76,11 @@ namespace App.Presenters.Controls
                         return;
                     args = CollectionEditArgs.IntersectCollections(selectedCollections, selectedCollections[0].Name);
                     break;
+                case "Inverse":
+                    if (selectedCollections == null)
+                        return;
+                    args = CollectionEditArgs.InverseCollections(selectedCollections, selectedCollections[0].Name);
+                    break;
                 case "Create":
                     args = CollectionEditArgs.AddCollections(null);
                     break;

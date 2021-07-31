@@ -12,5 +12,6 @@
         AddOrMergeIfExists=7,
         Duplicate=8,
         Intersect=9,
+        Inverse=10,
     }
 }

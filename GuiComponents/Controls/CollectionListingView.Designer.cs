@@ -40,9 +40,10 @@
             this.renameCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.intersectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.intersectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inverseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
             this.CollectionContextMenuStrip.SuspendLayout();
@@ -125,14 +126,15 @@
             // CollectionContextMenuStrip
             // 
             this.CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreateMenuStrip,
             this.renameCollectionMenuStrip,
             this.deleteCollectionMenuStrip,
+            this.DuplicateMenuStrip,
             this.mergeWithMenuStrip,
             this.intersectMenuItem,
-            this.CreateMenuStrip,
-            this.DuplicateMenuStrip});
+            this.inverseToolStripMenuItem});
             this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 158);
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 180);
             // 
             // renameCollectionMenuStrip
             // 
@@ -160,6 +162,14 @@
             this.mergeWithMenuStrip.Text = "Merge selected";
             this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
+            // intersectMenuItem
+            // 
+            this.intersectMenuItem.Name = "intersectMenuItem";
+            this.intersectMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.intersectMenuItem.Tag = "Intersect";
+            this.intersectMenuItem.Text = "Intersection";
+            this.intersectMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
             // CreateMenuStrip
             // 
             this.CreateMenuStrip.Name = "CreateMenuStrip";
@@ -176,13 +186,13 @@
             this.DuplicateMenuStrip.Text = "Duplicate";
             this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
-            // intersectMenuItem
+            // inverseToolStripMenuItem
             // 
-            this.intersectMenuItem.Name = "intersectMenuItem";
-            this.intersectMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.intersectMenuItem.Tag = "Intersect";
-            this.intersectMenuItem.Text = "Intersection";
-            this.intersectMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            this.inverseToolStripMenuItem.Name = "inverseToolStripMenuItem";
+            this.inverseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inverseToolStripMenuItem.Tag = "Inverse";
+            this.inverseToolStripMenuItem.Text = "Inverse";
+            this.inverseToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // CollectionListingView
             // 
@@ -215,5 +225,6 @@
         private BrightIdeasSoftware.OLVColumn Total;
         private System.Windows.Forms.ToolStripMenuItem DuplicateMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem intersectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inverseToolStripMenuItem;
     }
 }
