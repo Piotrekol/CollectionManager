@@ -28,6 +28,9 @@ namespace App
             if (!string.IsNullOrEmpty(parsedArgs.BeatmapIds))
             {
                 Console.WriteLine("Creating collections from beatmapIds.");
+                if (File.Exists(parsedArgs.BeatmapIds))
+                    parsedArgs.BeatmapIds = File.ReadAllText(parsedArgs.BeatmapIds);
+
                 CreateCollectionFromBeatmapIds(parsedArgs.BeatmapIds, parsedArgs.OutputFilePath);
             }
             else if (!string.IsNullOrEmpty(parsedArgs.InputFilePath))
@@ -62,7 +65,7 @@ namespace App
 
         private void CreateCollectionFromBeatmapIds(string rawBeatmapIds, string saveLocation)
         {
-            var beatmapIds = rawBeatmapIds?.Split(' ', ',');
+            var beatmapIds = rawBeatmapIds?.Split(new[] { ' ', ',', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             if (rawBeatmapIds == null || beatmapIds.Length == 0)
             {
                 Console.WriteLine("No beatmap ids provided.");
@@ -72,7 +75,8 @@ namespace App
             var collection = new Collection(OsuFileIo.LoadedMaps) { Name = "from mapIds" };
             foreach (var beatmapId in beatmapIds)
             {
-                collection.AddBeatmapByMapId(int.Parse(beatmapId.Trim()));
+                if (int.TryParse(beatmapId.Trim(), out var id))
+                    collection.AddBeatmapByMapId(id);
             }
 
             OsuFileIo.CollectionLoader.SaveOsdbCollection(new Collections { collection }, $"{saveLocation}.osdb");
@@ -81,15 +85,15 @@ namespace App
 
     public class CommandLineOptions
     {
-        [Option('b', "BeatmapIds", Required = false, HelpText = "Comma or space separated list of beatmap ids.")]
-        public string BeatmapIds { get; set; }
         [Option('o', "Output", Required = true, HelpText = "Output filename with or without path.")]
         public string OutputFilePath { get; set; }
+        [Option('b', "BeatmapIds", Required = false, HelpText = "Comma or whitespace separated list of beatmap ids. Can be also path to the file. \nYou should have all beatmapIds mentioned available localy in order to generate ready-to-use collection file, otherwise after generating upload it to https://osustats.ppy.sh/collections to get remaining data.")]
+        public string BeatmapIds { get; set; }
         [Option('i', "Input", Required = false, HelpText = "Input db/osdb collection file.")]
         public string InputFilePath { get; set; }
         [Option('l', "OsuLocation", Required = false, HelpText = "Location of your osu! or directory where valid osu!.db can be found. If not provided, will be found automatically.")]
         public string OsuLocation { get; set; }
-        [Option('s', "SkipOsuLocation", Required = false, HelpText = "Do not try to load osu beatmap database.")]
+        [Option('s', "SkipOsuLocation", Required = false, HelpText = "Skip loading of osu! database.")]
         public bool SkipOsuLocation { get; set; } = false;
     }
 }
