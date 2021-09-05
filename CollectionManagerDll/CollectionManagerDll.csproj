@@ -2,9 +2,9 @@
   <PropertyGroup>
     <ProjectGuid>{533AB47A-D1B5-45DB-A37E-F053FA3699C4}</ProjectGuid>
     <RootNamespace>CollectionManager</RootNamespace>
-    <AssemblyName>CollectionManager</AssemblyName>
+    <AssemblyName>CollectionManagerDll</AssemblyName>
     <TargetFrameworks>netstandard20;net471</TargetFrameworks>
-    <AssemblyTitle>CollectionManager</AssemblyTitle>
+    <AssemblyTitle>CollectionManagerDll</AssemblyTitle>
     <Product></Product>
     <Description>Implements read/write access to osu! db &amp; osdb collection files, along with ability to edit these in a reasonable manner</Description>
     <Copyright>Copyright © 2019</Copyright>
