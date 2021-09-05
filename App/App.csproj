@@ -2,9 +2,9 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyTitle>osu! Collections Manager by Piotrekol</AssemblyTitle>
+    <AssemblyTitle>osu! Collection Manager</AssemblyTitle>
     <Product>Gui</Product>
-    <Copyright>Copyright ©  2017</Copyright>
+    <Copyright>Copyright ©  2017-present Piotrekol</Copyright>
     <AssemblyVersion>1.1.0</AssemblyVersion>
     <FileVersion>1.1.0</FileVersion>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
@@ -20,6 +20,7 @@
   <PropertyGroup>
     <PreBuildEvent />
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+    <PackageId>CollectionManager</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\logo.ico" />
