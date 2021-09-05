@@ -20,7 +20,7 @@
   <PropertyGroup>
     <PreBuildEvent />
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
-    <PackageId>CollectionManager</PackageId>
+    <PackageId>CollectionManagerApp</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\logo.ico" />
