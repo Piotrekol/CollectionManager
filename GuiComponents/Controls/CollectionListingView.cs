@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
@@ -18,7 +20,7 @@ namespace GuiComponents.Controls
 
         public ICollection SelectedCollection
         {
-            get { return (ICollection) ListViewCollections.SelectedObject; }
+            get { return (ICollection)ListViewCollections.SelectedObject; }
             set
             {
                 ListViewCollections.SelectedObject = null;
@@ -26,6 +28,16 @@ namespace GuiComponents.Controls
             }
         }
         public ArrayList SelectedCollections => (ArrayList)ListViewCollections.SelectedObjects;
+        public Collections HighlightedCollections
+        {
+            get => _collectionRenderer.Collections;
+            set
+            {
+                _collectionRenderer.Collections = value;
+                ListViewCollections.Refresh();
+            }
+        }
+
 
         public event EventHandler SearchTextChanged;
         public event EventHandler SelectedCollectionChanged;
@@ -55,12 +67,14 @@ namespace GuiComponents.Controls
 
         }
 
+        private CollectionRenderer _collectionRenderer = new CollectionRenderer();
         private void init()
         {
             //ListViewCollections.SelectedIndexChanged += ListViewCollectionsSelectedIndexChanged;
             ListViewCollections.UseFiltering = true;
             ListViewCollections.FullRowSelect = true;
             ListViewCollections.HideSelection = false;
+            ListViewCollections.DefaultRenderer = _collectionRenderer;
 
             var dropsink = new RearrangingDropSink();
             dropsink.CanDropBetween = false;
@@ -69,11 +83,10 @@ namespace GuiComponents.Controls
             dropsink.CanDropOnBackground = false;
             ListViewCollections.DropSink = dropsink;
             ListViewCollections.ModelDropped += ListViewCollections_ModelDropped;
-
             ListViewCollections.CellRightClick += ListViewCollectionsOnCellRightClick;
-            dropsink.ModelCanDrop+=DropsinkOnModelCanDrop;
-            dropsink.CanDrop+=DropsinkOnCanDrop;
-            dropsink.Dropped+=DropsinkOnDropped;
+            dropsink.ModelCanDrop += DropsinkOnModelCanDrop;
+            dropsink.CanDrop += DropsinkOnCanDrop;
+            dropsink.Dropped += DropsinkOnDropped;
         }
 
         private void DropsinkOnDropped(object sender, OlvDropEventArgs e)
@@ -176,8 +189,21 @@ namespace GuiComponents.Controls
                     break;
             }
 
-            if(!string.IsNullOrEmpty(eventData))
+            if (!string.IsNullOrEmpty(eventData))
                 OnRightClick(new StringEventArgs(eventData));
+        }
+
+        private class CollectionRenderer : BaseRenderer
+        {
+            public Collections Collections { get; set; }
+            private Brush brush = new SolidBrush(Color.FromArgb(120, 0x7f, 0xff, 0xd4));
+
+            protected override void DrawBackground(Graphics g, Rectangle r)
+            {
+                base.DrawBackground(g, r);
+                if (Column.Index == 0 && Collections != null && Collections.Contains(ListItem.RowObject))
+                    g.FillRectangle(brush, new Rectangle(r.X + 2, r.Y + 2, r.Width - 4, r.Height - 4));
+            }
         }
     }
 }

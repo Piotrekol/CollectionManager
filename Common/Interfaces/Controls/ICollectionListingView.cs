@@ -15,6 +15,7 @@ namespace GuiComponents.Interfaces
         Collections Collections { set; }
         CollectionManager.DataTypes.ICollection SelectedCollection { get; set; }
         ArrayList SelectedCollections { get; }
+        Collections HighlightedCollections { set; }
 
         event EventHandler SearchTextChanged;
         event EventHandler SelectedCollectionChanged;

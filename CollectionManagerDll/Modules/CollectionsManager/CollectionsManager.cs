@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Interfaces;
@@ -165,6 +165,14 @@ namespace CollectionManager.Modules.CollectionsManager
         public void EditCollection(CollectionEditArgs args)
         {
             EditCollection(args, false);
+        }
+
+        public Collections GetCollectionsForBeatmaps(Beatmaps beatmaps)
+        {
+            var collections = new Collections();
+            var hashes = beatmaps.Select(b => b.Md5).ToArray();
+            collections.AddRange(LoadedCollections.Where(c => hashes.Intersect(c.BeatmapHashes).Any()));
+            return collections;
         }
 
         protected virtual void AfterCollectionsEdit()

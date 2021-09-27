@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using App.Interfaces;
 using App.Misc;
 using CollectionManager.DataTypes;
@@ -74,6 +74,9 @@ namespace App
             _collectionEditor.EditCollection(e);
         }
 
+        public Collections GetCollectionsForBeatmaps(Beatmaps beatmaps)
+            => _collectionEditor.GetCollectionsForBeatmaps(beatmaps);
+        
         public bool IsCollectionNameValid(string name)
             => _collectionNameValidator.IsCollectionNameValid(name);
 

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,6 +16,11 @@ namespace CollectionManager.DataTypes
         /// Contains all beatmap hashes contained in this collection
         /// </summary>
         private HashSet<string> _beatmapHashes = new HashSet<string>();
+
+        /// <summary>
+        /// <inheritdoc cref="_beatmapHashes"/>
+        /// </summary>
+        public IReadOnlyCollection<string> BeatmapHashes => _beatmapHashes;
         /// <summary>
         /// Contains beatmaps that did not find a match in LoadedMaps
         /// nor had additional data(MapSetId)

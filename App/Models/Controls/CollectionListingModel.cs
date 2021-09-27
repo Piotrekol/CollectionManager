@@ -7,13 +7,15 @@ namespace App.Models
 {
     public class CollectionListingModel : ICollectionListingModel
     {
+        private readonly ICollectionEditor _collectionEditor;
         public event EventHandler CollectionsChanged;
         public event EventHandler SelectedCollectionsChanged;
         public event EventHandler<CollectionEditArgs> CollectionEditing;
 
         private Collections _collections;
-        public CollectionListingModel(Collections collections)
+        public CollectionListingModel(Collections collections, ICollectionEditor collectionEditor)
         {
+            _collectionEditor = collectionEditor;
             SetCollections(collections);
         }
         public Collections GetCollections()
@@ -37,6 +39,9 @@ namespace App.Models
             CollectionEditing?.Invoke(this, args);
         }
 
+        public Collections GetCollectionsForBeatmaps(Beatmaps beatmaps)
+            => _collectionEditor.GetCollectionsForBeatmaps(beatmaps);
+        
         public void SetCollections(Collections collections)
         {
             _collections = collections;

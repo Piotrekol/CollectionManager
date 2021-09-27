@@ -30,7 +30,7 @@ namespace App.Presenters.Forms
             BeatmapListingModel = new BeatmapListingModel(null);
             BeatmapListingModel.BeatmapsDropped += BeatmapListing_BeatmapsDropped;
             BeatmapListingModel.SelectedBeatmapChanged += BeatmapListingViewOnSelectedBeatmapChanged;
-            CollectionListingModel = new CollectionListingModel(Initalizer.LoadedCollections);
+            CollectionListingModel = new CollectionListingModel(Initalizer.LoadedCollections, _mainFormModel.GetCollectionEditor());
             CollectionListingModel.CollectionEditing += CollectionListing_CollectionEditing;
             CollectionListingModel.SelectedCollectionsChanged += CollectionListing_SelectedCollectionsChanged;
             new CombinedListingPresenter(_view.CombinedListingView, CollectionListingModel, BeatmapListingModel, webCollectionProvider);

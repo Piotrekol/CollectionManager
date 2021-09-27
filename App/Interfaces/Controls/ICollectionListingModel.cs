@@ -13,6 +13,7 @@ namespace App.Interfaces
         Collections SelectedCollections { get; set; }
 
         void EmitCollectionEditing(CollectionEditArgs args);
+        Collections GetCollectionsForBeatmaps(Beatmaps beatmaps);
 
     }
 }

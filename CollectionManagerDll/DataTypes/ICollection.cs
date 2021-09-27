@@ -7,6 +7,11 @@ namespace CollectionManager.DataTypes
     public interface ICollection
     {
         /// <summary>
+        /// Contains all beatmap hashes contained in this collection
+        /// </summary>
+        IReadOnlyCollection<string> BeatmapHashes { get; }
+
+        /// <summary>
         /// Contains beatmaps that did not find a match in LoadedMaps
         /// nor had additional data(MapSetId)
         /// </summary>
