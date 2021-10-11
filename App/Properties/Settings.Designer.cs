@@ -8,102 +8,97 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Properties {
-    
-    
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
+namespace App.Properties
+{
+
+
+    internal sealed partial class Settings
+    {
+        public void Save() { }
+        public void Reset() { }
+        private static Settings instance = new Settings();
+        public static Settings Default
+        {
+            get
+            {
+                return instance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DontAskAboutOsuDirectory {
-            get {
-                return ((bool)(this["DontAskAboutOsuDirectory"]));
+
+        public bool DontAskAboutOsuDirectory
+        {
+            get
+            {
+                return false;
             }
-            set {
-                this["DontAskAboutOsuDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Audio_autoPlay {
-            get {
-                return ((bool)(this["Audio_autoPlay"]));
-            }
-            set {
-                this["Audio_autoPlay"] = value;
+            set
+            {
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Audio_playerMode {
-            get {
-                return ((bool)(this["Audio_playerMode"]));
+
+        public bool Audio_autoPlay
+        {
+            get
+            {
+                return false;
             }
-            set {
-                this["Audio_playerMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.25")]
-        public float Audio_volume {
-            get {
-                return ((float)(this["Audio_volume"]));
-            }
-            set {
-                this["Audio_volume"] = value;
+            set
+            {
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Osustats_apiKey {
-            get {
-                return ((string)(this["Osustats_apiKey"]));
+
+        public bool Audio_playerMode
+        {
+            get
+            {
+                return false;
             }
-            set {
-                this["Osustats_apiKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string OsuDirectory {
-            get {
-                return ((string)(this["OsuDirectory"]));
-            }
-            set {
-                this["OsuDirectory"] = value;
+            set
+            {
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("{}")]
-        public string DownloadManager_DownloaderSettings {
-            get {
-                return ((string)(this["DownloadManager_DownloaderSettings"]));
+
+        public float Audio_volume
+        {
+            get
+            {
+                return 0.3f;
             }
-            set {
-                this["DownloadManager_DownloaderSettings"] = value;
+            set
+            {
+            }
+        }
+
+        public string Osustats_apiKey
+        {
+            get
+            {
+                return string.Empty;
+            }
+            set
+            {
+            }
+        }
+
+        public string OsuDirectory
+        {
+            get
+            {
+                return string.Empty;
+            }
+            set
+            {
+            }
+        }
+
+        public string DownloadManager_DownloaderSettings
+        {
+            get
+            {
+                return "{}";
+            }
+            set
+            {
             }
         }
     }
