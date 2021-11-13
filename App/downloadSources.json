@@ -1,10 +1,10 @@
-﻿[
+[
   {
     "Name": "osu!",
-    "Description": "official map download source.\r\nIn order to download maps you need to login using osu! cookies.\r\nJoin discord and read pinned message in #cm-help for instructions.\r\nhttps://discord.gg/N854wYZ",
+    "Description": "official map download source.\r\nIn order to download maps you need to login using osu! cookies.\r\nInstructions: https://streamable.com/lhlr3d \r\nIf you still need help join discord and read pinned message in #cm-help.\r\nhttps://discord.gg/N854wYZ",
     "BaseDownloadUrl": "https://osu.ppy.sh/beatmapsets/{0}/download",
     "ThrottleDownloads": true,
-    "DownloadsPerMinute": 5,
+    "DownloadsPerMinute": 3,
     "DownloadsPerHour": 170,
     "DownloadThreads": 3,
     "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.OsuDownloader, CollectionManagerExtensionsDll",
