@@ -4,7 +4,7 @@
     <AssemblyTitle>GuiComponents</AssemblyTitle>
     <Product>GuiComponents</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
