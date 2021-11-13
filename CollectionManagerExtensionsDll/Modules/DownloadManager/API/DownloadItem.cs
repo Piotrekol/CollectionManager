@@ -11,7 +11,7 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
         public string Url { get; set; }
         public string FileName { get; set; }
         public string Name { get { return FileName; } }
-
+        public int RequestTimeout { get; set; }
         public string Progress
         {
             get
@@ -20,12 +20,17 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                     return Error;
                 if (DownloadAborted)
                     return "Download cancelled";
-                if (WaitingForDownloadSlot)
+                if (!string.IsNullOrEmpty(DownloadSlotStatus))
                     return DownloadSlotStatus;
                 if (FileAlreadyExists)
                     return "File already exists";
-                return string.Format("{0}/{1}MB {2}%", ((BytesRecived / 1024f) / 1024f).ToString("F"),
+                if (BytesRecived > 0)
+                    return string.Format("{0}/{1}MB {2}%", ((BytesRecived / 1024f) / 1024f).ToString("F"),
                     ((TotalBytes / 1024f) / 1024f).ToString("F"), ProgressPrecentage);
+                if (WebClient != null)
+                    return "Starting download...";
+
+                return "---";
             }
         }
         public long BytesRecived { get; set; }
@@ -43,7 +48,6 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
 
         public bool DownloadAborted { get; set; }
         public bool FileAlreadyExists { get; set; }
-        public bool WaitingForDownloadSlot => !string.IsNullOrEmpty(DownloadSlotStatus);
         public string DownloadSlotStatus { get; set; }
         public bool OtherError { get; set; }
         public string Error { get; set; }

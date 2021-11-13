@@ -9,7 +9,7 @@ namespace System.Net
     {
         public int ClientId = -1;
         public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
-
+        public int RequestTimeout { get; set; } = 5000;
         public void SetCookies(string cookies, string[] cookiesToIgnore, string cookieDomain)
         {
             foreach (var nameValuePair in HttpUtility.UrlDecode(cookies).Split(';'))
@@ -87,8 +87,9 @@ namespace System.Net
         {
             var request = (HttpWebRequest)base.GetWebRequest(address);
             request.CookieContainer = CookieContainer;
-            request.Timeout = 5 * 1000;
+            request.Timeout = RequestTimeout;
             request.UserAgent = UserAgent;
+            request.AllowAutoRedirect = true;
             return request;
         }
     }
