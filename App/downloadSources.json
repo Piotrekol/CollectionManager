@@ -12,18 +12,5 @@
     "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.OsuDownloader, CollectionManagerExtensionsDll",
     "RequiresLogin": true,
     "UseCookiesLogin": true
-
-  },
-  {
-    "Name": "beatconnect.io",
-    "Description": "beatconnect.io beatmap mirror",
-    "BaseDownloadUrl": "https://beatconnect.io/b/{0}/",
-    "ThrottleDownloads": true,
-    "DownloadsPerMinute": 20,
-    "DownloadsPerHour": 400,
-    "DownloadThreads": 1,
-    "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.GenericMapDownloader, CollectionManagerExtensionsDll",
-    "RequiresLogin": false,
-    "UseCookiesLogin": false
   }
 ]
