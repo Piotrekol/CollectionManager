@@ -9,9 +9,7 @@
     <FileVersion>1.1.0</FileVersion>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <PreBuildEvent />
-    <PreBuildEvent />
-    <PreBuildEvent />
+    <LangVersion>9.0</LangVersion>
 
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">

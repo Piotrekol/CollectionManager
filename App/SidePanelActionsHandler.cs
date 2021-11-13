@@ -111,14 +111,13 @@ namespace App
 
         private void OnLoadFile(object sender, string[] filePaths)
         {
-            foreach (var filePath in filePaths)
-            {
-                var lowercaseFilepath = filePath.ToLowerInvariant();
-                if (lowercaseFilepath.EndsWith(".osdb") || lowercaseFilepath.EndsWith(".db"))
-                {
-                    LoadCollectionFile(sender, filePath);
-                }
-            }
+            var files = filePaths.Select(f => f.ToLowerInvariant())
+                        .Where(f => f.EndsWith(".osdb") || f.EndsWith(".db"))
+                        .ToArray()
+                        ;
+
+            if (files.Any())
+                LoadCollections(files);
         }
 
         private async void RemoveWebCollection(object sender, object data = null)
@@ -464,6 +463,28 @@ namespace App
 
         private void LoadDefaultCollection(object sender, object data = null)
             => LoadCollection(Path.Combine(Initalizer.OsuDirectory, "collection.db"));
+
+        private void LoadCollections(string[] fileLocations)
+        {
+            if (fileLocations == null || fileLocations.Length == 0 || fileLocations.Any(string.IsNullOrWhiteSpace))
+                return;
+
+            Collections collections = new();
+
+            foreach (string fileLocation in fileLocations)
+            {
+                try
+                {
+                    collections.AddRange(_osuFileIo.CollectionLoader.LoadCollection(fileLocation));
+                }
+                catch (CorruptedFileException ex)
+                {
+                    _userDialogs.OkMessageBox(ex.Message, "Error", MessageBoxType.Error);
+                }
+            }
+
+            _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(collections));
+        }
 
         private void LoadCollection(string fileLocation)
         {

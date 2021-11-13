@@ -63,6 +63,7 @@ namespace GuiComponents.Controls
                 Menu_newCollection.DropDownItems.Add("No new collections loaded");
                 return;
             }
+            List<ToolStripMenuItem> toolStripMenuItems = new();
             foreach (var c in collections)
             {
                 var item = new ToolStripMenuItem
@@ -73,8 +74,10 @@ namespace GuiComponents.Controls
                 {
                     SidePanelOperation?.Invoke(this, MainSidePanelActions.UploadNewCollections, new List<ICollection> { c });
                 };
-                Menu_newCollection.DropDownItems.Add(item);
+                toolStripMenuItems.Add(item);
             }
+
+            Menu_newCollection.DropDownItems.AddRange(toolStripMenuItems.ToArray());
         }
 
         private void WebCollectionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
