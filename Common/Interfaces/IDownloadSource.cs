@@ -11,6 +11,10 @@ namespace Common.Interfaces
         /// </summary>
         string Description { get; set; }
         /// <summary>
+        /// Url template to use for setting HTTP referer header in download requests, {0} is replaced with mapId
+        /// </summary>
+        string Referer { get; set; }
+        /// <summary>
         /// Url template used for generating download links, {0} is replaced with mapId
         /// </summary>
         string BaseDownloadUrl { get; set; }
@@ -30,6 +34,10 @@ namespace Common.Interfaces
         /// How many beatmaps user can download at the same time
         /// </summary>
         int DownloadThreads { get; set; }
+        /// <summary>
+        /// After how many ms of waiting for download to start download request should be aborted
+        /// </summary>
+        int RequestTimeout { get; set; }
         /// <summary>
         /// Full path to manager class for this source. "namespace, className"
         /// </summary>

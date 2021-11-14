@@ -6,6 +6,7 @@ namespace App.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Referer { get; set; }
         public string BaseDownloadUrl { get; set; }
         public bool ThrottleDownloads { get; set; }
         public int DownloadsPerMinute { get; set; }
@@ -14,5 +15,6 @@ namespace App.Models
         public string FullyQualifiedHandlerName { get; set; }
         public bool RequiresLogin { get; set; }
         public bool UseCookiesLogin { get; set; }
+        public int RequestTimeout { get; set; }
     }
 }

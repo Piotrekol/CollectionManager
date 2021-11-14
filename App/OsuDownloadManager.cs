@@ -158,7 +158,7 @@ namespace App
             var oszFileName = CreateFileName(beatmap);
             var downloadUrl = string.Format(SelectedDownloadSource.BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
-            var downloadItem = _mapDownloader.DownloadFileAsync(downloadUrl, oszFileName, "https://osu.ppy.sh/", currentId);
+            var downloadItem = _mapDownloader.DownloadFileAsync(downloadUrl, oszFileName, string.Format(SelectedDownloadSource.Referer, beatmap.MapSetId), currentId,SelectedDownloadSource.RequestTimeout);
             downloadItem.Id = currentId;
             return downloadItem;
         }

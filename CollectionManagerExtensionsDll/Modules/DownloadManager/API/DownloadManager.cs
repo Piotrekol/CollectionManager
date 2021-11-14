@@ -133,9 +133,11 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                                 if (!CanDownload(downloadItem))
                                     return;
 
+                                downloadItem.DownloadSlotStatus = "Starting download...";
                                 var client = Clients.Dequeue();
                                 downloadItem.DownloadSlotStatus = null;
                                 _urlsToDownload.RemoveFirst();
+                                client.RequestTimeout = downloadItem.RequestTimeout;
                                 downloadItem.WebClient = client;
                                 DownloadFile(downloadItem);
                             }
@@ -283,9 +285,9 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager.API
                 OnProgressUpdated(e);
             }
         }
-        public DownloadItem DownloadFileAsync(string url, string filename, string referer, object token)
+        public DownloadItem DownloadFileAsync(string url, string filename, string referer, object token, int requestTimeout)
         {
-            var dlItem = new DownloadItem() { FileName = filename, Url = url, Referer = referer, UserToken = token };
+            var dlItem = new DownloadItem() { FileName = filename, Url = url, Referer = referer, UserToken = token, RequestTimeout = requestTimeout };
             lock (_urlsToDownload)
                 _urlsToDownload.AddLast(dlItem);
             return dlItem;
