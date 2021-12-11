@@ -25,6 +25,7 @@ using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using Common;
 using GuiComponents.Interfaces;
+using System.ComponentModel;
 
 namespace App
 {
@@ -506,13 +507,24 @@ namespace App
         private async void SaveDefaultCollection(object sender, object data = null)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-
-            if (Process.GetProcessesByName("osu!").Any(p =>
-                p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
-                Initalizer.OsuDirectory.ToLowerInvariant()))
+            var processes = Process.GetProcessesByName("osu!");
+            try
             {
-                _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
-                return;
+                if (Process.GetProcessesByName("osu!").Any(p =>
+                    p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
+                    Initalizer.OsuDirectory.ToLowerInvariant()))
+                {
+                    _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
+                    return;
+                }
+            }
+            catch (Win32Exception ex)
+            {
+                // access denied
+                if (ex.NativeErrorCode != 5)
+                    throw;
+                
+                _userDialogs.OkMessageBox("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
             }
 
             if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
