@@ -32,7 +32,7 @@ Collections can be loaded into Collection Manager in three ways:
 
 ### **Saving Collections**
 
-Saving collections can be done by going to the top menu and selecting `File > Save` then selecting either of the following options:
+Collections can be saved by going to the top menu, selecting `File > Save` and any of the following options:
 
 - `Collection(.db/.osdb)`: This will allow you to save the currently loaded collections in either .db format or .osdb format.
 
@@ -60,7 +60,7 @@ Collection Manager can handle the following two types of collection formats:
 
 - .osdb Collections: These are collections in Collection Manager's format. They store collection names, map hashes, mapIDs, mapsetIDs, star ratings, and map states. It is recommended to use this format when sharing collections due to it not requiring any osu! files to identify maps.
 
-  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data unless all maps present in the collection are also present in your osu!.db and songs folder.
+  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data unless maps present in the collection are also present in your osu!.db and songs folder.
 
 ### **Downloading Maps from Collections**
 
@@ -70,7 +70,7 @@ Excessive downloading of maps could lead to your osu! account being temporarily 
 
 To start downloading missing maps from all loaded collections:
 
-Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. To get your cookies follow this [Tutorial](https://streamable.com/lhlr3d). Make sure you logged in to your osu! account and when copying the cookie, get the entire string after `cookie:`. Do not use `set-cookie:` or any other headers.
+Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. To get your cookies follow this [Tutorial](https://streamable.com/lhlr3d) for getting cookies on Chrome (it should be nearly the same on all browsers). Make sure you logged in to your osu! account and when copying the cookie, get the entire string after `cookie:`. **Do not use `set-cookie:` or any other headers.**
 
 **DO NOT** share these cookies with anyone else. They contain temporary information for your browser to **access your account** which is required for downloads.
 
