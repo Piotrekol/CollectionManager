@@ -4,39 +4,43 @@ Extensive tool for creating, editing and exporting of osu! collections.
 
 ## Setup
 
-On first run of CollectionManager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect you will have to select manually. 
+On the first run of CollectionManager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect, you will have to select your osu! folder manually. 
 
-To reset this selection go to CollectionManager's top menu and select `Settings > Reset` then restart CollectionManager.
+To reset this selection, go to CollectionManager's top menu and select `Settings > Reset` then restart CollectionManager.
 
-If your osu! folder is not set up in CollectionManager, .db collections will only show hashes instead of identifying maps using your osu! songs, you will not be able to open or save your osu! collection directly and you will not be able to view the beatmap listing in CollectionManager. Most features will still function.
+If your osu! folder is not set in CollectionManager, .db collections will only show hashes instead of identifying maps using your osu! songs, you will not be able to open or save to your osu! collection directly and you will not be able to view the beatmap listing in CollectionManager. Most features will still function.
 
 ## Usage
 
 ### **Opening Collections**
 
-There are two ways to load collections into CollectionManager:
+There are three ways to load collections into CollectionManager:
 
- - Go to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
- - Drag a collection file into the left panel.
+ - Going to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
+ - Draging a collection file into the left panel.
+ - Using previously uploaded osu!Stats collections. See: [osu!Stats Collections](#osu!Stats Collections)
 
 ### **Saving Collections**
 
-Saving collections can be done by going to the top menu and selecting `File > Save` then either of the following options:
+Saving collections can be done by going to the top menu and selecting `File > Save` then selecting either of the following options:
 
-- `Collection(.db/.osdb)`: This will allow you to save the collection in either .db format like osu! uses or in .osdb format. 
+- `Collection(.db/.osdb)`: This will allow you to save the currently loaded collections in either .db format or .osdb format. 
     
     .osdb format stores more information about the collection and is preferable for sharing collections.
+
 - `osu! collection`: This will **overwrite** your existing osu! collections with the collections currently loaded in CollectionManager. 
 
     It is best to have a backup of your osu! collections before saving in this way.
-- `Collections in separate files`: This will export each individual collection as its own file instead of all collections in a single file. You will be prompted to select a folder to save them in and whether or not you want to save using .osdb format.
 
-In addition to these methods of exporting collections, they can also be exported as a list in plaintext by going to the top menu and selecting `Listing` then either of the following options:
+- `Collections in separate files`: This will export each individual collection that is loaded as its own file instead of saving all collections in a single file. You will be prompted to select a folder to save them in and whether or not you want to save using .osdb format.
 
-- `List all collections`: This will generate a list containing every collection loaded, each followed by a list of maps in their respective collections.
-- `List missing maps`: This will generate a list containing every collection that has missing maps, each followed by a list of missing maps in their respective collections.
+In addition to these methods of saving collections, they can also be exported as a list in plaintext by going to the top menu and selecting `Listing` then either of the following options:
 
-CollectionManager **cannot** open these lists as collections. They can only be exported from collections. Make sure to save your collections using .db or .osdb format in addition to this.
+- `List all collections`: This will generate a list containing every collection loaded, each collection is followed by a list of maps contained in that collection.
+
+- `List missing maps`: This will generate a list containing every collection loaded that has missing maps, each collection is followed by a list of missing maps contained in that collection.
+
+CollectionManager **cannot** open or import these lists back into collections. They can only be exported from collections that are already loaded. Make sure to save your collections using .db or .osdb format in addition to this.
 
 ### **Collection File Formats**
 
@@ -53,9 +57,11 @@ CollectionManager can automatically download maps for you. Excessive downloading
 
 To start downloading missing maps from all loaded collections:
 
-Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. [Tutorial on how to get cookies.](https://streamable.com/lhlr3d) Make sure you the entire string after `cookie:` and do not use `set-cookie:` or any other headers.
+Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. To get your cookies follow this [Tutorial](https://streamable.com/lhlr3d). Make sure you logged in to your osu! account and when copying the cookie, get the entire string after `cookie:`. Do not use `set-cookie:` or any other headers.
 
-Progress of downloads can be monitored in the `Download list` window. If closed this window can be restored by selecting `Online > Show map downloads` from the top menu. The `Progress` column can be expanded using the dividers at the top to check when new downloads will start once they have paused and show `Next download slot a...`.
+**DO NOT** share these cookies with anyone else. They contain temporary information for your browser to **access your account** which is required for downloads.
+
+Progress of downloads can be monitored in the `Download list` window. If closed, this window can be restored by selecting `Online > Show map downloads` from the top menu. The `Progress` column can be expanded using the dividers at the top to check when new downloads will start. Paused downloads will show this message when the column is not expanded: `Next download slot a...`
 
 ### **Generating Collections**
 
@@ -67,7 +73,7 @@ Once collections are generated, upon closing the `Collection Generator` they wil
 
 ### **Creating and Editing Collections**
 
-The following opions are available from right clicking in the left panel:
+The following opions are made available by right clicking in the left panel:
 
 - Create: This will prompt you to create a new collection. Using a name that does not match any exising collections is required.
 
@@ -83,25 +89,25 @@ The following opions are available from right clicking in the left panel:
 
     The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
 
-- Inverse: This will inverse all selected collections by making a new collection with only maps that are not present in any any of the selected collections but are present in your osu! songs folder. 
+- Inverse: This will inverse all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder. 
 
     The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
 
 ### **Adding Maps to Collections**
 
-Maps can be added into existing collections in two ways:
+Maps can be added to existing collections in two ways:
 
-- Selecting a collection then drag maps from the middle panel into a different collection on the left panel.
-- Selecting `Show beatmap listing` from the top menu then dragging maps from the beatmap listing into collections on the left panel.
+- Selecting a collection, then draging maps from the middle panel into a different collection on the left panel.
+- Selecting `Show beatmap listing` from the top menu, then dragging maps from the beatmap listing into specific collections on the left panel or dragging maps into the map listing for the currently selected collection on the middle panel.
 
-    CollectionManager must have your osu folder path for this to work.
+    CollectionManager must have your osu folder path set up for this to work.
 
-### **Osustats Collections**
+### **osu!Stats Collections**
 
 CollectionManager can be integrated into osu!Stats for uploading local collections and loading in online collections.
 
-First, you will need to log in using your osu!Stats api key. You can get your api key [here](https://osustats.ppy.sh/collections/apikey) while logged in to osu!Stats. You can enter your api key into CollectionManager by going to `Osustats collections > Login...` on the top menu. If you need to change your api key you can do so by selecting `Osustats collections > Logged in as {username}` and inputting the api key.
+First, you will need to log in using your osu!Stats api key. You can get your api key [here](https://osustats.ppy.sh/collections/apikey) while logged in to osu!Stats. You can enter your api key into CollectionManager by going to `Osustats collections > Login...` on the top menu. If you need to change your api key later, you can do so by selecting `Osustats collections > Logged in as {username}` and inputting the api key.
 
-After your api key is set up, you can upload your own collections to osu!Stats and load your collections back. 
+After your api key is set up, you can upload your own collections to osu!Stats and load your uploaded collections into collection manager. 
 
-If you have a collection with missing maps, osu!Stats may be able to repair the collection and find those missing maps for you. To do this, upload the collection to osu!Stats by going to `Osustats collections > Upload new collection` and selecting the collection to upload. osu!Stats will then process the collection and if there are any missing maps that can be identified, they will be found. Processing of some collections can take a long time. You may also need to restart CollectionManager then load the collection back in from `Osustats collections > Your collections` to get it to refresh.
+If you have a collection with missing maps, osu!Stats may be able to repair the collection and find those missing maps for you. To do this, upload the collection to osu!Stats by going to `Osustats collections > Upload new collection` and selecting the collection to upload. osu!Stats will then process the collection and if there are any missing maps that can be identified, they will be found. Processing of some collections can take a long time. You may also need to restart CollectionManager then load the collection from `Osustats collections > Your collections` to get it to refresh.
