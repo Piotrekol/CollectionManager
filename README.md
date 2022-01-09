@@ -12,7 +12,7 @@ For Linux, through wine, you likely need to use `CollectionManagerSetup_linux.ex
 
 ## Setup
 
-On the first start of Collection Manager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect your osu! folder, you will have to select it manually. 
+On the first start of Collection Manager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect your osu! folder, you will have to select it manually.
 
 To reset this selection, go to Collection Manager's top menu and select `Settings > Reset` then restart Collection Manager.
 
@@ -24,25 +24,23 @@ If your osu! folder is not configured in Collection Manager, .db collections wil
 
 Collections can be loaded into Collection Manager in three ways:
 
- - Going to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
+- Going to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
 
- - Dragging a collection file into the left panel.
+- Dragging a collection file into the left panel.
 
- - Using previously uploaded osu!Stats collections. See: [osu!Stats Collections](https://github.com/Piotrekol/CollectionManager#osustats-collections)
+- Using previously uploaded osu!Stats collections. See: [osu!Stats Collections](https://github.com/Piotrekol/CollectionManager#osustats-collections)
 
 ### **Saving Collections**
 
 Saving collections can be done by going to the top menu and selecting `File > Save` then selecting either of the following options:
 
-- `Collection(.db/.osdb)`: This will allow you to save the currently loaded collections in either .db format or .osdb format. 
+- `Collection(.db/.osdb)`: This will allow you to save the currently loaded collections in either .db format or .osdb format.
 
-    
+  .osdb format stores more information about the collection and is preferable for sharing collections.
 
-    .osdb format stores more information about the collection and is preferable for sharing collections.
+- `osu! collection`: This will **overwrite** your existing osu! collections with the currently loaded Collection Manager collections.
 
--  `osu! collection`: This will **overwrite** your existing osu! collections with the currently loaded Collection Manager collections.
-
-    It is best to have a backup of your osu! collections before saving in this way.
+  It is best to have a backup of your osu! collections before saving in this way.
 
 - `Collections in separate files`: This will export each individual collection that is loaded as its own file instead of saving all collections in a single file. You will be prompted to select a folder to save them in and whether or not you want to save them in .osdb format.
 
@@ -60,13 +58,13 @@ Collection Manager can handle the following two types of collection formats:
 
 - .db Collections: These are collections in the format that osu! uses. They store collection names and map hashes. Maps in these collections cannot be identified locally without an osu! songs folder and an osu!.db file. For more information, see: [Legacy database file structure](https://github.com/ppy/osu/wiki/Legacy-database-file-structure#collectiondb).
 
-- .osdb Collections: These are collections in Collection Manager's format. They store collection names, map hashes, mapIDs, mapsetIDs, star ratings, and map states. It is recommended to use this format when sharing collections due to it not requiring any osu! files to identify maps. 
+- .osdb Collections: These are collections in Collection Manager's format. They store collection names, map hashes, mapIDs, mapsetIDs, star ratings, and map states. It is recommended to use this format when sharing collections due to it not requiring any osu! files to identify maps.
 
-    However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data.
+  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data.
 
 ### **Downloading Maps from Collections**
 
-Collection Manager can automatically download maps for you. Excessive downloading of maps could lead to your osu! account being temporarily download banned by the osu! servers. Collection Manager has no control over this, but to help prevent download bans, Collection Manager limits downloads to 170 mapsets per hour and 3 mapsets per minute. 
+Collection Manager can automatically download maps for you. Excessive downloading of maps could lead to your osu! account being temporarily download banned by the osu! servers. Collection Manager has no control over this, but to help prevent download bans, Collection Manager limits downloads to 170 mapsets per hour and 3 mapsets per minute.
 
 To start downloading missing maps from all loaded collections:
 
@@ -98,13 +96,13 @@ The following opinions are made available by right clicking in the left panel:
 
 - Merge Selected: This will merge all selected collections into the collection closest to the top of the listing.
 
-- Intersection: This will intersect all selected collections by making a new collection with only maps that are present in all selected collections. 
+- Intersection: This will intersect all selected collections by making a new collection with only maps that are present in all selected collections.
 
-    The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
 
-- Inverse: This will inverse all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder. 
+- Inverse: This will inverse all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder.
 
-    The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
 
 ### **Adding Maps to Collections**
 
@@ -114,7 +112,7 @@ Maps can be added to existing collections in two ways:
 
 - Selecting `Show beatmap listing` from the top menu, then dragging maps from the beatmap listing into specific collections on the left panel or dragging maps into the map listing for the currently selected collection on the middle panel.
 
-    Collection Manager must have your osu folder path set up for this to work.
+  Collection Manager must have your osu folder path set up for this to work.
 
 ### **osu!Stats Collections**
 
@@ -122,7 +120,7 @@ Collection Manager can be integrated into osu!Stats for uploading local collecti
 
 First, you will need to log in using your osu!Stats api key. You can get your api key [here](https://osustats.ppy.sh/collections/apikey) while logged in to osu!Stats. You can enter your api key into Collection Manager by going to `Osustats collections > Login...` on the top menu. If you need to change your api key later, you can do so by selecting `Osustats collections > Logged in as {username}` and inputting the api key.
 
-After you've entered your api key, you can upload your own collections to osu!Stats and load your uploaded collections into Collection Manager. 
+After you've entered your api key, you can upload your own collections to osu!Stats and load your uploaded collections into Collection Manager.
 
 If you have a collection with missing maps, osu!Stats may be able to repair the collection and find those missing maps for you. To do this, upload the collection to osu!Stats by going to `Osustats collections > Upload new collection` and selecting the collection to upload. osu!Stats will then process the collection and if there are any missing maps that can be identified, they will be found. Processing of some collections can take a long time. You may also need to restart CollectionManager and load the collection from `Osustats collections > Your collections` to get it to refresh.
 
@@ -130,32 +128,30 @@ If you have a collection with missing maps, osu!Stats may be able to repair the 
 
 The following command-line operations are supported:
 
-`-o`, `--Output`             
+`-o`, `--Output`
 
 Required. Output filename with or without a path.
 
-`-b`, `--BeatmapIds`         
+`-b`, `--BeatmapIds`
 
 Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
 
-`-i`, `--Input`              
+`-i`, `--Input`
 
 Input .db/.osdb collection file.
 
-`-l`, `--OsuLocation`        
+`-l`, `--OsuLocation`
 
 The location of your osu! directory or a directory containing a valid osu!.db. If not provided, Collection Manager will attempt to find it automatically.
 
-`-s`, `--SkipOsuLocation`    
+`-s`, `--SkipOsuLocation`
 
 Skip loading of osu! database.
 
-`--help`                   
+`--help`
 
 Display the help screen.
 
-`--version`                
+`--version`
 
 Display version information.
-
-
