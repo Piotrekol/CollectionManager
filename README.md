@@ -70,7 +70,7 @@ Excessive downloading of maps could lead to your osu! account being temporarily 
 
 To start downloading missing maps from all loaded collections:
 
-Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. To get your cookies follow this [Tutorial](https://streamable.com/lhlr3d) for getting cookies on Chrome (it should be nearly the same on all browsers). Make sure you logged in to your osu! account and when copying the cookie, get the entire string after `cookie:`. **Do not use `set-cookie:` or any other headers.**
+Go to the top menu, select `Online > Download all missing maps`, select a directory to download to, then enter in cookies. To get your cookies follow this [Tutorial](https://streamable.com/lhlr3d) for getting cookies on Chrome (it should be nearly the same on all browsers). Make sure you are logged in to your osu! account and when copying the cookie, get the entire string after `cookie:`. **Do not use `set-cookie:` or any other headers.**
 
 **DO NOT** share these cookies with anyone else. They contain temporary information for your browser to **access your account** which is required for downloads.
 
@@ -88,23 +88,23 @@ Once collections are generated, upon closing the `Collection Generator` they wil
 
 The following opinions are made available by right clicking in the left panel:
 
-- Create: This will prompt you to create a new collection. Using a name that does not match any existing collections is required.
+- Create: Prompts you to create a new collection. Using a name that does not match any existing collections is required.
 
-- Rename: This will prompt you to rename a collection. Using a name that does not match any existing collections is required.
+- Rename: Prompts you to rename a collection. Using a name that does not match any existing collections is required.
 
-- Delete: This will delete all selected collections.
+- Delete: Deletes all selected collections.
 
-- Duplicate: This will duplicate a single collection with `_0` appended to the new collection's name.
+- Duplicate: Duplicates a single collection with `_0` appended to the new collection's name.
 
-- Merge Selected: This will merge all selected collections into the collection closest to the top of the listing.
+- Merge Selected: Merges all selected collections into the selected collection closest to the top of the listing.
 
-- Intersection: This will intersect all selected collections by making a new collection with only maps that are present in all selected collections.
+- Intersection: Intersects all selected collections by making a new collection with only maps that are present in all selected collections.
 
-  The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the selected collection closest to the top of the listing and with `_0` appended to its name.
 
-- Inverse: This will inverse all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder.
+- Inverse: Inverses all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder.
 
-  The new collection is named using the collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the selected collection closest to the top of the listing and with `_0` appended to its name.
 
 ### **Adding Maps to Collections**
 
@@ -128,9 +128,9 @@ If you have a collection with missing maps, osu!Stats may be able to repair the 
 
 ## CLI Usage
 
-The following command-line operations are supported:
+The following command-line options are supported:
 
-`-o` / `--Output`: Required. Output filename with or without a path.
+`-o` / `--Output`: Required. Output filename with or without a path. The filename extension will specify which format to save in: `.db` or `.osdb`. 
 
 `-b` / `--BeatmapIds`: Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
 
