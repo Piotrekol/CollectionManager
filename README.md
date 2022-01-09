@@ -14,7 +14,7 @@ For Linux, through wine, you likely need to use `CollectionManagerSetup_linux.ex
 
 On the first start of Collection Manager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect your osu! folder, you will have to select it manually.
 
-To reset this selection, go to Collection Manager's top menu and select `Settings > Reset` then restart Collection Manager.
+To reset this setting, go to Collection Manager's top menu and select `Settings > Reset` then restart Collection Manager.
 
 If your osu! folder is not configured in Collection Manager, .db collections will only show hashes instead of identifying maps using your osu! songs, you will not be able to open or save to your osu! collection directly and you will not be able to view the beatmap listing in Collection Manager. Most features will still function.
 
@@ -24,7 +24,7 @@ If your osu! folder is not configured in Collection Manager, .db collections wil
 
 Collections can be loaded into Collection Manager in three ways:
 
-- Going to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
+- Going to the top menu, selecting `File > Open` and either `Collection(.db/.osdb)` or `osu! collection`
 
 - Dragging a collection file into the left panel.
 
@@ -60,11 +60,13 @@ Collection Manager can handle the following two types of collection formats:
 
 - .osdb Collections: These are collections in Collection Manager's format. They store collection names, map hashes, mapIDs, mapsetIDs, star ratings, and map states. It is recommended to use this format when sharing collections due to it not requiring any osu! files to identify maps.
 
-  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data.
+  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data unless all maps present in the collection are also present in your osu!.db and songs folder.
 
 ### **Downloading Maps from Collections**
 
-Collection Manager can automatically download maps for you. Excessive downloading of maps could lead to your osu! account being temporarily download banned by the osu! servers. Collection Manager has no control over this, but to help prevent download bans, Collection Manager limits downloads to 170 mapsets per hour and 3 mapsets per minute.
+Collection Manager can automatically download maps for you if you load in a .osdb collection with maps you do not already have. **You cannot use a .db collection for downloading.** 
+
+Excessive downloading of maps could lead to your osu! account being temporarily download banned by the osu! servers. Collection Manager has no control over this, but to help prevent download bans, Collection Manager limits downloads to 170 mapsets per hour and 3 mapsets per minute.
 
 To start downloading missing maps from all loaded collections:
 
@@ -128,30 +130,16 @@ If you have a collection with missing maps, osu!Stats may be able to repair the 
 
 The following command-line operations are supported:
 
-`-o`, `--Output`
+`-o` / `--Output`: Required. Output filename with or without a path.
 
-Required. Output filename with or without a path.
+`-b` / `--BeatmapIds`: Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
 
-`-b`, `--BeatmapIds`
+`-i` / `--Input`: Input .db/.osdb collection file.
 
-Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
+`-l` / `--OsuLocation`: The location of your osu! directory or a directory containing a valid osu!.db. If not provided, Collection Manager will attempt to find it automatically.
 
-`-i`, `--Input`
+`-s` / `--SkipOsuLocation`: Skip loading of osu! database.
 
-Input .db/.osdb collection file.
+`--help`: Display the help screen.
 
-`-l`, `--OsuLocation`
-
-The location of your osu! directory or a directory containing a valid osu!.db. If not provided, Collection Manager will attempt to find it automatically.
-
-`-s`, `--SkipOsuLocation`
-
-Skip loading of osu! database.
-
-`--help`
-
-Display the help screen.
-
-`--version`
-
-Display version information.
+`--version`: Display version information.
