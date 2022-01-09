@@ -2,9 +2,17 @@
 
 Extensive tool for creating, editing and exporting of osu! collections.
 
+## Download
+
+You can download the latest release of Collection Manager here: [Releases](https://github.com/Piotrekol/CollectionManager/releases/latest). Files to download are under the `Assets` dropdown at the bottom of the release.
+
+For Windows, download `CollectionManagerSetup.exe`.
+
+For Linux through wine, you likely need to use `CollectionManagerSetup_linux.exe`. The same may be true for MacOS.
+
 ## Setup
 
-On the first run of CollectionManager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect, you will have to select your osu! folder manually. 
+On first start of CollectionManager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect, you will have to select your osu! folder manually. 
 
 To reset this selection, go to CollectionManager's top menu and select `Settings > Reset` then restart CollectionManager.
 
@@ -18,7 +26,7 @@ There are three ways to load collections into CollectionManager:
 
  - Going to the top menu and select `File > Open` then either `Collection(.db/.osdb)` or `osu! collection`
  - Draging a collection file into the left panel.
- - Using previously uploaded osu!Stats collections. See: [osu!Stats Collections](#osu!Stats Collections)
+ - Using previously uploaded osu!Stats collections. See: [osu!Stats Collections](https://github.com/Piotrekol/CollectionManager#osustats-collections)
 
 ### **Saving Collections**
 
