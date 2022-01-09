@@ -4,11 +4,11 @@ Extensive tool for creating, editing and exporting of osu! collections.
 
 ## Download
 
-You can download the latest release of Collection Manager here: [Releases](https://github.com/Piotrekol/CollectionManager/releases/latest). Files to download are under the `Assets` dropdown at the bottom of the release.
+You can download the latest release of Collection Manager here: [Releases](https://github.com/Piotrekol/CollectionManager/releases/latest). Files to download are in the `Assets` dropdown at the bottom of the release.
 
 For Windows, download `CollectionManagerSetup.exe`.
 
-For Linux through wine, you likely need to use `CollectionManagerSetup_linux.exe`. The same may be true for MacOS.
+For Linux, through wine, you likely need to use `CollectionManagerSetup_linux.exe`. The same may be true for MacOS.
 
 ## Setup
 
