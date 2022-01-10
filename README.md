@@ -60,7 +60,7 @@ Collection Manager can handle the following two types of collection formats:
 
 - .osdb Collections: These are collections in Collection Manager's format. They store collection names, map hashes, mapIDs, mapsetIDs, star ratings, and map states. It is recommended to use this format when sharing collections due to it not requiring any osu! files to identify maps.
 
-  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data unless maps present in the collection are also present in your osu!.db and songs folder.
+  However, **the initial save of the .osdb file must have all the info desired.** Opening a .db collection or any collection with missing data and saving it as a .osdb collection will not repair any of the missing data unless the missing maps and data are also present in your osu!.db and songs folder.
 
 ### **Downloading Maps from Collections**
 
@@ -74,7 +74,7 @@ Go to the top menu, select `Online > Download all missing maps`, select a direct
 
 **DO NOT** share these cookies with anyone else. They contain temporary information for your browser to **access your account** which is required for downloads.
 
-Download progress can be monitored in the `Download list` window. If closed, this window can be restored by selecting `Online > Show map downloads` from the top menu. The `Progress` column can be expanded using the dividers at the top to check when new downloads will start. Paused downloads will show this message when the column is not expanded: `Next download slot a...`
+Download progress can be monitored in the `Download list` window. If closed, this window can be restored by selecting `Online > Show map downloads` from the top menu. The `Progress` column can be expanded using the dividers at the top to check when new downloads will start. Throttled downloads will show this message when the column is not expanded: `Next download slot a...`. This does not mean downloads have failed. They will automatically start again.
 
 ### **Generating Collections**
 
@@ -88,9 +88,13 @@ Once collections are generated, upon closing the `Collection Generator` they wil
 
 The following opinions are made available by right clicking in the left panel:
 
-- Create: Prompts you to create a new collection. Using a name that does not match any existing collections is required.
+- Create: Prompts you to create a new collection. 
 
-- Rename: Prompts you to rename a collection. Using a name that does not match any existing collections is required.
+  Using a name that does not match any existing collections is required.
+
+- Rename: Prompts you to rename a collection. 
+
+  Using a name that does not match any existing collections is required.
 
 - Delete: Deletes all selected collections.
 
@@ -100,11 +104,11 @@ The following opinions are made available by right clicking in the left panel:
 
 - Intersection: Intersects all selected collections by making a new collection with only maps that are present in all selected collections.
 
-  The new collection is named using the selected collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the selected collection closest to the top of the listing, with `_0` appended to its name.
 
 - Inverse: Inverses all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder.
 
-  The new collection is named using the selected collection closest to the top of the listing and with `_0` appended to its name.
+  The new collection is named using the selected collection closest to the top of the listing, with `_0` appended to its name.
 
 ### **Adding Maps to Collections**
 
@@ -120,11 +124,11 @@ Maps can be added to existing collections in two ways:
 
 Collection Manager can be integrated into osu!Stats for uploading local collections and loading in online collections.
 
-First, you will need to log in using your osu!Stats api key. You can get your api key [here](https://osustats.ppy.sh/collections/apikey) while logged in to osu!Stats. You can enter your api key into Collection Manager by going to `Osustats collections > Login...` on the top menu. If you need to change your api key later, you can do so by selecting `Osustats collections > Logged in as {username}` and inputting the api key.
+First, you will need to log in using your osu!Stats api key. You can get your api key [here](https://osustats.ppy.sh/collections/apikey) while logged in to osu!Stats. Enter your api key into Collection Manager by going to `Osustats collections > Login...` on the top menu. If you need to change your api key later, you can do so by selecting `Osustats collections > Logged in as {username}` and inputting the api key.
 
 After you've entered your api key, you can upload your own collections to osu!Stats and load your uploaded collections into Collection Manager.
 
-If you have a collection with missing maps, osu!Stats may be able to repair the collection and find those missing maps for you. To do this, upload the collection to osu!Stats by going to `Osustats collections > Upload new collection` and selecting the collection to upload. osu!Stats will then process the collection and if there are any missing maps that can be identified, they will be found. Processing of some collections can take a long time. You may also need to restart CollectionManager and load the collection from `Osustats collections > Your collections` to get it to refresh.
+If you have a collection with missing maps, osu!Stats may be able to repair the collection and find those missing maps for you. To do this, upload the collection to osu!Stats by going to `Osustats collections > Upload new collection` and selecting the collection to upload. osu!Stats will then process the collection and if there are any missing maps that can be identified, they will be found. Processing of some collections can take a long time. You may also need to restart Collection Manager and load the collection from `Osustats collections > Your collections` to get it to refresh.
 
 ## CLI Usage
 
