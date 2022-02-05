@@ -13,6 +13,7 @@ using System.IO;
 using App.Models;
 using Common.Interfaces;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace App
 {
@@ -30,11 +31,11 @@ namespace App
         private DownloadManager _mapDownloader = null;
         private Lazy<List<DownloadSource>> _downloadSources = new Lazy<List<DownloadSource>>(() =>
         {
-            const string configurationFileName = "downloadSources.json";
-            if (!File.Exists(configurationFileName))
-                throw new NotImplementedException("download sources configuration is missing!");
+            var configLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "downloadSources.json");
+            if (!File.Exists(configLocation))
+                throw new FileNotFoundException("download sources configuration is missing!");
 
-            return JsonConvert.DeserializeObject<List<DownloadSource>>(File.ReadAllText(configurationFileName));
+            return JsonConvert.DeserializeObject<List<DownloadSource>>(File.ReadAllText(configLocation));
         });
 
         private IReadOnlyList<IDownloadSource> DownloadSources => _downloadSources.Value;
