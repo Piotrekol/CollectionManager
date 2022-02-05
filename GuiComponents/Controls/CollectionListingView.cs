@@ -68,6 +68,8 @@ namespace GuiComponents.Controls
         }
 
         private CollectionRenderer _collectionRenderer = new CollectionRenderer();
+        private RearrangingDropSink _dropsink = new RearrangingDropSink();
+
         private void init()
         {
             //ListViewCollections.SelectedIndexChanged += ListViewCollectionsSelectedIndexChanged;
@@ -75,23 +77,28 @@ namespace GuiComponents.Controls
             ListViewCollections.FullRowSelect = true;
             ListViewCollections.HideSelection = false;
             ListViewCollections.DefaultRenderer = _collectionRenderer;
-
-            var dropsink = new RearrangingDropSink();
-            dropsink.CanDropBetween = false;
-            dropsink.CanDropOnItem = true;
-            dropsink.CanDropOnSubItem = false;
-            dropsink.CanDropOnBackground = false;
-            ListViewCollections.DropSink = dropsink;
+            
+            _dropsink.CanDropBetween = false;
+            _dropsink.CanDropOnItem = true;
+            _dropsink.CanDropOnSubItem = false;
+            _dropsink.CanDropOnBackground = false;
+            ListViewCollections.DropSink = _dropsink;
             ListViewCollections.ModelDropped += ListViewCollections_ModelDropped;
             ListViewCollections.CellRightClick += ListViewCollectionsOnCellRightClick;
-            dropsink.ModelCanDrop += DropsinkOnModelCanDrop;
-            dropsink.CanDrop += DropsinkOnCanDrop;
-            dropsink.Dropped += DropsinkOnDropped;
+            _dropsink.ModelCanDrop += DropsinkOnModelCanDrop;
+            _dropsink.CanDrop += DropsinkOnCanDrop;
+            _dropsink.Dropped += DropsinkOnDropped;
         }
 
         private void DropsinkOnDropped(object sender, OlvDropEventArgs e)
         {
-            if (e.DataObject is DataObject dataObject && dataObject.GetFormats().Any(f => f == "FileDrop"))
+            if (e.DataObject is DataObject dataObject)
+                DropFile(dataObject);
+        }
+
+        private void DropFile(IDataObject dataObject)
+        {
+            if (dataObject.GetFormats().Any(f => f == "FileDrop"))
             {
                 var files = (string[])dataObject.GetData(DataFormats.FileDrop);
                 OnLoadFile?.Invoke(this, files);
@@ -170,14 +177,25 @@ namespace GuiComponents.Controls
         private void MenuStripClick(object sender, EventArgs e)
         {
             var menuItem = (ToolStripMenuItem)sender;
+            if ((string)menuItem.Tag == "Paste")
+            {
+                PasteCollectionFromClipboard();
+                return;
+            }
+
             OnRightClick(new StringEventArgs((string)menuItem.Tag));
+        }
+
+        private void PasteCollectionFromClipboard()
+        {
+            var data = Clipboard.GetDataObject();
+            if (data == null) return;
+            DropFile(data);
+            return;
         }
 
         private void ListViewCollections_KeyUp(object sender, KeyEventArgs e)
         {
-            if (ListViewCollections.SelectedObjects.Count == 0)
-                return;
-
             var eventData = string.Empty;
             switch (e.KeyCode)
             {
@@ -189,8 +207,23 @@ namespace GuiComponents.Controls
                     break;
             }
 
-            if (!string.IsNullOrEmpty(eventData))
+            if (ListViewCollections.SelectedObjects.Count > 0 && !string.IsNullOrEmpty(eventData))
                 OnRightClick(new StringEventArgs(eventData));
+
+            switch (e.KeyCode)
+            {
+                case Keys.V:
+                    if (e.Control)
+                        PasteCollectionFromClipboard();
+                    break;
+
+                case Keys.C:
+                    if (e.Control)
+                        OnRightClick(new StringEventArgs("Copy"));
+                    break;
+            }
+
+            e.Handled = e.SuppressKeyPress = true;
         }
 
         private class CollectionRenderer : BaseRenderer
@@ -204,6 +237,11 @@ namespace GuiComponents.Controls
                 if (Column.Index == 0 && Collections != null && Collections.Contains(ListItem.RowObject))
                     g.FillRectangle(brush, new Rectangle(r.X + 2, r.Y + 2, r.Width - 4, r.Height - 4));
             }
+        }
+
+        private void ListViewCollections_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.SuppressKeyPress = true;
         }
     }
 }

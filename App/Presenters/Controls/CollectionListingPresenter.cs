@@ -3,6 +3,10 @@ using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using App.Interfaces;
 using GuiComponents.Interfaces;
+using System.IO;
+using System.Windows.Forms;
+using System.Collections.Specialized;
+using App.Misc;
 
 namespace App.Presenters.Controls
 {
@@ -95,6 +99,19 @@ namespace App.Presenters.Controls
 
                     args = CollectionEditArgs.DuplicateCollection(_view.SelectedCollection);
                     break;
+                case "Copy":
+                    if (selectedCollections == null)
+                        return;
+                    var tempFolder = Path.Combine(Path.GetTempPath(), "CMcollections");
+                    if (Directory.Exists(tempFolder))
+                        Directory.Delete(tempFolder, true);
+
+                    Directory.CreateDirectory(tempFolder);
+                    var fileName = Helpers.StripInvalidFileNameCharacters(selectedCollections[0].Name, "_");
+                    var tempLocation = Path.Combine(tempFolder, $"{fileName}.osdb");
+                    Initalizer.OsuFileIo.CollectionLoader.SaveOsdbCollection(selectedCollections, tempLocation);
+                    Clipboard.SetFileDropList(new StringCollection { tempLocation });
+                    return;
                 default:
                     return;
             }
