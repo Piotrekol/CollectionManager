@@ -167,7 +167,7 @@ namespace App
         private string CreateFileName(Beatmap map)
         {
             var filename = map.MapSetId + " " + map.ArtistRoman + " - " + map.TitleRoman;
-            return Helpers.StripInvalidFileNameCharacters(filename) + ".osz";
+            return Helpers.StripInvalidFileNameCharacters(filename, "_") + ".osz";
         }
     }
 }
