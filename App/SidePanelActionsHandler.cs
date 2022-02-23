@@ -25,6 +25,8 @@ using CollectionManagerExtensionsDll.Modules.CollectionApiGenerator;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using Common;
 using GuiComponents.Interfaces;
+using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace App
 {
@@ -506,25 +508,84 @@ namespace App
         private async void SaveDefaultCollection(object sender, object data = null)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-
-            if (Process.GetProcessesByName("osu!").Any(p =>
-                p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
-                Initalizer.OsuDirectory.ToLowerInvariant()))
+            var processes = Process.GetProcessesByName("osu!");
+            try
             {
-                _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
-                return;
+                if (Process.GetProcessesByName("osu!").Any(p =>
+                    p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
+                    Initalizer.OsuDirectory.ToLowerInvariant()))
+                {
+                    _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
+                    return;
+                }
+            }
+            catch (Win32Exception ex)
+            {
+                // access denied
+                if (ex.NativeErrorCode != 5)
+                    throw;
+
+                _userDialogs.OkMessageBox("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
             }
 
             if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
                 "Are you sure?", MessageBoxType.Question))
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
+                BackupOsuCollection();
                 _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
                 _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Success);
             }
             else
             {
                 _userDialogs.OkMessageBox("Save Aborted", "Info", MessageBoxType.Warning);
+            }
+        }
+
+        private void BackupOsuCollection()
+        {
+            var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
+            if (!Directory.Exists(backupFolder))
+                Directory.CreateDirectory(backupFolder);
+
+            var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+            if (!File.Exists(sourceCollectionFile))
+                return;
+
+            var destinationCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collectionBackups", $"collection_{CalculateMD5(sourceCollectionFile)}.db");
+            if (File.Exists(destinationCollectionFile))
+            {
+                //Just update file save date to indicate latest collection version
+                File.SetLastWriteTime(destinationCollectionFile, DateTime.Now);
+                return;
+            }
+
+            CleanupBackups();
+            File.Copy(sourceCollectionFile, destinationCollectionFile);
+
+            string CalculateMD5(string filename)
+            {
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(filename))
+                    {
+                        var hash = md5.ComputeHash(stream);
+                        return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                    }
+                }
+            }
+
+            void CleanupBackups()
+            {
+                var deleteDateThreshold = DateTime.UtcNow.AddDays(-30);
+                var collectionFilePaths = Directory.GetFiles(backupFolder, "*.db", SearchOption.TopDirectoryOnly);
+                var collectionFiles = collectionFilePaths.Select(f => new FileInfo(f))
+                    .Where(f => f.LastWriteTimeUtc < deleteDateThreshold);
+
+                foreach (var collectionFile in collectionFiles)
+                {
+                    collectionFile.Delete();
+                }
             }
         }
 
