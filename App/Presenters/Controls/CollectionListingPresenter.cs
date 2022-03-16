@@ -85,6 +85,11 @@ namespace App.Presenters.Controls
                         return;
                     args = CollectionEditArgs.InverseCollections(selectedCollections, selectedCollections[0].Name);
                     break;
+                case "Difference":
+                    if (selectedCollections == null)
+                        return;
+                    args = CollectionEditArgs.DifferenceCollections(selectedCollections, selectedCollections[0].Name);
+                    break;
                 case "Create":
                     args = CollectionEditArgs.AddCollections(null);
                     break;

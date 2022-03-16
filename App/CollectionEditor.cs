@@ -48,7 +48,7 @@ namespace App
                         break;
                 }
             }
-            else if (e.Action == CollectionEdit.Intersect)
+            else if (e.Action == CollectionEdit.Intersect || e.Action == CollectionEdit.Difference)
             {
                 if (e.Collections.Count < 2)
                     return;
