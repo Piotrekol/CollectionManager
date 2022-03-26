@@ -131,12 +131,17 @@ namespace CollectionManager.Modules.CollectionsManager
                 var beatmaps = mainCollection.AllBeatmaps();
                 foreach (var collection in args.Collections)
                 {
-                    beatmaps = beatmaps.Except(collection.AllBeatmaps(), new CollectionBeatmapComparer()).Union(collection.AllBeatmaps().Except(beatmaps, new CollectionBeatmapComparer()));
+                    beatmaps = beatmaps.Concat(collection.AllBeatmaps());
                 }
+
+                var difference_md5 = beatmaps.GroupBy(x => x.Md5).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
 
                 foreach (var beatmap in beatmaps)
                 {
-                    targetCollection.AddBeatmap(beatmap);
+                    if (difference_md5.Contains(beatmap.Md5))
+                    {
+                        targetCollection.AddBeatmap(beatmap);
+                    }
                 }
 
                 EditCollection(CollectionEditArgs.AddCollections(new Collections() { targetCollection }), true);
