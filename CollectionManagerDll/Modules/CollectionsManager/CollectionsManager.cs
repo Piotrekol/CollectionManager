@@ -134,12 +134,12 @@ namespace CollectionManager.Modules.CollectionsManager
                     beatmaps = beatmaps.Concat(collection.AllBeatmaps());
                 }
 
-                var difference_Md5 = beatmaps.GroupBy(x => x.Md5).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
-                var difference_MapId = beatmaps.GroupBy(x => x.MapId).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
+                var differenceMd5 = beatmaps.GroupBy(x => x.Md5).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
+                var differenceMapId = beatmaps.GroupBy(x => x.MapId).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
 
                 foreach (var beatmap in beatmaps)
                 {
-                    if (difference_Md5.Contains(beatmap.Md5) || difference_MapId.Contains(beatmap.MapId))
+                    if (differenceMd5.Contains(beatmap.Md5) || differenceMapId.Contains(beatmap.MapId))
                     {
                         targetCollection.AddBeatmap(beatmap);
                     }
