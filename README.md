@@ -106,6 +106,10 @@ The following opinions are made available by right clicking in the left panel:
 
   The new collection is named using the selected collection closest to the top of the listing, with `_0` appended to its name.
 
+- Difference: Differentiates all selected collections by making a new collection with only maps that are present in only one selected collection.
+
+  The new collection is named using the selected collection closest to the top of the listing, with `_0` appended to its name.
+
 - Inverse: Inverses all selected collections by making a new collection with only maps that are not present in any of the selected collections but are present in your osu! songs folder.
 
   The new collection is named using the selected collection closest to the top of the listing, with `_0` appended to its name.

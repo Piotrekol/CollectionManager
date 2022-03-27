@@ -23,6 +23,7 @@ namespace CollectionManager.Modules.CollectionsManager
          merge x collections
          intersect x collections
          inverse map sum of x collections
+         difference x collections
          clear collections
          add beatmaps to collection
          remove beatmaps from collection
@@ -117,6 +118,31 @@ namespace CollectionManager.Modules.CollectionsManager
                 foreach (var beatmap in beatmaps)
                 {
                     targetCollection.AddBeatmap(beatmap);
+                }
+
+                EditCollection(CollectionEditArgs.AddCollections(new Collections() { targetCollection }), true);
+            }
+            else if (action == CollectionEdit.Difference)
+            {
+                var targetCollection = args.Collections.Last();
+                args.Collections.RemoveAt(args.Collections.Count - 1);
+                var mainCollection = args.Collections[0];
+                args.Collections.RemoveAt(0);
+                var beatmaps = mainCollection.AllBeatmaps();
+                foreach (var collection in args.Collections)
+                {
+                    beatmaps = beatmaps.Concat(collection.AllBeatmaps());
+                }
+
+                var differenceMd5 = beatmaps.GroupBy(x => x.Md5).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
+                var differenceMapId = beatmaps.GroupBy(x => x.MapId).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
+
+                foreach (var beatmap in beatmaps)
+                {
+                    if (differenceMd5.Contains(beatmap.Md5) || differenceMapId.Contains(beatmap.MapId))
+                    {
+                        targetCollection.AddBeatmap(beatmap);
+                    }
                 }
 
                 EditCollection(CollectionEditArgs.AddCollections(new Collections() { targetCollection }), true);

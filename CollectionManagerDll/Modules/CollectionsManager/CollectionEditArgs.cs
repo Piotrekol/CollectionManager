@@ -88,6 +88,16 @@ namespace CollectionManager.Modules.CollectionsManager
             };
         }
         #endregion
+        #region Difference Collections
+        public static CollectionEditArgs DifferenceCollections(Collections collections, string newName)
+        {
+            return new CollectionEditArgs(CollectionEdit.Difference)
+            {
+                Collections = collections,
+                NewName = newName
+            };
+        }
+        #endregion
         #region Clear Collections
         public static CollectionEditArgs ClearCollections()
         {
