@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,8 +14,18 @@ namespace GuiComponents.Controls
     public partial class CollectionListingView : UserControl, ICollectionListingView
     {
         public event GuiHelpers.LoadFileArgs OnLoadFile;
+        public event GuiHelpers.CollectionReorderEventArgs OnCollectionReorder;
+
         public string SearchText => textBox_collectionNameSearch.Text;
-        public Collections Collections { set { ListViewCollections.SetObjects(value); } }
+        public Collections Collections
+        {
+            set
+            {
+                var selectedCollections = SelectedCollections;
+                ListViewCollections.SetObjects(value);
+                SelectedCollections = selectedCollections;
+            }
+        }
 
         public ICollection SelectedCollection
         {
@@ -27,7 +36,15 @@ namespace GuiComponents.Controls
                 ListViewCollections.SelectedObject = value;
             }
         }
-        public ArrayList SelectedCollections => (ArrayList)ListViewCollections.SelectedObjects;
+        public ArrayList SelectedCollections
+        {
+            get => (ArrayList)ListViewCollections.SelectedObjects;
+            private set
+            {
+                ListViewCollections.SelectedObjects = value;
+                ListViewCollections.EnsureSelectionIsVisible();
+            }
+        }
         public Collections HighlightedCollections
         {
             get => _collectionRenderer.Collections;
@@ -37,7 +54,6 @@ namespace GuiComponents.Controls
                 ListViewCollections.Refresh();
             }
         }
-
 
         public event EventHandler SearchTextChanged;
         public event EventHandler SelectedCollectionChanged;
@@ -77,8 +93,9 @@ namespace GuiComponents.Controls
             ListViewCollections.FullRowSelect = true;
             ListViewCollections.HideSelection = false;
             ListViewCollections.DefaultRenderer = _collectionRenderer;
-            
-            _dropsink.CanDropBetween = false;
+            ListViewCollections.IsSimpleDragSource = true;
+
+            _dropsink.CanDropBetween = true;
             _dropsink.CanDropOnItem = true;
             _dropsink.CanDropOnSubItem = false;
             _dropsink.CanDropOnBackground = false;
@@ -123,6 +140,27 @@ namespace GuiComponents.Controls
                     e.Handled = true;
                     e.Effect = DragDropEffects.None;
                 }
+                else if (e.SourceModels[0] is Collection)
+                {
+
+                    if (e.DropTargetLocation != DropTargetLocation.AboveItem && e.DropTargetLocation != DropTargetLocation.BelowItem)
+                    {
+                        e.Handled = true;
+                        e.Effect = DragDropEffects.None;
+                    }
+                    else
+                    {
+                        var targetCollection = (Collection)e.TargetModel;
+                        foreach (var model in e.SourceModels)
+                        {
+                            if (model == targetCollection)
+                            {
+                                e.Handled = true;
+                                e.Effect = DragDropEffects.None;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -158,15 +196,29 @@ namespace GuiComponents.Controls
         private void ListViewCollections_ModelDropped(object sender, ModelDropEventArgs e)
         {
             e.Handled = true;
-            var collection = (Collection)e.TargetModel;
-            if (collection == null) return;
+            var targetCollection = (Collection)e.TargetModel;
+            if (e.SourceModels[0] is Collection)
+            {
+                var nameColumn = ListViewCollections.AllColumns[0];
+                if (ListViewCollections.LastSortColumn != nameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
+                    ListViewCollections.Sort(ListViewCollections.AllColumns[0], SortOrder.Ascending);
+
+                var collections = new Collections();
+                foreach (var collection in e.SourceModels)
+                    collections.Add((Collection)collection);
+
+                OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem);
+                return;
+            }
+
+            if (targetCollection == null) return;
             var beatmaps = new Beatmaps();
             foreach (var b in e.SourceModels)
             {
                 beatmaps.Add((BeatmapExtension)b);
             }
 
-            BeatmapsDropped?.Invoke(this, beatmaps, collection.Name);
+            BeatmapsDropped?.Invoke(this, beatmaps, targetCollection.Name);
         }
 
         protected virtual void OnRightClick(StringEventArgs e)
