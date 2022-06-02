@@ -15,7 +15,6 @@ namespace GuiComponents.Controls
     {
         public event GuiHelpers.LoadFileArgs OnLoadFile;
         public event GuiHelpers.CollectionReorderEventArgs OnCollectionReorder;
-
         public string SearchText => textBox_collectionNameSearch.Text;
         public Collections Collections
         {
@@ -61,6 +60,10 @@ namespace GuiComponents.Controls
         public event GuiHelpers.CollectionBeatmapsEventArgs BeatmapsDropped;
         public event EventHandler<StringEventArgs> RightClick;
 
+        private CollectionRenderer _collectionRenderer = new CollectionRenderer();
+        private RearrangingDropSink _dropsink = new RearrangingDropSink();
+        private OLVColumn NameColumn;
+
         public CollectionListingView()
         {
             InitializeComponent();
@@ -83,9 +86,6 @@ namespace GuiComponents.Controls
 
         }
 
-        private CollectionRenderer _collectionRenderer = new CollectionRenderer();
-        private RearrangingDropSink _dropsink = new RearrangingDropSink();
-
         private void init()
         {
             //ListViewCollections.SelectedIndexChanged += ListViewCollectionsSelectedIndexChanged;
@@ -94,6 +94,8 @@ namespace GuiComponents.Controls
             ListViewCollections.HideSelection = false;
             ListViewCollections.DefaultRenderer = _collectionRenderer;
             ListViewCollections.IsSimpleDragSource = true;
+            ListViewCollections.PrimarySortColumn = NameColumn = ListViewCollections.AllColumns[0];
+            ListViewCollections.PrimarySortOrder = SortOrder.Ascending;
 
             _dropsink.CanDropBetween = true;
             _dropsink.CanDropOnItem = true;
@@ -189,18 +191,19 @@ namespace GuiComponents.Controls
         {
             SelectedCollectionChanged?.Invoke(this, EventArgs.Empty);
         }
+
         protected virtual void OnSelectedCollectionsChanged()
         {
             SelectedCollectionsChanged?.Invoke(this, EventArgs.Empty);
         }
+
         private void ListViewCollections_ModelDropped(object sender, ModelDropEventArgs e)
         {
             e.Handled = true;
             var targetCollection = (Collection)e.TargetModel;
             if (e.SourceModels[0] is Collection)
             {
-                var nameColumn = ListViewCollections.AllColumns[0];
-                if (ListViewCollections.LastSortColumn != nameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
+                if (ListViewCollections.LastSortColumn != NameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
                     ListViewCollections.Sort(ListViewCollections.AllColumns[0], SortOrder.Ascending);
 
                 var collections = new Collections();
