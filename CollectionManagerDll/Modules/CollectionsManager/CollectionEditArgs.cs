@@ -11,8 +11,10 @@ namespace CollectionManager.Modules.CollectionsManager
         public string OrginalName { get; private set; }
         public string NewName { get; set; }
         public Collections Collections { get; private set; }
+        public Collection TargetCollection { get; private set; }
         public Beatmaps Beatmaps { get; private set; }
         public IList<string> CollectionNames { get; private set; }
+        public bool PlaceCollectionsBefore { get; private set; }
         public CollectionEditArgs(CollectionEdit action)
         {
             Action = action;
@@ -114,6 +116,17 @@ namespace CollectionManager.Modules.CollectionsManager
             };
         }
 
+        #endregion
+        #region Reorder collections using special characters placed at the begining of the name, this modifies ALL collection names
+        public static CollectionEditArgs ReorderCollections(Collections collections, Collection targetCollection, bool placeBefore)
+        {
+            return new CollectionEditArgs(CollectionEdit.Reorder)
+            {
+                Collections = collections,
+                TargetCollection = targetCollection,
+                PlaceCollectionsBefore = placeBefore
+            };
+        }
         #endregion
         #region Remove beatmaps from collection
         public static CollectionEditArgs RemoveBeatmaps(string collectionName, Beatmaps beatmaps)

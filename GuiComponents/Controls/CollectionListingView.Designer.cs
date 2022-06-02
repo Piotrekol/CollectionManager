@@ -91,6 +91,7 @@
             this.ListViewCollections.Name = "ListViewCollections";
             this.ListViewCollections.ShowGroups = false;
             this.ListViewCollections.Size = new System.Drawing.Size(463, 345);
+            this.ListViewCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.ListViewCollections.TabIndex = 5;
             this.ListViewCollections.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ListViewCollections.UseCompatibleStateImageBehavior = false;

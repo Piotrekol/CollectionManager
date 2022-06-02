@@ -7,6 +7,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Specialized;
 using App.Misc;
+using Common;
+using App.Properties;
 
 namespace App.Presenters.Controls
 {
@@ -15,7 +17,8 @@ namespace App.Presenters.Controls
         ICollectionListingView _view;
 
         private Collections _collections;
-        private ICollectionListingModel _model;
+        private readonly ICollectionListingModel _model;
+        private readonly IUserDialogs _userDialogs;
 
         public Collections Collections
         {
@@ -32,22 +35,38 @@ namespace App.Presenters.Controls
                     _view.SelectedCollection = selectedCollection;
             }
         }
-        public CollectionListingPresenter(ICollectionListingView view, ICollectionListingModel model)
+        public CollectionListingPresenter(ICollectionListingView view, ICollectionListingModel model, IUserDialogs userDialogs)
         {
             _view = view;
             _view.RightClick += _view_RightClick;
             _view.SelectedCollectionsChanged += ViewOnSelectedCollectionsChanged;
             _view.BeatmapsDropped += ViewOnBeatmapsDropped;
+            _view.OnCollectionReorder += ViewOnCollectionReorder;
             _model = model;
+            _userDialogs = userDialogs;
             _model.CollectionsChanged += ModelOnCollectionsChanged;
             Collections = _model.GetCollections();
+        }
+
+        private void ViewOnCollectionReorder(object sender, Collections collections, Collection targetCollection, bool placeBefore)
+        {
+            if (!Settings.Default.DontAskAboutReorderingCollections)
+            {
+                var result = _userDialogs.YesNoMessageBox($"Reordering collections will rename all loaded collections, proceed?", "Reordering", MessageBoxType.Question,
+                        "Don't ask me again");
+                Settings.Default.DontAskAboutReorderingCollections = result.doNotAskAgain;
+                Settings.Default.Save();
+                if (!result.Result)
+                    return;
+            }
+
+            _model.EmitCollectionEditing(CollectionEditArgs.ReorderCollections(collections, targetCollection, placeBefore));
         }
 
         private void ViewOnBeatmapsDropped(object sender, Beatmaps args, string collectionName)
         {
             _model.EmitCollectionEditing(CollectionEditArgs.AddBeatmaps(collectionName, args));
         }
-
 
         private void ViewOnSelectedCollectionsChanged(object sender, EventArgs eventArgs)
         {

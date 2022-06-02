@@ -14,5 +14,6 @@
         Intersect=9,
         Inverse=10,
         Difference=11,
+        Reorder=12,
     }
 }
