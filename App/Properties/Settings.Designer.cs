@@ -12,7 +12,7 @@ namespace App.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,13 +25,13 @@ namespace App.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DontAskAboutOsuDirectory {
+        [global::System.Configuration.DefaultSettingValueAttribute("{}")]
+        public string StartupSettings {
             get {
-                return ((bool)(this["DontAskAboutOsuDirectory"]));
+                return ((string)(this["StartupSettings"]));
             }
             set {
-                this["DontAskAboutOsuDirectory"] = value;
+                this["StartupSettings"] = value;
             }
         }
         
@@ -80,18 +80,6 @@ namespace App.Properties {
             }
             set {
                 this["Osustats_apiKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string OsuDirectory {
-            get {
-                return ((string)(this["OsuDirectory"]));
-            }
-            set {
-                this["OsuDirectory"] = value;
             }
         }
         
