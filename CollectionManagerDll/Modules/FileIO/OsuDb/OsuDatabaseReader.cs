@@ -6,13 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
     //TODO: refactor to allow for read/write access.
     public class OsuDatabaseLoader
     {
-        private readonly ILogger _logger;
         private readonly IMapDataManager _mapDataStorer;
         private FileStream _fileStream;
         private BinaryReader _binaryReader;
@@ -27,44 +27,46 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         public int ExpectedNumOfBeatmaps { get; private set; } = -1;
         public int NumberOfLoadedBeatmaps { get; private set; }
 
-        public OsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer, Beatmap tempBeatmap)
+        public OsuDatabaseLoader(IMapDataManager mapDataStorer, Beatmap tempBeatmap)
         {
             _tempBeatmap = tempBeatmap;
             _mapDataStorer = mapDataStorer;
-            _logger = logger;
         }
 
-        public virtual void LoadDatabase(string fullOsuDbPath)
+        public virtual void LoadDatabase(string fullOsuDbPath, IProgress<string> progress, CancellationToken cancellationToken)
         {
             if (FileExists(fullOsuDbPath))
             {
                 _fileStream = new FileStream(fullOsuDbPath, FileMode.Open, FileAccess.Read);
                 _binaryReader = new BinaryReader(_fileStream);
-                if (DatabaseContainsData())
+                if (DatabaseContainsData(progress))
                 {
-                    ReadDatabaseEntries();
+                    ReadDatabaseEntries(progress, cancellationToken);
                 }
                 DestoryReader();
             }
             GC.Collect();
         }
 
-        protected virtual void ReadDatabaseEntries()
+        protected virtual void ReadDatabaseEntries(IProgress<string> progress, CancellationToken cancellationToken)
         {
-            _logger?.Log("Starting MassStoring of {0} beatmaps", ExpectedNumOfBeatmaps.ToString());
+            progress?.Report($"Starting load of {ExpectedNumOfBeatmaps} beatmaps");
 
             _mapDataStorer.StartMassStoring();
             for (NumberOfLoadedBeatmaps = 0; NumberOfLoadedBeatmaps < ExpectedNumOfBeatmaps; NumberOfLoadedBeatmaps++)
             {
                 if (NumberOfLoadedBeatmaps % 100 == 0)
-                    _logger?.Log("Loading {0} of {1}", NumberOfLoadedBeatmaps.ToString(),
-                    ExpectedNumOfBeatmaps.ToString());
+                    progress?.Report($"Loading {NumberOfLoadedBeatmaps} of {ExpectedNumOfBeatmaps}");
+                if (cancellationToken.IsCancellationRequested)
+                    break;
 
                 ReadNextBeatmap();
             }
-            _logger?.Log("Loaded {0} beatmaps", NumberOfLoadedBeatmaps.ToString());
+
+            progress?.Report($"Loaded {NumberOfLoadedBeatmaps} beatmaps");
             _mapDataStorer.EndMassStoring();
-            LoadedSuccessfully = true;
+            if (!cancellationToken.IsCancellationRequested)
+                LoadedSuccessfully = true;
         }
         private void ReadNextBeatmap()
         {
@@ -361,16 +363,16 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             }
             return "";
         }
-        private bool DatabaseContainsData()
+        private bool DatabaseContainsData(IProgress<string> progress)
         {
             FileDate = _binaryReader.ReadInt32();
             if (FileDate < 20191105)
             {
-                _logger?.Log(string.Format("Outdated osu!.db version({0}). Load failed.", FileDate.ToString()));
+                progress?.Report($"Outdated osu!.db version ({FileDate}). Load failed.");
                 return false;
             }
             ExpectedNumberOfMapSets = _binaryReader.ReadInt32();
-            _logger?.Log(string.Format("Expected number of mapSets: {0}", ExpectedNumberOfMapSets));
+            progress?.Report($"Expected number of mapSets: {ExpectedNumberOfMapSets}");
             try
             {
                 bool something = _binaryReader.ReadBoolean();
@@ -378,8 +380,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
                 _binaryReader.BaseStream.Seek(1, SeekOrigin.Current);
                 Username = _binaryReader.ReadString();
                 ExpectedNumOfBeatmaps = _binaryReader.ReadInt32();
-
-                _logger?.Log(string.Format("Expected number of beatmaps: {0}", ExpectedNumOfBeatmaps));
+                progress?.Report($"Expected number of beatmaps: {ExpectedNumOfBeatmaps}");
 
                 if (ExpectedNumOfBeatmaps < 0)
                 {

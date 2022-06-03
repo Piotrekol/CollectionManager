@@ -1,4 +1,6 @@
 ﻿using CollectionManager.DataTypes;
+using System;
+using System.Threading;
 
 namespace CollectionManager.Modules.FileIO.OsuDb
 {
@@ -17,14 +19,16 @@ namespace CollectionManager.Modules.FileIO.OsuDb
 
         public OsuDatabase(Beatmap beatmapBase)
         {
-            _databaseLoader = new LOsuDatabaseLoader(null, LoadedMaps, beatmapBase);
+            _databaseLoader = new LOsuDatabaseLoader(LoadedMaps, beatmapBase);
         }
 
-        public void Load(string fileDir)
+        public void Load(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
         {
             OsuFileLocation = fileDir;
-            _databaseLoader.LoadDatabase(fileDir);
+            _databaseLoader.LoadDatabase(fileDir, progress, cancellationToken);
         }
+
+        public void Load(string fileDir, IProgress<string> progress = null) => Load(fileDir, progress, CancellationToken.None);
 
     }
 }

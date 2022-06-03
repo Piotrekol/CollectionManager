@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
@@ -8,7 +9,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
     {
         private ILogger logger;
         public string status { get; private set; }
-        public LOsuDatabaseLoader(ILogger logger, IMapDataManager mapDataStorer, Beatmap tempBeatmap) : base(logger, mapDataStorer, tempBeatmap)
+        public LOsuDatabaseLoader(IMapDataManager mapDataStorer, Beatmap tempBeatmap) : base(mapDataStorer, tempBeatmap)
         {
         }
 
@@ -20,17 +21,18 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             return result;
         }
 
-        public override void LoadDatabase(string fullOsuDbPath)
+        public override void LoadDatabase(string fullOsuDbPath, IProgress<string> progress, CancellationToken cancellationToken)
         {
             status = "Loading database";
-            base.LoadDatabase(fullOsuDbPath);
+            base.LoadDatabase(fullOsuDbPath, progress, cancellationToken);
             status = $"Loaded {NumberOfLoadedBeatmaps} beatmaps";
         }
-        protected override void ReadDatabaseEntries()
+
+        protected override void ReadDatabaseEntries(IProgress<string> progress, CancellationToken cancellationToken)
         {
             try
             {
-                base.ReadDatabaseEntries();
+                base.ReadDatabaseEntries(progress, cancellationToken);
             }
             catch (Exception e)
             {
