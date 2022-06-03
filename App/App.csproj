@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>osu! Collection Manager</AssemblyTitle>
     <Product>Gui</Product>
     <Copyright>Copyright ©  2017-present Piotrekol</Copyright>

@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>GuiComponents</AssemblyTitle>
     <Product>GuiComponents</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <LangVersion>latest</LangVersion>
+	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
