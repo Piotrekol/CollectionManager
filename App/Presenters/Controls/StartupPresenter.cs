@@ -83,7 +83,7 @@ namespace App.Presenters.Controls
                 SaveSettings();
 
             DoCollectionAction();
-            _form.Close();
+            CloseForm();
         }
 
         private void DoCollectionAction()
@@ -139,7 +139,11 @@ namespace App.Presenters.Controls
             Application.UseWaitCursor = true;
             await _databaseLoadTask;
             Application.UseWaitCursor = false;
+            CloseForm();
+        }
 
+        private void CloseForm()
+        {
             _formClosedManually = true;
             _form.Close();
         }
