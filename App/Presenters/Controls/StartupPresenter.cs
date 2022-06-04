@@ -21,6 +21,8 @@ namespace App.Presenters.Controls
         private CancellationTokenSource _cancellationTokenSource;
         private Progress<string> _databaseLoadProgressReporter;
         private Task _databaseLoadTask;
+        private bool _formClosedByUser;
+        private bool _formClosedManually;
 
         public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs)
         {
@@ -37,12 +39,23 @@ namespace App.Presenters.Controls
                     _view.StartupView.LoadDatabaseStatusText = $"osu! location: \"{Initalizer.OsuDirectory}\"{Environment.NewLine}{report}";
             });
 
+            _view.Closing += _view_Closing;
             _view.StartupView.UseSelectedOptionsOnStartup = _startupSettings.UseSelectedOptionsOnStartup;
             _view.StartupView.StartupCollectionOperation += _view_StartupCollectionOperation;
             _view.StartupView.StartupDatabaseOperation += StartupView_StartupDatabaseOperation;
         }
 
-        public async Task Run()
+        private async void _view_Closing(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is not FormClosingEventArgs formEventArgs || formEventArgs.CloseReason != CloseReason.UserClosing || _formClosedManually)
+                return;
+
+            _formClosedByUser = true;
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+        }
+
+        public async Task<bool> Run()
         {
             _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
             if (_startupSettings.UseSelectedOptionsOnStartup)
@@ -57,13 +70,12 @@ namespace App.Presenters.Controls
             await _databaseLoadTask;
             if (_startupSettings.UseSelectedOptionsOnStartup)
             {
-                _view.Close();
+                CloseForm();
                 Application.UseWaitCursor = false;
             }
 
             _startupSettings.UseSelectedOptionsOnStartup = _view.StartupView.UseSelectedOptionsOnStartup;
             SaveSettings();
-
             switch (_startupSettings.StartupCollectionAction)
             {
                 case StartupCollectionAction.None:
@@ -75,6 +87,8 @@ namespace App.Presenters.Controls
                     _sidePanelActionsHandler.LoadDefaultCollection();
                     break;
             }
+
+            return !_formClosedByUser;
         }
 
         private async void StartupView_StartupDatabaseOperation(object sender, StartupDatabaseAction args)
@@ -112,6 +126,12 @@ namespace App.Presenters.Controls
             Application.UseWaitCursor = true;
             await _databaseLoadTask;
             Application.UseWaitCursor = false;
+            CloseForm();
+        }
+
+        private void CloseForm()
+        {
+            _formClosedManually = true;
             _view.Close();
         }
 

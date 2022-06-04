@@ -1,6 +1,5 @@
 ﻿using GuiComponents.Interfaces;
-using System;
-using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace GuiComponents.Forms
 {
@@ -11,29 +10,6 @@ namespace GuiComponents.Forms
             InitializeComponent();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-        }
-
         public IStartupView StartupView => startupView1;
-
-        event EventHandler IForm.Closing
-        {
-            add
-            {
-                throw new NotImplementedException();
-            }
-
-            remove
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void ShowAndBlock()
-        {
-            this.ShowDialog();
-        }
     }
 }

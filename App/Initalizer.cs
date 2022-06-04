@@ -65,9 +65,9 @@ namespace App
                 guiActionsHandler.SidePanelActionsHandler.OsustatsLogin(null, Settings.Default.Osustats_apiKey);
 
             StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs);
-            await StartupPresenter.Run();
+            if (await StartupPresenter.Run())
+                mainForm.ShowAndBlock();
 
-            mainForm.ShowAndBlock();
             Quit();
         }
 

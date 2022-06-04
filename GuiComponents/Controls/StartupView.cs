@@ -77,17 +77,12 @@ namespace GuiComponents.Controls
             get => button_DoNothing.Enabled;
             set
             {
-                foreach (var control in groupBox_Step1.Controls)
-                {
-                    if (control is Button button)
-                        button.Enabled = value;
-                }
-
-                foreach (var control in groupBox_Step2.Controls)
-                {
-                    if (control is Button button)
-                        button.Enabled = value;
-                }
+                button_DoNothing.Enabled 
+                    = button_LoadOsuCollection.Enabled
+                    = button_LoadCollectionFromFile.Enabled 
+                    = button_LoadDatabase.Enabled 
+                    = button_LoadDatabaseSkip.Enabled 
+                    = value;
             }
         }
 
