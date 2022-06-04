@@ -33,25 +33,26 @@
             // 
             // startupView1
             // 
-            this.startupView1.ButtonsEnabled = true;
-            this.startupView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.startupView1.CollectionButtonsEnabled = true;
+            this.startupView1.CollectionStatusText = "";
+            this.startupView1.DatabaseButtonsEnabled = true;
             this.startupView1.LoadDatabaseStatusText = "...";
             this.startupView1.LoadDefaultCollectionButtonEnabled = true;
             this.startupView1.Location = new System.Drawing.Point(0, 0);
             this.startupView1.Name = "startupView1";
-            this.startupView1.Size = new System.Drawing.Size(519, 356);
+            this.startupView1.Size = new System.Drawing.Size(519, 379);
             this.startupView1.TabIndex = 0;
             this.startupView1.UseSelectedOptionsOnStartup = false;
             // 
             // StartupForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(519, 356);
+            this.ClientSize = new System.Drawing.Size(519, 379);
             this.Controls.Add(this.startupView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(859, 872);
-            this.MinimumSize = new System.Drawing.Size(448, 317);
+            this.MaximumSize = new System.Drawing.Size(535, 418);
+            this.MinimumSize = new System.Drawing.Size(535, 418);
             this.Name = "StartupForm";
             this.Text = "osu! Collection Manager";
             this.ResumeLayout(false);

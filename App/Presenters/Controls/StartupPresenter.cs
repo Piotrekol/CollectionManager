@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using App.Models;
 using App.Properties;
+using CollectionManager.Modules.CollectionsManager;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
@@ -14,68 +15,79 @@ namespace App.Presenters.Controls
 {
     public class StartupPresenter
     {
-        private readonly IStartupForm _view;
+        private readonly IStartupForm _form;
+        private readonly IStartupView _view;
         private readonly SidePanelActionsHandler _sidePanelActionsHandler;
         private readonly IUserDialogs _userDialogs;
+        private readonly CollectionsManagerWithCounts _collectionsManager;
         private StartupSettings _startupSettings;
         private CancellationTokenSource _cancellationTokenSource;
         private Progress<string> _databaseLoadProgressReporter;
         private Task _databaseLoadTask;
-        private bool _formClosedByUser;
         private bool _formClosedManually;
 
-        public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs)
+        public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs, CollectionsManagerWithCounts collectionsManager)
         {
-            _view = view;
+            _form = view;
+            _view = view.StartupView;
             _sidePanelActionsHandler = sidePanelActionsHandler;
             _userDialogs = userDialogs;
+            _collectionsManager = collectionsManager;
             _startupSettings = JsonConvert.DeserializeObject<StartupSettings>(Settings.Default.StartupSettings);
             _cancellationTokenSource = new CancellationTokenSource();
             _databaseLoadProgressReporter = new Progress<string>(report =>
             {
                 if (string.IsNullOrEmpty(Initalizer.OsuDirectory))
-                    _view.StartupView.LoadDatabaseStatusText = report;
+                    _view.LoadDatabaseStatusText = report;
                 else
-                    _view.StartupView.LoadDatabaseStatusText = $"osu! location: \"{Initalizer.OsuDirectory}\"{Environment.NewLine}{report}";
+                    _view.LoadDatabaseStatusText = $"osu! location: \"{Initalizer.OsuDirectory}\"{Environment.NewLine}{report}";
             });
 
-            _view.Closing += _view_Closing;
-            _view.StartupView.UseSelectedOptionsOnStartup = _startupSettings.UseSelectedOptionsOnStartup;
-            _view.StartupView.StartupCollectionOperation += _view_StartupCollectionOperation;
-            _view.StartupView.StartupDatabaseOperation += StartupView_StartupDatabaseOperation;
+            _view.UseSelectedOptionsOnStartup = _startupSettings.AutoLoadMode;
+            _form.Closing += _view_Closing;
+            _view.StartupCollectionOperation += _view_StartupCollectionOperation;
+            _view.StartupDatabaseOperation += _view_StartupDatabaseOperation;
         }
 
-        private async void _view_Closing(object sender, EventArgs eventArgs)
+        public async Task Run()
         {
-            if (eventArgs is not FormClosingEventArgs formEventArgs || formEventArgs.CloseReason != CloseReason.UserClosing || _formClosedManually)
-                return;
-
-            _formClosedByUser = true;
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-        }
-
-        public async Task<bool> Run()
-        {
-            _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
-            if (_startupSettings.UseSelectedOptionsOnStartup)
+            if (_startupSettings.AutoLoadMode && _startupSettings.StartupDatabaseAction == StartupDatabaseAction.Skip)
             {
-                _view.StartupView.ButtonsEnabled = false;
-                Application.UseWaitCursor = true;
-                _view.Show();
+                DoCollectionAction();
+                return;
             }
+
+            var loadedCollectionFromFile = _collectionsManager.CollectionsCount != 0;
+            Application.UseWaitCursor = loadedCollectionFromFile || _startupSettings.AutoLoadMode;
+            _view.UseSelectedOptionsOnStartupEnabled = !loadedCollectionFromFile;
+            _view.CollectionButtonsEnabled = !(loadedCollectionFromFile || _startupSettings.AutoLoadMode);
+            _view.DatabaseButtonsEnabled = true;
+            _view.CollectionStatusText = loadedCollectionFromFile
+                ? $"Going to load {_collectionsManager.CollectionsCount} collections with {_collectionsManager.BeatmapsInCollectionsCount} beatmaps"
+                : string.Empty;
+
+            _databaseLoadTask = Task.Run(() =>
+            {
+                LoadDatabase(_cancellationTokenSource.Token);
+                Application.UseWaitCursor = false;
+                _view.CollectionButtonsEnabled = true;
+            });
+            if (_startupSettings.AutoLoadMode)
+                _form.Show();
             else
-                _view.ShowAndBlock();
+                _form.ShowAndBlock();
 
             await _databaseLoadTask;
-            if (_startupSettings.UseSelectedOptionsOnStartup)
-            {
-                CloseForm();
-                Application.UseWaitCursor = false;
-            }
+            _startupSettings.AutoLoadMode = _view.UseSelectedOptionsOnStartup;
+            if (!loadedCollectionFromFile)
+                SaveSettings();
 
-            _startupSettings.UseSelectedOptionsOnStartup = _view.StartupView.UseSelectedOptionsOnStartup;
-            SaveSettings();
+            DoCollectionAction();
+            _form.Close();
+        }
+
+        private void DoCollectionAction()
+        {
             switch (_startupSettings.StartupCollectionAction)
             {
                 case StartupCollectionAction.None:
@@ -87,11 +99,9 @@ namespace App.Presenters.Controls
                     _sidePanelActionsHandler.LoadDefaultCollection();
                     break;
             }
-
-            return !_formClosedByUser;
         }
 
-        private async void StartupView_StartupDatabaseOperation(object sender, StartupDatabaseAction args)
+        private async void _view_StartupDatabaseOperation(object sender, StartupDatabaseAction args)
         {
             _startupSettings.StartupDatabaseAction = args;
             _cancellationTokenSource.Cancel();
@@ -100,14 +110,15 @@ namespace App.Presenters.Controls
             await _databaseLoadTask;
             switch (args)
             {
-                case StartupDatabaseAction.None:
+                case StartupDatabaseAction.Skip:
                     Initalizer.OsuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
                     Initalizer.OsuFileIo.ScoresDatabase.Clear();
                     Initalizer.OsuDirectory = null;
-                    _view.StartupView.LoadDefaultCollectionButtonEnabled = false;
+                    GC.Collect();
                     ((IProgress<string>)_databaseLoadProgressReporter).Report("osu! database unloaded");
                     break;
                 case StartupDatabaseAction.LoadFromDifferentLocation:
+                    _view.LoadDefaultCollectionButtonEnabled = true;
                     var osuDirectory = Initalizer.OsuFileIo.OsuPathResolver.GetManualOsuDir(_userDialogs.SelectDirectory);
                     if (!string.IsNullOrEmpty(osuDirectory))
                     {
@@ -116,23 +127,31 @@ namespace App.Presenters.Controls
                     }
 
                     break;
+                case StartupDatabaseAction.None:
+                    break;
             }
         }
 
         private async void _view_StartupCollectionOperation(object sender, StartupCollectionAction args)
         {
             _startupSettings.StartupCollectionAction = args;
-            _view.StartupView.ButtonsEnabled = false;
+            _view.CollectionButtonsEnabled = _view.DatabaseButtonsEnabled = false;
             Application.UseWaitCursor = true;
             await _databaseLoadTask;
             Application.UseWaitCursor = false;
-            CloseForm();
+
+            _formClosedManually = true;
+            _form.Close();
         }
 
-        private void CloseForm()
+        private void _view_Closing(object sender, EventArgs eventArgs)
         {
-            _formClosedManually = true;
-            _view.Close();
+            if (eventArgs is not FormClosingEventArgs formEventArgs || formEventArgs.CloseReason != CloseReason.UserClosing || _formClosedManually)
+                return;
+
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+            Initalizer.Quit();
         }
 
         private void LoadDatabase(CancellationToken cancellationToken)
@@ -144,7 +163,7 @@ namespace App.Presenters.Controls
 
             if (string.IsNullOrEmpty(osuDirectory))
             {
-                _view.StartupView.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
+                _view.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
                 return;
             }
 
@@ -155,19 +174,20 @@ namespace App.Presenters.Controls
             try
             {
                 osuFileIo.ScoresLoader.ReadDb(Path.Combine(osuDirectory, @"scores.db"), cancellationToken);
-                _view.StartupView.LoadDatabaseStatusText += $"{Environment.NewLine}Loaded {osuFileIo.ScoresDatabase.Scores.Count} scores";
+                _view.LoadDatabaseStatusText += $"{Environment.NewLine}Loaded {osuFileIo.ScoresDatabase.Scores.Count} scores";
             }
             catch (Exception)
             {
-                _view.StartupView.LoadDatabaseStatusText += $"{Environment.NewLine}Could not load scores.";
+                _view.LoadDatabaseStatusText += $"{Environment.NewLine}Could not load scores";
             }
 
-            _view.StartupView.LoadDefaultCollectionButtonEnabled = true;
+            _view.LoadDefaultCollectionButtonEnabled = true;
             BeatmapUtils.OsuSongsDirectory = Initalizer.OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
         }
 
         private void SaveSettings()
         {
+
             Settings.Default.StartupSettings = JsonConvert.SerializeObject(_startupSettings);
             Settings.Default.Save();
         }

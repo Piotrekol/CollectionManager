@@ -17,10 +17,9 @@ namespace GuiComponents.Forms
 
         public void ShowAndBlock()
         {
-            this.ShowDialog();
+            ShowDialog();
         }
 
         public event EventHandler Closing;
-        public event EventHandler UserClosing;
     }
 }

@@ -50,6 +50,13 @@ namespace App
 
             //set initial text info and update events
             SetTextData(infoTextModel);
+
+            var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
+            var guiActionsHandler = new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
+
+            if (!string.IsNullOrWhiteSpace(Settings.Default.Osustats_apiKey))
+                guiActionsHandler.SidePanelActionsHandler.OsustatsLogin(null, Settings.Default.Osustats_apiKey);
+
             if (args.Length > 0)
             {
                 if (File.Exists(args[0]))
@@ -58,15 +65,11 @@ namespace App
                 }
             }
 
-            var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
-            var guiActionsHandler = new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
+            StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs, CollectionsManager);
+            await StartupPresenter.Run();
+                
 
-            if (!string.IsNullOrWhiteSpace(Settings.Default.Osustats_apiKey))
-                guiActionsHandler.SidePanelActionsHandler.OsustatsLogin(null, Settings.Default.Osustats_apiKey);
-
-            StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs);
-            if (await StartupPresenter.Run())
-                mainForm.ShowAndBlock();
+            mainForm.ShowAndBlock();
 
             Quit();
         }
@@ -88,7 +91,7 @@ namespace App
         }
 
 
-        private static void Quit()
+        public static void Quit()
         {
             Settings.Default.Save();
 
