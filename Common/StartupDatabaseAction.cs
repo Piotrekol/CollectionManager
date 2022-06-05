@@ -3,7 +3,7 @@
     public enum StartupDatabaseAction
     {
         None,
-        Skip,
+        Unload,
         LoadFromDifferentLocation
     }
 }

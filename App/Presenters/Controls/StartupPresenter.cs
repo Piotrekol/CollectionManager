@@ -51,7 +51,7 @@ namespace App.Presenters.Controls
 
         public async Task Run()
         {
-            if (_startupSettings.AutoLoadMode && _startupSettings.StartupDatabaseAction == StartupDatabaseAction.Skip)
+            if (_startupSettings.AutoLoadMode && _startupSettings.StartupDatabaseAction == StartupDatabaseAction.Unload)
             {
                 DoCollectionAction();
                 return;
@@ -92,11 +92,11 @@ namespace App.Presenters.Controls
             {
                 case StartupCollectionAction.None:
                     break;
-                case StartupCollectionAction.LoadCollection:
+                case StartupCollectionAction.LoadCollectionFromFile:
                     _sidePanelActionsHandler.LoadCollectionFile();
                     break;
-                case StartupCollectionAction.LoadDefaultCollection:
-                    _sidePanelActionsHandler.LoadDefaultCollection();
+                case StartupCollectionAction.LoadOsuCollection:
+                    _sidePanelActionsHandler.LoadOsuCollection();
                     break;
             }
         }
@@ -110,18 +110,19 @@ namespace App.Presenters.Controls
             await _databaseLoadTask;
             switch (args)
             {
-                case StartupDatabaseAction.Skip:
+                case StartupDatabaseAction.Unload:
                     Initalizer.OsuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
                     Initalizer.OsuFileIo.ScoresDatabase.Clear();
                     Initalizer.OsuDirectory = null;
+                    _view.LoadOsuCollectionButtonEnabled = false;
                     GC.Collect();
                     ((IProgress<string>)_databaseLoadProgressReporter).Report("osu! database unloaded");
                     break;
                 case StartupDatabaseAction.LoadFromDifferentLocation:
-                    _view.LoadDefaultCollectionButtonEnabled = true;
                     var osuDirectory = Initalizer.OsuFileIo.OsuPathResolver.GetManualOsuDir(_userDialogs.SelectDirectory);
                     if (!string.IsNullOrEmpty(osuDirectory))
                     {
+                        _view.LoadOsuCollectionButtonEnabled = true;
                         _startupSettings.OsuLocation = osuDirectory;
                         _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
                     }
@@ -185,7 +186,7 @@ namespace App.Presenters.Controls
                 _view.LoadDatabaseStatusText += $"{Environment.NewLine}Could not load scores";
             }
 
-            _view.LoadDefaultCollectionButtonEnabled = true;
+            _view.LoadOsuCollectionButtonEnabled = true;
             BeatmapUtils.OsuSongsDirectory = Initalizer.OsuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
         }
 

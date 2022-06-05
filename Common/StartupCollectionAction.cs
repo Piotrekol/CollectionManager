@@ -3,7 +3,7 @@
     public enum StartupCollectionAction
     {
         None,
-        LoadCollection,
-        LoadDefaultCollection,
+        LoadCollectionFromFile,
+        LoadOsuCollection,
     }
 }

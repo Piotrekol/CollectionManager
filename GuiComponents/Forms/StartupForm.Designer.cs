@@ -37,7 +37,7 @@
             this.startupView1.CollectionStatusText = "";
             this.startupView1.DatabaseButtonsEnabled = true;
             this.startupView1.LoadDatabaseStatusText = "...";
-            this.startupView1.LoadDefaultCollectionButtonEnabled = true;
+            this.startupView1.LoadOsuCollectionButtonEnabled = true;
             this.startupView1.Location = new System.Drawing.Point(0, 0);
             this.startupView1.Name = "startupView1";
             this.startupView1.Size = new System.Drawing.Size(519, 379);

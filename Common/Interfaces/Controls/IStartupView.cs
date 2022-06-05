@@ -13,6 +13,6 @@ namespace GuiComponents.Interfaces
         bool UseSelectedOptionsOnStartupEnabled { get; set; }
         bool CollectionButtonsEnabled { get; set; }
         bool DatabaseButtonsEnabled { get; set; }
-        bool LoadDefaultCollectionButtonEnabled { get; set; }
+        bool LoadOsuCollectionButtonEnabled { get; set; }
     }
 }

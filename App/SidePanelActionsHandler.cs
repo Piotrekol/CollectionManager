@@ -95,7 +95,7 @@ namespace App
             _mainForm.Closing += FormOnClosing;
         }
 
-        public void LoadDefaultCollection() => LoadDefaultCollection(null, null);
+        public void LoadOsuCollection() => LoadDefaultCollection(null, null);
 
         public void LoadCollectionFile() => LoadCollectionFile(null);
 

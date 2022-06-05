@@ -47,7 +47,7 @@ namespace GuiComponents.Controls
             }
         }
 
-        public bool LoadDefaultCollectionButtonEnabled
+        public bool LoadOsuCollectionButtonEnabled
         {
             get => button_LoadOsuCollection.Enabled;
             set
@@ -99,7 +99,7 @@ namespace GuiComponents.Controls
                             = button_LoadCollectionFromFile.Enabled
                             = value;
 
-                        button_LoadOsuCollection.Enabled = LoadDefaultCollectionButtonEnabled && value;
+                        button_LoadOsuCollection.Enabled = LoadOsuCollectionButtonEnabled && value;
                     }));
                     return;
                 }
@@ -108,7 +108,7 @@ namespace GuiComponents.Controls
                     = button_LoadCollectionFromFile.Enabled
                     = value;
 
-                button_LoadOsuCollection.Enabled = LoadDefaultCollectionButtonEnabled && value;
+                button_LoadOsuCollection.Enabled = LoadOsuCollectionButtonEnabled && value;
             }
         }
 
@@ -157,11 +157,11 @@ namespace GuiComponents.Controls
             InitializeComponent();
             flowLayoutPanel1.SetFlowBreak(button_DoNothing, true);
             button_DoNothing.Tag = StartupCollectionAction.None;
-            button_LoadOsuCollection.Tag = StartupCollectionAction.LoadDefaultCollection;
-            button_LoadCollectionFromFile.Tag = StartupCollectionAction.LoadCollection;
+            button_LoadOsuCollection.Tag = StartupCollectionAction.LoadOsuCollection;
+            button_LoadCollectionFromFile.Tag = StartupCollectionAction.LoadCollectionFromFile;
 
             button_LoadDatabase.Tag = StartupDatabaseAction.LoadFromDifferentLocation;
-            button_LoadDatabaseSkip.Tag = StartupDatabaseAction.Skip;
+            button_LoadDatabaseSkip.Tag = StartupDatabaseAction.Unload;
         }
 
         private void button_StartupAction_Click(object sender, EventArgs e)
