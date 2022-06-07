@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using Common;
 using GuiComponents.Interfaces;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace GuiComponents
 {
@@ -16,37 +17,43 @@ namespace GuiComponents
             return dialogResult == DialogResult.Yes;
         }
 
-
         public string SelectDirectory(string text)
         {
             return SelectDirectory(text, false);
         }
+
         public string SelectDirectory(string text, bool showNewFolder = false)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //set description and base folder for browsing
-
-            dialog.ShowNewFolderButton = true;
-            dialog.Description = text;
-            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            if (dialog.ShowDialog() == DialogResult.OK && Directory.Exists((dialog.SelectedPath)))
+            var dialog = new CommonOpenFileDialog
             {
-                return dialog.SelectedPath;
-            }
+                IsFolderPicker = true,
+                Title = text
+            };
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok && Directory.Exists(dialog.FileName))
+                return dialog.FileName;
+
             return string.Empty;
         }
-        public string SelectFile(string text, string types = "", string filename = "")
+
+        public string SelectFile(string text, string filters = "", string filename = "")
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = types; //"Collection database (*.db)|*.db";
-            openFileDialog.FileName = filename; //"collection.db";
-            openFileDialog.Multiselect = false;
-            var result = openFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-                return openFileDialog.FileName;
-            else
-                return string.Empty;
+            var dialog = new CommonOpenFileDialog
+            {
+                Multiselect = false,
+                Title = text
+            };
+            if (!string.IsNullOrEmpty(filters))
+            {
+                var split = filters.Split(new[] { '|' }, 2);
+                dialog.Filters.Add(new CommonFileDialogFilter(split[0], split[1]));
+            }
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                return dialog.FileName;
+
+            return string.Empty;
         }
+
         public string SaveFile(string title, string types = "all|*.*")
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog

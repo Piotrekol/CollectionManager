@@ -66,6 +66,8 @@ Source: "..\App\bin\Release\net48\Microsoft.Win32.Registry.dll"; DestDir: "{app}
 Source: "..\App\bin\Release\net48\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
