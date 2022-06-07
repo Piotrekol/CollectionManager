@@ -166,7 +166,7 @@ namespace App.Presenters.Controls
                 ? osuFileIo.OsuPathResolver.GetOsuDir()
                 : _startupSettings.OsuLocation;
 
-            if (string.IsNullOrEmpty(osuDirectory))
+            if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory))
             {
                 _view.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
                 return;
