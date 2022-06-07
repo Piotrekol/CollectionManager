@@ -23,6 +23,9 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
 
         public virtual void ReadDb(string osuScoresDbPath, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
             if (FileExists(osuScoresDbPath))
             {
                 _fileStream = new FileStream(osuScoresDbPath, FileMode.Open, FileAccess.Read);
