@@ -95,6 +95,10 @@ namespace App
             _mainForm.Closing += FormOnClosing;
         }
 
+        public void LoadOsuCollection() => LoadDefaultCollection(null, null);
+
+        public void LoadCollectionFile() => LoadCollectionFile(null);
+
         private void ResetApplicationSettings(object arg1, object arg2)
         {
             if (_userDialogs.YesNoMessageBox(

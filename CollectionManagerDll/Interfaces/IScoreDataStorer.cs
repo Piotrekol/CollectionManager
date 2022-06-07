@@ -7,6 +7,7 @@ namespace CollectionManager.Interfaces
         Scores Scores { get; }
         void StartMassStoring();
         void EndMassStoring();
+        void Clear();
         void Store(Score score);
     }
 }

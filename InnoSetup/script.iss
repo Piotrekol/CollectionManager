@@ -51,21 +51,21 @@ Name: osdbAssociation; Description: "Associate "".osdb"" extension (Collection f
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\App\bin\Release\net472\App.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net472\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\App.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

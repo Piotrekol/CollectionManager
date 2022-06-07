@@ -49,6 +49,9 @@ namespace CollectionManager.Modules.FileIO
             }
             return GetManualOsuDir(selectDirectoryDialog);
         }
+
+        public string GetOsuDir() => _getRunningOsuDir();
+
         private string _getRunningOsuDir()
         {
             if (OsuIsRunning)

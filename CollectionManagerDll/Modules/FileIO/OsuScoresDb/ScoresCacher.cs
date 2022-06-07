@@ -17,6 +17,13 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
         {
         }
 
+        public void Clear()
+        {
+            ScoreList.Clear();
+            Scores.Clear();
+            ScoreHashes.Clear();
+        }
+
         public List<Score> GetScores(Beatmap map)
         {
             return GetScores(map.Md5);
