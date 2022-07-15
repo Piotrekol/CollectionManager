@@ -178,6 +178,14 @@ namespace GuiComponents.Controls
                 var val = (DateTime)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
+            MainBpm.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return beatmap.MainBpm * _difficultyCalculator.ApplyMods(beatmap, _currentMods).BpmMultiplier;
+                }
+                return null;
+            };
             MainBpm.AspectToStringConverter = delegate (object cellValue)
             {
                 if (cellValue == null) return string.Empty;
