@@ -112,7 +112,7 @@ namespace App.Presenters.Controls
             if (map == null || !_view.IsAutoPlayEnabled)
                 return;
             var audioLocation = ((BeatmapExtension)map).FullAudioFileLocation();
-            if (ShouldSkipTrack(audioLocation))
+            if (ShouldSkipTrack(map, audioLocation))
             {
                 //Run as worker to avoid eventual stack overflow exception (eg. too many maps with no audio file in a row)
                 RunAsWorker(() => _model.EmitNextMapRequest());
@@ -122,29 +122,47 @@ namespace App.Presenters.Controls
             PlayBeatmap(map);
         }
 
-        private bool ShouldSkipTrack(string audioLocation)
+        private bool ShouldSkipTrack(Beatmap map, string audioLocation)
         {
-            if ((_lastAudioFileLocation == audioLocation || string.IsNullOrWhiteSpace(audioLocation)) &&
-                _view.IsMusicPlayerMode && !musicPlayer.IsPlaying)
+            //Skip repeating _audio files_(diferent diffs in same mapset) whenever _playing_ in _music player mode_
+            if (_view.IsMusicPlayerMode && _lastAudioFileLocation == audioLocation && !musicPlayer.IsPlaying)
                 return true;
 
-            return !File.Exists(audioLocation);
+            //Play if we have _audio file_ localy
+            if (File.Exists(audioLocation))
+                return false;
+
+            //Skip since we don't have local audio file in _music player mode_
+            if (_view.IsMusicPlayerMode)
+                return true;
+
+            //this is user-invoked play request (_music player mode_ check above)
+            //Is there a chance that preview of this beatmap exists in online source?
+            return map.MapSetId <= 20;
         }
+
         private void PlayBeatmap(Beatmap map)
         {
             var audioLocation = ((BeatmapExtension)map).FullAudioFileLocation();
-            if (audioLocation != string.Empty)
+            bool onlineSource = false;
+            if (audioLocation == string.Empty)
             {
-                RunAsWorker(() =>
-                {
-                    resetEvent.WaitOne(250);
-                    if (map.Equals(_model.CurrentBeatmap))
-                    {
-                        musicPlayer.Play(audioLocation,
-                            _view.IsMusicPlayerMode ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)));
-                    }
-                });
+                if (map.MapSetId <= 20)
+                    return;
+
+                onlineSource = true;
+                audioLocation = $@"https://b.ppy.sh/preview/{map.MapSetId}.mp3";
             }
+
+            RunAsWorker(() =>
+            {
+                resetEvent.WaitOne(250);
+                if (map.Equals(_model.CurrentBeatmap))
+                {
+                    musicPlayer.Play(audioLocation,
+                        _view.IsMusicPlayerMode || onlineSource ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)));
+                }
+            });
         }
         private void RunAsWorker(Action action)
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 namespace MusicPlayer
 {
@@ -45,6 +47,34 @@ namespace MusicPlayer
 
         public void Play(string audioFile, int startTime)
         {
+            Uri uri = new Uri(audioFile);
+
+            if (uri.HostNameType == UriHostNameType.Dns)
+            {
+                var tempFolderPath = Path.Combine(Path.GetTempPath(), "CM-previews");
+                Directory.CreateDirectory(tempFolderPath);
+                var directoryInfo = new DirectoryInfo(tempFolderPath);
+                var files = directoryInfo.GetFiles();
+                if (files.Length > 100)
+                {
+                    foreach (var file in files.OrderBy(f => f.LastWriteTimeUtc).Take(30))
+                    {
+                        file.Delete();
+                    }
+                }
+
+                var tempFilePath = Path.Combine(tempFolderPath, uri.Segments.Last());
+                if (!File.Exists(tempFilePath))
+                {
+                    using (WebClient ws = new WebClient())
+                    {
+                        ws.DownloadFile(audioFile, tempFilePath);
+                    }
+                }
+
+                audioFile = tempFilePath;
+            }
+
             musicPlayer.Play(audioFile, startTime);
         }
 
