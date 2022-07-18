@@ -123,6 +123,12 @@ namespace App.Presenters.Controls
 
                     args = CollectionEditArgs.DuplicateCollection(_view.SelectedCollection);
                     break;
+                case "Export":
+                    if (selectedCollections == null)
+                        return;
+
+                    args = CollectionEditArgsExtension.ExportBeatmaps(selectedCollections);
+                    break;
                 case "Copy":
                     if (selectedCollections == null)
                         return;

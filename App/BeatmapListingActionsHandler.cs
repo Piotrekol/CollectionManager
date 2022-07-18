@@ -52,33 +52,50 @@ namespace App
             };
         }
 
-        public void Bind(IBeatmapListingModel beatmapListingModel)
+        public void Bind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
         {
             beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
+            if (collectionListingModel != null)
+                collectionListingModel.CollectionEditing += CollectionListingModel_CollectionEditing;
         }
 
-
-        public void UnBind(IBeatmapListingModel beatmapListingModel)
+        public void UnBind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
         {
             beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
+            if (collectionListingModel != null)
+                collectionListingModel.CollectionEditing -= CollectionListingModel_CollectionEditing;
         }
 
         private void BeatmapListingModel_BeatmapOperation(object sender, BeatmapListingAction args)
         {
             _beatmapOperationHandlers[args](sender);
         }
+        private void CollectionListingModel_CollectionEditing(object sender, CollectionEditArgs e)
+        {
+            if (e.Action != CollectionManager.Enums.CollectionEdit.ExportBeatmaps)
+                return;
+
+            ExportBeatmapSets(e.Collections.AllBeatmaps().Cast<Beatmap>().ToList());
+        }
 
         private void ExportBeatmapSets(object sender)
         {
-            var model = (IBeatmapListingModel)sender;
-            if (model.SelectedBeatmaps?.Count == 0)
+            if (sender is not IBeatmapListingModel beatmapListingModel)
+                return;
+
+            ExportBeatmapSets(beatmapListingModel.SelectedBeatmaps?.ToList());
+        }
+
+        private void ExportBeatmapSets(List<Beatmap> beatmaps)
+        {
+            if (beatmaps?.Count == 0)
             {
                 _userDialogs.OkMessageBox("No beatmaps selected", "Info");
                 return;
             }
 
             var saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
-            var beatmapSets = model.SelectedBeatmaps.Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
+            var beatmapSets = beatmaps.Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
                                 .GroupBy(e => e.FileName).Select(e => e.First()).ToList();
             if (!Directory.Exists(saveDirectory))
                 return;
