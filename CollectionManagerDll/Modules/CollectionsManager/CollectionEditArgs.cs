@@ -7,14 +7,14 @@ namespace CollectionManager.Modules.CollectionsManager
 {
     public class CollectionEditArgs : EventArgs
     {
-        public CollectionEdit Action { get; private set; }
-        public string OrginalName { get; private set; }
-        public string NewName { get; set; }
-        public Collections Collections { get; private set; }
-        public Collection TargetCollection { get; private set; }
-        public Beatmaps Beatmaps { get; private set; }
-        public IList<string> CollectionNames { get; private set; }
-        public bool PlaceCollectionsBefore { get; private set; }
+        public CollectionEdit Action { get; protected set; }
+        public string OrginalName { get; protected set; }
+        public string NewName { get; protected set; }
+        public Collections Collections { get; protected set; }
+        public Collection TargetCollection { get; protected set; }
+        public Beatmaps Beatmaps { get; protected set; }
+        public IList<string> CollectionNames { get; protected set; }
+        public bool PlaceCollectionsBefore { get; protected set; }
         public CollectionEditArgs(CollectionEdit action)
         {
             Action = action;

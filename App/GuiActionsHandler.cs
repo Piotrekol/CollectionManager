@@ -22,7 +22,7 @@ namespace App
             SidePanelActionsHandler = new SidePanelActionsHandler(osuFileIo, collectionEditor, userDialogs, mainFormView, this, mainFormPresenter, loginForm);
 
             _beatmapListingActionsHandler = new BeatmapListingActionsHandler(collectionEditor, userDialogs, loginForm, osuFileIo);
-            _beatmapListingActionsHandler.Bind(mainFormPresenter.BeatmapListingModel);
+            _beatmapListingActionsHandler.Bind(mainFormPresenter.BeatmapListingModel, mainFormPresenter.CollectionListingModel);
 
             Initalizer.CollectionsManager.LoadedCollections.CollectionChanged += LoadedCollectionsOnCollectionChanged;
         }
@@ -47,12 +47,12 @@ namespace App
 
         public void Bind(IBeatmapListingModel model)
         {
-            _beatmapListingActionsHandler.Bind(model);
+            _beatmapListingActionsHandler.Bind(model, null);
         }
 
         public void UnBind(IBeatmapListingModel model)
         {
-            _beatmapListingActionsHandler.UnBind(model);
+            _beatmapListingActionsHandler.UnBind(model, null);
         }
     }
 }

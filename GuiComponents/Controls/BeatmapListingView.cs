@@ -289,6 +289,8 @@ namespace GuiComponents.Controls
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapFolder);
             else if (sender == PullMapsetMenuStrip)
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.PullWholeMapSet);
+            else if (sender == exportBeatmapSetsMenuItem)
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.ExportBeatmapSets);
         }
 
         private void ListViewBeatmaps_KeyUp(object sender, KeyEventArgs e)

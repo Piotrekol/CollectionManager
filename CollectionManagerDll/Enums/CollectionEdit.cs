@@ -15,5 +15,7 @@
         Inverse=10,
         Difference=11,
         Reorder=12,
+
+        ExportBeatmaps=100,
     }
 }

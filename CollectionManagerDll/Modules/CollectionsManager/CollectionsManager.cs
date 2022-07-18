@@ -41,6 +41,9 @@ namespace CollectionManager.Modules.CollectionsManager
         private void EditCollection(CollectionEditArgs args, bool suspendRefresh = false)
         {
             var action = args.Action;
+            if ((int)action >= 100)
+                return;
+
             if (action == CollectionEdit.Add)
             {
                 List<string> collectionNames = new List<string>();
