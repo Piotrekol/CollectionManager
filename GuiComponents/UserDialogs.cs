@@ -15,6 +15,7 @@ namespace GuiComponents
                     "Detected osu in: " + Environment.NewLine + path + Environment.NewLine + "Is this correct?",
                     "osu! directory", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk);
             return dialogResult == DialogResult.Yes;
+
         }
 
         public string SelectDirectory(string text)
@@ -84,6 +85,11 @@ namespace GuiComponents
             var result = YesNoForm.ShowDialog(text, caption, doNotAskAgainText);
 
             return (result.dialogResult == DialogResult.Yes, result.doNotAskAgain);
+        }
+
+        public IProgressForm ProgressForm(Progress<string> userProgressMessage, Progress<int> completionPercentage)
+        {
+            return GuiComponents.ProgressForm.ShowDialog(userProgressMessage, completionPercentage);
         }
 
         public void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
