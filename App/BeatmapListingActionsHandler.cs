@@ -95,7 +95,7 @@ namespace App
             }
 
             var saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
-            var beatmapSets = beatmaps.Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
+            var beatmapSets = beatmaps.Where(b => !string.IsNullOrWhiteSpace(b.Dir)).Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
                                 .GroupBy(e => e.FileName).Select(e => e.First()).ToList();
             if (!Directory.Exists(saveDirectory))
                 return;
@@ -132,17 +132,25 @@ namespace App
                     }
 
                     var beatmapDirectory = beatmapset.Beatmap.BeatmapDirectory();
-                    try
+                    if (!Directory.Exists(beatmapDirectory))
                     {
-                        ZipFile.CreateFromDirectory(beatmapDirectory, fileSaveLocation);
-                    }
-                    catch (Exception e)
-                    {
-                        failedMapSets.AppendFormat("failed processing map set located at \"{0}\" with exception:{2}{1}{2}{2}", beatmapDirectory, e, Environment.NewLine);
+                        failedMapSets.AppendFormat("map set directory \"{0}\" doesn't exist - set skipped(mapId:{1} setId:{2} hash:{3}) {4}{4}", beatmapDirectory, beatmapset.Beatmap.MapId.ToString(), beatmapset.Beatmap.MapSetId.ToString(), beatmapset.Beatmap.Md5, Environment.NewLine);
                         failedMapSetsCount++;
                     }
+                    else
+                    {
+                        try
+                        {
+                            ZipFile.CreateFromDirectory(beatmapDirectory, fileSaveLocation);
+                        }
+                        catch (Exception e)
+                        {
+                            failedMapSets.AppendFormat("failed processing map set located at \"{0}\" with exception:{2}{1}{2}{2}", beatmapDirectory, e, Environment.NewLine);
+                            failedMapSetsCount++;
+                        }
 
-                    percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
+                        percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
+                    }
                 }
 
                 if (failedMapSetsCount > 0)
