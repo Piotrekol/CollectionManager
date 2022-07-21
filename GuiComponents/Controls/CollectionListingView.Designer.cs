@@ -36,7 +36,6 @@
             this.Total = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.textBox_collectionNameSearch = new System.Windows.Forms.TextBox();
-            this.CollectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.renameCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +44,10 @@
             this.DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.intersectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.differenceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inverseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CollectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exportBeatmapSetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
             this.CollectionContextMenuStrip.SuspendLayout();
@@ -90,6 +92,7 @@
             this.ListViewCollections.Name = "ListViewCollections";
             this.ListViewCollections.ShowGroups = false;
             this.ListViewCollections.Size = new System.Drawing.Size(463, 345);
+            this.ListViewCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.ListViewCollections.TabIndex = 5;
             this.ListViewCollections.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ListViewCollections.UseCompatibleStateImageBehavior = false;
@@ -126,6 +129,101 @@
             this.textBox_collectionNameSearch.Size = new System.Drawing.Size(463, 20);
             this.textBox_collectionNameSearch.TabIndex = 1;
             // 
+            // CreateMenuStrip
+            // 
+            this.CreateMenuStrip.Name = "CreateMenuStrip";
+            this.CreateMenuStrip.Size = new System.Drawing.Size(181, 22);
+            this.CreateMenuStrip.Tag = "Create";
+            this.CreateMenuStrip.Text = "Create";
+            this.CreateMenuStrip.ToolTipText = "Create new collection";
+            this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // renameCollectionMenuStrip
+            // 
+            this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
+            this.renameCollectionMenuStrip.ShortcutKeyDisplayString = "F2";
+            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(181, 22);
+            this.renameCollectionMenuStrip.Tag = "Rename";
+            this.renameCollectionMenuStrip.Text = "Rename";
+            this.renameCollectionMenuStrip.ToolTipText = "Rename currently selected collection";
+            this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // deleteCollectionMenuStrip
+            // 
+            this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
+            this.deleteCollectionMenuStrip.ShortcutKeyDisplayString = "Del";
+            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(181, 22);
+            this.deleteCollectionMenuStrip.Tag = "Delete";
+            this.deleteCollectionMenuStrip.Text = "Delete";
+            this.deleteCollectionMenuStrip.ToolTipText = "Delete currently selected collections";
+            this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.copyToolStripMenuItem.Tag = "Copy";
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+V";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.pasteToolStripMenuItem.Tag = "Paste";
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // DuplicateMenuStrip
+            // 
+            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
+            this.DuplicateMenuStrip.Size = new System.Drawing.Size(181, 22);
+            this.DuplicateMenuStrip.Tag = "Duplicate";
+            this.DuplicateMenuStrip.Text = "Duplicate";
+            this.DuplicateMenuStrip.ToolTipText = "Create a copy of currently selected collection";
+            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // mergeWithMenuStrip
+            // 
+            this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
+            this.mergeWithMenuStrip.Size = new System.Drawing.Size(181, 22);
+            this.mergeWithMenuStrip.Tag = "Merge";
+            this.mergeWithMenuStrip.Text = "Merge selected";
+            this.mergeWithMenuStrip.ToolTipText = "Merge beatmaps from selected collections into new collection";
+            this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // intersectMenuItem
+            // 
+            this.intersectMenuItem.Name = "intersectMenuItem";
+            this.intersectMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.intersectMenuItem.Tag = "Intersect";
+            this.intersectMenuItem.Text = "Intersection";
+            this.intersectMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in all selected collections" +
+    "";
+            this.intersectMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // differenceMenuItem
+            // 
+            this.differenceMenuItem.Name = "differenceMenuItem";
+            this.differenceMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.differenceMenuItem.Tag = "Difference";
+            this.differenceMenuItem.Text = "Difference";
+            this.differenceMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in only one of the selected" +
+    " collections";
+            this.differenceMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
+            // inverseToolStripMenuItem
+            // 
+            this.inverseToolStripMenuItem.Name = "inverseToolStripMenuItem";
+            this.inverseToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.inverseToolStripMenuItem.Tag = "Inverse";
+            this.inverseToolStripMenuItem.Text = "Inverse";
+            this.inverseToolStripMenuItem.ToolTipText = "Create new collection that contains every beatmap not present in all selected col" +
+    "lections";
+            this.inverseToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
             // CollectionContextMenuStrip
             // 
             this.CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -137,94 +235,19 @@
             this.DuplicateMenuStrip,
             this.mergeWithMenuStrip,
             this.intersectMenuItem,
-            this.inverseToolStripMenuItem});
+            this.differenceMenuItem,
+            this.inverseToolStripMenuItem,
+            this.exportBeatmapSetsToolStripMenuItem});
             this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(155, 202);
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(182, 268);
             // 
-            // CreateMenuStrip
+            // exportBeatmapSetsToolStripMenuItem
             // 
-            this.CreateMenuStrip.Name = "CreateMenuStrip";
-            this.CreateMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.CreateMenuStrip.Tag = "Create";
-            this.CreateMenuStrip.Text = "Create";
-            this.CreateMenuStrip.ToolTipText = "Create new collection";
-            this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // renameCollectionMenuStrip
-            // 
-            this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
-            this.renameCollectionMenuStrip.ShortcutKeyDisplayString = "F2";
-            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.renameCollectionMenuStrip.Tag = "Rename";
-            this.renameCollectionMenuStrip.Text = "Rename";
-            this.renameCollectionMenuStrip.ToolTipText = "Rename currently selected collection";
-            this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // deleteCollectionMenuStrip
-            // 
-            this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
-            this.deleteCollectionMenuStrip.ShortcutKeyDisplayString = "Del";
-            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.deleteCollectionMenuStrip.Tag = "Delete";
-            this.deleteCollectionMenuStrip.Text = "Delete";
-            this.deleteCollectionMenuStrip.ToolTipText = "Delete currently selected collections";
-            this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.copyToolStripMenuItem.Tag = "Copy";
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // pasteToolStripMenuItem
-            // 
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+V";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.pasteToolStripMenuItem.Tag = "Paste";
-            this.pasteToolStripMenuItem.Text = "Paste";
-            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // DuplicateMenuStrip
-            // 
-            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
-            this.DuplicateMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.DuplicateMenuStrip.Tag = "Duplicate";
-            this.DuplicateMenuStrip.Text = "Duplicate";
-            this.DuplicateMenuStrip.ToolTipText = "Create a copy of currently selected collection";
-            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // mergeWithMenuStrip
-            // 
-            this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
-            this.mergeWithMenuStrip.Size = new System.Drawing.Size(154, 22);
-            this.mergeWithMenuStrip.Tag = "Merge";
-            this.mergeWithMenuStrip.Text = "Merge selected";
-            this.mergeWithMenuStrip.ToolTipText = "Merge beatmaps from selected collections into new collection";
-            this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // intersectMenuItem
-            // 
-            this.intersectMenuItem.Name = "intersectMenuItem";
-            this.intersectMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.intersectMenuItem.Tag = "Intersect";
-            this.intersectMenuItem.Text = "Intersection";
-            this.intersectMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in all selected collections" +
-    "";
-            this.intersectMenuItem.Click += new System.EventHandler(this.MenuStripClick);
-            // 
-            // inverseToolStripMenuItem
-            // 
-            this.inverseToolStripMenuItem.Name = "inverseToolStripMenuItem";
-            this.inverseToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.inverseToolStripMenuItem.Tag = "Inverse";
-            this.inverseToolStripMenuItem.Text = "Inverse";
-            this.inverseToolStripMenuItem.ToolTipText = "Create new collection that contains every beatmap in the user\'s library that isn\'" +
-    "t in selected collections";
-            this.inverseToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            this.exportBeatmapSetsToolStripMenuItem.Name = "exportBeatmapSetsToolStripMenuItem";
+            this.exportBeatmapSetsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.exportBeatmapSetsToolStripMenuItem.Tag = "Export";
+            this.exportBeatmapSetsToolStripMenuItem.Text = "Export beatmap sets";
+            this.exportBeatmapSetsToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // CollectionListingView
             // 
@@ -249,16 +272,18 @@
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private System.Windows.Forms.TextBox textBox_collectionNameSearch;
-        private System.Windows.Forms.ContextMenuStrip CollectionContextMenuStrip;
+        private BrightIdeasSoftware.OLVColumn Total;
+        private System.Windows.Forms.ToolStripMenuItem CreateMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem renameCollectionMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteCollectionMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem mergeWithMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem CreateMenuStrip;
-        private BrightIdeasSoftware.OLVColumn Total;
-        private System.Windows.Forms.ToolStripMenuItem DuplicateMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem intersectMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem inverseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DuplicateMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem mergeWithMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem intersectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem differenceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inverseToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip CollectionContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsToolStripMenuItem;
     }
 }

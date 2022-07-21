@@ -61,7 +61,7 @@ namespace CollectionManager.DataTypes
             {
                 if (MapId == 0)
                     return MapSetLink;
-                return @"http://osu.ppy.sh/b/" + MapId;
+                return @"https://osu.ppy.sh/b/" + MapId;
 
             }
         }
@@ -71,7 +71,7 @@ namespace CollectionManager.DataTypes
             {
                 if (MapSetId == 0)
                     return string.Empty;
-                return @"http://osu.ppy.sh/s/" + MapSetId;
+                return @"https://osu.ppy.sh/s/" + MapSetId;
             }
         }
         //TODO: add helper functions for adding/removing star values

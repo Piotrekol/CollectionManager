@@ -14,9 +14,10 @@ namespace App.Presenters.Controls
         private readonly ICollectionListingView _collectionsView;
         public readonly IBeatmapListingModel BeatmapListingModel;
         private readonly IWebCollectionProvider _webCollectionProvider;
+        private readonly IUserDialogs _userDialogs;
         private readonly ICollectionListingModel _collectionListingModel;
 
-        public CombinedListingPresenter(ICombinedListingView view, ICollectionListingModel collectionListingModel, IBeatmapListingModel beatmapListingModel, IWebCollectionProvider webCollectionProvider)
+        public CombinedListingPresenter(ICombinedListingView view, ICollectionListingModel collectionListingModel, IBeatmapListingModel beatmapListingModel, IWebCollectionProvider webCollectionProvider, IUserDialogs userDialogs)
         {
             _view = view;
             _beatmapsView = _view.beatmapListingView;
@@ -26,8 +27,9 @@ namespace App.Presenters.Controls
             BeatmapListingModel = beatmapListingModel;
 
             _webCollectionProvider = webCollectionProvider;
+            _userDialogs = userDialogs;
             new BeatmapListingPresenter(_beatmapsView, BeatmapListingModel);
-            new CollectionListingPresenter(_collectionsView, collectionListingModel);
+            new CollectionListingPresenter(_collectionsView, collectionListingModel, userDialogs);
 
             BeatmapListingModel.SelectedBeatmapsChanged += BeatmapListingModelOnSelectedBeatmapsChanged;
             _collectionsView.SelectedCollectionChanged += CollectionsViewOnSelectedCollectionChanged;

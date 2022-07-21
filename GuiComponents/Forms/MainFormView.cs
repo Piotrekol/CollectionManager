@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Gui.Misc;
 using GuiComponents.Interfaces;
@@ -40,6 +41,12 @@ namespace GuiComponents.Forms
 
             var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
             OnLoadFile?.Invoke(this, files);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            Activate();
+            base.OnShown(e);
         }
     }
 }

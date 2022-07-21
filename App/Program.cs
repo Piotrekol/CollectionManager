@@ -26,8 +26,12 @@ namespace App
                 if (exArgs.ExceptionObject is Exception exception)
                     HandleException(exception);
             };
-            Application.ThreadException += (_, exArgs) => HandleException(exArgs.Exception);
-            TaskScheduler.UnobservedTaskException += (_, exArgs) => HandleException(exArgs.Exception);
+            Application.ThreadException += (_, exArgs) 
+                => 
+            HandleException(exArgs.Exception);
+            TaskScheduler.UnobservedTaskException += (_, exArgs) 
+                => 
+            HandleException(exArgs.Exception);
 
             if (args.Length > 0 && !File.Exists(args[0]))
             {

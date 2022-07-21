@@ -8,31 +8,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Properties
-{
+namespace App.Properties {
+    
+    
+    internal sealed partial class Settings {
 
-
-    internal sealed partial class Settings
-    {
         public void Save() { }
         public void Reset() { }
-        private static Settings instance = new Settings();
-        public static Settings Default
-        {
-            get
-            {
-                return instance;
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
             }
         }
-
-        public bool DontAskAboutOsuDirectory
-        {
-            get
-            {
-                return false;
+        
+        public string StartupSettings {
+            get {
+                return string.Empty;
             }
-            set
-            {
+            set {
+                
             }
         }
 
@@ -79,26 +75,20 @@ namespace App.Properties
             {
             }
         }
-
-        public string OsuDirectory
-        {
-            get
-            {
+        
+        public string DownloadManager_DownloaderSettings {
+            get {
                 return string.Empty;
             }
-            set
-            {
+            set {
             }
         }
-
-        public string DownloadManager_DownloaderSettings
-        {
-            get
-            {
-                return "{}";
+        
+        public bool DontAskAboutReorderingCollections {
+            get {
+                return false;
             }
-            set
-            {
+            set {
             }
         }
     }

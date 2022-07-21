@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
@@ -20,8 +21,11 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
             _scoreDataStorer = scoreDataStorer;
         }
 
-        public virtual void ReadDb(string osuScoresDbPath)
+        public virtual void ReadDb(string osuScoresDbPath, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
             if (FileExists(osuScoresDbPath))
             {
                 _fileStream = new FileStream(osuScoresDbPath, FileMode.Open, FileAccess.Read);
@@ -37,6 +41,9 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
                         {
                             _scoreDataStorer.Store(Score.ReadScore(_binaryReader, true, Version));
                         }
+
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
                     }
                     _scoreDataStorer.EndMassStoring();
                 }

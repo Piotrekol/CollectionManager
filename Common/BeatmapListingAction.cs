@@ -10,5 +10,6 @@
         CopyBeatmapsAsText, //Copy text representation of selected beatmaps
         CopyBeatmapsAsUrls, //Copy map links of selected beatmaps
         PullWholeMapSet, //Finds all mapsets from selected maps and adds them to current collection
+        ExportBeatmapSets, //Compress selected mapsets back to .osz archives
     }
 }

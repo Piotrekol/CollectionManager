@@ -9,10 +9,16 @@ using CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
+using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace App
 {
@@ -42,24 +48,124 @@ namespace App
                 {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages },
                 {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder },
                 {BeatmapListingAction.PullWholeMapSet, PullWholeMapsets },
+                {BeatmapListingAction.ExportBeatmapSets, ExportBeatmapSets },
             };
         }
 
-        public void Bind(IBeatmapListingModel beatmapListingModel)
+        public void Bind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
         {
             beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
+            if (collectionListingModel != null)
+                collectionListingModel.CollectionEditing += CollectionListingModel_CollectionEditing;
         }
 
-
-        public void UnBind(IBeatmapListingModel beatmapListingModel)
+        public void UnBind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
         {
             beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
+            if (collectionListingModel != null)
+                collectionListingModel.CollectionEditing -= CollectionListingModel_CollectionEditing;
         }
 
         private void BeatmapListingModel_BeatmapOperation(object sender, BeatmapListingAction args)
         {
             _beatmapOperationHandlers[args](sender);
         }
+        private void CollectionListingModel_CollectionEditing(object sender, CollectionEditArgs e)
+        {
+            if (e.Action != CollectionManager.Enums.CollectionEdit.ExportBeatmaps)
+                return;
+
+            ExportBeatmapSets(e.Collections.AllBeatmaps().Cast<Beatmap>().ToList());
+        }
+
+        private void ExportBeatmapSets(object sender)
+        {
+            if (sender is not IBeatmapListingModel beatmapListingModel)
+                return;
+
+            ExportBeatmapSets(beatmapListingModel.SelectedBeatmaps?.ToList());
+        }
+
+        private void ExportBeatmapSets(List<Beatmap> beatmaps)
+        {
+            if (beatmaps?.Count == 0)
+            {
+                _userDialogs.OkMessageBox("No beatmaps selected", "Info");
+                return;
+            }
+
+            var saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
+            var beatmapSets = beatmaps.Where(b => !string.IsNullOrWhiteSpace(b.Dir)).Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
+                                .GroupBy(e => e.FileName).Select(e => e.First()).ToList();
+            if (!Directory.Exists(saveDirectory))
+                return;
+
+            var backgroundWorker = new BackgroundWorker();
+            var stringProgress = new Progress<string>();
+            var percentageProgress = new Progress<int>();
+            using var cancelationTokenSource = new CancellationTokenSource();
+            var progressForm = _userDialogs.ProgressForm(stringProgress, percentageProgress);
+            progressForm.AbortClicked += (_, __) => cancelationTokenSource.Cancel();
+            backgroundWorker.DoWork += (_, eventArgs) =>
+            {
+                var cancellationToken = cancelationTokenSource.Token;
+                var totalCount = beatmapSets.Count();
+                var stringProgressReporter = (IProgress<string>)stringProgress;
+                var percentageProgressReporter = (IProgress<int>)percentageProgress;
+                var failedMapSets = new StringBuilder();
+                var failedMapSetsCount = 0;
+                for (int i = 0; i < totalCount; i++)
+                {
+                    var beatmapset = beatmapSets[i];
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        progressForm.Close();
+                        return;
+                    }
+
+                    stringProgressReporter.Report($"Processing map set {i + 1} of {totalCount}.{Environment.NewLine}\"{beatmapset.FileName}\"");
+                    var fileSaveLocation = Path.Combine(saveDirectory, beatmapset.FileName);
+                    if (File.Exists(fileSaveLocation))
+                    {
+                        percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
+                        continue;
+                    }
+
+                    var beatmapDirectory = beatmapset.Beatmap.BeatmapDirectory();
+                    if (!Directory.Exists(beatmapDirectory))
+                    {
+                        failedMapSets.AppendFormat("map set directory \"{0}\" doesn't exist - set skipped(mapId:{1} setId:{2} hash:{3}) {4}{4}", beatmapDirectory, beatmapset.Beatmap.MapId.ToString(), beatmapset.Beatmap.MapSetId.ToString(), beatmapset.Beatmap.Md5, Environment.NewLine);
+                        failedMapSetsCount++;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            ZipFile.CreateFromDirectory(beatmapDirectory, fileSaveLocation);
+                        }
+                        catch (Exception e)
+                        {
+                            failedMapSets.AppendFormat("failed processing map set located at \"{0}\" with exception:{2}{1}{2}{2}", beatmapDirectory, e, Environment.NewLine);
+                            failedMapSetsCount++;
+                        }
+
+                        percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
+                    }
+                }
+
+                if (failedMapSetsCount > 0)
+                {
+                    File.WriteAllText(Path.Combine(saveDirectory, "log.txt"), failedMapSets.ToString());
+                    stringProgressReporter.Report($"Processed {totalCount - failedMapSetsCount} of {totalCount} map sets.{Environment.NewLine}{failedMapSetsCount} map sets failed to save, see full log in log.txt file in export directory");
+                }
+                else
+                    stringProgressReporter.Report($"Processed {totalCount} map sets without issues.");
+            };
+
+            backgroundWorker.RunWorkerAsync();
+            progressForm.ShowAndBlock();
+        }
+
         private void PullWholeMapsets(object sender)
         {
             var model = (IBeatmapListingModel)sender;

@@ -57,7 +57,7 @@ namespace App.Presenters.Controls
                     if (imgPath != "")
                         img = Image.FromFile(imgPath);
                     else if (beatmap.MapSetId > 0)
-                        url = "https://assets.ppy.sh//beatmaps/"+beatmap.MapSetId+"/covers/card.jpg";
+                        url = "https://assets.ppy.sh/beatmaps/"+beatmap.MapSetId+"/covers/card.jpg";
                     if (currentId != Interlocked.Read(ref changeId))
                     {
                         img?.Dispose();

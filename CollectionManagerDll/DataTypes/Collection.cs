@@ -37,7 +37,7 @@ namespace CollectionManager.DataTypes
         /// </summary>
         public Beatmaps KnownBeatmaps { get; } = new Beatmaps();
 
-
+        public override string ToString() => $"osu! map Collection: \"{Name}\" Count: {BeatmapHashes.Count}";
 
         /// <summary>
         /// Total number of beatmaps contained in this collection

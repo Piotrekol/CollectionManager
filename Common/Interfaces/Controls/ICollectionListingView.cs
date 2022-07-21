@@ -9,6 +9,7 @@ namespace GuiComponents.Interfaces
     public interface ICollectionListingView
     {
         event GuiHelpers.LoadFileArgs OnLoadFile;
+        event GuiHelpers.CollectionReorderEventArgs OnCollectionReorder;
 
         string SearchText { get; }
 

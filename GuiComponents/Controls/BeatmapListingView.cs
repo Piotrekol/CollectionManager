@@ -178,6 +178,14 @@ namespace GuiComponents.Controls
                 var val = (DateTime)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
+            MainBpm.AspectGetter = rowObject =>
+            {
+                if (rowObject is Beatmap beatmap)
+                {
+                    return beatmap.MainBpm * _difficultyCalculator.ApplyMods(beatmap, _currentMods).BpmMultiplier;
+                }
+                return null;
+            };
             MainBpm.AspectToStringConverter = delegate (object cellValue)
             {
                 if (cellValue == null) return string.Empty;
@@ -281,6 +289,8 @@ namespace GuiComponents.Controls
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.OpenBeatmapFolder);
             else if (sender == PullMapsetMenuStrip)
                 BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.PullWholeMapSet);
+            else if (sender == exportBeatmapSetsMenuItem)
+                BeatmapOperation?.Invoke(this, Common.BeatmapListingAction.ExportBeatmapSets);
         }
 
         private void ListViewBeatmaps_KeyUp(object sender, KeyEventArgs e)

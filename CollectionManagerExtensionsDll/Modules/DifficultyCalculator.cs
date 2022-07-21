@@ -14,6 +14,7 @@ namespace CollectionManagerExtensionsDll.Modules
             public float Hp { get; set; }
             public double MinBpm { get; set; }
             public double MaxBpm { get; set; }
+            public double BpmMultiplier { get; set; }
         }
         readonly float od0_ms = 79.5f,
            od10_ms = 19.5f,
@@ -36,6 +37,7 @@ namespace CollectionManagerExtensionsDll.Modules
             result.Hp = map.HpDrainRate;
             result.MinBpm = map.MinBpm;
             result.MaxBpm = map.MaxBpm;
+            result.BpmMultiplier = 1;
 
             if ((mods & Mods.MapChanging) == 0)
             {
@@ -75,7 +77,7 @@ namespace CollectionManagerExtensionsDll.Modules
 
             result.MinBpm *= modifier;
             result.MaxBpm *= modifier;
-
+            result.BpmMultiplier = modifier;
             //ar 
             float ar_multiplier = 1;
 
