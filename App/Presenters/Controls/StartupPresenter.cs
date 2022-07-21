@@ -33,7 +33,7 @@ namespace App.Presenters.Controls
             _sidePanelActionsHandler = sidePanelActionsHandler;
             _userDialogs = userDialogs;
             _collectionsManager = collectionsManager;
-            _startupSettings = JsonConvert.DeserializeObject<StartupSettings>(Settings.Default.StartupSettings);
+            _startupSettings = JsonConvert.DeserializeObject<StartupSettings>(Settings.Default.StartupSettings) ?? new StartupSettings();
             _cancellationTokenSource = new CancellationTokenSource();
             _databaseLoadProgressReporter = new Progress<string>(report =>
             {
