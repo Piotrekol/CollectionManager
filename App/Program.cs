@@ -50,7 +50,7 @@ namespace App
         {
             Helpers.SetClipboardText(ex.ToString());
             MessageBox.Show(
-                $"There was a problem with CollectionManager and it needs to exit, exception text was copied to your clipboard:{Environment.NewLine}{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                $"There was a problem with CollectionManager. It is recommended to save your edits and restart. {Environment.NewLine}{Environment.NewLine}Exception text was copied to your clipboard:{Environment.NewLine}{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
