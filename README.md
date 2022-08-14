@@ -12,9 +12,11 @@ For Linux, through wine, you likely need to use `CollectionManagerSetup_linux.ex
 
 ## Setup
 
-On the first start of Collection Manager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect your osu! folder, you will have to select it manually.
+On the first start of Collection Manager, it will attempt to automatically detect your osu! folder. If it detects incorrectly or cannot automatically detect your osu! folder, you will have to select `Load beatmaps from a different location` and locate your osu! folder manually.
 
-To reset this setting, go to Collection Manager's top menu and select `Settings > Reset` then restart Collection Manager.
+You may also select `Load your osu! collection`, `Load osu! collection from file`, or `Continue without loading any more collections` from the startup screen. To make these selections automatic upon startup, check `Use selected options on startup`.
+
+To reset your settings, go to Collection Manager's top menu and select `Settings > Reset` then restart Collection Manager.
 
 If your osu! folder is not configured in Collection Manager, .db collections will only show hashes instead of identifying maps using your osu! songs, you will not be able to open or save to your osu! collection directly and you will not be able to view the beatmap listing in Collection Manager. Most features will still function.
 
@@ -22,7 +24,9 @@ If your osu! folder is not configured in Collection Manager, .db collections wil
 
 ### **Opening Collections**
 
-Collections can be loaded into Collection Manager in three ways:
+Collections can be loaded into Collection Manager in the following ways:
+
+- Selecting `Load your osu! collection` or `Load osu! collection from file` on the startup screen.
 
 - Going to the top menu, selecting `File > Open` and either `Collection(.db/.osdb)` or `osu! collection`
 
@@ -44,13 +48,17 @@ Collections can be saved by going to the top menu, selecting `File > Save` and a
 
 - `Collections in separate files`: This will export each individual collection that is loaded as its own file instead of saving all collections in a single file. You will be prompted to select a folder to save them in and whether or not you want to save them in .osdb format.
 
-In addition to these methods of saving collections, they can also be exported as a list in plaintext by going to the top menu and selecting `Listing` then either of the following options:
+In addition to these methods of saving collections, they can also be exported as a list in plaintext by going to the top menu and selecting `File > Listing` then either of the following options:
 
 - `List all collections`: This will generate a list containing every collection loaded. Each collection is followed by a list of maps contained in that collection.
 
 - `List missing maps`: This will generate a list containing every collection loaded that has missing maps. Each collection is followed by a list of missing maps contained in that collection.
 
 Collection Manager **cannot** open or import these lists back into collections. They can only be exported from collections that are already loaded. Make sure to save your collections in .db or .osdb format in addition to this.
+
+### **Saving Maps**
+
+Maps can be exported and packed into .osz files by right clicking on a collection or map and selecting `Export beatmap sets`.
 
 ### **Collection File Formats**
 

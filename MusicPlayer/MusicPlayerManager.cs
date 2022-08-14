@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.IO;
-using System.Linq;
-using System.Net;
 
 namespace MusicPlayer
 {
@@ -16,6 +15,7 @@ namespace MusicPlayer
         public float SoundVolume => musicPlayer.SoundVolume;
 
         private readonly IMusicPlayer musicPlayer;
+        private readonly MRUFileCache fileCache;
 
         public event EventHandler PlaybackFinished
         {
@@ -29,6 +29,8 @@ namespace MusicPlayer
                 musicPlayer = new SoundTouchPlayer();
             else
                 musicPlayer = new NAudioPlayer();
+
+            fileCache = new MRUFileCache(Path.Combine(Path.GetTempPath(), "CM-audio-previews"));
         }
         public void Seek(double position)
         {
@@ -45,37 +47,17 @@ namespace MusicPlayer
             musicPlayer.SetSpeed(speed);
         }
 
-        public void Play(string audioFile, int startTime)
+        public void Play(string audioFileOrUrl, int startTime)
         {
-            Uri uri = new Uri(audioFile);
+            Uri uri = new Uri(audioFileOrUrl);
 
             if (uri.HostNameType == UriHostNameType.Dns)
-            {
-                var tempFolderPath = Path.Combine(Path.GetTempPath(), "CM-previews");
-                Directory.CreateDirectory(tempFolderPath);
-                var directoryInfo = new DirectoryInfo(tempFolderPath);
-                var files = directoryInfo.GetFiles();
-                if (files.Length > 100)
-                {
-                    foreach (var file in files.OrderBy(f => f.LastWriteTimeUtc).Take(30))
-                    {
-                        file.Delete();
-                    }
-                }
+                audioFileOrUrl = fileCache.DownloadAndAdd(audioFileOrUrl);
 
-                var tempFilePath = Path.Combine(tempFolderPath, uri.Segments.Last());
-                if (!File.Exists(tempFilePath))
-                {
-                    using (WebClient ws = new WebClient())
-                    {
-                        ws.DownloadFile(audioFile, tempFilePath);
-                    }
-                }
+            if (string.IsNullOrEmpty(audioFileOrUrl))
+                return;
 
-                audioFile = tempFilePath;
-            }
-
-            musicPlayer.Play(audioFile, startTime);
+            musicPlayer.Play(audioFileOrUrl, startTime);
         }
 
         public void Pause()

@@ -27,4 +27,7 @@
     <Content Include="SoundTouch\lib\SoundTouch.dll" />
     <Content Include="SoundTouch\lib\SoundTouch_x64.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
 </Project>
