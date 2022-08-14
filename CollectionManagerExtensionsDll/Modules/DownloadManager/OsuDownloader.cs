@@ -47,12 +47,13 @@ namespace CollectionManagerExtensionsDll.Modules.DownloadManager
                     if (!string.IsNullOrEmpty(loginData.SiteCookies))
                     {
                         client.SetCookies(loginData.SiteCookies, new[] { "_encid" }, ".ppy.sh");
-                        if (!client.IsLoggedIn(@"https://osu.ppy.sh/home", "Sign in"))
+                        if (!client.IsLoggedIn(@"https://osu.ppy.sh/rankings/osu/country", "sign in / register"))
                             return false;
                     }
                     else
                     {
-                        if (!client.Login(loginAddress, loginDataStr))
+                        client.Login(loginAddress, loginDataStr);
+                        if (!client.IsLoggedIn(@"https://osu.ppy.sh/rankings/osu/country", "sign in / register"))
                             return false;
                     }
 

@@ -14,7 +14,7 @@ namespace System.Net
         {
             foreach (var nameValuePair in HttpUtility.UrlDecode(cookies).Split(';'))
             {
-                var split = nameValuePair.Split('=');
+                var split = nameValuePair.Split(new[] { '=' }, 2);
                 if (cookiesToIgnore.Contains(split[0].Trim()))
                     continue;
                 CookieContainer.Add(new Cookie(split[0].Trim(), split[1], "/", cookieDomain));
@@ -46,7 +46,7 @@ namespace System.Net
             }
         }
 
-        public bool Login(string loginPageAddress, string loginData)
+        public void Login(string loginPageAddress, string loginData)
         {
             var homePageRequest = (HttpWebRequest)WebRequest.Create("https://osu.ppy.sh/home");
             homePageRequest.CookieContainer = CookieContainer;
@@ -64,8 +64,6 @@ namespace System.Net
             var requestStream = request.GetRequestStream();
             requestStream.Write(buffer, 0, buffer.Length);
             requestStream.Close();
-
-            return IsLoggedIn("https://osu.ppy.sh/home", "Sign in");
         }
 
         public CookieAwareWebClient(CookieContainer container)
