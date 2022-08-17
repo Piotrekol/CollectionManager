@@ -174,11 +174,11 @@ namespace GuiComponents.Controls
             };
             LastPlayed.AspectToStringConverter = delegate (object cellValue)
             {
-                if (cellValue == null) return "Never";
+                if (cellValue == null) return string.Empty;
                 var val = (DateTime)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
-            MainBpm.AspectGetter = rowObject =>
+            column_bpm.AspectGetter = rowObject =>
             {
                 if (rowObject is Beatmap beatmap)
                 {
@@ -186,11 +186,21 @@ namespace GuiComponents.Controls
                 }
                 return null;
             };
-            MainBpm.AspectToStringConverter = delegate (object cellValue)
+            column_bpm.AspectToStringConverter = delegate (object cellValue)
             {
                 if (cellValue == null) return string.Empty;
                 return $"{cellValue:0.##}";
             };
+
+            column_state.AspectGetter = rowObject =>
+            {
+                if (rowObject is BeatmapExtension beatmap)
+                {
+                    return beatmap.LocalBeatmapMissing ? "Missing" : beatmap.StateStr;
+                }
+                return null;
+            };
+
 
             var gradeConverter = new AspectToStringConverterDelegate(cellValue =>
             {

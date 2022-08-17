@@ -48,16 +48,17 @@
             this.copyUrlMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.copyAsTextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.PullMapsetMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportBeatmapSetsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ListViewBeatmaps = new BrightIdeasSoftware.FastDataListView();
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_stars = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_ar = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_cs = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_hp = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_od = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_bpm = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_state = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.OsuGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.LastPlayed = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -68,8 +69,6 @@
             this.ManiaGrade = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.MainBpm = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.exportBeatmapSetsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListViewBeatmaps)).BeginInit();
             this.SuspendLayout();
@@ -78,7 +77,7 @@
             // 
             this.label_resultsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_resultsCount.AutoSize = true;
-            this.label_resultsCount.Location = new System.Drawing.Point(524, 0);
+            this.label_resultsCount.Location = new System.Drawing.Point(678, 0);
             this.label_resultsCount.Name = "label_resultsCount";
             this.label_resultsCount.Size = new System.Drawing.Size(41, 13);
             this.label_resultsCount.TabIndex = 17;
@@ -99,7 +98,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_beatmapSearch.Location = new System.Drawing.Point(3, 15);
             this.textBox_beatmapSearch.Name = "textBox_beatmapSearch";
-            this.textBox_beatmapSearch.Size = new System.Drawing.Size(631, 20);
+            this.textBox_beatmapSearch.Size = new System.Drawing.Size(785, 20);
             this.textBox_beatmapSearch.TabIndex = 15;
             // 
             // BeatmapsContextMenuStrip
@@ -211,14 +210,14 @@
             // copyUrlMenuStrip
             // 
             this.copyUrlMenuStrip.Name = "copyUrlMenuStrip";
-            this.copyUrlMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.copyUrlMenuStrip.Size = new System.Drawing.Size(110, 22);
             this.copyUrlMenuStrip.Text = "url(s)";
             this.copyUrlMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // copyAsTextMenuStrip
             // 
             this.copyAsTextMenuStrip.Name = "copyAsTextMenuStrip";
-            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.copyAsTextMenuStrip.Size = new System.Drawing.Size(110, 22);
             this.copyAsTextMenuStrip.Text = "As text";
             this.copyAsTextMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
@@ -229,6 +228,13 @@
             this.PullMapsetMenuStrip.Text = "Pull whole mapset";
             this.PullMapsetMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
             // 
+            // exportBeatmapSetsMenuItem
+            // 
+            this.exportBeatmapSetsMenuItem.Name = "exportBeatmapSetsMenuItem";
+            this.exportBeatmapSetsMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.exportBeatmapSetsMenuItem.Text = "Export beatmap sets";
+            this.exportBeatmapSetsMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            // 
             // ListViewBeatmaps
             // 
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn2);
@@ -236,10 +242,10 @@
             this.ListViewBeatmaps.AllColumns.Add(this.column_stars);
             this.ListViewBeatmaps.AllColumns.Add(this.column_ar);
             this.ListViewBeatmaps.AllColumns.Add(this.column_cs);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn5);
             this.ListViewBeatmaps.AllColumns.Add(this.column_hp);
             this.ListViewBeatmaps.AllColumns.Add(this.column_od);
-            this.ListViewBeatmaps.AllColumns.Add(this.olvColumn3);
+            this.ListViewBeatmaps.AllColumns.Add(this.column_bpm);
+            this.ListViewBeatmaps.AllColumns.Add(this.column_state);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn10);
             this.ListViewBeatmaps.AllColumns.Add(this.OsuGrade);
             this.ListViewBeatmaps.AllColumns.Add(this.LastPlayed);
@@ -250,7 +256,6 @@
             this.ListViewBeatmaps.AllColumns.Add(this.ManiaGrade);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn9);
             this.ListViewBeatmaps.AllColumns.Add(this.olvColumn11);
-            this.ListViewBeatmaps.AllColumns.Add(this.MainBpm);
             this.ListViewBeatmaps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -261,12 +266,11 @@
             this.column_stars,
             this.column_ar,
             this.column_cs,
-            this.olvColumn5,
-            this.olvColumn3,
-            this.olvColumn10,
+            this.column_bpm,
+            this.column_state,
             this.OsuGrade,
             this.LastPlayed,
-            this.olvColumn13});
+            this.olvColumn12});
             this.ListViewBeatmaps.DataSource = null;
             this.ListViewBeatmaps.EmptyListMsg = "No collection selected";
             this.ListViewBeatmaps.HideSelection = false;
@@ -275,7 +279,7 @@
             this.ListViewBeatmaps.Location = new System.Drawing.Point(3, 41);
             this.ListViewBeatmaps.Name = "ListViewBeatmaps";
             this.ListViewBeatmaps.ShowGroups = false;
-            this.ListViewBeatmaps.Size = new System.Drawing.Size(631, 461);
+            this.ListViewBeatmaps.Size = new System.Drawing.Size(785, 461);
             this.ListViewBeatmaps.TabIndex = 14;
             this.ListViewBeatmaps.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ListViewBeatmaps.UseCompatibleStateImageBehavior = false;
@@ -322,16 +326,10 @@
             this.column_cs.Text = "CS";
             this.column_cs.Width = 30;
             // 
-            // olvColumn5
-            // 
-            this.olvColumn5.AspectName = "StateStr";
-            this.olvColumn5.IsEditable = false;
-            this.olvColumn5.Text = "State";
-            // 
             // column_hp
             // 
             this.column_hp.AspectName = "HpDrainRate";
-            this.column_hp.DisplayIndex = 8;
+            this.column_hp.DisplayIndex = 4;
             this.column_hp.IsEditable = false;
             this.column_hp.IsVisible = false;
             this.column_hp.Text = "HP";
@@ -340,54 +338,64 @@
             // column_od
             // 
             this.column_od.AspectName = "OverallDifficulty";
-            this.column_od.DisplayIndex = 9;
+            this.column_od.DisplayIndex = 4;
             this.column_od.IsEditable = false;
             this.column_od.IsVisible = false;
             this.column_od.Text = "OD";
             this.column_od.Width = 30;
             // 
-            // olvColumn3
+            // column_bpm
             // 
-            this.olvColumn3.AspectName = "LocalBeatmapMissing";
-            this.olvColumn3.CheckBoxes = true;
-            this.olvColumn3.IsEditable = false;
-            this.olvColumn3.MaximumWidth = 35;
-            this.olvColumn3.MinimumWidth = 35;
-            this.olvColumn3.Text = "N/A";
-            this.olvColumn3.Width = 35;
+            this.column_bpm.AspectName = "MainBpm";
+            this.column_bpm.IsEditable = false;
+            this.column_bpm.Text = "BPM";
+            this.column_bpm.Width = 40;
+            // 
+            // column_state
+            // 
+            this.column_state.AspectName = "StateStr";
+            this.column_state.IsEditable = false;
+            this.column_state.Text = "State";
             // 
             // olvColumn10
             // 
             this.olvColumn10.AspectName = "LocalVersionDiffers";
             this.olvColumn10.CheckBoxes = true;
+            this.olvColumn10.DisplayIndex = 10;
             this.olvColumn10.IsEditable = false;
-            this.olvColumn10.MaximumWidth = 35;
-            this.olvColumn10.MinimumWidth = 35;
-            this.olvColumn10.Text = "N/U";
-            this.olvColumn10.Width = 35;
+            this.olvColumn10.IsVisible = false;
+            this.olvColumn10.Text = "Different version";
+            this.olvColumn10.Width = 90;
             // 
             // OsuGrade
             // 
             this.OsuGrade.AspectName = "OsuGrade";
+            this.OsuGrade.DisplayIndex = 7;
             this.OsuGrade.IsEditable = false;
-            this.OsuGrade.Text = "OsuGrade";
+            this.OsuGrade.Text = "Rank";
+            this.OsuGrade.Width = 50;
             // 
             // LastPlayed
             // 
             this.LastPlayed.AspectName = "LastPlayed";
+            this.LastPlayed.DisplayIndex = 8;
             this.LastPlayed.IsEditable = false;
             this.LastPlayed.Text = "Last played";
+            this.LastPlayed.Width = 75;
             // 
             // olvColumn12
             // 
             this.olvColumn12.AspectName = "EditDate";
+            this.olvColumn12.DisplayIndex = 9;
             this.olvColumn12.IsEditable = false;
-            this.olvColumn12.IsVisible = false;
-            this.olvColumn12.Text = "Add date";
+            this.olvColumn12.Text = "Last update";
+            this.olvColumn12.Width = 75;
             // 
             // olvColumn13
             // 
             this.olvColumn13.AspectName = "UserComment";
+            this.olvColumn13.DisplayIndex = 10;
+            this.olvColumn13.IsVisible = false;
             this.olvColumn13.Text = "Comment";
             // 
             // TaikoGrade
@@ -395,50 +403,37 @@
             this.TaikoGrade.AspectName = "TaikoGrade";
             this.TaikoGrade.IsEditable = false;
             this.TaikoGrade.IsVisible = false;
-            this.TaikoGrade.Text = "TaikoGrade";
+            this.TaikoGrade.Text = "Taiko Rank";
             // 
             // CatchGrade
             // 
             this.CatchGrade.AspectName = "CatchGrade";
             this.CatchGrade.IsEditable = false;
             this.CatchGrade.IsVisible = false;
-            this.CatchGrade.Text = "CatchGrade";
+            this.CatchGrade.Text = "Catch Rank";
             // 
             // ManiaGrade
             // 
             this.ManiaGrade.AspectName = "ManiaGrade";
             this.ManiaGrade.IsEditable = false;
             this.ManiaGrade.IsVisible = false;
-            this.ManiaGrade.Text = "ManiaGrade";
+            this.ManiaGrade.Text = "Mania Rank";
             // 
             // olvColumn9
             // 
             this.olvColumn9.AspectName = "MapSetId";
+            this.olvColumn9.DisplayIndex = 10;
             this.olvColumn9.IsEditable = false;
             this.olvColumn9.IsVisible = false;
-            this.olvColumn9.Text = "SetId";
+            this.olvColumn9.Text = "MapSetId";
             // 
             // olvColumn11
             // 
             this.olvColumn11.AspectName = "MapId";
+            this.olvColumn11.DisplayIndex = 10;
             this.olvColumn11.IsEditable = false;
             this.olvColumn11.IsVisible = false;
             this.olvColumn11.Text = "MapId";
-            // 
-            // MainBpm
-            // 
-            this.MainBpm.AspectName = "MainBpm";
-            this.MainBpm.DisplayIndex = 11;
-            this.MainBpm.IsEditable = false;
-            this.MainBpm.IsVisible = false;
-            this.MainBpm.Text = "MainBpm";
-            // 
-            // exportBeatmapSetsMenuItem
-            // 
-            this.exportBeatmapSetsMenuItem.Name = "exportBeatmapSetsMenuItem";
-            this.exportBeatmapSetsMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.exportBeatmapSetsMenuItem.Text = "Export beatmap sets";
-            this.exportBeatmapSetsMenuItem.Click += new System.EventHandler(this.MenuStripClick);
             // 
             // BeatmapListingView
             // 
@@ -449,7 +444,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_beatmapSearch);
             this.Name = "BeatmapListingView";
-            this.Size = new System.Drawing.Size(634, 502);
+            this.Size = new System.Drawing.Size(788, 502);
             this.BeatmapsContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ListViewBeatmaps)).EndInit();
             this.ResumeLayout(false);
@@ -463,7 +458,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn4;
         private BrightIdeasSoftware.OLVColumn column_stars;
-        private BrightIdeasSoftware.OLVColumn olvColumn5;
+        private BrightIdeasSoftware.OLVColumn column_state;
         private BrightIdeasSoftware.OLVColumn column_ar;
         private BrightIdeasSoftware.OLVColumn column_cs;
         private BrightIdeasSoftware.OLVColumn column_hp;
@@ -482,7 +477,6 @@
         private System.Windows.Forms.ToolStripMenuItem SearchMapsetMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem SearchArtistMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem SearchTitleMapMenuStrip;
-        private BrightIdeasSoftware.OLVColumn olvColumn3;
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private BrightIdeasSoftware.OLVColumn LastPlayed;
         private BrightIdeasSoftware.OLVColumn olvColumn12;
@@ -498,7 +492,7 @@
         private System.Windows.Forms.ToolStripMenuItem PullMapsetMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn9;
         private BrightIdeasSoftware.OLVColumn olvColumn11;
-        private BrightIdeasSoftware.OLVColumn MainBpm;
+        private BrightIdeasSoftware.OLVColumn column_bpm;
         private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsMenuItem;
     }
 }
