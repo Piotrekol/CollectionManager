@@ -13,16 +13,12 @@ namespace CollectionManager.Modules.CollectionsManager
     {
         public readonly Collections LoadedCollections = new Collections();
         public Beatmaps LoadedBeatmaps;
-        private readonly char[] ReorderChars;
-        private readonly char[] ReorderCharsWithSeparator;
         private readonly string ReorderCharsString;
         private const string reorderSeparator = "| ";
         public CollectionsManager(Beatmaps loadedBeatmaps)
         {
             LoadedBeatmaps = loadedBeatmaps;
             ReorderCharsString = "0123456789";//!$)]},.? ABCDEFGHIJKLMNOPQRSTUVWXYZ @#%^&*(+[{;':\\\"<>/
-            ReorderChars = ReorderCharsString.ToArray();
-            ReorderCharsWithSeparator = ReorderChars.Concat(reorderSeparator).ToArray();
         }
 
         /*
@@ -176,7 +172,7 @@ namespace CollectionManager.Modules.CollectionsManager
                 var amountOfCharactersRequired = 0;
                 var variations = 0;
                 while (orderedLoadedCollections.Count() > variations)
-                    variations = Enumerable.Range(1, ++amountOfCharactersRequired).Aggregate(0, (acc, i) => Convert.ToInt32(Math.Pow(ReorderChars.Length, i)) + acc);
+                    variations = Enumerable.Range(1, ++amountOfCharactersRequired).Aggregate(0, (acc, i) => Convert.ToInt32(Math.Pow(ReorderCharsString.Length, i)) + acc);
 
                 List<string> reorderStrings = new List<string>(variations);
                 for (int i = 1; i <= amountOfCharactersRequired; i++)
@@ -186,9 +182,8 @@ namespace CollectionManager.Modules.CollectionsManager
                 var collectionIndex = 0;
                 foreach (var collection in orderedLoadedCollections)
                 {
-
                     if (collection.Name.Contains(reorderSeparator))
-                        collection.Name = collection.Name.TrimStart(ReorderCharsWithSeparator);
+                        collection.Name = collection.Name.Substring(collection.Name.IndexOf(reorderSeparator) + reorderSeparator.Length + 1);
 
                     collection.Name = $"{reorderStrings[collectionIndex++]}{reorderSeparator} {collection.Name}";
                 }
