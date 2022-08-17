@@ -51,6 +51,8 @@ namespace CollectionManager.DataTypes
         /// </summary>
         int OnlineId { get; set; }
 
+        int Id { get; set; }
+
         void SetLoadedMaps(MapCacher instance);
         IEnumerable<BeatmapExtension> AllBeatmaps();
         IEnumerable<BeatmapExtension> NotKnownBeatmaps();

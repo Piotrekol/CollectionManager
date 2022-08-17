@@ -32,6 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
+            this.column_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.Total = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -78,6 +79,7 @@
             this.ListViewCollections.AllColumns.Add(this.olvColumn1);
             this.ListViewCollections.AllColumns.Add(this.Total);
             this.ListViewCollections.AllColumns.Add(this.olvColumn2);
+            this.ListViewCollections.AllColumns.Add(this.column_id);
             this.ListViewCollections.AllowDrop = true;
             this.ListViewCollections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -101,6 +103,15 @@
             this.ListViewCollections.VirtualMode = true;
             this.ListViewCollections.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListViewCollections_KeyDown);
             this.ListViewCollections.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewCollections_KeyUp);
+            // 
+            // column_id
+            // 
+            this.column_id.AspectName = "Id";
+            this.column_id.DisplayIndex = 2;
+            this.column_id.IsEditable = false;
+            this.column_id.IsVisible = false;
+            this.column_id.Text = "Id";
+            this.column_id.Width = 40;
             // 
             // olvColumn1
             // 
@@ -239,7 +250,7 @@
             this.inverseToolStripMenuItem,
             this.exportBeatmapSetsToolStripMenuItem});
             this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(182, 268);
+            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(182, 246);
             // 
             // exportBeatmapSetsToolStripMenuItem
             // 
@@ -285,5 +296,6 @@
         private System.Windows.Forms.ToolStripMenuItem inverseToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip CollectionContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn column_id;
     }
 }

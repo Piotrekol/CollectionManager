@@ -56,6 +56,8 @@ namespace CollectionManager.DataTypes
 
         public int OnlineId { get; set; }
 
+        public int Id { get; set; }
+
         public void SetLoadedMaps(MapCacher instance)
         {
             if (instance == null)

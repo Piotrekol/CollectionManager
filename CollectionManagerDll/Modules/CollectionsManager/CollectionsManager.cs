@@ -15,6 +15,7 @@ namespace CollectionManager.Modules.CollectionsManager
         public Beatmaps LoadedBeatmaps;
         private readonly string ReorderCharsString;
         private const string reorderSeparator = "| ";
+        private int CollectionLoadId = 0;
         public CollectionsManager(Beatmaps loadedBeatmaps)
         {
             LoadedBeatmaps = loadedBeatmaps;
@@ -48,6 +49,7 @@ namespace CollectionManager.Modules.CollectionsManager
                     var name = GetValidCollectionName(collection.Name, collectionNames);
 
                     collection.Name = name;
+                    collection.Id = CollectionLoadId++;
                     collectionNames.Add(name);
                 }
                 LoadedCollections.AddRange(args.Collections);
