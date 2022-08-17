@@ -48,7 +48,7 @@ namespace App.Presenters.Controls
             Collections = _model.GetCollections();
         }
 
-        private void ViewOnCollectionReorder(object sender, Collections collections, Collection targetCollection, bool placeBefore)
+        private void ViewOnCollectionReorder(object sender, Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, int sortOrder)
         {
             if (!Settings.Default.DontAskAboutReorderingCollections)
             {
@@ -60,7 +60,7 @@ namespace App.Presenters.Controls
                     return;
             }
 
-            _model.EmitCollectionEditing(CollectionEditArgs.ReorderCollections(collections, targetCollection, placeBefore));
+            _model.EmitCollectionEditing(CollectionEditArgs.ReorderCollections(collections, targetCollection, placeBefore, sortColumn, sortOrder));
         }
 
         private void ViewOnBeatmapsDropped(object sender, Beatmaps args, string collectionName)

@@ -163,9 +163,37 @@ namespace CollectionManager.Modules.CollectionsManager
             }
             else if (action == CollectionEdit.Reorder)
             {
-                var targetCollection = args.TargetCollection;
-                var collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
-                var orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
+                List<ICollection> collectionsToReorder;
+                List<ICollection> orderedLoadedCollections;
+                switch (args.SortColumn)
+                {
+                    case "Name":
+                        collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
+                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
+                        break;
+                    case "Count":
+                        collectionsToReorder = args.Collections.OrderBy(x => x.NumberOfBeatmaps).ToList();
+                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.NumberOfBeatmaps).ToList();
+                        break;
+                    case "Missing":
+                        collectionsToReorder = args.Collections.OrderBy(x => x.NumberOfMissingBeatmaps).ToList();
+                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.NumberOfMissingBeatmaps).ToList();
+                        break;
+                    case "Id":
+                        collectionsToReorder = args.Collections.OrderBy(x => x.Id).ToList();
+                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Id).ToList();
+                        break;
+                    default:
+                        collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
+                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
+                        break;
+                }
+                if (args.SortOrder == 2)
+                {
+                    collectionsToReorder.Reverse();
+                    orderedLoadedCollections.Reverse();
+                }
+                    var targetCollection = args.TargetCollection;
                 foreach (var coll in collectionsToReorder)
                     orderedLoadedCollections.Remove(coll);
 

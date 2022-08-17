@@ -203,14 +203,16 @@ namespace GuiComponents.Controls
             var targetCollection = (Collection)e.TargetModel;
             if (e.SourceModels[0] is Collection)
             {
-                if (ListViewCollections.LastSortColumn != NameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
-                    ListViewCollections.Sort(ListViewCollections.AllColumns[0], SortOrder.Ascending);
 
                 var collections = new Collections();
                 foreach (var collection in e.SourceModels)
                     collections.Add((Collection)collection);
 
-                OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem);
+                OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem, ListViewCollections.LastSortColumn.Text, (int)ListViewCollections.LastSortOrder);
+
+                if (ListViewCollections.LastSortColumn != NameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
+                    ListViewCollections.Sort(ListViewCollections.AllColumns[0], SortOrder.Ascending);
+
                 return;
             }
 
