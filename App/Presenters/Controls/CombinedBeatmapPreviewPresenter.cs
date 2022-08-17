@@ -18,10 +18,16 @@ namespace App.Presenters.Controls
             _model = model;
             _model.BeatmapChanged+=ModelOnBeatmapChanged;
             _beatmapThumbnailModel = new BeatmapThumbnailModel();
+            model.SelectedModsChanged += Model_SelectedModsChanged;
             new BeatmapThumbnailPresenter(_view.BeatmapThumbnailView, _beatmapThumbnailModel);
 
             MusicControlModel = new MusicControlModel();
             new MusicControlPresenter(_view.MusicControlView, MusicControlModel);
+        }
+
+        private void Model_SelectedModsChanged(object sender, EventArgs e)
+        {
+            _beatmapThumbnailModel.SelectedMods = _model.SelectedMods;
         }
 
         private void ModelOnBeatmapChanged(object sender, EventArgs eventArgs)

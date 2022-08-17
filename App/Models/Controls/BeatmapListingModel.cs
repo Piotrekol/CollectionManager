@@ -35,6 +35,8 @@ namespace App.Models
             }
         }
 
+        public Mods SelectedMods { get => _beatmapListFilter.CurrentMods; }
+
         public ICollection CurrentCollection { get; private set; }
         private Beatmaps _selectedBeatmaps;
         public Beatmaps SelectedBeatmaps

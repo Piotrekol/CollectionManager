@@ -28,9 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.beatmapThumbnailView1 = new GuiComponents.Controls.BeatmapThumbnailView();
             this.musicControlView1 = new GuiComponents.Controls.MusicControlView();
+            this.beatmapThumbnailView1 = new GuiComponents.Controls.BeatmapThumbnailView();
             this.SuspendLayout();
+            // 
+            // musicControlView1
+            // 
+            this.musicControlView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.musicControlView1.IsAutoPlayEnabled = false;
+            this.musicControlView1.IsMusicPlayerMode = false;
+            this.musicControlView1.IsUserSeeking = false;
+            this.musicControlView1.Location = new System.Drawing.Point(186, 294);
+            this.musicControlView1.Name = "musicControlView1";
+            this.musicControlView1.Position = 0;
+            this.musicControlView1.Size = new System.Drawing.Size(214, 58);
+            this.musicControlView1.TabIndex = 1;
+            this.musicControlView1.Volume = 0.3F;
             // 
             // beatmapThumbnailView1
             // 
@@ -41,16 +54,6 @@
             this.beatmapThumbnailView1.Name = "beatmapThumbnailView1";
             this.beatmapThumbnailView1.Size = new System.Drawing.Size(396, 336);
             this.beatmapThumbnailView1.TabIndex = 0;
-            // 
-            // musicControlView1
-            // 
-            this.musicControlView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.musicControlView1.IsUserSeeking = false;
-            this.musicControlView1.Location = new System.Drawing.Point(186, 294);
-            this.musicControlView1.Name = "musicControlView1";
-            this.musicControlView1.Position = 0;
-            this.musicControlView1.Size = new System.Drawing.Size(214, 58);
-            this.musicControlView1.TabIndex = 1;
             // 
             // CombinedBeatmapPreviewView
             // 

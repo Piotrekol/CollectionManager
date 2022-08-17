@@ -6,11 +6,9 @@ namespace GuiComponents.Interfaces
     {
         Image beatmapImage { set; }
         string beatmapImageUrl { set; }
-        string AR { set; }
-        string CS { set; }
-        string OD { set; }
-        string Stars { set; }
+        string BasicStats { set; }
         string BeatmapName { set; }
+        string AdditionalStatsRtf { set; }
 
     }
 }
