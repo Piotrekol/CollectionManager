@@ -16,7 +16,7 @@ namespace CollectionManager.Modules.CollectionsManager
         public IList<string> CollectionNames { get; protected set; }
         public bool PlaceCollectionsBefore { get; protected set; }
         public string SortColumn { get; private set; }
-        public int SortOrder { get; private set; }
+        public SortOrder SortOrder { get; private set; }
 
         public CollectionEditArgs(CollectionEdit action)
         {
@@ -121,7 +121,7 @@ namespace CollectionManager.Modules.CollectionsManager
 
         #endregion
         #region Reorder collections using special characters placed at the begining of the name, this modifies ALL collection names
-        public static CollectionEditArgs ReorderCollections(Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, int sortOrder)
+        public static CollectionEditArgs ReorderCollections(Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder)
         {
             return new CollectionEditArgs(CollectionEdit.Reorder)
             {

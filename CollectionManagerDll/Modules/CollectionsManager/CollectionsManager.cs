@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -188,7 +188,7 @@ namespace CollectionManager.Modules.CollectionsManager
                         orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
                         break;
                 }
-                if (args.SortOrder == 2)
+                if (args.SortOrder == SortOrder.Ascending)
                 {
                     collectionsToReorder.Reverse();
                     orderedLoadedCollections.Reverse();

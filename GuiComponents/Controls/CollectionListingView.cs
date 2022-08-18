@@ -208,7 +208,10 @@ namespace GuiComponents.Controls
                 foreach (var collection in e.SourceModels)
                     collections.Add((Collection)collection);
 
-                OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem, ListViewCollections.LastSortColumn.Text, (int)ListViewCollections.LastSortOrder);
+                var sortOrder = ListViewCollections.LastSortOrder == SortOrder.Ascending 
+                    ? CollectionManager.Enums.SortOrder.Ascending 
+                    : CollectionManager.Enums.SortOrder.Descending;
+                OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem, ListViewCollections.LastSortColumn.Text, sortOrder);
 
                 if (ListViewCollections.LastSortColumn != NameColumn || ListViewCollections.LastSortOrder != SortOrder.Ascending)
                     ListViewCollections.Sort(ListViewCollections.AllColumns[0], SortOrder.Ascending);

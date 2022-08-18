@@ -9,6 +9,8 @@ using System.Collections.Specialized;
 using App.Misc;
 using Common;
 using App.Properties;
+using CollectionManager.Enums;
+using SortOrder = CollectionManager.Enums.SortOrder;
 
 namespace App.Presenters.Controls
 {
@@ -48,7 +50,7 @@ namespace App.Presenters.Controls
             Collections = _model.GetCollections();
         }
 
-        private void ViewOnCollectionReorder(object sender, Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, int sortOrder)
+        private void ViewOnCollectionReorder(object sender, Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder)
         {
             if (!Settings.Default.DontAskAboutReorderingCollections)
             {
