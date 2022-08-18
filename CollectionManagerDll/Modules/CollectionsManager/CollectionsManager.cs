@@ -16,6 +16,14 @@ namespace CollectionManager.Modules.CollectionsManager
         private readonly string ReorderCharsString;
         private const string reorderSeparator = "| ";
         private int CollectionLoadId = 0;
+        private readonly Lazy<Dictionary<string, Func<ICollection, object>>> CollectionFieldSortSelectors = new(() => new()
+        {
+            { nameof(ICollection.Id), c => c.Id },
+            { nameof(ICollection.Name), c => c.Name },
+            { nameof(ICollection.NumberOfMissingBeatmaps), c => c.NumberOfMissingBeatmaps },
+            { nameof(ICollection.NumberOfBeatmaps), c => c.NumberOfBeatmaps },
+        });
+
         public CollectionsManager(Beatmaps loadedBeatmaps)
         {
             LoadedBeatmaps = loadedBeatmaps;
@@ -163,37 +171,18 @@ namespace CollectionManager.Modules.CollectionsManager
             }
             else if (action == CollectionEdit.Reorder)
             {
-                List<ICollection> collectionsToReorder;
-                List<ICollection> orderedLoadedCollections;
-                switch (args.SortColumn)
-                {
-                    case "Name":
-                        collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
-                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
-                        break;
-                    case "Count":
-                        collectionsToReorder = args.Collections.OrderBy(x => x.NumberOfBeatmaps).ToList();
-                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.NumberOfBeatmaps).ToList();
-                        break;
-                    case "Missing":
-                        collectionsToReorder = args.Collections.OrderBy(x => x.NumberOfMissingBeatmaps).ToList();
-                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.NumberOfMissingBeatmaps).ToList();
-                        break;
-                    case "Id":
-                        collectionsToReorder = args.Collections.OrderBy(x => x.Id).ToList();
-                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Id).ToList();
-                        break;
-                    default:
-                        collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
-                        orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
-                        break;
-                }
+                if (!CollectionFieldSortSelectors.Value.TryGetValue(args.SortColumn, out var sortFieldSelector))
+                    throw new InvalidOperationException("Unrecognized collection sort column");
+
+                var collectionsToReorder = args.Collections.OrderByDescending(sortFieldSelector).ToList();
+                var orderedLoadedCollections = LoadedCollections.OrderByDescending(sortFieldSelector).ToList();
                 if (args.SortOrder == SortOrder.Ascending)
                 {
                     collectionsToReorder.Reverse();
                     orderedLoadedCollections.Reverse();
                 }
-                    var targetCollection = args.TargetCollection;
+
+                var targetCollection = args.TargetCollection;
                 foreach (var coll in collectionsToReorder)
                     orderedLoadedCollections.Remove(coll);
 
