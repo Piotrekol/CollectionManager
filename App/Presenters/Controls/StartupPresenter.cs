@@ -172,6 +172,7 @@ namespace App.Presenters.Controls
 
             if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory))
             {
+                _view.LoadOsuCollectionButtonEnabled = _view.UseSelectedOptionsOnStartup = false;
                 _view.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
                 return;
             }
