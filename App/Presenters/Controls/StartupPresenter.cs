@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,9 +49,13 @@ namespace App.Presenters.Controls
             _view.StartupDatabaseOperation += _view_StartupDatabaseOperation;
         }
 
+        private bool ShouldSkipStartupForm => _startupSettings.AutoLoadMode 
+            && (_startupSettings.StartupDatabaseAction == StartupDatabaseAction.Unload && _startupSettings.StartupCollectionAction != StartupCollectionAction.LoadOsuCollection) //Can't load default collection with no osu database loaded
+            ;
+
         public async Task Run()
         {
-            if (_startupSettings.AutoLoadMode && _startupSettings.StartupDatabaseAction == StartupDatabaseAction.Unload)
+            if (ShouldSkipStartupForm)
             {
                 DoCollectionAction();
                 return;
