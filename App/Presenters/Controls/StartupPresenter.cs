@@ -25,6 +25,7 @@ namespace App.Presenters.Controls
         private Progress<string> _databaseLoadProgressReporter;
         private Task _databaseLoadTask;
         private bool _formClosedManually;
+        private SemaphoreSlim _formClosed = new(0);
 
         public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs, CollectionsManagerWithCounts collectionsManager)
         {
@@ -49,7 +50,7 @@ namespace App.Presenters.Controls
             _view.StartupDatabaseOperation += _view_StartupDatabaseOperation;
         }
 
-        private bool ShouldSkipStartupForm => _startupSettings.AutoLoadMode 
+        private bool ShouldSkipStartupForm => _startupSettings.AutoLoadMode
             && (_startupSettings.StartupDatabaseAction == StartupDatabaseAction.Unload && _startupSettings.StartupCollectionAction != StartupCollectionAction.LoadOsuCollection) //Can't load default collection with no osu database loaded
             ;
 
@@ -76,12 +77,13 @@ namespace App.Presenters.Controls
                 Application.UseWaitCursor = false;
                 _view.CollectionButtonsEnabled = true;
             });
-            if (_startupSettings.AutoLoadMode)
-                _form.Show();
-            else
-                _form.ShowAndBlock();
-
+            _form.Show();
             await _databaseLoadTask;
+
+            //Wait for user to close the form if not in auto mode
+            if (!_startupSettings.AutoLoadMode)
+                await _formClosed.WaitAsync();
+
             _startupSettings.AutoLoadMode = _view.UseSelectedOptionsOnStartup;
             if (!loadedCollectionFromFile)
                 SaveSettings();
@@ -155,6 +157,7 @@ namespace App.Presenters.Controls
 
         private void _view_Closing(object sender, EventArgs eventArgs)
         {
+            _formClosed.Release();
             if (eventArgs is not FormClosingEventArgs formEventArgs || formEventArgs.CloseReason != CloseReason.UserClosing || _formClosedManually)
                 return;
 
@@ -172,7 +175,7 @@ namespace App.Presenters.Controls
 
             if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory))
             {
-                _view.LoadOsuCollectionButtonEnabled = _view.UseSelectedOptionsOnStartup = false;
+                _startupSettings.AutoLoadMode = _view.LoadOsuCollectionButtonEnabled = _view.UseSelectedOptionsOnStartup = false;
                 _view.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
                 return;
             }
