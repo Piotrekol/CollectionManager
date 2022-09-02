@@ -33,10 +33,8 @@ namespace GuiComponents.Controls
             }
         }
 
-        public string AR { set { Invoke((MethodInvoker)(() => { label_AR.Text = value; })); } }
-        public string CS { set { Invoke((MethodInvoker)(() => { label_CS.Text = value; })); } }
-        public string OD { set { Invoke((MethodInvoker)(() => { label_OD.Text = value; })); } }
-        public string Stars { set { Invoke((MethodInvoker)(() => { label_Stars.Text = value; })); } }
+        public string BasicStats { set { Invoke((MethodInvoker)(() => { label_BasicStats.Text = value; })); } }
         public string BeatmapName { set { Invoke((MethodInvoker)(() => { label_BeatmapName.Text = value; })); } }
+        public string AdditionalStatsRtf { set { Invoke((MethodInvoker)(() => { richTextBox_AdditionalStats.Rtf = value; })); } }
     }
 }

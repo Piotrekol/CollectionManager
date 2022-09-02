@@ -30,6 +30,7 @@ namespace App.Presenters.Forms
             BeatmapListingModel = new BeatmapListingModel(null);
             BeatmapListingModel.BeatmapsDropped += BeatmapListing_BeatmapsDropped;
             BeatmapListingModel.SelectedBeatmapChanged += BeatmapListingViewOnSelectedBeatmapChanged;
+            BeatmapListingModel.FilteringFinished += BeatmapListingModel_FilteringFinished;
             CollectionListingModel = new CollectionListingModel(Initalizer.LoadedCollections, _mainFormModel.GetCollectionEditor());
             CollectionListingModel.CollectionEditing += CollectionListing_CollectionEditing;
             CollectionListingModel.SelectedCollectionsChanged += CollectionListing_SelectedCollectionsChanged;
@@ -48,6 +49,11 @@ namespace App.Presenters.Forms
             InfoTextModel = infoTextModel;
             new InfoTextPresenter(_view.InfoTextView, InfoTextModel);
 
+        }
+
+        private void BeatmapListingModel_FilteringFinished(object sender, EventArgs e)
+        {
+            _combinedBeatmapPreviewModel.SelectedMods = BeatmapListingModel.SelectedMods;
         }
 
         private void CollectionListing_CollectionEditing(object sender, CollectionEditArgs collectionEditArgs)

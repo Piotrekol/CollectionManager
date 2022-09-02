@@ -19,8 +19,14 @@ namespace App.Presenters.Forms
             new BeatmapListingPresenter(_view.BeatmapListingView, BeatmapListingModel);
 
             _combinedBeatmapPreviewModel = new CombinedBeatmapPreviewModel();
-            var presenter =new CombinedBeatmapPreviewPresenter(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);
+            var presenter = new CombinedBeatmapPreviewPresenter(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);
             presenter.MusicControlModel.NextMapRequest += (s, a) => _view.BeatmapListingView.SelectNextOrFirst();
+            BeatmapListingModel.FilteringFinished += BeatmapListingModel_FilteringFinished;
+        }
+
+        private void BeatmapListingModel_FilteringFinished(object sender, System.EventArgs e)
+        {
+            _combinedBeatmapPreviewModel.SelectedMods = BeatmapListingModel.SelectedMods;
         }
 
         private void BeatmapListingView_SelectedBeatmapChanged(object sender, System.EventArgs e)

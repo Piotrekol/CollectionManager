@@ -19,9 +19,10 @@ namespace App.Interfaces
 
         Beatmaps SelectedBeatmaps { get; set; }
         Beatmap SelectedBeatmap { get; set; }
+        Mods SelectedMods { get; }
         ICollection CurrentCollection { get; }
         void EmitBeatmapOperation(BeatmapListingAction args);
-        void EmitBeatmapsDropped(object sender,Beatmaps beatmaps);
+        void EmitBeatmapsDropped(object sender, Beatmaps beatmaps);
         Beatmaps GetBeatmaps();
         void SetBeatmaps(Beatmaps beatmaps);
         void SetCollection(ICollection collection);
