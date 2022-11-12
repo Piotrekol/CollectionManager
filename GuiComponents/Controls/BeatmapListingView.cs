@@ -118,7 +118,7 @@ namespace GuiComponents.Controls
             //listview
             ListViewBeatmaps.FullRowSelect = true;
             ListViewBeatmaps.AllowColumnReorder = true;
-            ListViewBeatmaps.Sorting = SortOrder.Descending;
+            ListViewBeatmaps.Sorting = System.Windows.Forms.SortOrder.Descending;
             ListViewBeatmaps.UseHotItem = true;
             ListViewBeatmaps.UseTranslucentHotItem = true;
             ListViewBeatmaps.UseFiltering = true;

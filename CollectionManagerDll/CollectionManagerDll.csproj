@@ -18,6 +18,7 @@
     <Version>1.0.8</Version>
     <IncludeSymbols>true</IncludeSymbols> 
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

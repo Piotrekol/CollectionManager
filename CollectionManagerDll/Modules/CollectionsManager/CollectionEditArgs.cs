@@ -15,6 +15,9 @@ namespace CollectionManager.Modules.CollectionsManager
         public Beatmaps Beatmaps { get; protected set; }
         public IList<string> CollectionNames { get; protected set; }
         public bool PlaceCollectionsBefore { get; protected set; }
+        public string SortColumn { get; private set; }
+        public SortOrder SortOrder { get; private set; }
+
         public CollectionEditArgs(CollectionEdit action)
         {
             Action = action;
@@ -118,13 +121,15 @@ namespace CollectionManager.Modules.CollectionsManager
 
         #endregion
         #region Reorder collections using special characters placed at the begining of the name, this modifies ALL collection names
-        public static CollectionEditArgs ReorderCollections(Collections collections, Collection targetCollection, bool placeBefore)
+        public static CollectionEditArgs ReorderCollections(Collections collections, Collection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder)
         {
             return new CollectionEditArgs(CollectionEdit.Reorder)
             {
                 Collections = collections,
                 TargetCollection = targetCollection,
-                PlaceCollectionsBefore = placeBefore
+                PlaceCollectionsBefore = placeBefore,
+                SortColumn = sortColumn,
+                SortOrder = sortOrder
             };
         }
         #endregion

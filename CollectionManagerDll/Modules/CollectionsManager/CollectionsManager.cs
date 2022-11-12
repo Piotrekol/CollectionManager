@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,14 @@ namespace CollectionManager.Modules.CollectionsManager
         private readonly string ReorderCharsString;
         private const string reorderSeparator = "| ";
         private int CollectionLoadId = 0;
+        private readonly Lazy<Dictionary<string, Func<ICollection, object>>> CollectionFieldSortSelectors = new(() => new()
+        {
+            { nameof(ICollection.Id), c => c.Id },
+            { nameof(ICollection.Name), c => c.Name },
+            { nameof(ICollection.NumberOfMissingBeatmaps), c => c.NumberOfMissingBeatmaps },
+            { nameof(ICollection.NumberOfBeatmaps), c => c.NumberOfBeatmaps },
+        });
+
         public CollectionsManager(Beatmaps loadedBeatmaps)
         {
             LoadedBeatmaps = loadedBeatmaps;
@@ -163,9 +171,18 @@ namespace CollectionManager.Modules.CollectionsManager
             }
             else if (action == CollectionEdit.Reorder)
             {
+                if (!CollectionFieldSortSelectors.Value.TryGetValue(args.SortColumn, out var sortFieldSelector))
+                    throw new InvalidOperationException("Unrecognized collection sort column");
+
+                var collectionsToReorder = args.Collections.OrderByDescending(sortFieldSelector).ToList();
+                var orderedLoadedCollections = LoadedCollections.OrderByDescending(sortFieldSelector).ToList();
+                if (args.SortOrder == SortOrder.Ascending)
+                {
+                    collectionsToReorder.Reverse();
+                    orderedLoadedCollections.Reverse();
+                }
+
                 var targetCollection = args.TargetCollection;
-                var collectionsToReorder = args.Collections.OrderBy(x => x.Name).ToList();
-                var orderedLoadedCollections = LoadedCollections.OrderBy(x => x.Name).ToList();
                 foreach (var coll in collectionsToReorder)
                     orderedLoadedCollections.Remove(coll);
 
