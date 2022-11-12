@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuiComponents", "GuiCompone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{14768636-102A-4A27-AB5A-9B5D1BA316A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerApp", "App\CollectionManagerApp.csproj", "{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionGenerator", "CollectionGenerator\CollectionGenerator.csproj", "{3070A7AA-7493-42A7-9E0E-74878453ABB4}"
 EndProject

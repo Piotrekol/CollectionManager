@@ -5,7 +5,7 @@
 #define MyAppVersion "4.2"
 #define MyAppPublisher "Piotrekol"
 #define MyAppURL "http://osustats.ppy.sh"
-#define MyAppExeName "App.exe"
+#define MyAppExeName "CollectionManagerApp.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -51,7 +51,7 @@ Name: osdbAssociation; Description: "Associate "".osdb"" extension (Collection f
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\App\bin\Release\net48\App.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CollectionManagerApp.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -75,6 +75,9 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
+
+[InstallDelete]
+Type: files; Name: "{app}\App.exe"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
