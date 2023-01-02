@@ -78,7 +78,7 @@ namespace App.Properties {
         
         public string DownloadManager_DownloaderSettings {
             get {
-                return string.Empty;
+                return "{}";
             }
             set {
             }
