@@ -182,7 +182,7 @@ namespace CollectionManagerExtensionsDll.Modules.API.osustats
             using (var memoryStream = new MemoryStream())
             {
                 collectionHandler.WriteOsdb(new Collections { collection }, memoryStream,
-                    collection.LastEditorUsername ?? "", true);
+                    collection.LastEditorUsername ?? "");
                 memoryStream.Position = 0;
 
 

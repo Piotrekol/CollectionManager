@@ -110,9 +110,18 @@ namespace GuiComponents.Controls
             label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
         }
         public static DateTime d = new DateTime(2006, 1, 1);
+        private static readonly AspectToStringConverterDelegate GradeConverter = cellValue =>
+        {
+            if (cellValue == null || (OsuGrade)cellValue == CollectionManager.Enums.OsuGrade.Null)
+                return "";
+
+            return cellValue.ToString();
+        };
+        private const string NumberAspectFormat = "{0:0.##}";
         private Mods _currentMods = Mods.Nm;
         private PlayMode _currentPlayMode = PlayMode.Osu;
         private DifficultyCalculator _difficultyCalculator = new DifficultyCalculator();
+        private List<OLVColumn> _customFieldColumns = new List<OLVColumn>();
         private void InitListView()
         {
             //listview
@@ -125,11 +134,10 @@ namespace GuiComponents.Controls
             ListViewBeatmaps.UseNotifyPropertyChanged = true;
             ListViewBeatmaps.ShowItemCountOnGroups = true;
             ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
-            var format = "{0:0.##}";
-            column_ar.AspectToStringFormat = format;
-            column_cs.AspectToStringFormat = format;
-            column_od.AspectToStringFormat = format;
-            column_hp.AspectToStringFormat = format;
+            column_ar.AspectToStringFormat = NumberAspectFormat;
+            column_cs.AspectToStringFormat = NumberAspectFormat;
+            column_od.AspectToStringFormat = NumberAspectFormat;
+            column_hp.AspectToStringFormat = NumberAspectFormat;
 
             column_stars.AspectGetter = rowObject =>
             {
@@ -186,11 +194,7 @@ namespace GuiComponents.Controls
                 }
                 return null;
             };
-            column_bpm.AspectToStringConverter = delegate (object cellValue)
-            {
-                if (cellValue == null) return string.Empty;
-                return $"{cellValue:0.##}";
-            };
+            column_bpm.AspectToStringFormat = NumberAspectFormat;
 
             column_state.AspectGetter = rowObject =>
             {
@@ -202,17 +206,10 @@ namespace GuiComponents.Controls
             };
 
 
-            var gradeConverter = new AspectToStringConverterDelegate(cellValue =>
-            {
-                if (cellValue == null || (OsuGrade)cellValue == CollectionManager.Enums.OsuGrade.Null)
-                    return "";
-
-                return cellValue.ToString();
-            });
-            OsuGrade.AspectToStringConverter = gradeConverter;
-            TaikoGrade.AspectToStringConverter = gradeConverter;
-            CatchGrade.AspectToStringConverter = gradeConverter;
-            ManiaGrade.AspectToStringConverter = gradeConverter;
+            OsuGrade.AspectToStringConverter = GradeConverter;
+            TaikoGrade.AspectToStringConverter = GradeConverter;
+            CatchGrade.AspectToStringConverter = GradeConverter;
+            ManiaGrade.AspectToStringConverter = GradeConverter;
 
             var dropsink = new RearrangingDropSink();
             dropsink.CanDropBetween = false;
@@ -222,6 +219,44 @@ namespace GuiComponents.Controls
             dropsink.ModelDropped += DropsinkOnModelDropped;
             this.ListViewBeatmaps.DropSink = dropsink;
 
+        }
+
+        public void ClearCustomFieldDefinitions()
+        {
+            foreach(var col in _customFieldColumns)
+            {
+                ListViewBeatmaps.AllColumns.Remove(col);
+            }
+            _customFieldColumns.Clear();
+            ListViewBeatmaps.RebuildColumns();
+        }
+
+        public void SetCustomFieldDefinitions(IEnumerable<CustomFieldDefinition> customFieldDefinitions)
+        {
+            foreach(var customFieldDef in customFieldDefinitions)
+            {
+                var col = new OLVColumn
+                {
+                    IsEditable = false,
+                    Text = customFieldDef.DisplayText,
+                    AspectGetter = rowObject => rowObject is BeatmapExtension beatmap ? beatmap.GetCustomFieldValue(customFieldDef.Key) : null
+                };
+
+                switch (customFieldDef.Type)
+                {
+                    case CustomFieldType.Grade:
+                        col.AspectToStringConverter = GradeConverter;
+                        break;
+                    case (>=CustomFieldType.UInt8 and <= CustomFieldType.Int64) or CustomFieldType.Single or CustomFieldType.Double:
+                        col.AspectToStringFormat = NumberAspectFormat;
+                        break;
+                }
+
+                _customFieldColumns.Add(col);
+                ListViewBeatmaps.AllColumns.Add(col);
+            }
+
+            ListViewBeatmaps.RebuildColumns();
         }
 
         private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)
@@ -313,6 +348,4 @@ namespace GuiComponents.Controls
             }
         }
     }
-
-
 }

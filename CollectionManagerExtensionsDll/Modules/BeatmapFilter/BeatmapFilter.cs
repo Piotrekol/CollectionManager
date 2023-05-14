@@ -334,7 +334,13 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         {
             return isWordMatch((Beatmap)b, word) ||
                    (b.UserComment != null &&
-                   b.UserComment.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0);
+                   b.UserComment.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0) || 
+                   isWordMatchInCustomField(b, word);
+        }
+
+        private bool isWordMatchInCustomField(BeatmapExtension b, string word)
+        {
+            return b.GetStringCustomFieldValues().Any(stringValue => stringValue.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         private bool isArtistMatch(Beatmap b, string word)
