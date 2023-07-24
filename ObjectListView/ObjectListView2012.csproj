@@ -5,7 +5,7 @@
     <AssemblyName>ObjectListView</AssemblyName>
     <FileUpgradeFlags />
     <UpgradeBackupLocation />
-    <TargetFramework>net20</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
     <AssemblyTitle>ObjectListView</AssemblyTitle>
