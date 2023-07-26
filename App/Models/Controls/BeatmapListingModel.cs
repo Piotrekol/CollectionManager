@@ -81,16 +81,17 @@ namespace App.Models
 
         public void SetCollection(ICollection collection)
         {
+            CurrentCollection = collection;
             if (collection == null)
             {
                 SetBeatmaps(null);
-                CurrentCollection = collection;
-                return;
             }
-            CurrentCollection = collection;
-            var maps = new Beatmaps();
-            maps.AddRange(collection.AllBeatmaps());
-            SetBeatmaps(maps);
+            else
+            {
+                var maps = new Beatmaps();
+                maps.AddRange(collection.AllBeatmaps());
+                SetBeatmaps(maps);
+            }
         }
 
         public void FilterBeatmaps(string text)

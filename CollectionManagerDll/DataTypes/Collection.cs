@@ -58,6 +58,8 @@ namespace CollectionManager.DataTypes
 
         public int Id { get; set; }
 
+        public IReadOnlyCollection<CustomFieldDefinition> CustomFieldDefinitions { get; set; }
+
         public void SetLoadedMaps(MapCacher instance)
         {
             if (instance == null)
@@ -161,6 +163,7 @@ namespace CollectionManager.DataTypes
         private void ProcessAdditionalProps(BeatmapExtension src, BeatmapExtension dest)
         {
             dest.UserComment = src.UserComment;
+            dest.SetCustomFieldValues(src);
         }
         protected virtual void ProcessNewlyAddedMap(BeatmapExtension map)
         {
@@ -236,6 +239,5 @@ namespace CollectionManager.DataTypes
         {
             return this.AllBeatmaps().GetEnumerator();
         }
-
     }
 }

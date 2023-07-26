@@ -53,6 +53,8 @@ namespace CollectionManager.DataTypes
 
         int Id { get; set; }
 
+        IReadOnlyCollection<CustomFieldDefinition> CustomFieldDefinitions { get; }
+
         void SetLoadedMaps(MapCacher instance);
         IEnumerable<BeatmapExtension> AllBeatmaps();
         IEnumerable<BeatmapExtension> NotKnownBeatmaps();

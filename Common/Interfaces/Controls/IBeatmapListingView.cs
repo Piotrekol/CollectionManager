@@ -29,5 +29,7 @@ namespace GuiComponents.Interfaces
         void FilteringFinished();
         void ClearSelection();
         void SelectNextOrFirst();
+        void ClearCustomFieldDefinitions();
+        void SetCustomFieldDefinitions(IEnumerable<CustomFieldDefinition> customFieldDefinitions);
     }
 }

@@ -6,25 +6,11 @@ using GuiComponents.Interfaces;
 
 namespace App.Presenters.Controls
 {
-    public class BeatmapListingPresenter: IBeatmapListingPresenter
+    public class BeatmapListingPresenter
     {
         readonly IBeatmapListingView _view;
         readonly IBeatmapListingModel _model;
 
-        private Beatmaps _beatmaps;
-
-        public Beatmaps Beatmaps
-        {
-            get
-            {
-                return _beatmaps;
-            }
-            set
-            {
-                _beatmaps = value;
-                _view.SetBeatmaps(value);
-            }
-        }
         public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model)
         {
             _view = view;
@@ -36,11 +22,11 @@ namespace App.Presenters.Controls
             _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
 
             _model = model;
-            _model.BeatmapsChanged += _model_BeatmapsChanged;
+            _model.BeatmapsChanged += (_, _) => RefreshBeatmapsInViewFromModel();
             _model.FilteringStarted+=ModelOnFilteringStarted;
             _model.FilteringFinished += _model_FilteringFinished;
             _view.SetFilter(_model.GetFilter());
-            Beatmaps = _model.GetBeatmaps();
+            RefreshBeatmapsInViewFromModel();
         }
         
         private void _model_FilteringFinished(object sender, EventArgs e)
@@ -63,9 +49,15 @@ namespace App.Presenters.Controls
             _model.FilterBeatmaps(_view.SearchText);
         }
 
-        private void _model_BeatmapsChanged(object sender, System.EventArgs e)
+        private void RefreshBeatmapsInViewFromModel()
         {
-            Beatmaps = _model.GetBeatmaps();
+            _view.SetBeatmaps(_model.GetBeatmaps());
+            _view.ClearCustomFieldDefinitions();
+            var curCol = _model.CurrentCollection;
+            if(curCol != null && curCol.CustomFieldDefinitions != null)
+            {
+                _view.SetCustomFieldDefinitions(curCol.CustomFieldDefinitions);
+            }
         }
 
 
