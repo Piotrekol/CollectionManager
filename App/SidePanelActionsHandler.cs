@@ -536,9 +536,10 @@ namespace App
                 "Are you sure?", MessageBoxType.Question))
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
-                BackupOsuCollection();
+                var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
+                BackupOsuCollection(backupFolder);
                 _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
-                _userDialogs.OkMessageBox("Collections saved.", "Info", MessageBoxType.Success);
+                _userDialogs.OkMessageBox($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", "Info", MessageBoxType.Success);
             }
             else
             {
@@ -546,9 +547,8 @@ namespace App
             }
         }
 
-        private void BackupOsuCollection()
+        private void BackupOsuCollection(string backupFolder)
         {
-            var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
             if (!Directory.Exists(backupFolder))
                 Directory.CreateDirectory(backupFolder);
 
