@@ -531,6 +531,8 @@
  * If you wish to use this code in a closed source application, please contact phillip_piper@bigfoot.com.
  */
 
+#pragma warning disable SYSLIB0011 // Type or member is obsolete (BinaryFormatter)
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -546,6 +548,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
+using MethodInvoker = System.Windows.Forms.MethodInvoker;
 
 namespace BrightIdeasSoftware
 {

@@ -1,128 +1,126 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <RootNamespace>BrightIdeasSoftware</RootNamespace>
-    <AssemblyName>ObjectListView</AssemblyName>
-    <FileUpgradeFlags />
-    <UpgradeBackupLocation />
-    <TargetFramework>net48</TargetFramework>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
-    <AssemblyTitle>ObjectListView</AssemblyTitle>
-    <Company>Bright Ideas Software</Company>
-    <Product>ObjectListView</Product>
-    <Description>ObjectListView is a .NET ListView wired on caffeine, guarana and steroids. More calmly, it is a C# wrapper around a .NET ListView, which makes the ListView much easier to use and teaches it lots of neat new tricks.</Description>
-    <Copyright>Copyright 2006-2014 Bright Ideas Software</Copyright>
-    <Version>2.8.0</Version>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
-    <FileVersion>2.8.0.0</FileVersion>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <Authors>Phillip Piper</Authors>
-    <PackageIconUrl>http://objectlistview.sourceforge.net/cs/_static/index-icon.png</PackageIconUrl>
-    <PackageId>ObjectListView.Official</PackageId>
-    <PackageLicenseUrl>http://www.gnu.org/licenses/gpl.html</PackageLicenseUrl>
-    <PackageProjectUrl>http://objectlistview.sourceforge.net</PackageProjectUrl>
-    <PackageReleaseNotes>V2.8 added the ability to disable rows, and to have checkboxes in column headers</PackageReleaseNotes>
-    <PackageTags>.Net WinForms Net20 Net40 ListView Controls</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <DocumentationFile>bin\$(Configuration)\ObjectListView.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DocumentationFile>bin\$(Configuration)\ObjectListView.XML</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Accessibility" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="DataTreeListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Implementation\Enums.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="OLVColumn.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="DataListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Implementation\Events.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="FastDataListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="FastObjectListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Rendering\TreeRenderer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="SubControls\ToolStripCheckedListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Utilities\ColumnSelectionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Utilities\ColumnSelectionForm.Designer.cs">
-      <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="SubControls\GlassPanelForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ObjectListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Rendering\Renderers.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Rendering\Styles.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="TreeListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="VirtualObjectListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CustomDictionary.xml" />
-    <None Include="FullClassDiagram.cd" />
-    <None Include="Resources\sort-descending.png" />
-    <None Include="Resources\sort-ascending.png" />
-    <None Include="Resources\filter.png" />
-    <None Include="Resources\clear-filter.png" />
-    <None Include="Resources\filter-icons3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="olv-keyfile.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Utilities\ColumnSelectionForm.resx">
-      <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Implementation\DragSource.cs" />
-    <Compile Remove="Implementation\DropSink.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<ProductVersion>9.0.30729</ProductVersion>
+		<RootNamespace>BrightIdeasSoftware</RootNamespace>
+		<AssemblyName>ObjectListView</AssemblyName>
+		<FileUpgradeFlags />
+		<UpgradeBackupLocation />
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
+		<AssemblyTitle>ObjectListView</AssemblyTitle>
+		<Company>Bright Ideas Software</Company>
+		<Product>ObjectListView</Product>
+		<Description>ObjectListView is a .NET ListView wired on caffeine, guarana and steroids. More calmly, it is a C# wrapper around a .NET ListView, which makes the ListView much easier to use and teaches it lots of neat new tricks.</Description>
+		<Copyright>Copyright 2006-2014 Bright Ideas Software</Copyright>
+		<Version>2.8.0</Version>
+		<AssemblyVersion>2.8.0.0</AssemblyVersion>
+		<FileVersion>2.8.0.0</FileVersion>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<Authors>Phillip Piper</Authors>
+		<PackageIconUrl>http://objectlistview.sourceforge.net/cs/_static/index-icon.png</PackageIconUrl>
+		<PackageId>ObjectListView.Official</PackageId>
+		<PackageLicenseUrl>http://www.gnu.org/licenses/gpl.html</PackageLicenseUrl>
+		<PackageProjectUrl>http://objectlistview.sourceforge.net</PackageProjectUrl>
+		<PackageReleaseNotes>V2.8 added the ability to disable rows, and to have checkboxes in column headers</PackageReleaseNotes>
+		<PackageTags>.Net WinForms Net20 Net40 ListView Controls</PackageTags>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugType>full</DebugType>
+		<DocumentationFile>bin\$(Configuration)\ObjectListView.XML</DocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<DocumentationFile>bin\$(Configuration)\ObjectListView.XML</DocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="System.configuration" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="DataTreeListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Implementation\Enums.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="OLVColumn.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="DataListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Implementation\Events.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="FastDataListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="FastObjectListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Rendering\TreeRenderer.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="SubControls\ToolStripCheckedListBox.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Utilities\ColumnSelectionForm.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Utilities\ColumnSelectionForm.Designer.cs">
+			<DependentUpon>ColumnSelectionForm.cs</DependentUpon>
+		</Compile>
+		<Compile Update="SubControls\GlassPanelForm.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="ObjectListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Rendering\Renderers.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Rendering\Styles.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="TreeListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="VirtualObjectListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="CustomDictionary.xml" />
+		<None Include="FullClassDiagram.cd" />
+		<None Include="Resources\sort-descending.png" />
+		<None Include="Resources\sort-ascending.png" />
+		<None Include="Resources\filter.png" />
+		<None Include="Resources\clear-filter.png" />
+		<None Include="Resources\filter-icons3.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="olv-keyfile.snk" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Utilities\ColumnSelectionForm.resx">
+			<DependentUpon>ColumnSelectionForm.cs</DependentUpon>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Implementation\DragSource.cs" />
+		<Compile Remove="Implementation\DropSink.cs" />
+	</ItemGroup>
 </Project>

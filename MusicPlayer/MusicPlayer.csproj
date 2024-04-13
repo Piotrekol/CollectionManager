@@ -1,33 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>MusicPlayer</AssemblyTitle>
-    <Product>MusicPlayer</Product>
-    <Copyright>Copyright ©  2017</Copyright>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>NAudio\NAudio.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="NAudio.WindowsMediaFormat, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>NAudio\NAudio.WindowsMediaFormat.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NAudio\license.txt" />
-    <Content Include="NAudio\NAudio.dll" />
-    <Content Include="NAudio\NAudio.WindowsMediaFormat.dll" />
-    <Content Include="NAudio\NAudio.xml" />
-    <Content Include="NAudio\readme.txt" />
-    <Content Include="SoundTouch\lib\COPYING.TXT" />
-    <Content Include="SoundTouch\lib\SoundTouch.dll" />
-    <Content Include="SoundTouch\lib\SoundTouch_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<AssemblyTitle>MusicPlayer</AssemblyTitle>
+		<Product>MusicPlayer</Product>
+		<Copyright>Copyright ©  2017</Copyright>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="NAudio\license.txt" />
+		<Content Include="NAudio\NAudio.dll" />
+		<Content Include="NAudio\NAudio.WindowsMediaFormat.dll" />
+		<Content Include="NAudio\NAudio.xml" />
+		<Content Include="NAudio\readme.txt" />
+		<Content Include="SoundTouch\lib\COPYING.TXT" />
+		<Content Include="SoundTouch\lib\SoundTouch.dll" />
+		<Content Include="SoundTouch\lib\SoundTouch_x64.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="NAudio" Version="2.2.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj" />
+	</ItemGroup>
 </Project>
