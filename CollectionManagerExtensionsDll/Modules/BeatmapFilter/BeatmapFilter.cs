@@ -76,7 +76,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                     BeatmapHashHidden[beatmap.Md5] = false;
                 }
 
-                if (!words.Any(s => s.Contains("mods")))
+                if (!words.Any(s => s.StartsWith("mods")))
                 {
                     CurrentMods = Mods.Nm;
                 }
@@ -103,12 +103,15 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
 
         private Score GetTopScore(string mapHash)
-        {
-            return _scores.ContainsKey(mapHash)
-                ? _scores[mapHash].Aggregate((i, j) => i.TotalScore > j.TotalScore ? i : j)
-                : null;
+            => GetScores(mapHash)?
+                .Aggregate((first, second)
+                    => first.TotalScore > second.TotalScore ? first : second)
+                ?? null;
 
-        }
+        private Scores GetScores(string mapHash)
+            => _scores.ContainsKey(mapHash)
+                ? _scores[mapHash]
+                : null;
 
         /// <summary>
         /// Returns beatmapFilter delegate for specified searchWord.
@@ -202,14 +205,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                 switch (key)
                 {
                     case "mods":
-                        var splitMods = Regex.Split(val, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
-                        Mods mods = Mods.Nm;
-                        foreach (var mod in splitMods)
-                        {
-                            if (Enum.TryParse(mod, true, out Mods parsedMod))
-                                mods |= parsedMod;
-                        }
-                        CurrentMods = mods;
+                        CurrentMods = ToMods(val);
                         return null;
                     case "artist":
                         var artist = val.Replace(SpaceReplacement, " ");
@@ -232,6 +228,13 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                         num = descriptorToNum(val, StatusPairs);
 
                         return delegate (Beatmap b) { return isPatternMatch((double)b.State, op, num); };
+                    case "hasscorewithmods":
+                        var mods = (int)ToMods(val);
+                        return b =>
+                        {
+                            var hasScoresWithMathingMods = GetScores(b.Md5)?.Any(s => (s.Mods & mods) != 0);
+                            return hasScoresWithMathingMods ?? false;
+                        };
                 }
             }
             int id;
@@ -375,6 +378,20 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         {
             var score = GetTopScore(mapHash);
             return score != null && isPatternMatch(propGetter(score), op, num);
+        }
+
+        private static Mods ToMods(string shorthandMods)
+        {
+            var splitMods = Regex.Split(shorthandMods, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
+            Mods mods = Mods.Nm;
+
+            foreach (var mod in splitMods)
+            {
+                if (Enum.TryParse(mod, true, out Mods parsedMod))
+                    mods |= parsedMod;
+            }
+
+            return mods;
         }
     }
 }
