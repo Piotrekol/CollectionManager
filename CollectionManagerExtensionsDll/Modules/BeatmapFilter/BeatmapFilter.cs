@@ -228,6 +228,9 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                         num = descriptorToNum(val, StatusPairs);
 
                         return delegate (Beatmap b) { return isPatternMatch((double)b.State, op, num); };
+                    case "hasscoreswithmod":
+                    case "hasscorewithmod":
+                    case "hasscoreswithmods":
                     case "hasscorewithmods":
                         var mods = (int)ToMods(val);
                         return b =>
