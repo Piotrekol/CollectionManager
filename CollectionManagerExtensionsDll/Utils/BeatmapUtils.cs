@@ -8,6 +8,8 @@ namespace CollectionManagerExtensionsDll.Utils
 {
     public static class BeatmapUtils
     {
+        public static string OsuSongsDirectory = "";
+
         internal static Dictionary<int, Beatmaps> GetMapSets(this ICollection collection, BeatmapListType beatmapListType)
         {
             var mapSets = new Dictionary<int, Beatmaps>();
@@ -45,14 +47,24 @@ namespace CollectionManagerExtensionsDll.Utils
             return mapIds;
         }
 
-        public static string OsuSongsDirectory = "";
         public static string GetImageLocation(this Beatmap beatmap)
         {
-            if (beatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension)))
+            if (beatmap is BeatmapExtension mapExtension)
             {
-                if (((BeatmapExtension)beatmap).LocalBeatmapMissing)
+                if (mapExtension.LocalBeatmapMissing)
                     return string.Empty;
             }
+
+            if (beatmap is LazerBeatmap lazerBeatmap)
+            {
+                if (string.IsNullOrEmpty(lazerBeatmap.BackgroundRelativeFilePath))
+                {
+                    return string.Empty;
+                }
+
+                return Path.Combine(OsuSongsDirectory, lazerBeatmap.BackgroundRelativeFilePath);
+            }
+
             var osuFileLocation = beatmap.FullOsuFileLocation();
             if (!File.Exists(osuFileLocation))
                 return string.Empty;
@@ -88,13 +100,17 @@ namespace CollectionManagerExtensionsDll.Utils
 
         public static string FullAudioFileLocation(this Beatmap beatmap)
         {
-            var isSubclassed = beatmap.GetType().IsAssignableFrom(typeof(BeatmapExtension));
-            if (isSubclassed)
+            if (beatmap is BeatmapExtension mapExtension)
             {
-                if (((BeatmapExtension)beatmap).LocalBeatmapMissing)
+                if (mapExtension.LocalBeatmapMissing)
                     return string.Empty;
             }
-           
+
+            if (beatmap is LazerBeatmap lazerBeatmap)
+            {
+                return Path.Combine(OsuSongsDirectory, lazerBeatmap.AudioRelativeFilePath);
+            }
+
             return Path.Combine(beatmap.BeatmapDirectory(), beatmap.Mp3Name);
 
         }

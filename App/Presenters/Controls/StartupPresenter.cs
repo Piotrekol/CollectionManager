@@ -182,7 +182,16 @@ namespace App.Presenters.Controls
 
             osuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
             osuFileIo.ScoresDatabase.Clear();
-            osuFileIo.OsuDatabase.Load(Path.Combine(osuDirectory, @"osu!.db"), _databaseLoadProgressReporter, cancellationToken);
+
+            foreach (var dbPath in new string[] { Path.Combine(osuDirectory, @"osu!.db"), Path.Combine(osuDirectory, @"client.realm") })
+            {
+                if (File.Exists(dbPath))
+                {
+                    osuFileIo.OsuDatabase.Load(dbPath, _databaseLoadProgressReporter, cancellationToken);
+                    break;
+                }
+            }
+
             osuFileIo.OsuSettings.Load(osuDirectory);
             try
             {

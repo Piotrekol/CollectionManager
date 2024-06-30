@@ -14,11 +14,21 @@ namespace CollectionManager.Modules.FileIO
         public void Load(string osuDirectory)
         {
             string FilePath = GetConfigFilePath(osuDirectory);
-            if(File.Exists(FilePath))
+            var configFileExists = File.Exists(FilePath);
+            if (configFileExists)
                 ReadSettings(FilePath);
-            
-            if (CustomBeatmapDirectoryLocation == "Songs")
-                CustomBeatmapDirectoryLocation = Path.Combine(osuDirectory, "Songs\\");
+
+            var lazerFilesPath = Path.Combine(osuDirectory, "files");
+            var osuSongsPath = Path.Combine(osuDirectory, "Songs");
+            if (Path.IsPathRooted(osuDirectory) && Directory.Exists(lazerFilesPath))
+            {
+                // Assuming osu!lazer
+                CustomBeatmapDirectoryLocation = lazerFilesPath;
+            }
+            else if (CustomBeatmapDirectoryLocation == "Songs" && Directory.Exists(osuSongsPath))
+            {
+                CustomBeatmapDirectoryLocation = osuSongsPath;
+            }
 
         }
         private string GetConfigFilePath(string osuDirectory)

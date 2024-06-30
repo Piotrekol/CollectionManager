@@ -27,6 +27,8 @@ using Common;
 using GuiComponents.Interfaces;
 using System.ComponentModel;
 using System.Security.Cryptography;
+using GuiComponents;
+using System.Windows.Markup;
 
 namespace App
 {
@@ -465,19 +467,19 @@ namespace App
         }
 
         private void LoadCollectionFile(object sender, object data = null)
-            => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb", "collection.db"));
+            => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb/*.realm)|*.db;*.osdb;*.realm", "collection.db"));
 
         private void LoadDefaultCollection(object sender, object data = null)
-            => LoadCollection(Path.Combine(Initalizer.OsuDirectory, "collection.db"));
+            => LoadCollections(Path.Combine(Initalizer.OsuDirectory, "collection.db"), Path.Combine(Initalizer.OsuDirectory, "client.realm"));
 
-        private void LoadCollections(string[] fileLocations)
+        private void LoadCollections(params string[] fileLocations)
         {
             if (fileLocations == null || fileLocations.Length == 0 || fileLocations.Any(string.IsNullOrWhiteSpace))
                 return;
 
             Collections collections = new();
 
-            foreach (string fileLocation in fileLocations)
+            foreach (string fileLocation in fileLocations.Where(File.Exists))
             {
                 try
                 {
@@ -512,6 +514,18 @@ namespace App
         private async void SaveDefaultCollection(object sender, object data = null)
         {
             var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+            
+            if (!File.Exists(fileLocation))
+            {
+                fileLocation = Path.Combine(Initalizer.OsuDirectory, "client.realm");
+
+                if (!File.Exists(fileLocation))
+                {
+                    _userDialogs.OkMessageBox("Could not find collection file to overwritte!", "Error", MessageBoxType.Error);
+                    return;
+                }
+            }
+
             var processes = Process.GetProcessesByName("osu!");
             try
             {
@@ -538,7 +552,7 @@ namespace App
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
                 var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
                 BackupOsuCollection(backupFolder);
-                _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
+                _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
                 _userDialogs.OkMessageBox($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", "Info", MessageBoxType.Success);
             }
             else
@@ -553,10 +567,23 @@ namespace App
                 Directory.CreateDirectory(backupFolder);
 
             var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-            if (!File.Exists(sourceCollectionFile))
-                return;
+            string destinationCollectionFile;
+            if (File.Exists(sourceCollectionFile))
+            {
+                destinationCollectionFile = Path.Combine(backupFolder, $"collection_{CalculateMD5(sourceCollectionFile)}.db");
+            }
+            else
+            {
+                sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "client.realm");
 
-            var destinationCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collectionBackups", $"collection_{CalculateMD5(sourceCollectionFile)}.db");
+                if (!File.Exists(sourceCollectionFile))
+                {
+                    return;
+                }
+
+                destinationCollectionFile = Path.Combine(backupFolder, $"client_{CalculateMD5(sourceCollectionFile)}.realm");
+            }
+
             if (File.Exists(destinationCollectionFile))
             {
                 //Just update file save date to indicate latest collection version
@@ -614,7 +641,7 @@ namespace App
         }
         private async void SaveCollections(object sender, object data = null)
         {
-            var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb");
+            var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb|osu!Lazer database (*.realm)|*.realm");
             if (fileLocation == string.Empty) return;
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
