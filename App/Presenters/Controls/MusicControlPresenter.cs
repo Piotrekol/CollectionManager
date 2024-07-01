@@ -11,6 +11,7 @@ using Gui.Misc;
 using GuiComponents.Interfaces;
 using MusicPlayer;
 using Timer = System.Timers.Timer;
+using System.Runtime.InteropServices;
 
 namespace App.Presenters.Controls
 {
@@ -159,8 +160,21 @@ namespace App.Presenters.Controls
                 resetEvent.WaitOne(250);
                 if (map.Equals(_model.CurrentBeatmap))
                 {
-                    musicPlayer.Play(audioLocation,
-                        _view.IsMusicPlayerMode || onlineSource ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)));
+                    try
+                    {
+                        musicPlayer.Play(
+                            audioLocation,
+                            _view.IsMusicPlayerMode || onlineSource ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)));
+                    }
+                    catch (COMException)
+                    {
+                        musicPlayer.Pause();
+
+                        if (_view.IsMusicPlayerMode)
+                        {
+                            RunAsWorker(() => _model.EmitNextMapRequest());
+                        }
+                    }
                 }
             });
         }

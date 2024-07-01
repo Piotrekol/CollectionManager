@@ -56,7 +56,7 @@ namespace GuiComponents.Controls
 
         public Beatmap SelectedBeatmap
         {
-            get => (Beatmap) ListViewBeatmaps.SelectedObject;
+            get => (Beatmap)ListViewBeatmaps.SelectedObject;
             private set
             {
                 ListViewBeatmaps.SelectedObject = value;
@@ -90,7 +90,7 @@ namespace GuiComponents.Controls
              {
                  OnSearchTextChanged();
              };
-            ListViewBeatmaps.SelectionChanged += (_,__)=>
+            ListViewBeatmaps.SelectionChanged += (_, __) =>
             {
                 OnSelectedBeatmapChanged();
                 OnSelectedBeatmapsChanged();
@@ -109,7 +109,7 @@ namespace GuiComponents.Controls
             }
             label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
         }
-        public static DateTime d = new DateTime(2006, 1, 1);
+        public static DateTimeOffset d = new DateTime(2006, 1, 1);
         private Mods _currentMods = Mods.Nm;
         private PlayMode _currentPlayMode = PlayMode.Osu;
         private DifficultyCalculator _difficultyCalculator = new DifficultyCalculator();
@@ -139,7 +139,7 @@ namespace GuiComponents.Controls
                 }
                 return null;
             };
-            
+
             column_ar.AspectGetter = rowObject =>
             {
                 if (rowObject is Beatmap beatmap)
@@ -175,7 +175,7 @@ namespace GuiComponents.Controls
             LastPlayed.AspectToStringConverter = delegate (object cellValue)
             {
                 if (cellValue == null) return string.Empty;
-                var val = (DateTime)cellValue;
+                var val = (DateTimeOffset)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
             column_bpm.AspectGetter = rowObject =>

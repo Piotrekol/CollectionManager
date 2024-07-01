@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -57,6 +58,8 @@ namespace CollectionManager.DataTypes
         public int OnlineId { get; set; }
 
         public int Id { get; set; }
+
+        public Guid LazerId { get; set; }
 
         public void SetLoadedMaps(MapCacher instance)
         {
@@ -153,9 +156,9 @@ namespace CollectionManager.DataTypes
 
         public void AddBeatmapByMapId(int mapId)
         {
-            if (AllBeatmaps().Any(m=>m.MapId==mapId))
+            if (AllBeatmaps().Any(m => m.MapId == mapId))
                 return;
-            this.AddBeatmap(new BeatmapExtension() { MapId = mapId});
+            this.AddBeatmap(new BeatmapExtension() { MapId = mapId });
         }
 
         private void ProcessAdditionalProps(BeatmapExtension src, BeatmapExtension dest)
@@ -210,7 +213,7 @@ namespace CollectionManager.DataTypes
         public void ReplaceBeatmap(int mapId, Beatmap newBeatmap)
         {
             var map = AllBeatmaps().FirstOrDefault(m => m.MapId == mapId);
-            
+
             if (map != null && RemoveBeatmap(map.Md5))
                 AddBeatmap(newBeatmap);
         }

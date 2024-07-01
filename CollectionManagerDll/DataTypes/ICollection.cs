@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CollectionManager.Modules.FileIO.OsuDb;
 
@@ -52,6 +53,8 @@ namespace CollectionManager.DataTypes
         int OnlineId { get; set; }
 
         int Id { get; set; }
+
+        Guid LazerId { get; set; }
 
         void SetLoadedMaps(MapCacher instance);
         IEnumerable<BeatmapExtension> AllBeatmaps();

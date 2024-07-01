@@ -25,7 +25,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.5.0" />
-    <PackageReference Include="SharpCompress" Version="0.23.0" />
+    <PackageReference Include="Realm" Version="11.7.0" />
+    <PackageReference Include="SharpCompress" Version="0.36.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
   </ItemGroup>
