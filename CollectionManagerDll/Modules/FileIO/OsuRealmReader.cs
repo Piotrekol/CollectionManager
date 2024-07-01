@@ -8,7 +8,7 @@ public class OsuRealmReader
 {
     public const ulong LAST_VALIDATED_REALM_VERSION = 41;
 
-    protected static Realm GetRealm(string realmFilePath, bool readOnly = true, ulong schemaVersion = 0)
+    protected static Realm GetRealm(string realmFilePath, bool readOnly = true, ulong schemaVersion = LAST_VALIDATED_REALM_VERSION)
     {
         var config = new RealmConfiguration(realmFilePath)
         {
