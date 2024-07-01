@@ -44,7 +44,7 @@ public sealed class OsuLazerDatabase
 
         baseBeatmap.AudioRelativeFilePath = beatmapInfo.AudioFile is not null ? GetRelativePath(beatmapInfo.AudioFile.File) : string.Empty;
         baseBeatmap.BackgroundRelativeFilePath = beatmapInfo.BackgroundFile is not null ? GetRelativePath(beatmapInfo.BackgroundFile.File) : string.Empty;
-        baseBeatmap.ModPpStars = new PlayModeStars();
+        baseBeatmap.ModPpStars.Add(ToPlayMode(beatmapInfo.Ruleset.ShortName), new StarRating { { 0, Math.Round(beatmapInfo.StarRating, 2) } });
         baseBeatmap.TitleUnicode = beatmapInfo.Metadata.TitleUnicode;
         baseBeatmap.TitleRoman = beatmapInfo.Metadata.Title;
         baseBeatmap.ArtistUnicode = beatmapInfo.Metadata.ArtistUnicode;
