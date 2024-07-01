@@ -641,7 +641,7 @@ namespace App
         }
         private async void SaveCollections(object sender, object data = null)
         {
-            var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb|osu!Lazer database (*.realm)|*.realm");
+            var fileLocation = _userDialogs.SaveFile("Where collection file should be saved?", "osu! Collection database (.db)|*.db|CM database (.osdb)|*.osdb");
             if (fileLocation == string.Empty) return;
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
