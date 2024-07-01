@@ -114,7 +114,7 @@ namespace CollectionManager.Modules.FileIO
                 // No point in trying to make this correct for lazer,
                 // since with lazer installed this registry key points to osu app instance,
                 // that contains no user data.
-                if (Directory.Exists(osuPath))
+                if (Directory.Exists(path))
                 {
                     return true;
                 }
