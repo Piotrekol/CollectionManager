@@ -38,7 +38,7 @@ public sealed class OsuLazerDatabase
         progress?.Report($"Loaded {beatmapsCount} beatmaps");
     }
 
-    private Beatmap ToBeatmap(BeatmapInfo beatmapInfo, LazerBeatmap baseBeatmap)
+    private void ToBeatmap(BeatmapInfo beatmapInfo, LazerBeatmap baseBeatmap)
     {
         baseBeatmap.InitEmptyValues();
 
@@ -52,50 +52,54 @@ public sealed class OsuLazerDatabase
         baseBeatmap.Creator = beatmapInfo.Metadata.Author.Username;
         baseBeatmap.DiffName = beatmapInfo.DifficultyName;
         baseBeatmap.Mp3Name = beatmapInfo.AudioFile?.Filename ?? string.Empty;
-        baseBeatmap.Md5 = beatmapInfo.MD5Hash; 
+        baseBeatmap.Md5 = beatmapInfo.MD5Hash;
         baseBeatmap.OsuFileName = beatmapInfo.File?.File.Hash ?? string.Empty;
         baseBeatmap.Tags = beatmapInfo.Metadata.Tags;
-        baseBeatmap.Somestuff = 0;
         baseBeatmap.State = (byte)ToLocalState(beatmapInfo.Status);
-        baseBeatmap.Circles = 0;// TODO:
-        baseBeatmap.Sliders = 0;// TODO:
-        baseBeatmap.Spinners = 0;// TODO:
         baseBeatmap.EditDate = beatmapInfo.BeatmapSet.DateAdded;
         baseBeatmap.ApproachRate = beatmapInfo.Difficulty.ApproachRate;
         baseBeatmap.CircleSize = beatmapInfo.Difficulty.CircleSize;
         baseBeatmap.HpDrainRate = beatmapInfo.Difficulty.DrainRate;
         baseBeatmap.OverallDifficulty = beatmapInfo.Difficulty.OverallDifficulty;
         baseBeatmap.SliderVelocity = beatmapInfo.Difficulty.SliderMultiplier;
-        baseBeatmap.DrainingTime = (int)beatmapInfo.Length; //TODO: Haven't checked if this is correct value.. most likely not
-        baseBeatmap.TotalTime = 0; //TODO: most likely this is value above...?
+        baseBeatmap.TotalTime = (int)beatmapInfo.Length;
         baseBeatmap.PreviewTime = beatmapInfo.Metadata.PreviewTime;
         baseBeatmap.MapId = beatmapInfo.OnlineID;
         baseBeatmap.MapSetId = beatmapInfo.BeatmapSet.OnlineID;
-        baseBeatmap.ThreadId = 0;
-        baseBeatmap.OsuGrade = OsuGrade.Null; //TODO: score reading
-        baseBeatmap.TaikoGrade = OsuGrade.Null;
-        baseBeatmap.CatchGrade = OsuGrade.Null;
-        baseBeatmap.ManiaGrade = OsuGrade.Null;
         baseBeatmap.Offset = beatmapInfo.UserSettings.Offset;
         baseBeatmap.StackLeniency = beatmapInfo.StackLeniency;
         baseBeatmap.PlayMode = ToPlayMode(beatmapInfo.Ruleset.ShortName);
         baseBeatmap.Source = beatmapInfo.Metadata.Source;
-        baseBeatmap.AudioOffset = 0; // not used anywhere
-        baseBeatmap.LetterBox = string.Empty;// not used anywhere
-        baseBeatmap.Played = false;// not used anywhere
         baseBeatmap.LastPlayed = beatmapInfo.LastPlayed;
-        baseBeatmap.IsOsz2 = false;// not used anywhere
-        baseBeatmap.Dir = string.Empty;// not relevant in lazer
         baseBeatmap.LastSync = beatmapInfo.LastOnlineUpdate;
         baseBeatmap.DisableHitsounds = false;
         baseBeatmap.DisableSkin = false;
         baseBeatmap.DisableSb = false;
         baseBeatmap.BgDim = 0;
-        baseBeatmap.MinBpm = 0;//TODO: 
-        baseBeatmap.MaxBpm = 0;//TODO: 
         baseBeatmap.MainBpm = beatmapInfo.BPM;
 
-        return null;
+        // TODO: score reading
+        baseBeatmap.OsuGrade = OsuGrade.Null;
+        baseBeatmap.TaikoGrade = OsuGrade.Null;
+        baseBeatmap.CatchGrade = OsuGrade.Null;
+        baseBeatmap.ManiaGrade = OsuGrade.Null;
+
+        // not relevant in lazer
+        baseBeatmap.Dir = string.Empty;
+
+        // Not stored in realm
+        baseBeatmap.DrainingTime = 0;
+        baseBeatmap.Circles = 0;
+        baseBeatmap.Sliders = 0;
+        baseBeatmap.Spinners = 0;
+        baseBeatmap.Somestuff = 0;
+        baseBeatmap.ThreadId = 0;
+        baseBeatmap.AudioOffset = 0;
+        baseBeatmap.LetterBox = string.Empty;
+        baseBeatmap.Played = false;
+        baseBeatmap.IsOsz2 = false;
+        baseBeatmap.MinBpm = 0;
+        baseBeatmap.MaxBpm = 0;
     }
 
     private string GetRelativePath(RealmFile realmFile)
@@ -108,7 +112,6 @@ public sealed class OsuLazerDatabase
             "taiko" => PlayMode.Taiko,
             "fruits" => PlayMode.CatchTheBeat,
             "mania" => PlayMode.OsuMania,
-
             _ => PlayMode.Osu,
         };
 

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -173,7 +174,11 @@ namespace App.Presenters.Controls
                 ? osuFileIo.OsuPathResolver.GetOsuDir()
                 : _startupSettings.OsuLocation;
 
-            if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory))
+            string osuDbOrRealmPath = new[] { Path.Combine(osuDirectory, @"osu!.db"), Path.Combine(osuDirectory, @"client.realm") }
+                .Where(File.Exists)
+                .FirstOrDefault();
+
+            if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory) || string.IsNullOrEmpty(osuDbOrRealmPath))
             {
                 _startupSettings.AutoLoadMode = _view.LoadOsuCollectionButtonEnabled = _view.UseSelectedOptionsOnStartup = false;
                 _view.LoadDatabaseStatusText = "osu! could not be found. Select osu! location manually";
@@ -182,17 +187,9 @@ namespace App.Presenters.Controls
 
             osuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
             osuFileIo.ScoresDatabase.Clear();
-
-            foreach (var dbPath in new string[] { Path.Combine(osuDirectory, @"osu!.db"), Path.Combine(osuDirectory, @"client.realm") })
-            {
-                if (File.Exists(dbPath))
-                {
-                    osuFileIo.OsuDatabase.Load(dbPath, _databaseLoadProgressReporter, cancellationToken);
-                    break;
-                }
-            }
-
+            osuFileIo.OsuDatabase.Load(osuDbOrRealmPath, _databaseLoadProgressReporter, cancellationToken);
             osuFileIo.OsuSettings.Load(osuDirectory);
+
             try
             {
                 osuFileIo.ScoresLoader.ReadDb(Path.Combine(osuDirectory, @"scores.db"), cancellationToken);
