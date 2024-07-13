@@ -22,7 +22,7 @@ internal partial class BeatmapInfo
     public BeatmapUserSettings UserSettings { get; set; } = null!;
 
     [UsedImplicitly]
-    private BeatmapInfo()
+    internal BeatmapInfo()
     {
     }
 

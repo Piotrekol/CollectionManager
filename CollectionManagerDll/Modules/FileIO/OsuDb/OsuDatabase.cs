@@ -1,4 +1,5 @@
 ﻿using CollectionManager.DataTypes;
+using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuLazerDb;
 using System;
 using System.IO;
@@ -11,6 +12,8 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         public MapCacher LoadedMaps = new MapCacher();
         private readonly OsuDatabaseLoader _osuDatabaseLoader;
         private readonly OsuLazerDatabase _lazerDatabaseLoader;
+        private readonly IScoreDataManager _scoresDatabase;
+
         public string OsuFileLocation { get; private set; }
         public string SongsFolderLocation { get; set; }
         public int NumberOfBeatmapsWithoutId { get; set; }
@@ -20,10 +23,11 @@ namespace CollectionManager.Modules.FileIO.OsuDb
         public int NumberOfBeatmaps => LoadedMaps.Beatmaps.Count;
         public string Username => _osuDatabaseLoader.Username;
 
-        public OsuDatabase(Beatmap beatmapBase)
+        public OsuDatabase(Beatmap beatmapBase, IScoreDataManager scoresDatabase)
         {
             _osuDatabaseLoader = new LOsuDatabaseLoader(LoadedMaps, beatmapBase);
-            _lazerDatabaseLoader = new OsuLazerDatabase(LoadedMaps);
+            _lazerDatabaseLoader = new OsuLazerDatabase(LoadedMaps, scoresDatabase);
+            _scoresDatabase = scoresDatabase;
         }
 
         public bool Load(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)

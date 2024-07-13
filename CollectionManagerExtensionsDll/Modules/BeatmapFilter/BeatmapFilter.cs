@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuDb;
 
 namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
@@ -102,7 +103,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
         private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
 
-        private Score GetTopScore(string mapHash)
+        private IReplay GetTopScore(string mapHash)
             => GetScores(mapHash)?
                 .Aggregate((first, second)
                     => first.TotalScore > second.TotalScore ? first : second)
@@ -360,7 +361,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             }
         }
 
-        private bool isScorePatternMatch<T>(string mapHash, Func<Score, T> propGetter, string op, T num) where T : IComparable<T>
+        private bool isScorePatternMatch<T>(string mapHash, Func<IReplay, T> propGetter, string op, T num) where T : IComparable<T>
         {
             var score = GetTopScore(mapHash);
             return score != null && isPatternMatch(propGetter(score), op, num);

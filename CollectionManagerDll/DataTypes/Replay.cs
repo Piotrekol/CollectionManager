@@ -2,6 +2,7 @@
 using CollectionManager.Enums;
 using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO;
+using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
 using CollectionManager.Modules.FileIO.OsuScoresDb;
 
 namespace CollectionManager.DataTypes
@@ -13,19 +14,19 @@ namespace CollectionManager.DataTypes
         public string MapHash { get; set; }
         public string PlayerName { get; set; }
         public string ReplayHash { get; set; }
-        public short C300 { get; set; }
-        public short C100 { get; set; }
-        public short C50 { get; set; }
-        public short Geki { get; set; }
-        public short Katu { get; set; }
-        public short Miss { get; set; }
-        public int TotalScore { get; set; }
-        public short MaxCombo { get; set; }
+        public int C300 { get; set; }
+        public int C100 { get; set; }
+        public int C50 { get; set; }
+        public int Geki { get; set; }
+        public int Katu { get; set; }
+        public int Miss { get; set; }
+        public long TotalScore { get; set; }
+        public int MaxCombo { get; set; }
         public bool Perfect { get; set; }
         public int Mods { get; set; }
         public double AdditionalMods { get; set; }
         public virtual string ReplayData { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public long DateTicks { get; set; }
         public int CompressedReplayLength { get; set; }
         public byte[] CompressedReplay { get; set; }

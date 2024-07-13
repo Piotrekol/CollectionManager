@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 
 namespace CollectionManager.Modules.FileIO.OsuScoresDb
 {
-    public class ScoresCacher : IScoreDataStorer
+    public class ScoresCacher : IScoreDataManager
     {
         public Dictionary<string, Scores> ScoreList = new Dictionary<string, Scores>();
         public Scores Scores { get; private set; } = new Scores();
@@ -24,18 +25,11 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
             ScoreHashes.Clear();
         }
 
-        public List<Score> GetScores(Beatmap map)
-        {
-            return GetScores(map.Md5);
-        }
+        public Scores GetScores(Beatmap map) 
+            => GetScores(map.Md5);
 
-        public List<Score> GetScores(string mapHash)
-        {
-            var scores = new List<Score>();
-            if (ScoreList.ContainsKey(mapHash))
-                scores.AddRange(ScoreList[mapHash]);
-            return scores;
-        }
+        public Scores GetScores(string mapHash) 
+            => ScoreList.FirstOrDefault(s => s.Key.Equals(mapHash)).Value;
 
         public void Remove(string mapHash)
         {
@@ -49,17 +43,18 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
                 ScoreList.Remove(mapHash);
             }
         }
-        public void Store(Score score)
+        public void Store(IReplay replay)
         {
-            if (ScoreHashes.Contains(score.ReplayHash))
+            if (ScoreHashes.Contains(replay.ReplayHash))
                 return;
-            ScoreHashes.Add(score.ReplayHash);
 
-            if (ScoreList.ContainsKey(score.MapHash))
-                ScoreList[score.MapHash].Add(score);
+            ScoreHashes.Add(replay.ReplayHash);
+
+            if (ScoreList.ContainsKey(replay.MapHash))
+                ScoreList[replay.MapHash].Add(replay);
             else
-                ScoreList.Add(score.MapHash, new Scores() { score });
-            Scores.Add(score);
+                ScoreList.Add(replay.MapHash, new Scores() { replay });
+            Scores.Add(replay);
         }
     }
 }
