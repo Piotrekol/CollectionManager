@@ -18,7 +18,7 @@ public static class IScoreDataManagerExtensions
     {
         IReplay topReplay = GetTopReplay(scoresManager, mapHash, playMode);
 
-        if (topReplay is null || topReplay is not ILazerReplay lazerReplay)
+        if (topReplay is not ILazerReplay lazerReplay)
         {
             return OsuGrade.Null;
         }

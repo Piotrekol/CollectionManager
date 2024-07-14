@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb;
+
 public sealed class OsuLazerDatabase
     : OsuRealmReader
 {

@@ -54,7 +54,5 @@ namespace CollectionManager
         {
             return mapCacher.GetByHash(replay.MapHash);
         }
-
-        
     }
 }

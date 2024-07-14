@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace CollectionManager.Extensions;
 
-internal static class LazerReplayExtensions
+internal static class ScoreInfoExtensions
 {
     private static readonly Lazy<ModParser> _modParser = new();
     private static readonly Lazy<string[]> _AllModAcronyms = new(()

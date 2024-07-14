@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using CollectionManager.DataTypes;
+﻿using CollectionManager.DataTypes;
 using CollectionManager.Modules.FileIO.OsuDb;
 using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
 using Realms;
+using System;
+using System.Collections.Generic;
 
 namespace CollectionManager.Modules.FileIO.FileCollections;
 
@@ -12,18 +12,18 @@ public class LazerCollectionHandler
 {
     public IEnumerable<Collection> Read(string realmFilePath, MapCacher mapCacher)
     {
-        using var localRealm = GetRealm(realmFilePath);
-        var allLazerCollections = localRealm.All<BeatmapCollection>().AsRealmCollection();
+        using Realm localRealm = GetRealm(realmFilePath);
+        IRealmCollection<BeatmapCollection> allLazerCollections = localRealm.All<BeatmapCollection>().AsRealmCollection();
 
-        foreach (var lazerCollection in allLazerCollections)
+        foreach (BeatmapCollection lazerCollection in allLazerCollections)
         {
-            var collection = new Collection(mapCacher)
+            Collection collection = new(mapCacher)
             {
                 Name = lazerCollection.Name,
                 LazerId = lazerCollection.ID
             };
 
-            foreach (var hash in lazerCollection.BeatmapMD5Hashes)
+            foreach (string hash in lazerCollection.BeatmapMD5Hashes)
             {
                 collection.AddBeatmapByHash(hash);
             }
@@ -36,28 +36,27 @@ public class LazerCollectionHandler
     {
         // TODO: only allow for writes for validated schemaVersion(s)?
         // TODO: backups..
-        using var localRealm = GetRealm(realmFilePath, false);
+        using Realm localRealm = GetRealm(realmFilePath, false);
 
         localRealm.Write(() =>
         {
             localRealm.RemoveRange(localRealm.All<BeatmapCollection>());
 
-            foreach (var ourCollection in collections)
+            foreach (ICollection cmCollection in collections)
             {
-                var realmCollection = new BeatmapCollection
+                BeatmapCollection realmCollection = new()
                 {
                     ID = Guid.NewGuid(),
-                    Name = ourCollection.Name
+                    Name = cmCollection.Name
                 };
 
-                foreach (var beatmap in ourCollection.AllBeatmaps())
+                foreach (BeatmapExtension beatmap in cmCollection.AllBeatmaps())
                 {
                     realmCollection.BeatmapMD5Hashes.Add(beatmap.Md5);
                 }
 
-                localRealm.Add(realmCollection);
+                _ = localRealm.Add(realmCollection);
             }
         });
     }
-
 }

@@ -1,4 +1,5 @@
 ﻿namespace CollectionManager.Modules.FileIO.OsuLazerDb;
+
 internal enum BeatmapOnlineStatus
 {
     LocallyModified = -4,
