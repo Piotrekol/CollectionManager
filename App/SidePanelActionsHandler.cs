@@ -551,7 +551,13 @@ namespace App
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
                 var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
-                BackupOsuCollection(backupFolder);
+
+                if (!TryBackupOsuCollection(backupFolder))
+                {
+                    _userDialogs.OkMessageBox("Could not create collection backup. Save aborted.", "Error", MessageBoxType.Error);
+                    return;
+                }
+
                 _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
                 _userDialogs.OkMessageBox($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", "Info", MessageBoxType.Success);
             }
@@ -561,10 +567,12 @@ namespace App
             }
         }
 
-        private void BackupOsuCollection(string backupFolder)
+        private bool TryBackupOsuCollection(string backupFolder)
         {
             if (!Directory.Exists(backupFolder))
-                Directory.CreateDirectory(backupFolder);
+            {
+                _ = Directory.CreateDirectory(backupFolder); 
+            }
 
             var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
             string destinationCollectionFile;
@@ -578,7 +586,7 @@ namespace App
 
                 if (!File.Exists(sourceCollectionFile))
                 {
-                    return;
+                    return false;
                 }
 
                 destinationCollectionFile = Path.Combine(backupFolder, $"client_{CalculateMD5(sourceCollectionFile)}.realm");
@@ -588,12 +596,14 @@ namespace App
             {
                 //Just update file save date to indicate latest collection version
                 File.SetLastWriteTime(destinationCollectionFile, DateTime.Now);
-                return;
+                return true;
             }
 
             CleanupBackups("*.db");
             CleanupBackups("*.realm");
             File.Copy(sourceCollectionFile, destinationCollectionFile);
+
+            return true;
 
             string CalculateMD5(string filename)
             {
