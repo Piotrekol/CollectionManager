@@ -187,7 +187,17 @@ namespace App.Presenters.Controls
 
             osuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
             osuFileIo.ScoresDatabase.Clear();
-            osuFileIo.OsuDatabase.Load(osuDbOrRealmPath, _databaseLoadProgressReporter, cancellationToken);
+
+        try
+        {
+            _ = osuFileIo.OsuDatabase.Load(osuDbOrRealmPath, _databaseLoadProgressReporter, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            _view.LoadDatabaseStatusText = $"Error: {exception.Message}";
+            return;
+        }
+
             osuFileIo.OsuSettings.Load(osuDirectory);
 
             try

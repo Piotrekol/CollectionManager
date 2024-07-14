@@ -1,34 +1,42 @@
 ﻿using Realms;
+using Realms.Exceptions;
 using System;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CollectionManager.Modules.FileIO;
 
 public class OsuRealmReader
 {
-    public const ulong LAST_VALIDATED_REALM_VERSION = 41;
+    private const ulong _lastValidatedRealmSchemaVersion = 41;
+    private static readonly Regex _lastNumber = new("(\\d+)(?!.*\\d)", RegexOptions.Compiled);
 
-    protected static Realm GetRealm(string realmFilePath, bool readOnly = true, ulong schemaVersion = LAST_VALIDATED_REALM_VERSION)
+    protected static Realm GetRealm(string realmFilePath, bool readOnly = true)
     {
-        var config = new RealmConfiguration(realmFilePath)
+        RealmConfiguration config = new(realmFilePath)
         {
             IsReadOnly = readOnly,
-            SchemaVersion = schemaVersion
+            SchemaVersion = _lastValidatedRealmSchemaVersion
         };
 
         try
         {
             return Realm.GetInstance(config);
         }
-        catch (Exception ex) when (schemaVersion == 0)
+        catch (RealmException exception)
         {
-            // TODO: There has to be a better way to get current schema version...
-            var expectedSchemaVersionRaw = ex.Message?.Split(' ').Last().TrimEnd('.');
+            Match numberMatch = _lastNumber.Match(exception.Message);
+            string schemaVersionOrMessage = numberMatch.Success 
+                ? numberMatch.Value 
+                : exception.Message;
 
-            if (ulong.TryParse(expectedSchemaVersionRaw, out var expectedSchemaVersion) && expectedSchemaVersion > 0)
-                return GetRealm(realmFilePath, readOnly, expectedSchemaVersion);
-
-            throw;
+            throw new RealmNotValidatedException($"Opening osu!lazer database failed." +
+                $" Expected schema version: '{_lastValidatedRealmSchemaVersion}'," +
+                $" got: '{schemaVersionOrMessage}'. Consider reporting this on github.");
         }
+    }
+
+    public class RealmNotValidatedException(string message)
+        : Exception(message)
+    {
     }
 }
