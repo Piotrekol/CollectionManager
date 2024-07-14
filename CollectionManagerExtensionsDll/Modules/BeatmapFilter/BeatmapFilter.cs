@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuDb;
 
 namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
@@ -102,7 +103,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
         public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
         private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
 
-        private Score GetTopScore(string mapHash)
+        private IReplay GetTopScore(string mapHash)
             => GetScores(mapHash)?
                 .Aggregate((first, second)
                     => first.TotalScore > second.TotalScore ? first : second)
@@ -115,7 +116,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
 
         /// <summary>
         /// Returns beatmapFilter delegate for specified searchWord.
-        /// Unimplemented: key/keys/speed/played/unplayed
+        /// Unimplemented: key/keys/speed/unplayed
         ///  </summary>
         /// <param name="searchWord"></param>
         /// <returns></returns>
@@ -166,7 +167,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                             return delegate (Beatmap b) { return isPatternMatch(b.DrainingTime, op, num); };
 
                         case "played":
-                            break;
+                            return delegate (Beatmap b) { return b.LastPlayed.HasValue && isPatternMatch((DateTime.Now - b.LastPlayed.Value).Days, op, num); };
                         case "objects":
                             return delegate (Beatmap b) { return isPatternMatch(b.Circles + b.Sliders + b.Spinners, op, num); };
                         case "circles":
@@ -216,10 +217,6 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                     case "creator":
                         var creator = val.Replace(SpaceReplacement, " ");
                         return delegate (Beatmap b) { return b.Creator.IndexOf(creator, StringComparison.CurrentCultureIgnoreCase) >= 0; };
-                    case "unplayed":
-                        if (String.IsNullOrEmpty(val))
-                            return delegate { return RetFalse(); };
-                        break;
                     case "mode":
                         num = descriptorToNum(val, ModePairs);
                         CurrentPlayMode = (PlayMode)num;
@@ -295,19 +292,6 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             new KeyValuePair<double, string> ((double)PlayMode.OsuMania, "o!m"),
         };
 
-
-
-        public enum SubmissionStatus
-        {
-            Unknown,
-            NotSubmitted,
-            Pending,
-            EditableCutoff,
-            Ranked,
-            Approved,
-            Qualified,
-            Loved
-        }
         private static double descriptorToNum(string got, KeyValuePair<double, string>[] pairs)
         {
             if (got.Length == 0)
@@ -377,7 +361,7 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
             }
         }
 
-        private bool isScorePatternMatch<T>(string mapHash, Func<Score, T> propGetter, string op, T num) where T : IComparable<T>
+        private bool isScorePatternMatch<T>(string mapHash, Func<IReplay, T> propGetter, string op, T num) where T : IComparable<T>
         {
             var score = GetTopScore(mapHash);
             return score != null && isPatternMatch(propGetter(score), op, num);

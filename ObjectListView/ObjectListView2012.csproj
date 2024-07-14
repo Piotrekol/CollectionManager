@@ -58,9 +58,7 @@
     <Compile Update="DataListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Implementation\Events.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="Implementation\Events.cs" />
     <Compile Update="FastDataListView.cs">
       <SubType>Component</SubType>
     </Compile>

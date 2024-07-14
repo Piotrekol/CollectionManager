@@ -27,6 +27,8 @@ using Common;
 using GuiComponents.Interfaces;
 using System.ComponentModel;
 using System.Security.Cryptography;
+using GuiComponents;
+using System.Windows.Markup;
 
 namespace App
 {
@@ -465,19 +467,19 @@ namespace App
         }
 
         private void LoadCollectionFile(object sender, object data = null)
-            => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb)|*.db;*.osdb", "collection.db"));
+            => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb/*.realm)|*.db;*.osdb;*.realm", "collection.db"));
 
         private void LoadDefaultCollection(object sender, object data = null)
-            => LoadCollection(Path.Combine(Initalizer.OsuDirectory, "collection.db"));
+            => LoadCollections(Path.Combine(Initalizer.OsuDirectory, "collection.db"), Path.Combine(Initalizer.OsuDirectory, "client.realm"));
 
-        private void LoadCollections(string[] fileLocations)
+        private void LoadCollections(params string[] fileLocations)
         {
             if (fileLocations == null || fileLocations.Length == 0 || fileLocations.Any(string.IsNullOrWhiteSpace))
                 return;
 
             Collections collections = new();
 
-            foreach (string fileLocation in fileLocations)
+            foreach (string fileLocation in fileLocations.Where(File.Exists))
             {
                 try
                 {
@@ -511,13 +513,24 @@ namespace App
 
         private async void SaveDefaultCollection(object sender, object data = null)
         {
-            var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-            var processes = Process.GetProcessesByName("osu!");
+            bool isLegacyCollectionFile = true;
+            string fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+
+            if (!File.Exists(fileLocation))
+            {
+                fileLocation = Path.Combine(Initalizer.OsuDirectory, "client.realm");
+                isLegacyCollectionFile = false;
+
+                if (!File.Exists(fileLocation))
+                {
+                    _userDialogs.OkMessageBox("Could not find collection file to overwritte!", "Error", MessageBoxType.Error);
+                    return;
+                }
+            }
+
             try
             {
-                if (Process.GetProcessesByName("osu!").Any(p =>
-                    p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
-                    Initalizer.OsuDirectory.ToLowerInvariant()))
+                if (OsuIsRunning(isLegacyCollectionFile))
                 {
                     _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
                     return;
@@ -527,45 +540,88 @@ namespace App
             {
                 // access denied
                 if (ex.NativeErrorCode != 5)
+                {
                     throw;
+                }
 
                 _userDialogs.OkMessageBox("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
             }
 
-            if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
+            if (_userDialogs.YesNoMessageBox($"Are you sure that you want to overwrite your existing osu! collection at \"{fileLocation}\"?",
                 "Are you sure?", MessageBoxType.Question))
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
-                var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
-                BackupOsuCollection(backupFolder);
-                _osuFileIo.CollectionLoader.SaveOsuCollection(Initalizer.LoadedCollections, fileLocation);
+                string backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
+
+                if (!TryBackupOsuCollection(backupFolder))
+                {
+                    _userDialogs.OkMessageBox("Could not create collection backup. Save aborted.", "Error", MessageBoxType.Error);
+                    return;
+                }
+
+                _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
                 _userDialogs.OkMessageBox($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", "Info", MessageBoxType.Success);
             }
             else
             {
                 _userDialogs.OkMessageBox("Save Aborted", "Info", MessageBoxType.Warning);
             }
+
+            static bool OsuIsRunning(bool isLegacyOsu)
+            {
+                IEnumerable<Process> osuProcesses = Process.GetProcessesByName("osu!")
+                    .Where(process => process.MainModule is not null);
+
+                if (isLegacyOsu)
+                {
+                    return osuProcesses
+                        .Any(process
+                            => Path.GetDirectoryName(process.MainModule.FileName)?.ToLowerInvariant()
+                               == Initalizer.OsuDirectory.ToLowerInvariant());
+                }
+
+                return osuProcesses
+                    .Any(process => process.MainModule.ModuleName == "osu!.exe");
+            }
         }
 
-        private void BackupOsuCollection(string backupFolder)
+        private bool TryBackupOsuCollection(string backupFolder)
         {
             if (!Directory.Exists(backupFolder))
-                Directory.CreateDirectory(backupFolder);
-
-            var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-            if (!File.Exists(sourceCollectionFile))
-                return;
-
-            var destinationCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collectionBackups", $"collection_{CalculateMD5(sourceCollectionFile)}.db");
-            if (File.Exists(destinationCollectionFile))
             {
-                //Just update file save date to indicate latest collection version
-                File.SetLastWriteTime(destinationCollectionFile, DateTime.Now);
-                return;
+                _ = Directory.CreateDirectory(backupFolder);
             }
 
-            CleanupBackups();
+            var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+            string destinationCollectionFile;
+            if (File.Exists(sourceCollectionFile))
+            {
+                destinationCollectionFile = Path.Combine(backupFolder, $"collection_{CalculateMD5(sourceCollectionFile)}.db");
+            }
+            else
+            {
+                sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "client.realm");
+
+                if (!File.Exists(sourceCollectionFile))
+                {
+                    return false;
+                }
+
+                destinationCollectionFile = Path.Combine(backupFolder, $"client_{CalculateMD5(sourceCollectionFile)}.realm");
+            }
+
+            if (File.Exists(destinationCollectionFile))
+            {
+                // Update file save date to indicate latest collection version
+                File.SetLastWriteTime(destinationCollectionFile, DateTime.Now);
+                return true;
+            }
+
+            CleanupBackups("*.db");
+            CleanupBackups("*.realm");
             File.Copy(sourceCollectionFile, destinationCollectionFile);
+
+            return true;
 
             string CalculateMD5(string filename)
             {
@@ -579,10 +635,10 @@ namespace App
                 }
             }
 
-            void CleanupBackups()
+            void CleanupBackups(string searchPattern)
             {
                 var deleteDateThreshold = DateTime.UtcNow.AddDays(-30);
-                var collectionFilePaths = Directory.GetFiles(backupFolder, "*.db", SearchOption.TopDirectoryOnly);
+                var collectionFilePaths = Directory.GetFiles(backupFolder, searchPattern, SearchOption.TopDirectoryOnly);
                 var collectionFiles = collectionFilePaths.Select(f => new FileInfo(f))
                     .Where(f => f.LastWriteTimeUtc < deleteDateThreshold);
 

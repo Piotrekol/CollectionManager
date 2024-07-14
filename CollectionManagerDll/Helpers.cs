@@ -1,8 +1,6 @@
 ﻿using CollectionManager.DataTypes;
 using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO;
-using CollectionManager.Modules.FileIO.OsuDb;
-using CollectionManager.Modules.FileIO.OsuScoresDb;
 
 namespace CollectionManager
 {

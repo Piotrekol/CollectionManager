@@ -9,14 +9,14 @@ namespace CollectionManager.Modules.FileIO.OsuScoresDb
 {
     public class ScoresDatabaseIo
     {
-        private readonly IScoreDataStorer _scoreDataStorer;
+        private readonly IScoreDataManager _scoreDataStorer;
         private FileStream _fileStream;
         private OsuBinaryReader _binaryReader;
         public int Version { get; private set; }
         public int NumberOfBeatmaps { get; private set; }
         public List<string> FileErrorList { get; private set; } = new List<string>();
 
-        public ScoresDatabaseIo(IScoreDataStorer scoreDataStorer)
+        public ScoresDatabaseIo(IScoreDataManager scoreDataStorer)
         {
             _scoreDataStorer = scoreDataStorer;
         }

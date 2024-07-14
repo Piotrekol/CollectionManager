@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using CollectionManager.Enums;
 
 namespace CollectionManager.DataTypes
 {
-
     public abstract class Beatmap : ICloneable
     {
         private string _titleUnicode;
@@ -117,7 +114,7 @@ namespace CollectionManager.DataTypes
         public short Circles { get; set; }
         public short Sliders { get; set; }
         public short Spinners { get; set; }
-        public DateTime? EditDate { get; set; }
+        public DateTimeOffset? EditDate { get; set; }
         public float ApproachRate { get; set; }
         public float CircleSize { get; set; }
         public float HpDrainRate { get; set; }
@@ -134,7 +131,7 @@ namespace CollectionManager.DataTypes
         public OsuGrade CatchGrade { get; set; } = OsuGrade.Null;
         public OsuGrade ManiaGrade { get; set; } = OsuGrade.Null;
 
-        public short Offset { get; set; }
+        public double Offset { get; set; }
         public float? StackLeniency { get; set; }
         private PlayMode _playMode;
         public PlayMode PlayMode
@@ -161,10 +158,10 @@ namespace CollectionManager.DataTypes
         public short AudioOffset { get; set; }
         public string LetterBox { get; set; }
         public bool Played { get; set; }
-        public DateTime? LastPlayed { get; set; }
+        public DateTimeOffset? LastPlayed { get; set; }
         public bool IsOsz2 { get; set; }
         public string Dir { get; set; }
-        public DateTime? LastSync { get; set; }
+        public DateTimeOffset? LastSync { get; set; }
         public bool DisableHitsounds { get; set; }
         public bool DisableSkin { get; set; }
         public bool DisableSb { get; set; }

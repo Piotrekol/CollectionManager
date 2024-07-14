@@ -1,117 +1,153 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
-using CollectionManager.Exceptions;
-using Microsoft.Win32;
 
-namespace CollectionManager.Modules.FileIO
+namespace CollectionManager.Modules.FileIO;
+
+public sealed class OsuPathResolver
 {
-    public sealed class OsuPathResolver
+    public static OsuPathResolver Instance = new();
+    private Process[] _processes;
+
+    public bool OsuIsRunning
     {
-        public static OsuPathResolver Instance = new OsuPathResolver();
-        private Process[] _processes;
-
-        public bool OsuIsRunning
+        get
         {
-            get
+            try
             {
-                try
-                {
-                    _processes = Process.GetProcessesByName("osu!");
-                    return _processes.Length > 0;
-                }
-                catch
-                {
-                    return false;
-                }
+                _processes = Process.GetProcessesByName("osu!");
+                return _processes.Length > 0;
+            }
+            catch
+            {
+                return false;
             }
         }
+    }
 
-
-        private void Log(string text, params string[] vals)
+    public string GetOsuDir(Func<string, bool> thisPathIsCorrect, Func<string, string> selectDirectoryDialog)
+    {
+        string dir = GetOsuOrLazerDir();
+        if (dir != string.Empty)
         {
-            //
-        }
-
-        public string GetOsuDir(Func<string, bool> thisPathIsCorrect, Func<string, string> selectDirectoryDialog)
-        {
-            var dir = _getRunningOsuDir();
-            if (dir != string.Empty)
+            if (thisPathIsCorrect == null)
             {
-                if (thisPathIsCorrect == null)
-                    return dir;
-
-                var result = thisPathIsCorrect(dir);
-                if (result)
-                    return dir;
-                else
-                    return GetManualOsuDir(selectDirectoryDialog);
+                return dir;
             }
-            return GetManualOsuDir(selectDirectoryDialog);
-        }
 
-        public string GetOsuDir() => _getRunningOsuDir();
-
-        private string _getRunningOsuDir()
-        {
-            if (OsuIsRunning)
+            bool result = thisPathIsCorrect(dir);
+            if (result)
             {
-                try
-                {
-                    string dir = _processes[0].Modules[0].FileName;
-                    dir = dir.Remove(dir.LastIndexOf('\\'));
-                    return dir;
-                }
-                catch (Exception e) //Access denied
-                {
-                    Log("ERROR: could not get directory from running osu! | {0}", e.Message);
-                }
+                return dir;
             }
             else
             {
-                try
-                {
-                    using (RegistryKey osureg = Registry.ClassesRoot.OpenSubKey("osu\\DefaultIcon"))
-                    {
-                        if (osureg != null)
-                        {
-                            string osukey = osureg.GetValue(null).ToString();
-                            var osupath = osukey.Remove(0, 1);
-                            osupath = osupath.Remove(osupath.Length - 11);
-                            return osupath;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log("ERROR: could not get directory from registry key | {0}", e.Message);
-                }
-
+                return GetManualOsuDir(selectDirectoryDialog);
             }
+        }
+        return GetManualOsuDir(selectDirectoryDialog);
+    }
+
+    public string GetOsuDir()
+        => GetOsuOrLazerDir();
+
+    private string GetOsuOrLazerDir()
+    {
+        if (OsuIsRunning)
+        {
+            try
+            {
+                string dir = _processes[0].Modules[0].FileName;
+                dir = dir.Remove(dir.LastIndexOf('\\'));
+
+                if (IsOsuUserDataDirectory(dir))
+                {
+                    return dir;
+                }
+            }
+            catch (Exception) //Access denied
+            {
+                return string.Empty;
+            }
+        }
+
+        if (TryGetLazerDataPath(out string lazerDataPath))
+        {
+            return lazerDataPath;
+        }
+
+        try
+        {
+            if (TryGetOsuDirFromRegistry(out string path))
+            {
+                return path;
+            }
+        }
+        catch (Exception)
+        {
             return string.Empty;
         }
-        public string GetManualOsuDir(Func<string, string> selectDirectoryDialog)
-        {
-            var directory = selectDirectoryDialog("Where is your osu! folder located at?");
-            if (!File.Exists(directory + @"\osu!.db"))
-                directory = string.Empty;
 
-            return directory;
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Attempts to retrieve osu! legacy path from windows registry.
+    /// </summary>
+    /// <remarks>
+    /// This works only with legacy osu version.<br/>
+    /// Fails gracefully with lazer.<br/>
+    /// </remarks>
+    /// <returns></returns>
+    private static bool TryGetOsuDirFromRegistry(out string path)
+    {
+        using RegistryKey osuRegistryKey = Registry.ClassesRoot.OpenSubKey("osu\\DefaultIcon");
+
+        if (osuRegistryKey != null)
+        {
+            string osuIconPath = osuRegistryKey.GetValue(null).ToString();
+            string osuPath = osuIconPath.Remove(0, 1);
+            path = osuPath.Remove(osuPath.Length - 11);
+
+            // No point in trying to make this correct for lazer,
+            // since with lazer installed this registry key points to osu app instance,
+            // that contains no user data.
+            if (Directory.Exists(path))
+            {
+                return true;
+            }
         }
 
-        public string SelectDirectory(string text, bool showNewFolder = false)
-        {
-            //FolderBrowserDialog dialog = new FolderBrowserDialog();
-            ////set description and base folder for browsing
+        path = null;
 
-            //dialog.ShowNewFolderButton = true;
-            //dialog.Description = text;
-            //dialog.RootFolder = Environment.SpecialFolder.MyComputer;
-            //if (dialog.ShowDialog() == DialogResult.OK && Directory.Exists((dialog.SelectedPath)))
-            //{
-            //    return dialog.SelectedPath;
-            //}
-            return string.Empty;
+        return false;
+    }
+
+    public string GetManualOsuDir(Func<string, string> selectDirectoryDialog)
+    {
+        string directory = selectDirectoryDialog("Where is your osu! or lazer folder located at?");
+
+        return IsOsuUserDataDirectory(directory)
+            ? directory
+            : string.Empty;
+    }
+
+    private static bool IsOsuUserDataDirectory(string directory)
+        => File.Exists(Path.Combine(directory, "osu!.db"))
+            || File.Exists(Path.Combine(directory, "client.realm"));
+
+    private static bool TryGetLazerDataPath(out string path)
+    {
+        path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "osu");
+
+        if (Directory.Exists(path))
+        {
+            return true;
         }
+
+        path = null;
+
+        return false;
     }
 }

@@ -2,12 +2,12 @@
 
 namespace CollectionManager.Interfaces
 {
-    public interface IScoreDataStorer
+    public interface IScoreDataManager
     {
         Scores Scores { get; }
         void StartMassStoring();
         void EndMassStoring();
         void Clear();
-        void Store(Score score);
+        void Store(IReplay replay);
     }
 }

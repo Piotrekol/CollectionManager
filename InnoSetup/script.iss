@@ -51,23 +51,43 @@ Name: osdbAssociation; Description: "Associate "".osdb"" extension (Collection f
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\App\bin\Release\net48\CollectionManagerApp.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CollectionManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CollectionManagerApp.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\CollectionManagerApp.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CollectionManagerExtensionsDll.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net48\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\GuiComponents.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\lib\win32\x64\realm-wrappers.dll"; DestDir: "{app}\lib\win32\x64"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Microsoft.Bcl.AsyncInterfaces.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\App\bin\Release\net48\Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\MongoDB.Bson.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\MusicPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\NAudio.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\ObjectListView.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Realm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Realm.PlatformHelpers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\Remotion.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Text.Encoding.CodePages.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Text.Encodings.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Threading.Channels.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.Threading.Tasks.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\App\bin\Release\net48\ZstdSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
