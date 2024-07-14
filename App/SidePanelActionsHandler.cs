@@ -546,7 +546,7 @@ namespace App
                 _userDialogs.OkMessageBox("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
             }
 
-            if (_userDialogs.YesNoMessageBox("Are you sure that you want to overwrite your existing osu! collection?",
+            if (_userDialogs.YesNoMessageBox($"Are you sure that you want to overwrite your existing osu! collection at \"{fileLocation}\"?",
                 "Are you sure?", MessageBoxType.Question))
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
