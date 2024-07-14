@@ -591,7 +591,8 @@ namespace App
                 return;
             }
 
-            CleanupBackups();
+            CleanupBackups("*.db");
+            CleanupBackups("*.realm");
             File.Copy(sourceCollectionFile, destinationCollectionFile);
 
             string CalculateMD5(string filename)
@@ -606,10 +607,10 @@ namespace App
                 }
             }
 
-            void CleanupBackups()
+            void CleanupBackups(string searchPattern)
             {
                 var deleteDateThreshold = DateTime.UtcNow.AddDays(-30);
-                var collectionFilePaths = Directory.GetFiles(backupFolder, "*.db", SearchOption.TopDirectoryOnly);
+                var collectionFilePaths = Directory.GetFiles(backupFolder, searchPattern, SearchOption.TopDirectoryOnly);
                 var collectionFiles = collectionFilePaths.Select(f => new FileInfo(f))
                     .Where(f => f.LastWriteTimeUtc < deleteDateThreshold);
 

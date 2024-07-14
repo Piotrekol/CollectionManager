@@ -34,8 +34,6 @@ public class LazerCollectionHandler
 
     public void Write(Collections collections, string realmFilePath)
     {
-        // TODO: only allow for writes for validated schemaVersion(s)?
-        // TODO: backups..
         using Realm localRealm = GetRealm(realmFilePath, false);
 
         localRealm.Write(() =>
