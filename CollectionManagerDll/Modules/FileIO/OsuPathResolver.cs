@@ -61,7 +61,10 @@ public sealed class OsuPathResolver
                 string dir = _processes[0].Modules[0].FileName;
                 dir = dir.Remove(dir.LastIndexOf('\\'));
 
-                return dir;
+                if (IsOsuUserDataDirectory(dir))
+                {
+                    return dir;
+                }
             }
             catch (Exception) //Access denied
             {
@@ -125,13 +128,14 @@ public sealed class OsuPathResolver
     {
         string directory = selectDirectoryDialog("Where is your osu! or lazer folder located at?");
 
-        if (File.Exists(Path.Combine(directory, "osu!.db")) || File.Exists(Path.Combine(directory, "client.realm")))
-        {
-            return directory;
-        }
-
-        return string.Empty;
+        return IsOsuUserDataDirectory(directory)
+            ? directory
+            : string.Empty;
     }
+
+    private static bool IsOsuUserDataDirectory(string directory)
+        => File.Exists(Path.Combine(directory, "osu!.db"))
+            || File.Exists(Path.Combine(directory, "client.realm"));
 
     private static bool TryGetLazerDataPath(out string path)
     {
