@@ -513,11 +513,13 @@ namespace App
 
         private async void SaveDefaultCollection(object sender, object data = null)
         {
-            var fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
-            
+            bool isLegacyCollectionFile = true;
+            string fileLocation = Path.Combine(Initalizer.OsuDirectory, "collection.db");
+
             if (!File.Exists(fileLocation))
             {
                 fileLocation = Path.Combine(Initalizer.OsuDirectory, "client.realm");
+                isLegacyCollectionFile = false;
 
                 if (!File.Exists(fileLocation))
                 {
@@ -526,12 +528,9 @@ namespace App
                 }
             }
 
-            var processes = Process.GetProcessesByName("osu!");
             try
             {
-                if (Process.GetProcessesByName("osu!").Any(p =>
-                    p.MainModule != null && Path.GetDirectoryName(p.MainModule.FileName)?.ToLowerInvariant() ==
-                    Initalizer.OsuDirectory.ToLowerInvariant()))
+                if (OsuIsRunning(isLegacyCollectionFile))
                 {
                     _userDialogs.OkMessageBox("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
                     return;
@@ -541,7 +540,9 @@ namespace App
             {
                 // access denied
                 if (ex.NativeErrorCode != 5)
+                {
                     throw;
+                }
 
                 _userDialogs.OkMessageBox("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
             }
@@ -550,7 +551,7 @@ namespace App
                 "Are you sure?", MessageBoxType.Question))
             {
                 await BeforeCollectionSave(Initalizer.LoadedCollections);
-                var backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
+                string backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
 
                 if (!TryBackupOsuCollection(backupFolder))
                 {
@@ -565,13 +566,30 @@ namespace App
             {
                 _userDialogs.OkMessageBox("Save Aborted", "Info", MessageBoxType.Warning);
             }
+
+            static bool OsuIsRunning(bool isLegacyOsu)
+            {
+                IEnumerable<Process> osuProcesses = Process.GetProcessesByName("osu!")
+                    .Where(process => process.MainModule is not null);
+
+                if (isLegacyOsu)
+                {
+                    return osuProcesses
+                        .Any(process
+                            => Path.GetDirectoryName(process.MainModule.FileName)?.ToLowerInvariant()
+                               == Initalizer.OsuDirectory.ToLowerInvariant());
+                }
+
+                return osuProcesses
+                    .Any(process => process.MainModule.ModuleName == "osu!.exe");
+            }
         }
 
         private bool TryBackupOsuCollection(string backupFolder)
         {
             if (!Directory.Exists(backupFolder))
             {
-                _ = Directory.CreateDirectory(backupFolder); 
+                _ = Directory.CreateDirectory(backupFolder);
             }
 
             var sourceCollectionFile = Path.Combine(Initalizer.OsuDirectory, "collection.db");
@@ -594,7 +612,7 @@ namespace App
 
             if (File.Exists(destinationCollectionFile))
             {
-                //Just update file save date to indicate latest collection version
+                // Update file save date to indicate latest collection version
                 File.SetLastWriteTime(destinationCollectionFile, DateTime.Now);
                 return true;
             }
