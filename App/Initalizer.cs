@@ -11,6 +11,7 @@ using App.Properties;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
+using CollectionManagerApp.Properties;
 using CollectionManagerExtensionsDll.Modules.API.osustats;
 using GuiComponents.Interfaces;
 

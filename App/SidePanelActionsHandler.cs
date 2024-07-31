@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Security.Cryptography;
 using GuiComponents;
 using System.Windows.Markup;
+using CollectionManagerApp.Properties;
 
 namespace App
 {
