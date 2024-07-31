@@ -23,8 +23,10 @@ namespace GuiComponents.Interfaces
         event EventHandler SelectedCollectionsChanged;
         event GuiHelpers.CollectionBeatmapsEventArgs BeatmapsDropped;
         event EventHandler<StringEventArgs> RightClick;
+        event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
 
         void SetFilter(IModelFilter filter);
+        void SetVisibleColumns(string[] visibleColumnsAspectNames);
         void FilteringStarted();
         void FilteringFinished();
         //void OnCollectionEditing(CollectionEditArgs e);

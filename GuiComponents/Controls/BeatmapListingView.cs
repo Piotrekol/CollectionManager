@@ -11,6 +11,7 @@ using CollectionManagerExtensionsDll.Modules;
 using Common;
 using GuiComponents.Interfaces;
 using Gui.Misc;
+using System.Linq;
 
 namespace GuiComponents.Controls
 {
@@ -22,6 +23,7 @@ namespace GuiComponents.Controls
 
         public event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
+        public event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
 
         public string SearchText => textBox_beatmapSearch.Text;
         public string ResultText { get; set; }
@@ -52,6 +54,16 @@ namespace GuiComponents.Controls
         {
             ListViewBeatmaps.SetObjects(beatmaps);
             UpdateResultsCount();
+        }
+
+        public void SetVisibleColumns(string[] visibleColumnsAspectNames)
+        {
+            foreach (var column in ListViewBeatmaps.AllColumns)
+            {
+                column.IsVisible = visibleColumnsAspectNames.Contains(column.AspectName);
+            }
+
+            ListViewBeatmaps.RebuildColumns();
         }
 
         public Beatmap SelectedBeatmap
@@ -99,7 +111,18 @@ namespace GuiComponents.Controls
             {
                 args.MenuStrip = BeatmapsContextMenuStrip;
             };
+            ListViewBeatmaps.ColumnWidthChanged += OnColumnReordered;
         }
+
+        private void OnColumnReordered(object sender, ColumnWidthChangedEventArgs e)
+        {
+            var visibleColumnAspectNames = ListViewBeatmaps.AllColumns
+                .Where(column => column.IsVisible)
+                .Select(column => column.AspectName);
+
+            ColumnsToggled?.Invoke(this, visibleColumnAspectNames.ToArray());
+        }
+
         private void UpdateResultsCount()
         {
             int count = 0;
@@ -174,7 +197,8 @@ namespace GuiComponents.Controls
             };
             LastPlayed.AspectToStringConverter = delegate (object cellValue)
             {
-                if (cellValue == null) return string.Empty;
+                if (cellValue == null)
+                    return string.Empty;
                 var val = (DateTimeOffset)cellValue;
                 return val > d ? $"{val}" : "Never";
             };
@@ -188,7 +212,8 @@ namespace GuiComponents.Controls
             };
             column_bpm.AspectToStringConverter = delegate (object cellValue)
             {
-                if (cellValue == null) return string.Empty;
+                if (cellValue == null)
+                    return string.Empty;
                 return $"{cellValue:0.##}";
             };
 
@@ -312,6 +337,7 @@ namespace GuiComponents.Controls
                 MenuStripClick(DeleteMapMenuStrip, e);
             }
         }
+
     }
 
 

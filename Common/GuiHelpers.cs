@@ -15,5 +15,6 @@ namespace Gui.Misc
         public delegate void LoadFileArgs(object sender, string[] filePaths);
         public delegate void StartupCollectionEventArgs(object sender, StartupCollectionAction args);
         public delegate void StartupDatabaseEventArgs(object sender, StartupDatabaseAction args);
+        public delegate void ColumnsToggledEventArgs(object sender, string[] visibleCollumnAspectNames);
     }
 }

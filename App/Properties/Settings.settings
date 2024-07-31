@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="App.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CollectionManagerApp.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="StartupSettings" Type="System.String" Scope="User">
@@ -22,6 +22,12 @@
     </Setting>
     <Setting Name="DontAskAboutReorderingCollections" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CollectionColumns" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[]</Value>
+    </Setting>
+    <Setting Name="BeatmapColumns" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[]</Value>
     </Setting>
   </Settings>
 </SettingsFile>

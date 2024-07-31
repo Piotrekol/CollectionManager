@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using App.Models;
 using App.Properties;
 using CollectionManager.Modules.CollectionsManager;
+using CollectionManagerApp.Properties;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
@@ -216,7 +217,6 @@ namespace App.Presenters.Controls
 
         private void SaveSettings()
         {
-
             Settings.Default.StartupSettings = JsonConvert.SerializeObject(_startupSettings);
             Settings.Default.Save();
         }

@@ -12,6 +12,7 @@ using GuiComponents.Interfaces;
 using MusicPlayer;
 using Timer = System.Timers.Timer;
 using System.Runtime.InteropServices;
+using CollectionManagerApp.Properties;
 
 namespace App.Presenters.Controls
 {

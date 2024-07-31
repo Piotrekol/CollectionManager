@@ -20,10 +20,12 @@ namespace GuiComponents.Interfaces
         event EventHandler SelectedBeatmapsChanged;
         event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
         event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
+        event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
 
         void SetCurrentPlayMode(PlayMode playMode);
         void SetCurrentMods(Mods mods);
         void SetBeatmaps(IEnumerable beatmaps);
+        void SetVisibleColumns(string[] visibleColumnsAspectNames);
         void SetFilter(IModelFilter filter);
         void FilteringStarted();
         void FilteringFinished();

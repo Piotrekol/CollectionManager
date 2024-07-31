@@ -1,8 +1,9 @@
 using System;
 using App.Interfaces;
 using CollectionManager.DataTypes;
-using CollectionManagerExtensionsDll.Modules.API.osustats;
+using CollectionManagerApp.Properties;
 using GuiComponents.Interfaces;
+using Newtonsoft.Json;
 
 namespace App.Presenters.Controls
 {
@@ -34,6 +35,19 @@ namespace App.Presenters.Controls
             BeatmapListingModel.SelectedBeatmapsChanged += BeatmapListingModelOnSelectedBeatmapsChanged;
             _collectionsView.SelectedCollectionChanged += CollectionsViewOnSelectedCollectionChanged;
             _collectionsView.SelectedCollectionsChanged += CollectionsViewOnSelectedCollectionsChanged;
+            _collectionsView.ColumnsToggled += OnColumnsToggled;
+
+            var visibleColumns = JsonConvert.DeserializeObject<string[]>(Settings.Default.CollectionColumns);
+
+            if (visibleColumns.Length > 0)
+            {
+                _collectionsView.SetVisibleColumns(visibleColumns);
+            }
+        }
+
+        private void OnColumnsToggled(object sender, string[] visibleCollumnAspectNames)
+        {
+            Settings.Default.CollectionColumns = JsonConvert.SerializeObject(visibleCollumnAspectNames);
         }
 
         private void BeatmapListingModelOnSelectedBeatmapsChanged(object sender, EventArgs e)
