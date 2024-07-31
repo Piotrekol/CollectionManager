@@ -59,6 +59,7 @@ namespace GuiComponents.Controls
         public event EventHandler SelectedCollectionsChanged;
         public event GuiHelpers.CollectionBeatmapsEventArgs BeatmapsDropped;
         public event EventHandler<StringEventArgs> RightClick;
+        public event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
 
         private CollectionRenderer _collectionRenderer = new CollectionRenderer();
         private RearrangingDropSink _dropsink = new RearrangingDropSink();
@@ -84,6 +85,16 @@ namespace GuiComponents.Controls
                 OnSelectedCollectionsChanged();
             };
 
+            ListViewCollections.ColumnWidthChanged += OnColumnReordered;
+        }
+
+        private void OnColumnReordered(object sender, ColumnWidthChangedEventArgs e)
+        {
+            var visibleColumnAspectNames = ListViewCollections.AllColumns
+                .Where(column => column.IsVisible)
+                .Select(column => column.AspectName);
+
+            ColumnsToggled?.Invoke(this, visibleColumnAspectNames.ToArray());
         }
 
         private void init()
@@ -176,6 +187,16 @@ namespace GuiComponents.Controls
             ListViewCollections.AdditionalFilter = filter;
         }
 
+        public void SetVisibleColumns(string[] visibleColumnsAspectNames)
+        {
+            foreach (var column in ListViewCollections.AllColumns)
+            {
+                column.IsVisible = visibleColumnsAspectNames.Contains(column.AspectName);
+            }
+
+            ListViewCollections.RebuildColumns();
+        }
+
         public void FilteringStarted()
         {
             ListViewCollections.BeginUpdate();
@@ -208,8 +229,8 @@ namespace GuiComponents.Controls
                 foreach (var collection in e.SourceModels)
                     collections.Add((Collection)collection);
 
-                var sortOrder = ListViewCollections.LastSortOrder == SortOrder.Ascending 
-                    ? CollectionManager.Enums.SortOrder.Ascending 
+                var sortOrder = ListViewCollections.LastSortOrder == SortOrder.Ascending
+                    ? CollectionManager.Enums.SortOrder.Ascending
                     : CollectionManager.Enums.SortOrder.Descending;
                 OnCollectionReorder?.Invoke(this, collections, targetCollection, e.DropTargetLocation == DropTargetLocation.AboveItem, ListViewCollections.LastSortColumn.AspectName, sortOrder);
 
@@ -219,7 +240,8 @@ namespace GuiComponents.Controls
                 return;
             }
 
-            if (targetCollection == null) return;
+            if (targetCollection == null)
+                return;
             var beatmaps = new Beatmaps();
             foreach (var b in e.SourceModels)
             {
@@ -249,7 +271,8 @@ namespace GuiComponents.Controls
         private void PasteCollectionFromClipboard()
         {
             var data = Clipboard.GetDataObject();
-            if (data == null) return;
+            if (data == null)
+                return;
             DropFile(data);
             return;
         }
@@ -303,5 +326,6 @@ namespace GuiComponents.Controls
         {
             e.Handled = e.SuppressKeyPress = true;
         }
+
     }
 }
