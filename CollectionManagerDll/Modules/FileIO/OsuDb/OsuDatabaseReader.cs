@@ -216,7 +216,7 @@ namespace CollectionManager.Modules.FileIO.OsuDb
             for (int j = 0; j < num; j++)
             {
                 int modEnum = (int)ConditionalRead();
-                Double stars = (Double)ConditionalRead();
+                double stars = Convert.ToDouble(ConditionalRead());
                 if (!modPpStars.ContainsKey(modEnum))
                 {
                     modPpStars.Add(modEnum, Math.Round(stars, 2));

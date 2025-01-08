@@ -11,6 +11,7 @@ using Common;
 using App.Properties;
 using CollectionManager.Enums;
 using SortOrder = CollectionManager.Enums.SortOrder;
+using CollectionManagerApp.Properties;
 
 namespace App.Presenters.Controls
 {

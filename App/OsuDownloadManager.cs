@@ -14,6 +14,7 @@ using App.Models;
 using Common.Interfaces;
 using Newtonsoft.Json;
 using System.Reflection;
+using CollectionManagerApp.Properties;
 
 namespace App
 {
@@ -52,7 +53,7 @@ namespace App
         {
             if (IsLoggedIn)
                 return true;
-
+            
             var downloaderSettings = JsonConvert.DeserializeObject<DownloaderSettings>(Settings.Default.DownloadManager_DownloaderSettings);
             if (downloaderSettings.LoginData == null)
                 downloaderSettings.LoginData = new LoginData();

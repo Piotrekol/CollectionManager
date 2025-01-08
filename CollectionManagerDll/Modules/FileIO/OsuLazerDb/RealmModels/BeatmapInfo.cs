@@ -90,20 +90,6 @@ internal partial class BeatmapInfo
 
     public int TotalObjectCount { get; set; } = -1;
 
-    public double AudioLeadIn { get; set; }
-
-    public float StackLeniency { get; set; } = 0.7f;
-
-    public bool SpecialStyle { get; set; }
-
-    public bool LetterboxInBreaks { get; set; }
-
-    public bool WidescreenStoryboard { get; set; } = true;
-
-    public bool EpilepsyWarning { get; set; }
-
-    public bool SamplesMatchPlaybackRate { get; set; } = true;
-
     /// <summary>
     /// The time at which this beatmap was last played by the local user.
     /// </summary>
@@ -119,13 +105,7 @@ internal partial class BeatmapInfo
     ///
     /// This is only a hint property, used by the editor in <see cref="IDistanceSnapProvider"/> implementations. It does not directly affect the beatmap or gameplay.
     /// </remarks>
-    public double DistanceSpacing { get; set; } = 1.0;
-
     public int BeatDivisor { get; set; } = 4;
-
-    public int GridSize { get; set; }
-
-    public double TimelineZoom { get; set; } = 1.0;
 
     /// <summary>
     /// The time in milliseconds when last exiting the editor with this beatmap loaded.
@@ -134,12 +114,6 @@ internal partial class BeatmapInfo
 
     //[Ignored]
     //public CountdownType Countdown { get; set; } = CountdownType.Normal;
-
-    /// <summary>
-    /// The number of beats to move the countdown backwards (compared to its default location).
-    /// </summary>
-    public int CountdownOffset { get; set; }
-
 
     public bool Equals(BeatmapInfo other)
     {
