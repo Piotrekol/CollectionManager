@@ -39,7 +39,7 @@ internal static class BeatmapInfoExtensions
             MapId = beatmapInfo.OnlineID,
             MapSetId = beatmapInfo.BeatmapSet.OnlineID,
             Offset = beatmapInfo.UserSettings.Offset,
-            StackLeniency = beatmapInfo.StackLeniency,
+            StackLeniency = -1, // TODO: Lazer StackLeniency
             PlayMode = ToPlayMode(beatmapInfo.Ruleset.ShortName),
             Source = beatmapInfo.Metadata.Source,
             LastPlayed = beatmapInfo.LastPlayed,
