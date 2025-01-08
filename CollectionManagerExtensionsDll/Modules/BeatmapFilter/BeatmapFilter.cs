@@ -200,6 +200,24 @@ namespace CollectionManagerExtensionsDll.Modules.BeatmapFilter
                                 var topScore = GetTopScore(b.Md5);
                                 return isPatternMatch(topScore == null ? 0 : 1, op, num);
                             };
+                        case "haslocalactivity":
+                            return b =>
+                            {
+                                var hasTopScore = GetTopScore(b.Md5) != null;
+                                var hasRank = b.OsuGrade != OsuGrade.Null || b.CatchGrade != OsuGrade.Null || b.TaikoGrade != OsuGrade.Null || b.ManiaGrade != OsuGrade.Null;
+                                var hasValidLastPlayed = b.LastPlayed.HasValue && b.LastPlayed.Value > DateTimeOffset.MinValue;
+
+                                if (num == 0)
+                                {
+                                    return isPatternMatch(hasTopScore == false ? 0 : 1, op, num)
+                                           && isPatternMatch(hasValidLastPlayed == false ? 0 : 1, op, num)
+                                           && isPatternMatch(hasRank == false ? 0 : 1, op, num);    
+                                }
+                                
+                                return isPatternMatch(hasTopScore == false ? 0 : 1, op, num)
+                                       || isPatternMatch(hasValidLastPlayed == false ? 0 : 1, op, num)
+                                       || isPatternMatch(hasRank == false ? 0 : 1, op, num);
+                            };
                     }
                 }
 
