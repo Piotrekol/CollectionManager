@@ -24,14 +24,21 @@ public class OsuRealmReader
         }
         catch (RealmException exception)
         {
+            const string RealmFileVersionMismatchMessage = "because it has a file format version";
+
+            if (exception.Message.Contains(RealmFileVersionMismatchMessage))
+            {
+                throw new RealmNotValidatedException($"Opening osu!lazer database failed. Consider reporting this on github. {exception.Message}");
+            }
+            
             Match numberMatch = _lastNumber.Match(exception.Message);
-            string schemaVersionOrMessage = numberMatch.Success 
-                ? numberMatch.Value 
+            string schemaVersionOrMessage = numberMatch.Success
+                ? numberMatch.Value
                 : exception.Message;
 
-            throw new RealmNotValidatedException($"Opening osu!lazer database failed." +
-                $" Expected schema version: '{_lastValidatedRealmSchemaVersion}'," +
-                $" got: '{schemaVersionOrMessage}'. Consider reporting this on github.");
+            throw new RealmNotValidatedException($"Opening osu!lazer database failed. " +
+                $"Expected schema version: '{_lastValidatedRealmSchemaVersion}', " +
+                $"got: '{schemaVersionOrMessage}'. Consider reporting this on github.");
         }
     }
 
