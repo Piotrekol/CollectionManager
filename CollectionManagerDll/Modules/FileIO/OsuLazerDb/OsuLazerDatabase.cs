@@ -6,6 +6,7 @@ using Realms;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb;
 
@@ -14,7 +15,6 @@ public sealed class OsuLazerDatabase
 {
     private readonly IMapDataManager _mapDataManager;
     private readonly IScoreDataManager _scoresDatabase;
-    private readonly LazerBeatmap _baseBeatmap = new();
 
     public OsuLazerDatabase(IMapDataManager mapDataManager, IScoreDataManager scoresDatabase)
     {
@@ -47,17 +47,30 @@ public sealed class OsuLazerDatabase
 
     private void LoadBeatmaps(Realm realm, IProgress<string> progress)
     {
-        IQueryable<BeatmapInfo> allLazerBeatmaps = realm.All<BeatmapInfo>();
-        int beatmapsCount = allLazerBeatmaps.Count();
-        progress?.Report($"Loading {beatmapsCount} beatmaps");
+        var allLazerBeatmapSets = realm.All<BeatmapSetInfo>().ToList();
+        int beatmapSetCount = allLazerBeatmapSets.Count;
+        progress?.Report($"Loading {beatmapSetCount} beatmap sets");
         _mapDataManager.StartMassStoring();
+        var totalBeatmapCount = 0;
 
-        foreach (BeatmapInfo beatmapInfo in allLazerBeatmaps)
+        for (int i = 0; i < allLazerBeatmapSets.Count; i++)
         {
-            _mapDataManager.StoreBeatmap(beatmapInfo.ToLazerBeatmap(_scoresDatabase));
+            var beatmapSetInfo = allLazerBeatmapSets[i];
+            IEnumerable<LazerBeatmap> lazerBeatmaps = beatmapSetInfo.ToLazerBeatmaps(_scoresDatabase);
+
+            foreach (var lazerBeatmap in lazerBeatmaps)
+            {
+                totalBeatmapCount++;
+                _mapDataManager.StoreBeatmap(lazerBeatmap);
+            }
+
+            if (i % 100 == 0)
+            {
+                progress?.Report($"Loaded {i} of {beatmapSetCount} beatmap sets ({totalBeatmapCount} beatmaps)");
+            }
         }
 
         _mapDataManager.EndMassStoring();
-        progress?.Report($"Loaded {beatmapsCount} beatmaps");
+        progress?.Report($"Loaded {beatmapSetCount} beatmap sets ({totalBeatmapCount} beatmaps)");
     }
 }
