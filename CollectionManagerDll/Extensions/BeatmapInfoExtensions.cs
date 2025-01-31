@@ -5,27 +5,28 @@ using CollectionManager.Modules.FileIO.OsuLazerDb;
 using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
 using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CollectionManager.Extensions;
 
 internal static class BeatmapInfoExtensions
 {
-    public static LazerBeatmap ToLazerBeatmap(this BeatmapInfo beatmapInfo, IScoreDataManager scoreDataManager)
+    public static LazerBeatmap ToLazerBeatmap(this BeatmapInfo beatmapInfo, IScoreDataManager scoreDataManager, LazerFile[] setFiles)
     {
         LazerBeatmap lazerBeatmap = new()
         {
-            AudioRelativeFilePath = beatmapInfo.AudioFile is not null ? GetRelativePath(beatmapInfo.AudioFile.File) : string.Empty,
-            BackgroundRelativeFilePath = beatmapInfo.BackgroundFile is not null ? GetRelativePath(beatmapInfo.BackgroundFile.File) : string.Empty,
+            SetFiles = setFiles,
+            BackgroundFileName = beatmapInfo.Metadata.BackgroundFile,
             TitleUnicode = beatmapInfo.Metadata.TitleUnicode,
             TitleRoman = beatmapInfo.Metadata.Title,
             ArtistUnicode = beatmapInfo.Metadata.ArtistUnicode,
             ArtistRoman = beatmapInfo.Metadata.Artist,
             Creator = beatmapInfo.Metadata.Author.Username,
             DiffName = beatmapInfo.DifficultyName,
-            Mp3Name = beatmapInfo.AudioFile?.Filename ?? string.Empty,
             Md5 = beatmapInfo.MD5Hash,
             MapHash = beatmapInfo.Hash,
-            OsuFileName = beatmapInfo.File?.File.Hash ?? string.Empty,
+            Mp3Name = beatmapInfo.Metadata.AudioFile,
             Tags = beatmapInfo.Metadata.Tags,
             State = (byte)ToLocalState(beatmapInfo.Status),
             EditDate = beatmapInfo.BeatmapSet.DateAdded,
@@ -38,16 +39,10 @@ internal static class BeatmapInfoExtensions
             PreviewTime = beatmapInfo.Metadata.PreviewTime,
             MapId = beatmapInfo.OnlineID,
             MapSetId = beatmapInfo.BeatmapSet.OnlineID,
-            Offset = beatmapInfo.UserSettings.Offset,
-            StackLeniency = -1, // TODO: Lazer StackLeniency
             PlayMode = ToPlayMode(beatmapInfo.Ruleset.ShortName),
             Source = beatmapInfo.Metadata.Source,
             LastPlayed = beatmapInfo.LastPlayed,
             LastSync = beatmapInfo.LastOnlineUpdate,
-            DisableHitsounds = false,
-            DisableSkin = false,
-            DisableSb = false,
-            BgDim = 0,
             MainBpm = beatmapInfo.BPM,
             OsuGrade = scoreDataManager.GetTopReplayGrade(beatmapInfo.Hash, PlayMode.Osu),
             TaikoGrade = scoreDataManager.GetTopReplayGrade(beatmapInfo.Hash, PlayMode.Taiko),
@@ -56,6 +51,10 @@ internal static class BeatmapInfoExtensions
 
             // not relevant in lazer
             //Dir = string.Empty,
+
+            // Never used anywhere
+            //OsuFileName = beatmapInfo.Hash,
+            //Offset = beatmapInfo.UserSettings.Offset,
 
             // Not stored in realm
             //DrainingTime = 0,
@@ -70,6 +69,11 @@ internal static class BeatmapInfoExtensions
             //IsOsz2 = false,
             //MinBpm = 0,
             //MaxBpm = 0,
+            //StackLeniency = -1,
+            //DisableHitsounds = false,
+            //DisableSkin = false,
+            //DisableSb = false,
+            //BgDim = 0,
         };
 
         lazerBeatmap.ModPpStars.Add(
@@ -78,9 +82,6 @@ internal static class BeatmapInfoExtensions
 
         return lazerBeatmap;
     }
-
-    private static string GetRelativePath(RealmFile realmFile)
-            => Path.Combine(realmFile.Hash.Remove(1), realmFile.Hash.Remove(2), realmFile.Hash);
 
     private static PlayMode ToPlayMode(string rulesetShortName)
         => rulesetShortName.ToLowerInvariant() switch
