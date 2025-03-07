@@ -7,7 +7,7 @@ namespace CollectionManager.Modules.FileIO;
 
 public class OsuRealmReader
 {
-    private const ulong _lastValidatedRealmSchemaVersion = 46;
+    private const ulong _lastValidatedRealmSchemaVersion = 47;
     private static readonly Regex _lastNumber = new("(\\d+)(?!.*\\d)", RegexOptions.Compiled);
 
     protected static Realm GetRealm(string realmFilePath, bool readOnly = true)
