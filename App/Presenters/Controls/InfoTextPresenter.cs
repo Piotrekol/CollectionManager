@@ -12,13 +12,7 @@ namespace App.Presenters.Controls
         private const string UpdateAvaliable = "Update is avaliable!({0})";
         private const string UpdateError = "Error while checking for updates.";
         private const string NoUpdatesAvailable = "No updates avaliable ({0})";
-
-        private const string LoadedBeatmaps = "Loaded {0} beatmaps";
-        private const string LoadedCollections = "Loaded {0} collections";
-        private const string LoadedCollectionsBeatmaps = "With {0} beatmaps";
-
-
-        private const string MissingBeatmaps = "Missing {0} map sets";
+        private const string FetchingUpdateInformation = "Fetching update information..";
 
         public InfoTextPresenter(IInfoTextView view, IInfoTextModel model)
         {
@@ -31,9 +25,6 @@ namespace App.Presenters.Controls
 
         private void ViewOnUpdateTextClicked(object sender, EventArgs eventArgs)
         {
-            var updater = Model.GetUpdater();
-            updater.CheckForUpdates();
-
             Model.EmitUpdateTextClicked();
             SetUpdateText();
         }
@@ -52,7 +43,12 @@ namespace App.Presenters.Controls
             {
                 _view.ColorUpdateText = true;
 
-                if (updater.UpdateIsAvailable)
+                if (updater.OnlineVersion is null)
+                {
+                    _view.UpdateText = FetchingUpdateInformation;
+                    _view.ColorUpdateText = false;
+                }
+                else if (updater.UpdateIsAvailable)
                 {
                     _view.UpdateText = string.Format(UpdateAvaliable, updater.OnlineVersion);
                 }

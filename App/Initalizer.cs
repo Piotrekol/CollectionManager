@@ -66,7 +66,7 @@ namespace App
                 }
             }
 
-            StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs, CollectionsManager);
+            StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs, CollectionsManager, infoTextModel);
             await StartupPresenter.Run();
                 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using App.Interfaces;
 using App.Models;
 using App.Properties;
 using CollectionManager.Modules.CollectionsManager;
@@ -29,7 +30,7 @@ namespace App.Presenters.Controls
         private bool _formClosedManually;
         private SemaphoreSlim _formClosed = new(0);
 
-        public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs, CollectionsManagerWithCounts collectionsManager)
+        public StartupPresenter(IStartupForm view, SidePanelActionsHandler sidePanelActionsHandler, IUserDialogs userDialogs, CollectionsManagerWithCounts collectionsManager, IInfoTextModel infoTextModel)
         {
             _form = view;
             _view = view.StartupView;
@@ -45,6 +46,7 @@ namespace App.Presenters.Controls
                 else
                     _view.LoadDatabaseStatusText = $"osu! location: \"{Initalizer.OsuDirectory}\"{Environment.NewLine}{report}";
             });
+            _ = new InfoTextPresenter(_view.InfoTextView, infoTextModel);
 
             _view.UseSelectedOptionsOnStartup = _startupSettings.AutoLoadMode;
             _form.Closing += _view_Closing;

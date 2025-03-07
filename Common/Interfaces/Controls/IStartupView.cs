@@ -7,6 +7,8 @@ namespace GuiComponents.Interfaces
         event GuiHelpers.StartupCollectionEventArgs StartupCollectionOperation;
         event GuiHelpers.StartupDatabaseEventArgs StartupDatabaseOperation;
 
+        IInfoTextView InfoTextView { get; }
+
         string LoadDatabaseStatusText { get; set; }
         string CollectionStatusText { get; set; }
         bool UseSelectedOptionsOnStartup { get; set; }
