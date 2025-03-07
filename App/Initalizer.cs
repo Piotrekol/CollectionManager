@@ -43,7 +43,6 @@ namespace App
             CollectionEditor = new CollectionEditor(CollectionsManager, CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
 
             var updateChecker = new UpdateChecker();
-            updateChecker.CheckForUpdates();
             var infoTextModel = new InfoTextModel(updateChecker);
 
             var mainForm = GuiComponentsProvider.Instance.GetClassImplementing<IMainFormView>();
@@ -67,8 +66,10 @@ namespace App
             }
 
             StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs, CollectionsManager, infoTextModel);
-            await StartupPresenter.Run();
-                
+
+            await Task.WhenAll(
+                Task.Run(updateChecker.CheckForUpdates),
+                StartupPresenter.Run());
 
             mainForm.ShowAndBlock();
 
