@@ -4,9 +4,9 @@ using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
 using Realms;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Collections.Generic;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb;
 
@@ -26,7 +26,7 @@ public sealed class OsuLazerDatabase
     {
         using Realm localRealm = GetRealm(realmFilePath);
         LoadScores(localRealm, progress);
-        LoadBeatmaps(localRealm, progress);
+        LoadBeatmaps(localRealm, progress, cancellationToken);
     }
 
     private void LoadScores(Realm realm, IProgress<string> progress)
@@ -45,7 +45,7 @@ public sealed class OsuLazerDatabase
         progress?.Report($"Loaded {scoresCount} scores");
     }
 
-    private void LoadBeatmaps(Realm realm, IProgress<string> progress)
+    private void LoadBeatmaps(Realm realm, IProgress<string> progress, CancellationToken cancellationToken)
     {
         var allLazerBeatmapSets = realm.All<BeatmapSetInfo>().ToList();
         int beatmapSetCount = allLazerBeatmapSets.Count;
@@ -66,6 +66,7 @@ public sealed class OsuLazerDatabase
 
             if (i % 100 == 0)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 progress?.Report($"Loaded {i} of {beatmapSetCount} beatmap sets ({totalBeatmapCount} beatmaps)");
             }
         }
