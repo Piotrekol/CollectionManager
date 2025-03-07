@@ -48,9 +48,6 @@ namespace App
             var mainForm = GuiComponentsProvider.Instance.GetClassImplementing<IMainFormView>();
             var mainPresenter = new MainFormPresenter(mainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel, WebCollectionProvider);
 
-            //set initial text info and update events
-            SetTextData(infoTextModel);
-
             var loginForm = GuiComponentsProvider.Instance.GetClassImplementing<ILoginFormView>();
             var guiActionsHandler = new GuiActionsHandler(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
 
@@ -67,10 +64,9 @@ namespace App
 
             StartupPresenter = new StartupPresenter(GuiComponentsProvider.Instance.GetClassImplementing<IStartupForm>(), guiActionsHandler.SidePanelActionsHandler, UserDialogs, CollectionsManager, infoTextModel);
 
-            await Task.WhenAll(
-                Task.Run(updateChecker.CheckForUpdates),
-                StartupPresenter.Run());
+            await StartupPresenter.Run();
 
+            SetTextData(infoTextModel);
             mainForm.ShowAndBlock();
 
             Quit();
@@ -78,18 +74,23 @@ namespace App
 
         private void SetTextData(IInfoTextModel model)
         {
-            model.BeatmapCount = LoadedBeatmaps.Count;
-            CollectionsManager.LoadedCollections.CollectionChanged += (s, a) =>
+            CollectionsManager.LoadedCollections.CollectionChanged += (_, _) => syncModel();
+            LoadedBeatmaps.CollectionChanged += (_, _) => syncLoadedBeatmaps();
+
+            syncModel();
+            syncLoadedBeatmaps();
+
+            void syncLoadedBeatmaps()
+            {
+                model.BeatmapCount = LoadedBeatmaps.Count;
+            }
+            void syncModel()
             {
                 model.CollectionsCount = CollectionsManager.CollectionsCount;
                 model.BeatmapsInCollectionsCount = CollectionsManager.BeatmapsInCollectionsCount;
                 model.MissingMapSetsCount = CollectionsManager.MissingMapSetsCount;
                 model.UnknownMapCount = CollectionsManager.UnknownMapCount;
-            };
-            LoadedBeatmaps.CollectionChanged += (s, a) =>
-            {
-                model.BeatmapCount = LoadedBeatmaps.Count;
-            };
+            }
         }
 
 
