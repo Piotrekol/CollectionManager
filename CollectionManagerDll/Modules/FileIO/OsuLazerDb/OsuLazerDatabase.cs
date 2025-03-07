@@ -4,6 +4,7 @@ using CollectionManager.Interfaces;
 using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
 using Realms;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -14,7 +15,6 @@ public sealed class OsuLazerDatabase
 {
     private readonly IMapDataManager _mapDataManager;
     private readonly IScoreDataManager _scoresDatabase;
-    private readonly LazerBeatmap _baseBeatmap = new();
 
     public OsuLazerDatabase(IMapDataManager mapDataManager, IScoreDataManager scoresDatabase)
     {
@@ -26,7 +26,7 @@ public sealed class OsuLazerDatabase
     {
         using Realm localRealm = GetRealm(realmFilePath);
         LoadScores(localRealm, progress);
-        LoadBeatmaps(localRealm, progress);
+        LoadBeatmaps(localRealm, progress, cancellationToken);
     }
 
     private void LoadScores(Realm realm, IProgress<string> progress)
@@ -45,19 +45,33 @@ public sealed class OsuLazerDatabase
         progress?.Report($"Loaded {scoresCount} scores");
     }
 
-    private void LoadBeatmaps(Realm realm, IProgress<string> progress)
+    private void LoadBeatmaps(Realm realm, IProgress<string> progress, CancellationToken cancellationToken)
     {
-        IQueryable<BeatmapInfo> allLazerBeatmaps = realm.All<BeatmapInfo>();
-        int beatmapsCount = allLazerBeatmaps.Count();
-        progress?.Report($"Loading {beatmapsCount} beatmaps");
+        var allLazerBeatmapSets = realm.All<BeatmapSetInfo>().ToList();
+        int beatmapSetCount = allLazerBeatmapSets.Count;
+        progress?.Report($"Loading {beatmapSetCount} beatmap sets");
         _mapDataManager.StartMassStoring();
+        var totalBeatmapCount = 0;
 
-        foreach (BeatmapInfo beatmapInfo in allLazerBeatmaps)
+        for (int i = 0; i < allLazerBeatmapSets.Count; i++)
         {
-            _mapDataManager.StoreBeatmap(beatmapInfo.ToLazerBeatmap(_scoresDatabase));
+            var beatmapSetInfo = allLazerBeatmapSets[i];
+            IEnumerable<LazerBeatmap> lazerBeatmaps = beatmapSetInfo.ToLazerBeatmaps(_scoresDatabase);
+
+            foreach (var lazerBeatmap in lazerBeatmaps)
+            {
+                totalBeatmapCount++;
+                _mapDataManager.StoreBeatmap(lazerBeatmap);
+            }
+
+            if (i % 100 == 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                progress?.Report($"Loaded {i} of {beatmapSetCount} beatmap sets ({totalBeatmapCount} beatmaps)");
+            }
         }
 
         _mapDataManager.EndMassStoring();
-        progress?.Report($"Loaded {beatmapsCount} beatmaps");
+        progress?.Report($"Loaded {beatmapSetCount} beatmap sets ({totalBeatmapCount} beatmaps)");
     }
 }

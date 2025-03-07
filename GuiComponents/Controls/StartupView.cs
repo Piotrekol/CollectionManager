@@ -10,6 +10,7 @@ namespace GuiComponents.Controls
     {
         public event GuiHelpers.StartupCollectionEventArgs StartupCollectionOperation;
         public event GuiHelpers.StartupDatabaseEventArgs StartupDatabaseOperation;
+        public event EventHandler UpdateTextClicked;
 
         public string LoadDatabaseStatusText
         {
@@ -151,6 +152,8 @@ namespace GuiComponents.Controls
                 checkBox_DoNotShowOnStartup.Enabled = value;
             }
         }
+
+        public IInfoTextView InfoTextView => infoTextView1;
 
         public StartupView()
         {

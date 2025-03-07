@@ -39,8 +39,9 @@
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.button_LoadDatabaseSkip = new System.Windows.Forms.Button();
             this.groupBox_Step2 = new System.Windows.Forms.GroupBox();
-            this.label_OpenedCollection = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label_OpenedCollection = new System.Windows.Forms.Label();
+            this.infoTextView1 = new GuiComponents.Controls.InfoTextView();
             this.groupBox_Step1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.groupBox_Step2.SuspendLayout();
@@ -64,7 +65,7 @@
             this.checkBox_DoNotShowOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_DoNotShowOnStartup.AutoSize = true;
             this.checkBox_DoNotShowOnStartup.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.checkBox_DoNotShowOnStartup.Location = new System.Drawing.Point(4, 396);
+            this.checkBox_DoNotShowOnStartup.Location = new System.Drawing.Point(4, 385);
             this.checkBox_DoNotShowOnStartup.Name = "checkBox_DoNotShowOnStartup";
             this.checkBox_DoNotShowOnStartup.Size = new System.Drawing.Size(191, 19);
             this.checkBox_DoNotShowOnStartup.TabIndex = 5;
@@ -174,15 +175,6 @@
             this.groupBox_Step2.TabStop = false;
             this.groupBox_Step2.Text = "Starting point";
             // 
-            // label_OpenedCollection
-            // 
-            this.label_OpenedCollection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_OpenedCollection.Location = new System.Drawing.Point(3, 0);
-            this.label_OpenedCollection.Name = "label_OpenedCollection";
-            this.label_OpenedCollection.Size = new System.Drawing.Size(511, 34);
-            this.label_OpenedCollection.TabIndex = 7;
-            this.label_OpenedCollection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.label_OpenedCollection);
@@ -195,15 +187,34 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(519, 149);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
+            // label_OpenedCollection
+            // 
+            this.label_OpenedCollection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_OpenedCollection.Location = new System.Drawing.Point(3, 0);
+            this.label_OpenedCollection.Name = "label_OpenedCollection";
+            this.label_OpenedCollection.Size = new System.Drawing.Size(511, 34);
+            this.label_OpenedCollection.TabIndex = 7;
+            this.label_OpenedCollection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // infoTextView1
+            // 
+            this.infoTextView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.infoTextView1.CMStatusVisiable = false;
+            this.infoTextView1.Location = new System.Drawing.Point(4, 361);
+            this.infoTextView1.Name = "infoTextView1";
+            this.infoTextView1.Size = new System.Drawing.Size(525, 18);
+            this.infoTextView1.TabIndex = 10;
+            // 
             // StartupView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.infoTextView1);
             this.Controls.Add(this.groupBox_Step2);
             this.Controls.Add(this.groupBox_Step1);
             this.Controls.Add(this.label_title);
             this.Controls.Add(this.checkBox_DoNotShowOnStartup);
             this.Name = "StartupView";
-            this.Size = new System.Drawing.Size(535, 418);
+            this.Size = new System.Drawing.Size(535, 407);
             this.groupBox_Step1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.groupBox_Step2.ResumeLayout(false);
@@ -228,5 +239,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label_OpenedCollection;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private InfoTextView infoTextView1;
     }
 }
