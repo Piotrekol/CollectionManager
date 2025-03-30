@@ -16,5 +16,6 @@ namespace GuiComponents.Interfaces
         bool CollectionButtonsEnabled { get; set; }
         bool DatabaseButtonsEnabled { get; set; }
         bool LoadOsuCollectionButtonEnabled { get; set; }
-    }
+        bool LoadLazerDatabaseButtonEnabled { get; set; }
+	}
 }
