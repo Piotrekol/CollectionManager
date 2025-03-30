@@ -1,17 +1,16 @@
-﻿using System;
+﻿using App.Interfaces;
+using App.Misc;
 using CollectionManager.DataTypes;
+using CollectionManager.Extensions;
 using CollectionManager.Modules.CollectionsManager;
-using App.Interfaces;
+using CollectionManagerApp.Properties;
+using Common;
 using GuiComponents.Interfaces;
+using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Windows.Forms;
-using System.Collections.Specialized;
-using App.Misc;
-using Common;
-using App.Properties;
-using CollectionManager.Enums;
 using SortOrder = CollectionManager.Enums.SortOrder;
-using CollectionManagerApp.Properties;
 
 namespace App.Presenters.Controls
 {
@@ -139,8 +138,8 @@ namespace App.Presenters.Controls
                     if (Directory.Exists(tempFolder))
                         Directory.Delete(tempFolder, true);
 
-                    Directory.CreateDirectory(tempFolder);
-                    var fileName = Helpers.StripInvalidFileNameCharacters(selectedCollections[0].Name, "_");
+                    _ = Directory.CreateDirectory(tempFolder);
+                    var fileName = selectedCollections[0].Name.StripInvalidFileNameCharacters("_");
                     var tempLocation = Path.Combine(tempFolder, $"{fileName}.osdb");
                     Initalizer.OsuFileIo.CollectionLoader.SaveOsdbCollection(selectedCollections, tempLocation);
                     Clipboard.SetFileDropList(new StringCollection { tempLocation });

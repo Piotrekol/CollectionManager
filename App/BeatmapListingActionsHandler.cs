@@ -3,22 +3,20 @@ using App.Misc;
 using CollectionManager.DataTypes;
 using CollectionManager.Modules.CollectionsManager;
 using CollectionManager.Modules.FileIO;
+using CollectionManagerApp.Presenters.Forms;
 using CollectionManagerExtensionsDll.Enums;
+using CollectionManagerExtensionsDll.Modules.BeatmapExporter;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
 using GuiComponents.Interfaces;
-using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace App
 {
@@ -75,7 +73,7 @@ namespace App
             if (e.Action != CollectionManager.Enums.CollectionEdit.ExportBeatmaps)
                 return;
 
-            ExportBeatmapSets(e.Collections.AllBeatmaps().Cast<Beatmap>().ToList());
+            _ = ExportBeatmapSetsAsync(e.Collections.AllBeatmaps().Cast<Beatmap>().ToList());
         }
 
         private void ExportBeatmapSets(object sender)
@@ -83,88 +81,37 @@ namespace App
             if (sender is not IBeatmapListingModel beatmapListingModel)
                 return;
 
-            ExportBeatmapSets(beatmapListingModel.SelectedBeatmaps?.ToList());
+            _ = ExportBeatmapSetsAsync(beatmapListingModel.SelectedBeatmaps?.ToList());
         }
 
-        private void ExportBeatmapSets(List<Beatmap> beatmaps)
+        private async Task ExportBeatmapSetsAsync(List<Beatmap> beatmaps)
         {
             if (beatmaps?.Count == 0)
             {
-                _userDialogs.OkMessageBox("No beatmaps selected", "Info");
+                _userDialogs.OkMessageBox("No beatmaps selected.", "Info");
+
                 return;
             }
 
             var saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
-            var beatmapSets = beatmaps.Where(b => !string.IsNullOrWhiteSpace(b.Dir)).Select(b => (Beatmap: b, FileName: OsuDownloadManager.CreateOszFileName(b)))
-                                .GroupBy(e => e.FileName).Select(e => e.First()).ToList();
+
             if (!Directory.Exists(saveDirectory))
-                return;
-
-            var backgroundWorker = new BackgroundWorker();
-            var stringProgress = new Progress<string>();
-            var percentageProgress = new Progress<int>();
-            using var cancelationTokenSource = new CancellationTokenSource();
-            var progressForm = _userDialogs.ProgressForm(stringProgress, percentageProgress);
-            progressForm.AbortClicked += (_, __) => cancelationTokenSource.Cancel();
-            backgroundWorker.DoWork += (_, eventArgs) =>
             {
-                var cancellationToken = cancelationTokenSource.Token;
-                var totalCount = beatmapSets.Count();
-                var stringProgressReporter = (IProgress<string>)stringProgress;
-                var percentageProgressReporter = (IProgress<int>)percentageProgress;
-                var failedMapSets = new StringBuilder();
-                var failedMapSetsCount = 0;
-                for (int i = 0; i < totalCount; i++)
-                {
-                    var beatmapset = beatmapSets[i];
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        progressForm.Close();
-                        return;
-                    }
+                return;
+            }
 
-                    stringProgressReporter.Report($"Processing map set {i + 1} of {totalCount}.{Environment.NewLine}\"{beatmapset.FileName}\"");
-                    var fileSaveLocation = Path.Combine(saveDirectory, beatmapset.FileName);
-                    if (File.Exists(fileSaveLocation))
-                    {
-                        percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
-                        continue;
-                    }
-
-                    var beatmapDirectory = beatmapset.Beatmap.BeatmapDirectory();
-                    if (!Directory.Exists(beatmapDirectory))
-                    {
-                        failedMapSets.AppendFormat("map set directory \"{0}\" doesn't exist - set skipped(mapId:{1} setId:{2} hash:{3}) {4}{4}", beatmapDirectory, beatmapset.Beatmap.MapId.ToString(), beatmapset.Beatmap.MapSetId.ToString(), beatmapset.Beatmap.Md5, Environment.NewLine);
-                        failedMapSetsCount++;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            ZipFile.CreateFromDirectory(beatmapDirectory, fileSaveLocation);
-                        }
-                        catch (Exception e)
-                        {
-                            failedMapSets.AppendFormat("failed processing map set located at \"{0}\" with exception:{2}{1}{2}{2}", beatmapDirectory, e, Environment.NewLine);
-                            failedMapSetsCount++;
-                        }
-
-                        percentageProgressReporter.Report(Convert.ToInt32((double)(i + 1) / totalCount * 100));
-                    }
-                }
-
-                if (failedMapSetsCount > 0)
-                {
-                    File.WriteAllText(Path.Combine(saveDirectory, "log.txt"), failedMapSets.ToString());
-                    stringProgressReporter.Report($"Processed {totalCount - failedMapSetsCount} of {totalCount} map sets.{Environment.NewLine}{failedMapSetsCount} map sets failed to save, see full log in log.txt file in export directory");
-                }
-                else
-                    stringProgressReporter.Report($"Processed {totalCount} map sets without issues.");
-            };
-
-            backgroundWorker.RunWorkerAsync();
-            progressForm.ShowAndBlock();
+            BeatmapExporter beatmapExporter = new(BeatmapUtils.OsuSongsDirectory, saveDirectory);
+            BeatmapExportFormPresenter exportPresenter = new(_userDialogs, beatmapExporter);
+            try
+            {
+                await exportPresenter.ExportAsync(beatmaps, saveDirectory);
+            }
+            catch (Exception ex)
+            {
+                _userDialogs.OkMessageBox($"Error occurred during beatmap export: {ex}", "Error", MessageBoxType.Error);
+            }
         }
+
 
         private void PullWholeMapsets(object sender)
         {

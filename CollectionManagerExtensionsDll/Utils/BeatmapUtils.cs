@@ -1,8 +1,10 @@
-using System.Collections.Generic;
-using System.IO;
 using CollectionManager.DataTypes;
+using CollectionManager.Extensions;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
 using CollectionManagerExtensionsDll.Modules.CollectionListGenerator.ListTypes;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace CollectionManagerExtensionsDll.Utils
 {
@@ -10,7 +12,7 @@ namespace CollectionManagerExtensionsDll.Utils
     {
         public static string OsuSongsDirectory = "";
 
-        internal static Dictionary<int, Beatmaps> GetMapSets(this ICollection collection, BeatmapListType beatmapListType)
+        public static Dictionary<int, Beatmaps> GetMapSets(this ICollection collection, BeatmapListType beatmapListType)
         {
             var mapSets = new Dictionary<int, Beatmaps>();
             switch (beatmapListType)
@@ -19,17 +21,25 @@ namespace CollectionManagerExtensionsDll.Utils
                     mapSets = collection.GetBeatmapSets();
                     break;
                 case BeatmapListType.NotKnown:
-                    mapSets = CollectionUtils.GetBeatmapSets(collection.NotKnownBeatmaps());
+                    mapSets = GetBeatmapSets(collection.NotKnownBeatmaps());
                     break;
                 case BeatmapListType.Known:
-                    mapSets = CollectionUtils.GetBeatmapSets(collection.KnownBeatmaps);
+                    mapSets = GetBeatmapSets(collection.KnownBeatmaps);
                     break;
                 case BeatmapListType.Downloadable:
-                    mapSets = CollectionUtils.GetBeatmapSets(collection.DownloadableBeatmaps);
+                    mapSets = GetBeatmapSets(collection.DownloadableBeatmaps);
                     break;
             }
             return mapSets;
         }
+
+        public static Dictionary<int, Beatmaps> GetBeatmapSets(this IEnumerable<Beatmap> beatmaps)
+            => beatmaps
+                .GroupBy(map => map.MapSetId < 1 ? -1 : map.MapSetId)
+                .ToDictionary(
+                    group => group.Key,
+                    group => new Beatmaps(group)
+                );
 
         public static HashSet<int> GetUniqueMapSetIds(this Beatmaps beatmaps, bool filterInvalidIds = true)
         {
@@ -89,9 +99,9 @@ namespace CollectionManagerExtensionsDll.Utils
             }
             return imageLocation;
         }
-        public static string BeatmapDirectory(this Beatmap beatmap)
+        public static string BeatmapDirectory(this Beatmap beatmap, string osuSongsDirectory = null)
         {
-            return Path.Combine(OsuSongsDirectory, beatmap.Dir);
+            return Path.Combine(osuSongsDirectory ?? OsuSongsDirectory, beatmap.Dir);
         }
         public static string FullOsuFileLocation(this Beatmap beatmap)
         {
@@ -113,6 +123,12 @@ namespace CollectionManagerExtensionsDll.Utils
 
             return Path.Combine(beatmap.BeatmapDirectory(), beatmap.Mp3Name);
 
+        }
+
+        public static string OszFileName(this Beatmap beatmap)
+        {
+            var filename = beatmap.MapSetId + " " + beatmap.ArtistRoman + " - " + beatmap.TitleRoman;
+            return filename.StripInvalidFileNameCharacters("_") + ".osz";
         }
     }
 }
