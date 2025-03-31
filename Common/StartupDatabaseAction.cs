@@ -4,6 +4,7 @@
     {
         None,
         Unload,
-        LoadFromDifferentLocation
-    }
+        LoadFromDifferentLocation,
+        LoadLazer,
+	}
 }

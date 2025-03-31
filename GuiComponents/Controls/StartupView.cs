@@ -19,10 +19,7 @@ namespace GuiComponents.Controls
             {
                 if (label_LoadDatabaseStatus.InvokeRequired)
                 {
-                    label_LoadDatabaseStatus.Invoke((MethodInvoker)(() =>
-                    {
-                        label_LoadDatabaseStatus.Text = value;
-                    }));
+                    _ = label_LoadDatabaseStatus.Invoke(() => label_LoadDatabaseStatus.Text = value);
                     return;
                 }
 
@@ -37,10 +34,7 @@ namespace GuiComponents.Controls
             {
                 if (checkBox_DoNotShowOnStartup.InvokeRequired)
                 {
-                    checkBox_DoNotShowOnStartup.Invoke((MethodInvoker)(() =>
-                    {
-                        checkBox_DoNotShowOnStartup.Checked = value;
-                    }));
+                    _ = checkBox_DoNotShowOnStartup.Invoke(() => checkBox_DoNotShowOnStartup.Checked = value);
                     return;
                 }
 
@@ -55,10 +49,7 @@ namespace GuiComponents.Controls
             {
                 if (button_LoadOsuCollection.InvokeRequired)
                 {
-                    button_LoadOsuCollection.Invoke((MethodInvoker)(() =>
-                    {
-                        button_LoadOsuCollection.Enabled = value;
-                    }));
+                    _ = button_LoadOsuCollection.Invoke(() => button_LoadOsuCollection.Enabled = value);
                     return;
                 }
 
@@ -74,11 +65,11 @@ namespace GuiComponents.Controls
             {
                 if (label_OpenedCollection.InvokeRequired)
                 {
-                    label_OpenedCollection.Invoke((MethodInvoker)(() =>
+                    _ = label_OpenedCollection.Invoke(() =>
                     {
                         label_OpenedCollection.Visible = !string.IsNullOrEmpty(value);
                         label_OpenedCollection.Text = value;
-                    }));
+                    });
                     return;
                 }
 
@@ -94,14 +85,14 @@ namespace GuiComponents.Controls
             {
                 if (button_LoadCollectionFromFile.InvokeRequired)
                 {
-                    button_LoadCollectionFromFile.Invoke((MethodInvoker)(() =>
+                    _ = button_LoadCollectionFromFile.Invoke(() =>
                     {
                         button_DoNothing.Enabled
                             = button_LoadCollectionFromFile.Enabled
                             = value;
 
                         button_LoadOsuCollection.Enabled = LoadOsuCollectionButtonEnabled && value;
-                    }));
+                    });
                     return;
                 }
 
@@ -120,12 +111,7 @@ namespace GuiComponents.Controls
             {
                 if (button_LoadDatabase.InvokeRequired)
                 {
-                    button_LoadDatabase.Invoke((MethodInvoker)(() =>
-                    {
-                        button_LoadDatabase.Enabled
-                            = button_LoadDatabaseSkip.Enabled
-                            = value;
-                    }));
+                    _ = button_LoadDatabase.Invoke(() => button_LoadDatabase.Enabled = button_LoadDatabaseSkip.Enabled = value);
                     return;
                 }
 
@@ -142,10 +128,7 @@ namespace GuiComponents.Controls
             {
                 if (checkBox_DoNotShowOnStartup.InvokeRequired)
                 {
-                    checkBox_DoNotShowOnStartup.Invoke((MethodInvoker)(() =>
-                    {
-                        checkBox_DoNotShowOnStartup.Enabled = value;
-                    }));
+                    _ = checkBox_DoNotShowOnStartup.Invoke(() => checkBox_DoNotShowOnStartup.Enabled = value);
                     return;
                 }
 
@@ -154,6 +137,21 @@ namespace GuiComponents.Controls
         }
 
         public IInfoTextView InfoTextView => infoTextView1;
+
+        public bool LoadLazerDatabaseButtonEnabled
+        {
+            get => button_LoadLazer.Enabled;
+            set
+            {
+                if (button_LoadLazer.InvokeRequired)
+                {
+                    _ = button_LoadLazer.Invoke(() => button_LoadLazer.Enabled = value);
+                    return;
+                }
+
+                button_LoadLazer.Enabled = value;
+            }
+        }
 
         public StartupView()
         {
@@ -165,6 +163,7 @@ namespace GuiComponents.Controls
 
             button_LoadDatabase.Tag = StartupDatabaseAction.LoadFromDifferentLocation;
             button_LoadDatabaseSkip.Tag = StartupDatabaseAction.Unload;
+            button_LoadLazer.Tag = StartupDatabaseAction.LoadLazer;
         }
 
         private void button_StartupAction_Click(object sender, EventArgs e)

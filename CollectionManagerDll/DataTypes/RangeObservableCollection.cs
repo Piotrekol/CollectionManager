@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace CollectionManager.DataTypes
 {
     public class RangeObservableCollection<T> : ObservableCollection<T>
     {
         private bool _suppressNotification = false;
+
+        public RangeObservableCollection()
+        {
+        }
+
+        public RangeObservableCollection(IEnumerable<T> collection)
+            : base(collection)
+        {
+        }
+
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (!_suppressNotification)

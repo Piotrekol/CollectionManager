@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using App.Interfaces;
 using App.Misc;
 using App.Models;
 using App.Presenters.Controls;
 using App.Presenters.Forms;
-using App.Properties;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManager.Exceptions;
@@ -27,9 +24,8 @@ using Common;
 using GuiComponents.Interfaces;
 using System.ComponentModel;
 using System.Security.Cryptography;
-using GuiComponents;
-using System.Windows.Markup;
 using CollectionManagerApp.Properties;
+using CollectionManager.Extensions;
 
 namespace App
 {
@@ -688,7 +684,7 @@ namespace App
             await BeforeCollectionSave(Initalizer.LoadedCollections);
             foreach (var collection in Initalizer.LoadedCollections)
             {
-                var filename = $"{Helpers.StripInvalidFileNameCharacters(collection.Name, "_")}.{fileFormat}";
+                var filename = $"{collection.Name.StripInvalidFileNameCharacters("_")}.{fileFormat}";
                 _osuFileIo.CollectionLoader.SaveCollection(new Collections() { collection }, Path.Combine(saveDirectory, filename));
             }
         }

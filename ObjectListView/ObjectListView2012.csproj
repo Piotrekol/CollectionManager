@@ -41,12 +41,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="DataTreeListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Implementation\Enums.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="DataTreeListView.cs" />
+    <Compile Update="Implementation\Enums.cs" />
     <Compile Update="OLVColumn.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -55,19 +51,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="DataListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="DataListView.cs" />
     <Compile Update="Implementation\Events.cs" />
-    <Compile Update="FastDataListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="FastObjectListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Rendering\TreeRenderer.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="FastDataListView.cs" />
+    <Compile Update="FastObjectListView.cs" />
+    <Compile Update="Rendering\TreeRenderer.cs" />
     <Compile Update="SubControls\ToolStripCheckedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -89,12 +77,8 @@
     <Compile Update="Rendering\Styles.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="TreeListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="VirtualObjectListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="TreeListView.cs" />
+    <Compile Update="VirtualObjectListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomDictionary.xml" />

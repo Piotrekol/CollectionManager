@@ -37,6 +37,7 @@
             this.button_LoadDatabase = new System.Windows.Forms.Button();
             this.groupBox_Step1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button_LoadLazer = new System.Windows.Forms.Button();
             this.button_LoadDatabaseSkip = new System.Windows.Forms.Button();
             this.groupBox_Step2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -65,7 +66,7 @@
             this.checkBox_DoNotShowOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_DoNotShowOnStartup.AutoSize = true;
             this.checkBox_DoNotShowOnStartup.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.checkBox_DoNotShowOnStartup.Location = new System.Drawing.Point(4, 385);
+            this.checkBox_DoNotShowOnStartup.Location = new System.Drawing.Point(4, 390);
             this.checkBox_DoNotShowOnStartup.Name = "checkBox_DoNotShowOnStartup";
             this.checkBox_DoNotShowOnStartup.Size = new System.Drawing.Size(191, 19);
             this.checkBox_DoNotShowOnStartup.TabIndex = 5;
@@ -120,11 +121,11 @@
             // 
             this.button_LoadDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button_LoadDatabase.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.button_LoadDatabase.Location = new System.Drawing.Point(3, 52);
+            this.button_LoadDatabase.Location = new System.Drawing.Point(3, 81);
             this.button_LoadDatabase.Name = "button_LoadDatabase";
             this.button_LoadDatabase.Size = new System.Drawing.Size(495, 23);
             this.button_LoadDatabase.TabIndex = 0;
-            this.button_LoadDatabase.Text = "Load beatmaps from different location";
+            this.button_LoadDatabase.Text = "Load beatmaps from custom location";
             this.button_LoadDatabase.UseVisualStyleBackColor = true;
             this.button_LoadDatabase.Click += new System.EventHandler(this.button_DatabaseAction_Click);
             // 
@@ -135,7 +136,7 @@
             this.groupBox_Step1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox_Step1.Location = new System.Drawing.Point(7, 36);
             this.groupBox_Step1.Name = "groupBox_Step1";
-            this.groupBox_Step1.Size = new System.Drawing.Size(525, 135);
+            this.groupBox_Step1.Size = new System.Drawing.Size(525, 162);
             this.groupBox_Step1.TabIndex = 8;
             this.groupBox_Step1.TabStop = false;
             this.groupBox_Step1.Text = "Load osu! database";
@@ -143,19 +144,32 @@
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.label_LoadDatabaseStatus);
+            this.flowLayoutPanel2.Controls.Add(this.button_LoadLazer);
             this.flowLayoutPanel2.Controls.Add(this.button_LoadDatabase);
             this.flowLayoutPanel2.Controls.Add(this.button_LoadDatabaseSkip);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(519, 116);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(519, 143);
             this.flowLayoutPanel2.TabIndex = 10;
+            // 
+            // button_LoadLazer
+            // 
+            this.button_LoadLazer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_LoadLazer.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.button_LoadLazer.Location = new System.Drawing.Point(3, 52);
+            this.button_LoadLazer.Name = "button_LoadLazer";
+            this.button_LoadLazer.Size = new System.Drawing.Size(495, 23);
+            this.button_LoadLazer.TabIndex = 7;
+            this.button_LoadLazer.Text = "Load osu!Lazer beatmaps";
+            this.button_LoadLazer.UseVisualStyleBackColor = true;
+            this.button_LoadLazer.Click += new System.EventHandler(this.button_DatabaseAction_Click);
             // 
             // button_LoadDatabaseSkip
             // 
             this.button_LoadDatabaseSkip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button_LoadDatabaseSkip.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.button_LoadDatabaseSkip.Location = new System.Drawing.Point(3, 81);
+            this.button_LoadDatabaseSkip.Location = new System.Drawing.Point(3, 110);
             this.button_LoadDatabaseSkip.Name = "button_LoadDatabaseSkip";
             this.button_LoadDatabaseSkip.Size = new System.Drawing.Size(495, 23);
             this.button_LoadDatabaseSkip.TabIndex = 1;
@@ -168,9 +182,9 @@
             this.groupBox_Step2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox_Step2.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox_Step2.Location = new System.Drawing.Point(7, 177);
+            this.groupBox_Step2.Location = new System.Drawing.Point(7, 200);
             this.groupBox_Step2.Name = "groupBox_Step2";
-            this.groupBox_Step2.Size = new System.Drawing.Size(525, 168);
+            this.groupBox_Step2.Size = new System.Drawing.Size(525, 143);
             this.groupBox_Step2.TabIndex = 9;
             this.groupBox_Step2.TabStop = false;
             this.groupBox_Step2.Text = "Starting point";
@@ -184,7 +198,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(519, 149);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(519, 124);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
             // label_OpenedCollection
@@ -200,7 +214,7 @@
             // 
             this.infoTextView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.infoTextView1.CMStatusVisiable = false;
-            this.infoTextView1.Location = new System.Drawing.Point(4, 361);
+            this.infoTextView1.Location = new System.Drawing.Point(4, 366);
             this.infoTextView1.Name = "infoTextView1";
             this.infoTextView1.Size = new System.Drawing.Size(525, 18);
             this.infoTextView1.TabIndex = 10;
@@ -214,7 +228,7 @@
             this.Controls.Add(this.label_title);
             this.Controls.Add(this.checkBox_DoNotShowOnStartup);
             this.Name = "StartupView";
-            this.Size = new System.Drawing.Size(535, 407);
+            this.Size = new System.Drawing.Size(535, 412);
             this.groupBox_Step1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.groupBox_Step2.ResumeLayout(false);
@@ -240,5 +254,6 @@
         private System.Windows.Forms.Label label_OpenedCollection;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private InfoTextView infoTextView1;
-    }
+		private System.Windows.Forms.Button button_LoadLazer;
+	}
 }

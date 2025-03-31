@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using App.Interfaces;
 using App.Models;
-using App.Properties;
 using CollectionManager.Modules.CollectionsManager;
+using CollectionManager.Modules.FileIO;
 using CollectionManagerApp.Properties;
 using CollectionManagerExtensionsDll.Utils;
 using Common;
@@ -71,6 +71,8 @@ namespace App.Presenters.Controls
             _view.UseSelectedOptionsOnStartupEnabled = !loadedCollectionFromFile;
             _view.CollectionButtonsEnabled = !(loadedCollectionFromFile || _startupSettings.AutoLoadMode);
             _view.DatabaseButtonsEnabled = true;
+            _view.LoadLazerDatabaseButtonEnabled = OsuPathResolver.TryGetLazerDataPath(out _);
+
             _view.CollectionStatusText = loadedCollectionFromFile
                 ? $"Going to load {_collectionsManager.CollectionsCount} collections with {_collectionsManager.BeatmapsInCollectionsCount} beatmaps"
                 : string.Empty;
@@ -130,6 +132,7 @@ namespace App.Presenters.Controls
                     break;
                 case StartupDatabaseAction.LoadFromDifferentLocation:
                     var osuDirectory = Initalizer.OsuFileIo.OsuPathResolver.GetManualOsuDir(_userDialogs.SelectDirectory);
+
                     if (!string.IsNullOrEmpty(osuDirectory))
                     {
                         _view.LoadOsuCollectionButtonEnabled = true;
@@ -137,6 +140,14 @@ namespace App.Presenters.Controls
                         _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
                     }
 
+                    break;
+                case StartupDatabaseAction.LoadLazer:
+                    if (OsuPathResolver.TryGetLazerDataPath(out var lazerLocation))
+                    {
+                        _view.LoadOsuCollectionButtonEnabled = true;
+                        _startupSettings.OsuLocation = lazerLocation;
+                        _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
+                    }
                     break;
                 case StartupDatabaseAction.None:
                     break;
@@ -191,15 +202,15 @@ namespace App.Presenters.Controls
             osuFileIo.OsuDatabase.LoadedMaps.UnloadBeatmaps();
             osuFileIo.ScoresDatabase.Clear();
 
-        try
-        {
-            _ = osuFileIo.OsuDatabase.Load(osuDbOrRealmPath, _databaseLoadProgressReporter, cancellationToken);
-        }
-        catch (Exception exception)
-        {
-            _view.LoadDatabaseStatusText = $"Error: {exception.Message}";
-            return;
-        }
+            try
+            {
+                _ = osuFileIo.OsuDatabase.Load(osuDbOrRealmPath, _databaseLoadProgressReporter, cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                _view.LoadDatabaseStatusText = $"Error: {exception.Message}";
+                return;
+            }
 
             osuFileIo.OsuSettings.Load(osuDirectory);
 

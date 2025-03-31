@@ -137,7 +137,7 @@ public sealed class OsuPathResolver
         => File.Exists(Path.Combine(directory, "osu!.db"))
             || File.Exists(Path.Combine(directory, "client.realm"));
 
-    private static bool TryGetLazerDataPath(out string path)
+    public static bool TryGetLazerDataPath(out string path)
     {
         path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "osu");
 

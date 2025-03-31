@@ -8,13 +8,13 @@ using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
 using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
-using App.Properties;
 using System.IO;
 using App.Models;
 using Common.Interfaces;
 using Newtonsoft.Json;
 using System.Reflection;
 using CollectionManagerApp.Properties;
+using CollectionManagerExtensionsDll.Utils;
 
 namespace App
 {
@@ -157,18 +157,12 @@ namespace App
             if (beatmap.MapSetId < 1 || ListedMapSetIds.Contains(beatmap.MapSetId))
                 return null;
             long currentId = ++_downloadId;
-            var oszFileName = CreateOszFileName(beatmap);
+            var oszFileName = beatmap.OszFileName();
             var downloadUrl = string.Format(SelectedDownloadSource.BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
             var downloadItem = _mapDownloader.DownloadFileAsync(downloadUrl, oszFileName, string.Format(SelectedDownloadSource.Referer, beatmap.MapSetId), currentId,SelectedDownloadSource.RequestTimeout);
             downloadItem.Id = currentId;
             return downloadItem;
-        }
-
-        public static string CreateOszFileName(Beatmap map)
-        {
-            var filename = map.MapSetId + " " + map.ArtistRoman + " - " + map.TitleRoman;
-            return Helpers.StripInvalidFileNameCharacters(filename, "_") + ".osz";
         }
     }
 }
