@@ -1,71 +1,66 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using App.Interfaces;
-using CollectionManagerExtensionsDll.Utils;
+﻿namespace CollectionManagerApp;
+
+using CollectionManager.Extensions.Utils;
+using CollectionManagerApp.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
-namespace App
+public class UpdateChecker : IUpdateModel
 {
-    public class UpdateChecker : IUpdateModel
+    private const string baseGithubUrl = "https://api.github.com/repos/Piotrekol/CollectionManager";
+    private const string githubUpdateUrl = baseGithubUrl + "/releases/latest";
+
+    public UpdateChecker()
     {
-        private const string baseGithubUrl = "https://api.github.com/repos/Piotrekol/CollectionManager";
-        private const string githubUpdateUrl = baseGithubUrl + "/releases/latest";
+        FileVersionInfo version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+        CurrentVersion = new Version(version.FileVersion);
+    }
 
-        public UpdateChecker()
+    public bool Error { get; private set; }
+    public Version OnlineVersion { get; private set; }
+    public string NewVersionLink { get; private set; }
+    public Version CurrentVersion { get; }
+
+    public bool UpdateIsAvailable => OnlineVersion != null && OnlineVersion > CurrentVersion;
+
+    public bool CheckForUpdates()
+    {
+        string data = GetStringData(githubUpdateUrl);
+        if (string.IsNullOrEmpty(data))
         {
-            var version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-            CurrentVersion = new Version(version.FileVersion);
+            Error = true;
+            return false;
         }
 
-        public bool Error { get; private set; }
-        public Version OnlineVersion { get; private set; }
-        public string NewVersionLink { get; private set; }
-        public Version CurrentVersion { get; }
-
-        public bool UpdateIsAvailable => OnlineVersion != null && OnlineVersion > CurrentVersion;
-
-        public bool CheckForUpdates()
+        JObject json;
+        try
         {
-            var data = GetStringData(githubUpdateUrl);
-            if (string.IsNullOrEmpty(data))
-            {
-                Error = true;
-                return false;
-            }
-
-            JObject json;
-            try
-            {
-                json = JObject.Parse(data);
-            }
-            catch (JsonReaderException)
-            {
-                return false;
-            }
-
-            var newestReleaseVersion = json["tag_name"].ToString();
-            OnlineVersion = new Version(newestReleaseVersion);
-            NewVersionLink = json["html_url"].ToString();
-
-            return UpdateIsAvailable;
+            json = JObject.Parse(data);
+        }
+        catch (JsonReaderException)
+        {
+            return false;
         }
 
-        private string GetStringData(string url)
+        string newestReleaseVersion = json["tag_name"].ToString();
+        OnlineVersion = new Version(newestReleaseVersion);
+        NewVersionLink = json["html_url"].ToString();
+
+        return UpdateIsAvailable;
+    }
+
+    private string GetStringData(string url)
+    {
+        try
         {
-            try
-            {
-                using (var wc = new ImpatientWebClient())
-                {
-                    wc.Headers.Add("user-agent", $"CollectionManager_Updater_{CurrentVersion}");
-                    return wc.DownloadString(url);
-                }
-            }
-            catch
-            {
-                return string.Empty;
-            }
+            using ImpatientWebClient wc = new();
+            wc.Headers.Add("user-agent", $"CollectionManager_Updater_{CurrentVersion}");
+            return wc.DownloadString(url);
+        }
+        catch
+        {
+            return string.Empty;
         }
     }
 }

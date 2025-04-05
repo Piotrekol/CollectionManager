@@ -1,45 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace CollectionManagerApp.Misc;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
-namespace App.Misc
+public sealed class GuiComponentsProvider
 {
-    public sealed class GuiComponentsProvider
+    public static GuiComponentsProvider Instance = new();
+
+    private GuiComponentsProvider()
     {
-        public static GuiComponentsProvider Instance = new GuiComponentsProvider();
+        LoadGuiDll();
+    }
+    private string GuiDllLocation { get; set; }
+    private Assembly GuiDllAssembly { get; set; }
+    private void LoadGuiDll()
+    {
+        GuiDllLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CollectionManager.WinForms.dll");
+        GuiDllAssembly = Assembly.LoadFile(GuiDllLocation);
+    }
 
-        private GuiComponentsProvider()
+    private static IEnumerable<Type> GetTypesWithInterface<T>(Assembly asm)
+    {
+        Type it = typeof(T);
+        return asm.GetLoadableTypes().Where(it.IsAssignableFrom).ToList();
+    }
+
+    public T GetClassImplementing<T>() => GetClassImplementing<T>(GuiDllAssembly);
+
+    private static T GetClassImplementing<T>(Assembly asm)
+    {
+        foreach (Type tt in GetTypesWithInterface<T>(asm))
         {
-            LoadGuiDll();
-        }
-        private string GuiDllLocation { get; set; }
-        private Assembly GuiDllAssembly { get; set; }
-        private void LoadGuiDll()
-        {
-            GuiDllLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GuiComponents.dll");
-            GuiDllAssembly = Assembly.LoadFile(GuiDllLocation);
+            return (T)Activator.CreateInstance(tt);
         }
 
-        private IEnumerable<Type> GetTypesWithInterface<T>(Assembly asm)
-        {
-            var it = typeof(T);
-            return asm.GetLoadableTypes().Where(it.IsAssignableFrom).ToList();
-        }
-
-        public T GetClassImplementing<T>()
-        {
-            return GetClassImplementing<T>(GuiDllAssembly);
-        }
-
-        private T GetClassImplementing<T>(Assembly asm)
-        {
-            foreach (var tt in GetTypesWithInterface<T>(asm))
-            {
-                return (T)Activator.CreateInstance(tt);
-            }
-            return default(T);
-        }
+        return default;
     }
 }

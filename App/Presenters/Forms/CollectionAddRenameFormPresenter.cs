@@ -1,23 +1,19 @@
-﻿using System;
-using App.Interfaces;
-using App.Interfaces.Forms;
-using App.Models;
-using App.Presenters.Controls;
-using GuiComponents.Interfaces;
+﻿namespace CollectionManagerApp.Presenters.Forms;
 
-namespace App.Presenters.Forms
+using CollectionManager.Common.Interfaces.Forms;
+using CollectionManagerApp.Interfaces.Controls;
+using CollectionManagerApp.Presenters.Controls;
+
+public class CollectionAddRenameFormPresenter
 {
-    public class CollectionAddRenameFormPresenter
-    {
-        private readonly ICollectionAddRenameForm _form;
-        private readonly ICollectionAddRenameModel _model;
+    private readonly ICollectionAddRenameForm _form;
+    private readonly ICollectionAddRenameModel _model;
 
-        public CollectionAddRenameFormPresenter(ICollectionAddRenameForm form, ICollectionAddRenameModel model)
-        {
-            _form = form;
-            _model = model;
-            
-            new CollectionAddRenamePresenter(form.CollectionRenameView, model);
-        }
+    public CollectionAddRenameFormPresenter(ICollectionAddRenameForm form, ICollectionAddRenameModel model)
+    {
+        _form = form;
+        _model = model;
+
+        _ = new CollectionAddRenamePresenter(form.CollectionRenameView, model);
     }
 }

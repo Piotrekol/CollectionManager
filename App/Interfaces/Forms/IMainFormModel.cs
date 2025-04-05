@@ -1,11 +1,10 @@
-﻿using CollectionManager.Interfaces;
-using GuiComponents.Interfaces;
+﻿namespace CollectionManagerApp.Interfaces.Forms;
 
-namespace App.Interfaces.Forms
+using CollectionManager.Common.Interfaces;
+using CollectionManager.Core.Interfaces;
+
+public interface IMainFormModel
 {
-    public interface IMainFormModel
-    {
-        ICollectionEditor GetCollectionEditor();
-        IUserDialogs GetUserDialogs();
-    }
+    ICollectionEditor GetCollectionEditor();
+    IUserDialogs GetUserDialogs();
 }

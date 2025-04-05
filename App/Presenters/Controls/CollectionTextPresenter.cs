@@ -1,36 +1,30 @@
-﻿using System;
-using CollectionManagerExtensionsDll.Enums;
-using CollectionManagerExtensionsDll.Modules.CollectionListGenerator;
-using App.Interfaces;
-using GuiComponents.Interfaces;
+﻿namespace CollectionManagerApp.Presenters.Controls;
 
-namespace App.Presenters.Controls
+using CollectionManager.Common.Interfaces.Controls;
+using CollectionManager.Extensions.Enums;
+using CollectionManager.Extensions.Modules.CollectionListGenerator;
+using CollectionManagerApp.Interfaces.Controls;
+
+public class CollectionTextPresenter
 {
-    public class CollectionTextPresenter
+    private readonly ICollectionTextView _view;
+    private readonly ICollectionTextModel _model;
+    private readonly ListGenerator _listGenerator = new();
+    public CollectionTextPresenter(ICollectionTextView view, ICollectionTextModel model)
     {
-        private ICollectionTextView _view;
-        private readonly ICollectionTextModel _model;
-        private ListGenerator _listGenerator = new ListGenerator();
-        public CollectionTextPresenter(ICollectionTextView view, ICollectionTextModel model)
-        {
-            _view = view;
-            _view.SetListTypes(Enum.GetValues(typeof(CollectionListSaveType)));
-            _view.SaveTypeChanged += _view_SaveTypeChanged;
+        _view = view;
+        _view.SetListTypes(Enum.GetValues<CollectionListSaveType>());
+        _view.SaveTypeChanged += _view_SaveTypeChanged;
 
-            _model = model;
-            _model.CollectionChanged += ModelOnCollectionChanged;
-        }
+        _model = model;
+        _model.CollectionChanged += ModelOnCollectionChanged;
+    }
 
-        private void _view_SaveTypeChanged(object sender, EventArgs e)
-        {
-            ModelOnCollectionChanged(this, null);
-        }
+    private void _view_SaveTypeChanged(object sender, EventArgs e) => ModelOnCollectionChanged(this, null);
 
-        private void ModelOnCollectionChanged(object sender, EventArgs eventArgs)
-        {
-            CollectionListSaveType type;
-            Enum.TryParse(_view.SelectedSaveType, out type);
-            _view.GeneratedText = _listGenerator.GetAllMapsList(_model.Collections, type);
-        }
+    private void ModelOnCollectionChanged(object sender, EventArgs eventArgs)
+    {
+        _ = Enum.TryParse(_view.SelectedSaveType, out CollectionListSaveType type);
+        _view.GeneratedText = _listGenerator.GetAllMapsList(_model.Collections, type);
     }
 }

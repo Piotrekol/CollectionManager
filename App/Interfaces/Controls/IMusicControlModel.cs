@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Interfaces
+public interface IMusicControlModel : IGenericMapSetterModel, IFormEvents
 {
-    public interface IMusicControlModel : IGenericMapSetterModel, IFormEvents
-    {
-        event EventHandler NextMapRequest;
-        void EmitNextMapRequest();
-    }
+    event EventHandler NextMapRequest;
+    void EmitNextMapRequest();
 }

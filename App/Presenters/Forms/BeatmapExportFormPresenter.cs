@@ -1,16 +1,13 @@
-﻿using CollectionManager.DataTypes;
-using GuiComponents.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿namespace CollectionManagerApp.Presenters.Forms;
+
+using CollectionManager.Common.Interfaces;
+using CollectionManager.Common.Interfaces.Forms;
+using CollectionManager.Core.Extensions;
+using CollectionManager.Core.Types;
+using CollectionManager.Extensions.Modules.Exporter;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using CollectionManager.Extensions;
-using CollectionManagerExtensionsDll.Modules.BeatmapExporter;
-
-namespace CollectionManagerApp.Presenters.Forms;
 
 public sealed class BeatmapExportFormPresenter
 {
@@ -54,7 +51,7 @@ public sealed class BeatmapExportFormPresenter
         {
             Dictionary<BeatmapSetExport, Exception> failedExports = await ExportBeatmapsAsync(stringProgressReporter, percentageProgressReporter, exportSets, cancelationToken).ConfigureAwait(false);
 
-            if (failedExports.Any())
+            if (failedExports.Count != 0)
             {
                 File.WriteAllText(Path.Combine(saveDirectory, "log.txt"), CreateErrorLogs(failedExports));
                 stringProgressReporter.Report($"Processed {exportSets.Length - failedExports.Count} of {exportSets.Length} map sets.{Environment.NewLine}{failedExports.Count} map sets failed to save, see full log in log.txt file in export directory.");
@@ -78,14 +75,9 @@ public sealed class BeatmapExportFormPresenter
         {
             BeatmapSetExport beatmapSetExport = kv.Key;
 
-            if (beatmapSetExport is StableBeatmapSetExport stableSetExport)
-            {
-                _ = stringBuilder.AppendFormat("Failed processing stable map set located at \"{0}\" ", stableSetExport.SourceDirectory);
-            }
-            else
-            {
-                _ = stringBuilder.AppendFormat("Failed processing lazer map set named \"{0}\"", beatmapSetExport.TargetFileName);
-            }
+            _ = beatmapSetExport is StableBeatmapSetExport stableSetExport
+                ? stringBuilder.AppendFormat("Failed processing stable map set located at \"{0}\" ", stableSetExport.SourceDirectory)
+                : stringBuilder.AppendFormat("Failed processing lazer map set named \"{0}\"", beatmapSetExport.TargetFileName);
 
             _ = stringBuilder.AppendFormat(" with exception: {0}{1}", kv.Value.InnerException, Environment.NewLine);
         }
@@ -98,7 +90,7 @@ public sealed class BeatmapExportFormPresenter
 
     private Dictionary<BeatmapSetExport, Exception> ExportBeatmaps(IProgress<string> stringProgressReporter, IProgress<int> percentageProgressReporter, BeatmapSetExport[] exportSets, CancellationToken cancellationToken)
     {
-        Dictionary<BeatmapSetExport, Exception> failedExports = new();
+        Dictionary<BeatmapSetExport, Exception> failedExports = [];
 
         for (int index = 0; index < exportSets.Length; index++)
         {

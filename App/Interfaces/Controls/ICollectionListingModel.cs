@@ -1,19 +1,17 @@
-﻿using System;
-using CollectionManager.DataTypes;
-using CollectionManager.Modules.CollectionsManager;
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Interfaces
+using CollectionManager.Core.Modules.Collection;
+using CollectionManager.Core.Types;
+
+public interface ICollectionListingModel
 {
-    public interface ICollectionListingModel
-    {
-        event EventHandler CollectionsChanged;
-        event EventHandler SelectedCollectionsChanged;
-        event EventHandler<CollectionEditArgs> CollectionEditing;
-        Collections GetCollections();
-        Collections SelectedCollections { get; set; }
+    event EventHandler CollectionsChanged;
+    event EventHandler SelectedCollectionsChanged;
+    event EventHandler<CollectionEditArgs> CollectionEditing;
+    OsuCollections GetCollections();
+    OsuCollections SelectedCollections { get; set; }
 
-        void EmitCollectionEditing(CollectionEditArgs args);
-        Collections GetCollectionsForBeatmaps(Beatmaps beatmaps);
+    void EmitCollectionEditing(CollectionEditArgs args);
+    OsuCollections GetCollectionsForBeatmaps(Beatmaps beatmaps);
 
-    }
 }

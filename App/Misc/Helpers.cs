@@ -1,88 +1,86 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+namespace CollectionManagerApp.Misc;
+
+using CollectionManager.Common.Interfaces;
+using CollectionManager.Common.Interfaces.Forms;
+using CollectionManager.Core.Types;
+using CollectionManager.Extensions.Modules.Downloader.Api;
+using CollectionManagerApp.Interfaces.Controls;
+using CollectionManagerApp.Models.Controls;
+using CollectionManagerApp.Presenters.Forms;
 using System.Reflection;
-using App.Interfaces;
-using App.Models;
-using App.Presenters.Forms;
-using CollectionManager.DataTypes;
-using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
-using Common.Interfaces;
-using GuiComponents.Interfaces;
 
-namespace App.Misc
+public static class Helpers
 {
-    public static class Helpers
+    public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
     {
-        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+        ArgumentNullException.ThrowIfNull(assembly);
+
+        try
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                return e.Types.Where(t => t != null);
-            }
+            return assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException e)
+        {
+            return e.Types.Where(t => t != null);
+        }
+    }
+
+    public static LoginData GetLoginData(this ILoginFormView loginForm,
+        IReadOnlyList<IDownloadSource> downloadSources)
+    {
+        loginForm.SetDownloadSources(downloadSources);
+        loginForm.ShowAndBlock();
+        LoginData loginData = new();
+        if (loginForm.ClickedLogin)
+        {
+            loginData.Username = loginForm.Login;
+            loginData.Password = loginForm.Password;
+            loginData.SiteCookies = loginForm.OsuCookies;
+            loginData.DownloadSource = loginForm.DownloadSource;
         }
 
-        public static LoginData GetLoginData(this ILoginFormView loginForm,
-            IReadOnlyList<IDownloadSource> downloadSources)
-        {
-            loginForm.SetDownloadSources(downloadSources);
-            loginForm.ShowAndBlock();
-            var loginData = new LoginData();
-            if (loginForm.ClickedLogin)
-            {
-                loginData.Username = loginForm.Login;
-                loginData.Password = loginForm.Password;
-                loginData.SiteCookies = loginForm.OsuCookies;
-                loginData.DownloadSource = loginForm.DownloadSource;
-            }
+        return loginData;
+    }
 
-            return loginData;
+    public static string GetCollectionName(this ICollectionAddRenameForm form, Func<string, bool> isCollectionNameValid, string orginalName = "",
+        bool isRenameForm = false)
+    {
+        ICollectionAddRenameModel model = new CollectionAddRenameModel(isCollectionNameValid, orginalName);
+        _ = new CollectionAddRenameFormPresenter(form, model);
+        form.IsRenameForm = isRenameForm;
+        form.CollectionRenameView.OrginalCollectionName = orginalName;
+        form.CollectionRenameView.NewCollectionName = orginalName;
+        form.ShowAndBlock();
+
+        return model.NewCollectionNameIsValid ? model.NewCollectionName : "";
+    }
+
+    public static OsuCollection AddSelectedBeatmapsToCollection(this IBeatmapListingModel model, OsuCollection collection)
+    {
+        foreach (Beatmap beatmap in model.SelectedBeatmaps)
+        {
+            collection.AddBeatmap(beatmap);
         }
 
-        public static string GetCollectionName(this ICollectionAddRenameForm form, Func<string, bool> isCollectionNameValid, string orginalName = "",
-            bool isRenameForm = false)
-        {
-            ICollectionAddRenameModel model = new CollectionAddRenameModel(isCollectionNameValid,orginalName);
-            new CollectionAddRenameFormPresenter(form, model);
-            form.IsRenameForm = isRenameForm;
-            form.CollectionRenameView.OrginalCollectionName = orginalName;
-            form.CollectionRenameView.NewCollectionName = orginalName;
-            form.ShowAndBlock();
+        return collection;
+    }
 
-            return model.NewCollectionNameIsValid ? model.NewCollectionName : "";
+    public static void SetClipboardText(string text)
+    {
+        try
+        {
+            System.Windows.Forms.Clipboard.SetText(text);
         }
+        catch { }
+    }
+    public static string GetClipboardText()
+    {
+        try
+        {
+            return System.Windows.Forms.Clipboard.GetText();
+        }
+        catch { }
 
-        public static Collection AddSelectedBeatmapsToCollection(this IBeatmapListingModel model,Collection collection)
-        {
-            foreach (var beatmap in model.SelectedBeatmaps)
-            {
-                collection.AddBeatmap(beatmap);
-            }
-            return collection;
-        }
-
-        public static void SetClipboardText(string text)
-        {
-            try
-            {
-                System.Windows.Forms.Clipboard.SetText(text);
-            }
-            catch { }
-        }
-        public static string GetClipboardText()
-        {
-            try
-            {
-               return System.Windows.Forms.Clipboard.GetText();
-            }
-            catch { }
-            return "";
-        }
+        return "";
     }
 }

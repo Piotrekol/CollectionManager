@@ -15,11 +15,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
-		<ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj" />
-		<ProjectReference Include="..\Common\Common.csproj" />
-		<ProjectReference Include="..\GuiComponents\GuiComponents.csproj" />
-		<ProjectReference Include="..\MusicPlayer\MusicPlayer.csproj" />
+		<ProjectReference Include="..\CollectionManager.Core\CollectionManager.Core.csproj" />
+		<ProjectReference Include="..\CollectionManager.Extensions\CollectionManager.Extensions.csproj" />
+		<ProjectReference Include="..\CollectionManager.Common\CollectionManager.Common.csproj" />
+		<ProjectReference Include="..\CollectionManager.WinForms\CollectionManager.WinForms.csproj" />
+		<ProjectReference Include="..\CollectionManager.Audio\CollectionManager.Audio.csproj" />
 		<ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
 	</ItemGroup>
 

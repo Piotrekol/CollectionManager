@@ -1,8 +1,6 @@
-﻿using App.Interfaces;
+﻿namespace CollectionManagerApp.Models.Controls;
+using CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Models
+public class CombinedBeatmapPreviewModel : GenericMapSetterModel, ICombinedBeatmapPreviewModel
 {
-    public class CombinedBeatmapPreviewModel : GenericMapSetterModel, ICombinedBeatmapPreviewModel
-    {
-    }
 }

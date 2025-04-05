@@ -11,7 +11,7 @@
 
 	<!--Winforms projects-->
 	<PropertyGroup Condition="($(MSBuildProjectName) == 'CollectionManagerApp'
-									or $(MSBuildProjectName) == 'GuiComponents'
+									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
 									or $(MSBuildProjectName) == 'ObjectListView2012'
 									)">
 		<TargetFrameworks>$(TargetFrameworkBaseVersion)-windows</TargetFrameworks>
@@ -20,7 +20,7 @@
 	
 	<!--Rest of the projects, condition is reverse of above-->
 	<PropertyGroup Condition="!($(MSBuildProjectName) == 'CollectionManagerApp'
-									or $(MSBuildProjectName) == 'GuiComponents'
+									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
 									or $(MSBuildProjectName) == 'ObjectListView2012'
 									)">
 		<TargetFrameworks>$(TargetFrameworkBaseVersion)</TargetFrameworks>
@@ -30,6 +30,8 @@
 	<PropertyGroup>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/Piotrekol/CollectionManager</PackageProjectUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<AssemblyVersion>1.1.0</AssemblyVersion>
 		<FileVersion>1.1.0</FileVersion>
 	</PropertyGroup>

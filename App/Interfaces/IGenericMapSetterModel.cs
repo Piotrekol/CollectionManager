@@ -1,13 +1,11 @@
-﻿using System;
-using CollectionManager.DataTypes;
+﻿namespace CollectionManagerApp.Interfaces;
 
-namespace App.Interfaces
+using CollectionManager.Core.Types;
+
+public interface IGenericMapSetterModel
 {
-    public interface IGenericMapSetterModel
-    {
-        void SetBeatmap(Beatmap beatmap);
-        Beatmap CurrentBeatmap { get; }
+    void SetBeatmap(Beatmap beatmap);
+    Beatmap CurrentBeatmap { get; }
 
-        event EventHandler BeatmapChanged;
-    }
+    event EventHandler BeatmapChanged;
 }
