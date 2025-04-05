@@ -47,7 +47,7 @@ namespace MusicPlayer
             musicPlayer.SetSpeed(speed);
         }
 
-        public void Play(string audioFileOrUrl, int startTime)
+        public void Play(string audioFileOrUrl, int startTime, ReaderType readerType)
         {
             Uri uri = new Uri(audioFileOrUrl);
 
@@ -57,7 +57,7 @@ namespace MusicPlayer
             if (string.IsNullOrEmpty(audioFileOrUrl))
                 return;
 
-            musicPlayer.Play(audioFileOrUrl, startTime);
+            musicPlayer.Play(audioFileOrUrl, startTime, readerType);
         }
 
         public void Pause()

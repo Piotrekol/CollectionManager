@@ -6,6 +6,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" />
+    <PackageReference Include="NAudio.Vorbis" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

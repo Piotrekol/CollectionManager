@@ -1,20 +1,19 @@
-﻿using System;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 
 namespace MusicPlayer
 {
     internal abstract class AudioPlayer : IMusicPlayer
     {
         #region IMusicPlayer members
-        public double CurrentTime => _audioFileReader?.CurrentTime.TotalSeconds ?? -1;
-        public double TotalTime => _audioFileReader?.TotalTime.TotalSeconds ?? -1;
+        public double CurrentTime => _audioFileReader?.WaveStream.CurrentTime.TotalSeconds ?? -1;
+        public double TotalTime => _audioFileReader?.WaveStream.TotalTime.TotalSeconds ?? -1;
 
         public bool IsPlaying => _waveOutDevice?.PlaybackState == PlaybackState.Playing;
 
         public virtual bool IsSpeedControlAvaliable => false;
         public bool IsPaused => _waveOutDevice?.PlaybackState == PlaybackState.Paused;
         private float _soundVolume = 0.3f;
-        protected bool _playbackAborted = false;
+        protected bool _playbackAborted;
         public float SoundVolume
         {
             get { return _soundVolume; }
@@ -23,8 +22,8 @@ namespace MusicPlayer
                 lock (_lockingObject)
                 {
                     _soundVolume = value;
-                    if (_audioFileReader != null)
-                        _audioFileReader.Volume = value;
+                    if (_waveOutDevice != null)
+                        _waveOutDevice.Volume = value;
                 }
             }
         }
@@ -41,7 +40,7 @@ namespace MusicPlayer
             if (enoughLeft)
                 position -= 0.15;
 
-            this._audioFileReader.SetPosition(position);
+            _audioFileReader.WaveStream.SetPosition(position);
         }
 
         public void SetVolume(float volume)
@@ -54,11 +53,11 @@ namespace MusicPlayer
             throw new NotImplementedException();
         }
 
-        public virtual void Play(string audioFile, int startTime)
+        public virtual void Play(string audioFile, int startTime, ReaderType readerType)
         {
             lock (_lockingObject)
             {
-                var audioReader = CreateAudioReader(audioFile);
+                var audioReader = CreateAudioReader(audioFile, readerType);
                 if (audioReader != null)
                 {
                     SetAudioReader(audioReader);
@@ -85,27 +84,20 @@ namespace MusicPlayer
         protected AudioFileReaderEx _audioFileReader;
         protected IWavePlayer _waveOutDevice;
 
-        protected AudioFileReaderEx CreateAudioReader(string audioFile)
-        {
-            if (audioFile.ToLower().EndsWith(".ogg"))
-            {//Unsupported audio type
-                return null;
-            }
-            if (_audioFileReader == null)
-                return new AudioFileReaderEx(audioFile);
-            else
-                return _audioFileReader.GetAudio(audioFile);
-        }
-        protected void SetAudioReader(AudioFileReaderEx autioReader)
+        protected AudioFileReaderEx CreateAudioReader(string audioFile, ReaderType readerType) 
+            => AudioFileReaderEx.Create(_audioFileReader, audioFile, readerType);
+
+        protected void SetAudioReader(AudioFileReaderEx audioReader)
         {
             lock (_lockingObject)
             {
-                if (!autioReader.Equals(_audioFileReader))
+                if (!audioReader.Equals(_audioFileReader))
                     CleanAfterLastPlayback();
 
-                _audioFileReader = autioReader;
+                _audioFileReader = audioReader;
                 if (_audioFileReader.Reused)
                     return;
+
                 _waveOutDevice = new WaveOutEvent();
                 _waveOutDevice.PlaybackStopped += WaveOutDevice_PlaybackStopped;
             }
@@ -113,14 +105,19 @@ namespace MusicPlayer
 
         protected virtual void Play(int startTime)
         {
-            if (_audioFileReader == null)
+            if (_audioFileReader is null)
+            {
                 return;
+            }
+
             StopPlayback();
             _playbackAborted = false;
             if (!_audioFileReader.Reused)
-                _waveOutDevice.Init(_audioFileReader);
-            _audioFileReader.Volume = SoundVolume;
-            _audioFileReader.Skip(startTime);
+            {
+                _waveOutDevice.Init(_audioFileReader.WaveStream);
+            }
+            _audioFileReader.WaveStream.Skip(startTime);
+            _waveOutDevice.Volume = SoundVolume;
             _waveOutDevice.Play();
 
         }
@@ -151,10 +148,10 @@ namespace MusicPlayer
                 if (_waveOutDevice.PlaybackState == PlaybackState.Playing)
                 {
                     _playbackAborted = true;
-                    var oldVolume = _audioFileReader.Volume;
-                    _audioFileReader.Volume = 0f;
+                    var oldVolume = _waveOutDevice.Volume;
+                    _waveOutDevice.Volume = 0f;
                     _waveOutDevice.Stop();
-                    _audioFileReader.Volume = oldVolume;
+                    _waveOutDevice.Volume = oldVolume;
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace MusicPlayer
         void Seek(double position);
         void SetVolume(float volume);
         void SetSpeed(float speed);
-        void Play(string audioFileOrUrl, int startTime);
+        void Play(string audioFileOrUrl, int startTime, ReaderType readerType);
         void Pause();
         void Resume();
         bool IsPlaying { get; }

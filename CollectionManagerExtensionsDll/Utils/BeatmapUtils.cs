@@ -122,7 +122,6 @@ namespace CollectionManagerExtensionsDll.Utils
             }
 
             return Path.Combine(beatmap.BeatmapDirectory(), beatmap.Mp3Name);
-
         }
 
         public static string OszFileName(this Beatmap beatmap)

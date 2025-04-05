@@ -1,25 +1,57 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Vorbis;
+using NAudio.Wave;
 
 namespace MusicPlayer
 {
-    public class AudioFileReaderEx : AudioFileReader
+    public class AudioFileReaderEx : IDisposable
     {
-        public AudioFileReaderEx(string fileName) : base(fileName)
+        public WaveStream WaveStream { get; init; }
+        public ISampleProvider SampleProvider { get; init; }
+        public string FileLocation { get; }
+        public bool Reused { get; private set; }
+        public string FileName { get; }
+
+        public AudioFileReaderEx(string fileName, VorbisWaveReader vorbisWaveReader)
         {
-            AudioFileLocation = fileName;
+            FileName = fileName;
+            WaveStream = vorbisWaveReader;
+            SampleProvider = vorbisWaveReader;
         }
 
-        public string AudioFileLocation { get; }
-        public bool Reused { get; private set; } = false;
-        public AudioFileReaderEx GetAudio(string fileName)
+        public AudioFileReaderEx(string fileName, AudioFileReader audioFileReader)
         {
-            if (fileName == AudioFileLocation)
+            FileLocation = fileName;
+            WaveStream = audioFileReader;
+            SampleProvider = audioFileReader;
+        }
+
+        public static AudioFileReaderEx Create(AudioFileReaderEx? reader, string fileName, ReaderType readerType)
+        {
+            if (reader is not null && fileName == reader.FileLocation)
             {
-                this.Reused = true;
-                this.SetPosition(0d);
-                return this;
+                reader.Reused = true;
+                reader.WaveStream.SetPosition(0d);
+                return reader;
             }
-            return new AudioFileReaderEx(fileName);
+
+            if (readerType == ReaderType.Vorbis)
+            {
+                VorbisWaveReader vorbisReader = new(fileName);
+                return new AudioFileReaderEx(fileName, vorbisReader);
+            }
+
+            return new AudioFileReaderEx(fileName, new AudioFileReader(fileName));
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            WaveStream?.Dispose();
         }
     }
 }

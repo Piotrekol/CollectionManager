@@ -146,6 +146,10 @@ namespace App.Presenters.Controls
         private void PlayBeatmap(Beatmap map)
         {
             var audioLocation = ((BeatmapExtension)map).FullAudioFileLocation();
+            ReaderType readerType = map.Mp3Name.EndsWith(".ogg", StringComparison.InvariantCultureIgnoreCase)
+                ? ReaderType.Vorbis
+                : ReaderType.Default;
+
             bool onlineSource = false;
             if (audioLocation == string.Empty)
             {
@@ -165,7 +169,8 @@ namespace App.Presenters.Controls
                     {
                         musicPlayer.Play(
                             audioLocation,
-                            _view.IsMusicPlayerMode || onlineSource ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)));
+                            _view.IsMusicPlayerMode || onlineSource ? 0 : Convert.ToInt32(Math.Round(map.PreviewTime / 1000f)),
+                            readerType);
                     }
                     catch (COMException)
                     {
@@ -179,6 +184,7 @@ namespace App.Presenters.Controls
                 }
             });
         }
+
         private void RunAsWorker(Action action)
         {
             BackgroundWorker bw = new BackgroundWorker();

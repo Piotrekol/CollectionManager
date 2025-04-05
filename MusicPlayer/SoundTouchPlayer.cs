@@ -1,5 +1,6 @@
 ﻿using System.Timers;
 using Collection_Editor.code.Modules.MusicPlayer.SoundTouch;
+using NAudio.Vorbis;
 using NAudio.Wave;
 
 namespace MusicPlayer
@@ -27,11 +28,12 @@ namespace MusicPlayer
             }
         }
 
-        public override void Play(string audioFile, int startTime)
+        public override void Play(string audioFile, int startTime, ReaderType readerType)
         {
-            var audioReader = CreateAudioReader(audioFile);
+            AudioFileReaderEx audioReader = CreateAudioReader(audioFile, readerType);
+            
             SetAudioReader(audioReader);
-            SetSpeedReader(audioReader);
+            SetSpeedReader(audioReader.SampleProvider);
 
             Play(startTime);
         }
@@ -40,13 +42,15 @@ namespace MusicPlayer
         {
             lock (_lockingObject)
             {
-                if (_audioFileReader == null)
+                if (_audioFileReader is null)
+                {
                     return;
+                }
                 StopPlayback();
                 _speedControl.PlaybackRate = playbackSpeed;
                 _waveOutDevice.Init(_speedControl);
-                _audioFileReader.Volume = SoundVolume;
-                _audioFileReader.Skip(startTime);
+                _waveOutDevice.Volume = SoundVolume;
+                _audioFileReader.WaveStream.Skip(startTime);
                 _waveOutDevice.Play();
 
                 _playbackAborted = false;
@@ -54,11 +58,11 @@ namespace MusicPlayer
             }
         }
 
-        private void SetSpeedReader(AudioFileReader audio)
+        private void SetSpeedReader(ISampleProvider sampleProvider)
         {
             lock (_lockingObject)
             {
-                _speedControl = new VarispeedSampleProvider(audio, 100, _soundTouchProfile);
+                _speedControl = new VarispeedSampleProvider(sampleProvider, 100, _soundTouchProfile);
             }
         }
         private double LastTime = 0.0;
