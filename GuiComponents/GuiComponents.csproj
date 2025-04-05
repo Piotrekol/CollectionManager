@@ -7,9 +7,6 @@
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Controls\BeatmapListingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
