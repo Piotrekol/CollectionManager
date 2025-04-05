@@ -106,7 +106,7 @@ namespace MusicPlayer
                 _audioFileReader = autioReader;
                 if (_audioFileReader.Reused)
                     return;
-                _waveOutDevice = new WaveOut();
+                _waveOutDevice = new WaveOutEvent();
                 _waveOutDevice.PlaybackStopped += WaveOutDevice_PlaybackStopped;
             }
         }

@@ -260,9 +260,9 @@ namespace GuiComponents.Controls
             BeatmapsDropped?.Invoke(this, beatmaps);
         }
 
-        public void SetFilter(IModelFilter filter)
+        public void SetFilter(ICommonModelFilter filter)
         {
-            ListViewBeatmaps.AdditionalFilter = filter;
+            ListViewBeatmaps.AdditionalFilter = new CommonModelFilter(filter);
         }
 
         public void FilteringStarted()

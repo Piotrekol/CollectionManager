@@ -1,5 +1,4 @@
-﻿using BrightIdeasSoftware;
-using CollectionManager.DataTypes;
+﻿using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using Common;
 

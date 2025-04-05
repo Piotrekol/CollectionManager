@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
-using BrightIdeasSoftware;
+﻿using System.Collections;
 using CollectionManager.DataTypes;
+using Common;
 using Gui.Misc;
 
 namespace GuiComponents.Interfaces
@@ -25,7 +24,7 @@ namespace GuiComponents.Interfaces
         event EventHandler<StringEventArgs> RightClick;
         event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
 
-        void SetFilter(IModelFilter filter);
+        void SetFilter(ICommonModelFilter filter);
         void SetVisibleColumns(string[] visibleColumnsAspectNames);
         void FilteringStarted();
         void FilteringFinished();

@@ -65,7 +65,7 @@ namespace GuiComponents.Controls
             {
                 if (label_OpenedCollection.InvokeRequired)
                 {
-                    _ = label_OpenedCollection.Invoke(() =>
+                    label_OpenedCollection.Invoke(() =>
                     {
                         label_OpenedCollection.Visible = !string.IsNullOrEmpty(value);
                         label_OpenedCollection.Text = value;
@@ -85,7 +85,7 @@ namespace GuiComponents.Controls
             {
                 if (button_LoadCollectionFromFile.InvokeRequired)
                 {
-                    _ = button_LoadCollectionFromFile.Invoke(() =>
+                    button_LoadCollectionFromFile.Invoke(() =>
                     {
                         button_DoNothing.Enabled
                             = button_LoadCollectionFromFile.Enabled

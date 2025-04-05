@@ -1,13 +1,13 @@
 using System;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
 using CollectionManagerExtensionsDll.Modules.BeatmapFilter;
+using Common;
 
 namespace App.Misc
 {
-    public class BeatmapListFilter : IModelFilter
+    public class BeatmapListFilter : ICommonModelFilter
     {
         private readonly BeatmapFilter _beatmapFilter;
         public Mods CurrentMods => _beatmapFilter.CurrentMods;

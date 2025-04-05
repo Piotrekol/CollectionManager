@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
+using Common;
 using Gui.Misc;
 using GuiComponents.Interfaces;
 using ICollection = CollectionManager.DataTypes.ICollection;
@@ -182,9 +183,9 @@ namespace GuiComponents.Controls
             cellRightClickEventArgs.MenuStrip = CollectionContextMenuStrip;
         }
 
-        public void SetFilter(IModelFilter filter)
+        public void SetFilter(ICommonModelFilter filter)
         {
-            ListViewCollections.AdditionalFilter = filter;
+            ListViewCollections.AdditionalFilter = new CommonModelFilter(filter);
         }
 
         public void SetVisibleColumns(string[] visibleColumnsAspectNames)

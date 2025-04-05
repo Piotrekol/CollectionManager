@@ -1,6 +1,4 @@
-﻿using System;
-using BrightIdeasSoftware;
-using CollectionManager.DataTypes;
+﻿using CollectionManager.DataTypes;
 using Common;
 using Gui.Misc;
 
@@ -26,6 +24,6 @@ namespace App.Interfaces
         void SetBeatmaps(Beatmaps beatmaps);
         void SetCollection(ICollection collection);
         void FilterBeatmaps(string text);
-        IModelFilter GetFilter();
+        ICommonModelFilter GetFilter();
     }
 }

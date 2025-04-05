@@ -2,6 +2,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
     <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj" />
-    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" />
+	</ItemGroup>
 </Project>

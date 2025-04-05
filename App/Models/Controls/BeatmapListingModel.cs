@@ -98,7 +98,7 @@ namespace App.Models
             _beatmapListFilter.UpdateSearch(text);
         }
 
-        public IModelFilter GetFilter()
+        public ICommonModelFilter GetFilter()
         {
             return _beatmapListFilter;
         }

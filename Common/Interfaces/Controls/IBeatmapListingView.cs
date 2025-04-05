@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using BrightIdeasSoftware;
 using CollectionManager.DataTypes;
 using CollectionManager.Enums;
+using Common;
 using Gui.Misc;
 
 namespace GuiComponents.Interfaces
@@ -26,7 +26,7 @@ namespace GuiComponents.Interfaces
         void SetCurrentMods(Mods mods);
         void SetBeatmaps(IEnumerable beatmaps);
         void SetVisibleColumns(string[] visibleColumnsAspectNames);
-        void SetFilter(IModelFilter filter);
+        void SetFilter(ICommonModelFilter filter);
         void FilteringStarted();
         void FilteringFinished();
         void ClearSelection();

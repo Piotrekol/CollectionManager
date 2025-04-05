@@ -5,10 +5,31 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<TargetFrameworks>net48</TargetFrameworks>
+		<NoWarn>$(NoWarn);WFO1000</NoWarn>
+		<TargetFrameworkBaseVersion>net9.0</TargetFrameworkBaseVersion>
 	</PropertyGroup>
 
+	<!--Winforms projects-->
+	<PropertyGroup Condition="($(MSBuildProjectName) == 'CollectionManagerApp'
+									or $(MSBuildProjectName) == 'GuiComponents'
+									or $(MSBuildProjectName) == 'ObjectListView2012'
+									)">
+		<TargetFrameworks>$(TargetFrameworkBaseVersion)-windows</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	
+	<!--Rest of the projects, condition is reverse of above-->
+	<PropertyGroup Condition="!($(MSBuildProjectName) == 'CollectionManagerApp'
+									or $(MSBuildProjectName) == 'GuiComponents'
+									or $(MSBuildProjectName) == 'ObjectListView2012'
+									)">
+		<TargetFrameworks>$(TargetFrameworkBaseVersion)</TargetFrameworks>
+	</PropertyGroup>
+	
+	<!--Packages config-->
 	<PropertyGroup>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/Piotrekol/CollectionManager</PackageProjectUrl>
 		<AssemblyVersion>1.1.0</AssemblyVersion>
 		<FileVersion>1.1.0</FileVersion>
 	</PropertyGroup>
@@ -20,5 +41,5 @@
 		<Using Include="System.Linq" />
 		<Using Include="System.Threading.Tasks" />
 	</ItemGroup>
-    
+
 </Project>

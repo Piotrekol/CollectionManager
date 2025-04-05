@@ -5,7 +5,6 @@
     <AssemblyName>ObjectListView</AssemblyName>
     <FileUpgradeFlags />
     <UpgradeBackupLocation />
-    <TargetFramework>net48</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
     <AssemblyTitle>ObjectListView</AssemblyTitle>
@@ -106,5 +105,8 @@
   <ItemGroup>
     <Compile Remove="Implementation\DragSource.cs" />
     <Compile Remove="Implementation\DropSink.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
 </Project>
