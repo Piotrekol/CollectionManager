@@ -1,75 +1,71 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>osu! Collection Manager</AssemblyTitle>
-    <Product>Gui</Product>
-    <Copyright>Copyright ©  2017-present Piotrekol</Copyright>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
-    <FileVersion>1.1.0</FileVersion>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <LangVersion>11.0</LangVersion>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<AssemblyTitle>osu! Collection Manager</AssemblyTitle>
+		<Product>Gui</Product>
+		<Copyright>Copyright ©  2017-present Piotrekol</Copyright>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+	</PropertyGroup>
 
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent />
-    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
-    <PackageId>CollectionManagerApp</PackageId>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Resources\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="ILMerge" Version="2.13.0307" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\MusicPlayer\NAudio\NAudio.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
-    <ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\GuiComponents\GuiComponents.csproj" />
-    <ProjectReference Include="..\MusicPlayer\MusicPlayer.csproj" />
-    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="downloadSources.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<PropertyGroup>
+		<PreBuildEvent />
+		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+		<PackageId>CollectionManagerApp</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
+		<ProjectReference Include="..\CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj" />
+		<ProjectReference Include="..\Common\Common.csproj" />
+		<ProjectReference Include="..\GuiComponents\GuiComponents.csproj" />
+		<ProjectReference Include="..\MusicPlayer\MusicPlayer.csproj" />
+		<ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" />
+		<PackageReference Include="ILMerge" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Remove="Resources\logo.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\logo.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="mscorlib" />
+		<Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+			<HintPath>..\MusicPlayer\NAudio\NAudio.dll</HintPath>
+			<SpecificVersion>False</SpecificVersion>
+		</Reference>
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="downloadSources.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 </Project>

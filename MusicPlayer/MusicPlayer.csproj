@@ -1,10 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <AssemblyTitle>MusicPlayer</AssemblyTitle>
-    <Product>MusicPlayer</Product>
-    <Copyright>Copyright ©  2017</Copyright>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>NAudio\NAudio.dll</HintPath>
@@ -14,8 +8,6 @@
       <HintPath>NAudio\NAudio.WindowsMediaFormat.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NAudio\license.txt" />

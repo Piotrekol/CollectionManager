@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFrameworks>netstandard20;netstandard21</TargetFrameworks>
+	<TargetFrameworks>netstandard20;netstandard21</TargetFrameworks>
     <AssemblyTitle>CollectionManagerExtensionsDll</AssemblyTitle>
     <Product>CollectionManagerExtensionsDll</Product>
     <Copyright>Copyright ©  2017</Copyright>
@@ -10,19 +10,11 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Modules\DownloadManager\API\CookieAwareWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Utils\ImpatientWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="Modules\DownloadManager\API\CookieAwareWebClient.cs" />
+    <Compile Update="Utils\ImpatientWebClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CollectionManagerDll\CollectionManagerDll.csproj" />
