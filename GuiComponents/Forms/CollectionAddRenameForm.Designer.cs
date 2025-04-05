@@ -28,31 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.collectionRenameView1 = new GuiComponents.Controls.CollectionRenameView();
-            this.SuspendLayout();
+            collectionRenameView1 = new GuiComponents.Controls.CollectionRenameView();
+            SuspendLayout();
             // 
             // collectionRenameView1
             // 
-            this.collectionRenameView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.collectionRenameView1.IsRenameView = true;
-            this.collectionRenameView1.Location = new System.Drawing.Point(0, 0);
-            this.collectionRenameView1.Name = "collectionRenameView1";
-            this.collectionRenameView1.OrginalCollectionName = "from";
-            this.collectionRenameView1.Size = new System.Drawing.Size(378, 115);
-            this.collectionRenameView1.TabIndex = 0;
+            collectionRenameView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            collectionRenameView1.IsRenameView = true;
+            collectionRenameView1.Location = new System.Drawing.Point(0, 0);
+            collectionRenameView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            collectionRenameView1.Name = "collectionRenameView1";
+            collectionRenameView1.NewCollectionName = "";
+            collectionRenameView1.OrginalCollectionName = "from";
+            collectionRenameView1.Size = new System.Drawing.Size(441, 133);
+            collectionRenameView1.TabIndex = 0;
             // 
             // CollectionAddRenameForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 115);
-            this.Controls.Add(this.collectionRenameView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.Name = "CollectionAddRenameForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "CollectionRenameForm";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(441, 133);
+            Controls.Add(collectionRenameView1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            Name = "CollectionAddRenameForm";
+            Text = "CollectionRenameForm";
+            ResumeLayout(false);
 
         }
 

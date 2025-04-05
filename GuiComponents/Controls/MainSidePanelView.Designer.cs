@@ -28,256 +28,231 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_Opennn = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_loadCollection = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_loadDefaultCollection = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_saveAllCollections = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_saveOsuCollection = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_collectionsSplit = new System.Windows.Forms.ToolStripMenuItem();
-            this.listingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_listAllCollections = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_listMissingMaps = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_unloadCollections = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_mapDownloads = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_downloadAllMissing = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_GenerateCollections = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_GetMissingMapData = new System.Windows.Forms.ToolStripMenuItem();
-            this.osustatsCollectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_osustatsLogin = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_osustatsCollections = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_newCollection = new System.Windows.Forms.ToolStripMenuItem();
-            this.noCollectionsLoadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Menu_resetSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            MenuItem_Opennn = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_loadCollection = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_loadDefaultCollection = new System.Windows.Forms.ToolStripMenuItem();
+            saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_saveAllCollections = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_saveOsuCollection = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_collectionsSplit = new System.Windows.Forms.ToolStripMenuItem();
+            listingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_listAllCollections = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_listMissingMaps = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_unloadCollections = new System.Windows.Forms.ToolStripMenuItem();
+            onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_mapDownloads = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_downloadAllMissing = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_GenerateCollections = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_GetMissingMapData = new System.Windows.Forms.ToolStripMenuItem();
+            osustatsCollectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_osustatsLogin = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_osustatsCollections = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_newCollection = new System.Windows.Forms.ToolStripMenuItem();
+            noCollectionsLoadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_beatmapListing = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_refreshBeatmapList = new System.Windows.Forms.ToolStripMenuItem();
+            settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_resetSettings = new System.Windows.Forms.ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.onlineToolStripMenuItem,
-            this.osustatsCollectionsToolStripMenuItem,
-            this.Menu_beatmapListing,
-            this.Menu_refreshBeatmapList,
-            this.settingsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(724, 24);
-            this.menuStrip1.TabIndex = 10;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, onlineToolStripMenuItem, osustatsCollectionsToolStripMenuItem, Menu_beatmapListing, Menu_refreshBeatmapList, settingsToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            menuStrip1.Size = new System.Drawing.Size(845, 24);
+            menuStrip1.TabIndex = 10;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_Opennn,
-            this.saveToolStripMenuItem,
-            this.listingToolStripMenuItem1,
-            this.Menu_unloadCollections});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuItem_Opennn, saveToolStripMenuItem, listingToolStripMenuItem1, Menu_unloadCollections });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
             // 
             // MenuItem_Opennn
             // 
-            this.MenuItem_Opennn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_loadCollection,
-            this.Menu_loadDefaultCollection});
-            this.MenuItem_Opennn.Name = "MenuItem_Opennn";
-            this.MenuItem_Opennn.Size = new System.Drawing.Size(180, 22);
-            this.MenuItem_Opennn.Text = "Open";
+            MenuItem_Opennn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_loadCollection, Menu_loadDefaultCollection });
+            MenuItem_Opennn.Name = "MenuItem_Opennn";
+            MenuItem_Opennn.Size = new System.Drawing.Size(109, 22);
+            MenuItem_Opennn.Text = "Open";
             // 
             // Menu_loadCollection
             // 
-            this.Menu_loadCollection.Name = "Menu_loadCollection";
-            this.Menu_loadCollection.Size = new System.Drawing.Size(187, 22);
-            this.Menu_loadCollection.Text = "Collection(.db/.osdb)";
+            Menu_loadCollection.Name = "Menu_loadCollection";
+            Menu_loadCollection.Size = new System.Drawing.Size(187, 22);
+            Menu_loadCollection.Text = "Collection(.db/.osdb)";
             // 
             // Menu_loadDefaultCollection
             // 
-            this.Menu_loadDefaultCollection.Name = "Menu_loadDefaultCollection";
-            this.Menu_loadDefaultCollection.Size = new System.Drawing.Size(187, 22);
-            this.Menu_loadDefaultCollection.Text = "osu! collection";
+            Menu_loadDefaultCollection.Name = "Menu_loadDefaultCollection";
+            Menu_loadDefaultCollection.Size = new System.Drawing.Size(187, 22);
+            Menu_loadDefaultCollection.Text = "osu! collection";
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_saveAllCollections,
-            this.Menu_saveOsuCollection,
-            this.Menu_collectionsSplit});
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "Save";
+            saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_saveAllCollections, Menu_saveOsuCollection, Menu_collectionsSplit });
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            saveToolStripMenuItem.Text = "Save";
             // 
             // Menu_saveAllCollections
             // 
-            this.Menu_saveAllCollections.Name = "Menu_saveAllCollections";
-            this.Menu_saveAllCollections.Size = new System.Drawing.Size(217, 22);
-            this.Menu_saveAllCollections.Text = "Collection(.db/.osdb)";
+            Menu_saveAllCollections.Name = "Menu_saveAllCollections";
+            Menu_saveAllCollections.Size = new System.Drawing.Size(217, 22);
+            Menu_saveAllCollections.Text = "Collection(.db/.osdb)";
             // 
             // Menu_saveOsuCollection
             // 
-            this.Menu_saveOsuCollection.Name = "Menu_saveOsuCollection";
-            this.Menu_saveOsuCollection.Size = new System.Drawing.Size(217, 22);
-            this.Menu_saveOsuCollection.Text = "osu! collection";
+            Menu_saveOsuCollection.Name = "Menu_saveOsuCollection";
+            Menu_saveOsuCollection.Size = new System.Drawing.Size(217, 22);
+            Menu_saveOsuCollection.Text = "osu! collection";
             // 
             // Menu_collectionsSplit
             // 
-            this.Menu_collectionsSplit.Name = "Menu_collectionsSplit";
-            this.Menu_collectionsSplit.Size = new System.Drawing.Size(217, 22);
-            this.Menu_collectionsSplit.Text = "Collections in separate files";
+            Menu_collectionsSplit.Name = "Menu_collectionsSplit";
+            Menu_collectionsSplit.Size = new System.Drawing.Size(217, 22);
+            Menu_collectionsSplit.Text = "Collections in separate files";
             // 
             // listingToolStripMenuItem1
             // 
-            this.listingToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_listAllCollections,
-            this.Menu_listMissingMaps});
-            this.listingToolStripMenuItem1.Name = "listingToolStripMenuItem1";
-            this.listingToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.listingToolStripMenuItem1.Text = "Listing";
+            listingToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_listAllCollections, Menu_listMissingMaps });
+            listingToolStripMenuItem1.Name = "listingToolStripMenuItem1";
+            listingToolStripMenuItem1.Size = new System.Drawing.Size(109, 22);
+            listingToolStripMenuItem1.Text = "Listing";
             // 
             // Menu_listAllCollections
             // 
-            this.Menu_listAllCollections.Name = "Menu_listAllCollections";
-            this.Menu_listAllCollections.Size = new System.Drawing.Size(168, 22);
-            this.Menu_listAllCollections.Text = "List all collections";
+            Menu_listAllCollections.Name = "Menu_listAllCollections";
+            Menu_listAllCollections.Size = new System.Drawing.Size(168, 22);
+            Menu_listAllCollections.Text = "List all collections";
             // 
             // Menu_listMissingMaps
             // 
-            this.Menu_listMissingMaps.Name = "Menu_listMissingMaps";
-            this.Menu_listMissingMaps.Size = new System.Drawing.Size(168, 22);
-            this.Menu_listMissingMaps.Text = "List missing maps";
+            Menu_listMissingMaps.Name = "Menu_listMissingMaps";
+            Menu_listMissingMaps.Size = new System.Drawing.Size(168, 22);
+            Menu_listMissingMaps.Text = "List missing maps";
             // 
             // Menu_unloadCollections
             // 
-            this.Menu_unloadCollections.Name = "Menu_unloadCollections";
-            this.Menu_unloadCollections.Size = new System.Drawing.Size(180, 22);
-            this.Menu_unloadCollections.Text = "Clear";
+            Menu_unloadCollections.Name = "Menu_unloadCollections";
+            Menu_unloadCollections.Size = new System.Drawing.Size(109, 22);
+            Menu_unloadCollections.Text = "Clear";
             // 
             // onlineToolStripMenuItem
             // 
-            this.onlineToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_mapDownloads,
-            this.Menu_downloadAllMissing,
-            this.Menu_GenerateCollections,
-            this.Menu_GetMissingMapData});
-            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.onlineToolStripMenuItem.Text = "Online";
+            onlineToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_mapDownloads, Menu_downloadAllMissing, Menu_GenerateCollections, Menu_GetMissingMapData });
+            onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            onlineToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            onlineToolStripMenuItem.Text = "Online";
             // 
             // Menu_mapDownloads
             // 
-            this.Menu_mapDownloads.Name = "Menu_mapDownloads";
-            this.Menu_mapDownloads.Size = new System.Drawing.Size(219, 22);
-            this.Menu_mapDownloads.Text = "Show map downloads";
+            Menu_mapDownloads.Name = "Menu_mapDownloads";
+            Menu_mapDownloads.Size = new System.Drawing.Size(219, 22);
+            Menu_mapDownloads.Text = "Show map downloads";
             // 
             // Menu_downloadAllMissing
             // 
-            this.Menu_downloadAllMissing.Name = "Menu_downloadAllMissing";
-            this.Menu_downloadAllMissing.Size = new System.Drawing.Size(219, 22);
-            this.Menu_downloadAllMissing.Text = "Download all missing maps";
+            Menu_downloadAllMissing.Name = "Menu_downloadAllMissing";
+            Menu_downloadAllMissing.Size = new System.Drawing.Size(219, 22);
+            Menu_downloadAllMissing.Text = "Download all missing maps";
             // 
             // Menu_GenerateCollections
             // 
-            this.Menu_GenerateCollections.Name = "Menu_GenerateCollections";
-            this.Menu_GenerateCollections.Size = new System.Drawing.Size(219, 22);
-            this.Menu_GenerateCollections.Text = "Generate collections";
+            Menu_GenerateCollections.Name = "Menu_GenerateCollections";
+            Menu_GenerateCollections.Size = new System.Drawing.Size(219, 22);
+            Menu_GenerateCollections.Text = "Generate collections";
             // 
             // Menu_GetMissingMapData
             // 
-            this.Menu_GetMissingMapData.Name = "Menu_GetMissingMapData";
-            this.Menu_GetMissingMapData.Size = new System.Drawing.Size(219, 22);
-            this.Menu_GetMissingMapData.Text = "Get missing map data";
-            this.Menu_GetMissingMapData.Visible = false;
+            Menu_GetMissingMapData.Name = "Menu_GetMissingMapData";
+            Menu_GetMissingMapData.Size = new System.Drawing.Size(219, 22);
+            Menu_GetMissingMapData.Text = "Get missing map data";
+            Menu_GetMissingMapData.Visible = false;
             // 
             // osustatsCollectionsToolStripMenuItem
             // 
-            this.osustatsCollectionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_osustatsLogin,
-            this.Menu_osustatsCollections,
-            this.Menu_newCollection});
-            this.osustatsCollectionsToolStripMenuItem.Name = "osustatsCollectionsToolStripMenuItem";
-            this.osustatsCollectionsToolStripMenuItem.Size = new System.Drawing.Size(124, 20);
-            this.osustatsCollectionsToolStripMenuItem.Text = "Osustats collections";
+            osustatsCollectionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_osustatsLogin, Menu_osustatsCollections, Menu_newCollection });
+            osustatsCollectionsToolStripMenuItem.Name = "osustatsCollectionsToolStripMenuItem";
+            osustatsCollectionsToolStripMenuItem.Size = new System.Drawing.Size(124, 20);
+            osustatsCollectionsToolStripMenuItem.Text = "Osustats collections";
             // 
             // Menu_osustatsLogin
             // 
-            this.Menu_osustatsLogin.Name = "Menu_osustatsLogin";
-            this.Menu_osustatsLogin.Size = new System.Drawing.Size(192, 22);
-            this.Menu_osustatsLogin.Text = "Login...";
+            Menu_osustatsLogin.Name = "Menu_osustatsLogin";
+            Menu_osustatsLogin.Size = new System.Drawing.Size(192, 22);
+            Menu_osustatsLogin.Text = "Login...";
             // 
             // Menu_osustatsCollections
             // 
-            this.Menu_osustatsCollections.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2});
-            this.Menu_osustatsCollections.Name = "Menu_osustatsCollections";
-            this.Menu_osustatsCollections.Size = new System.Drawing.Size(192, 22);
-            this.Menu_osustatsCollections.Text = "Your collections";
+            Menu_osustatsCollections.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem2 });
+            Menu_osustatsCollections.Name = "Menu_osustatsCollections";
+            Menu_osustatsCollections.Size = new System.Drawing.Size(192, 22);
+            Menu_osustatsCollections.Text = "Your collections";
             // 
             // toolStripMenuItem2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(127, 22);
-            this.toolStripMenuItem2.Text = "Login first";
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new System.Drawing.Size(127, 22);
+            toolStripMenuItem2.Text = "Login first";
             // 
             // Menu_newCollection
             // 
-            this.Menu_newCollection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noCollectionsLoadedToolStripMenuItem});
-            this.Menu_newCollection.Name = "Menu_newCollection";
-            this.Menu_newCollection.Size = new System.Drawing.Size(192, 22);
-            this.Menu_newCollection.Text = "Upload new collection";
+            Menu_newCollection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { noCollectionsLoadedToolStripMenuItem });
+            Menu_newCollection.Name = "Menu_newCollection";
+            Menu_newCollection.Size = new System.Drawing.Size(192, 22);
+            Menu_newCollection.Text = "Upload new collection";
             // 
             // noCollectionsLoadedToolStripMenuItem
             // 
-            this.noCollectionsLoadedToolStripMenuItem.Name = "noCollectionsLoadedToolStripMenuItem";
-            this.noCollectionsLoadedToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.noCollectionsLoadedToolStripMenuItem.Text = "No new collections loaded";
+            noCollectionsLoadedToolStripMenuItem.Name = "noCollectionsLoadedToolStripMenuItem";
+            noCollectionsLoadedToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            noCollectionsLoadedToolStripMenuItem.Text = "No new collections loaded";
             // 
             // Menu_beatmapListing
             // 
-            this.Menu_beatmapListing.Name = "Menu_beatmapListing";
-            this.Menu_beatmapListing.Size = new System.Drawing.Size(101, 20);
-            this.Menu_beatmapListing.Text = "Beatmap listing";
+            Menu_beatmapListing.Name = "Menu_beatmapListing";
+            Menu_beatmapListing.Size = new System.Drawing.Size(101, 20);
+            Menu_beatmapListing.Text = "Beatmap listing";
             // 
             // Menu_refreshBeatmapList
             // 
-            this.Menu_refreshBeatmapList.Name = "Menu_refreshBeatmapList";
-            this.Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
-            this.Menu_refreshBeatmapList.Text = "Refresh";
+            Menu_refreshBeatmapList.Name = "Menu_refreshBeatmapList";
+            Menu_refreshBeatmapList.Size = new System.Drawing.Size(58, 20);
+            Menu_refreshBeatmapList.Text = "Refresh";
             // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menu_resetSettings});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_resetSettings });
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            settingsToolStripMenuItem.Text = "Settings";
             // 
             // Menu_resetSettings
             // 
-            this.Menu_resetSettings.Name = "Menu_resetSettings";
-            this.Menu_resetSettings.Size = new System.Drawing.Size(102, 22);
-            this.Menu_resetSettings.Text = "Reset";
+            Menu_resetSettings.Name = "Menu_resetSettings";
+            Menu_resetSettings.Size = new System.Drawing.Size(102, 22);
+            Menu_resetSettings.Text = "Reset";
             // 
             // MainSidePanelView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.menuStrip1);
-            this.Name = "MainSidePanelView";
-            this.Size = new System.Drawing.Size(724, 23);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(menuStrip1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "MainSidePanelView";
+            Size = new System.Drawing.Size(845, 27);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

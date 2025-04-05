@@ -28,28 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.downloadManagerView1 = new GuiComponents.Controls.DownloadManagerView();
-            this.SuspendLayout();
+            downloadManagerView1 = new GuiComponents.Controls.DownloadManagerView();
+            SuspendLayout();
             // 
             // downloadManagerView1
             // 
-            this.downloadManagerView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.downloadManagerView1.DownloadButtonIsEnabled = true;
-            this.downloadManagerView1.Location = new System.Drawing.Point(0, 0);
-            this.downloadManagerView1.Name = "downloadManagerView1";
-            this.downloadManagerView1.Size = new System.Drawing.Size(514, 461);
-            this.downloadManagerView1.TabIndex = 0;
+            downloadManagerView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            downloadManagerView1.DownloadButtonIsEnabled = true;
+            downloadManagerView1.Location = new System.Drawing.Point(0, 0);
+            downloadManagerView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            downloadManagerView1.Name = "downloadManagerView1";
+            downloadManagerView1.Size = new System.Drawing.Size(584, 493);
+            downloadManagerView1.TabIndex = 0;
             // 
             // DownloadManagerFormView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(514, 461);
-            this.Controls.Add(this.downloadManagerView1);
-            this.Name = "DownloadManagerFormView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Collection Manager - Download list";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(584, 493);
+            Controls.Add(downloadManagerView1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "DownloadManagerFormView";
+            Text = "Collection Manager - Download list";
+            ResumeLayout(false);
 
         }
 

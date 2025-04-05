@@ -28,121 +28,130 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.trackBar_Volume = new System.Windows.Forms.TrackBar();
-            this.checkBox_musicPlayer = new System.Windows.Forms.CheckBox();
-            this.panel_audioPlayback = new System.Windows.Forms.Panel();
-            this.checkBox_DT = new System.Windows.Forms.CheckBox();
-            this.trackBar_position = new System.Windows.Forms.TrackBar();
-            this.button_StopPreview = new System.Windows.Forms.Button();
-            this.checkBox_autoPlay = new System.Windows.Forms.CheckBox();
-            this.button_StartPreview = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Volume)).BeginInit();
-            this.panel_audioPlayback.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_position)).BeginInit();
-            this.SuspendLayout();
+            trackBar_Volume = new System.Windows.Forms.TrackBar();
+            checkBox_musicPlayer = new System.Windows.Forms.CheckBox();
+            panel_audioPlayback = new System.Windows.Forms.Panel();
+            checkBox_DT = new System.Windows.Forms.CheckBox();
+            trackBar_position = new System.Windows.Forms.TrackBar();
+            button_StopPreview = new System.Windows.Forms.Button();
+            checkBox_autoPlay = new System.Windows.Forms.CheckBox();
+            button_StartPreview = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Volume).BeginInit();
+            panel_audioPlayback.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar_position).BeginInit();
+            SuspendLayout();
             // 
             // trackBar_Volume
             // 
-            this.trackBar_Volume.AutoSize = false;
-            this.trackBar_Volume.Location = new System.Drawing.Point(183, 3);
-            this.trackBar_Volume.Maximum = 100;
-            this.trackBar_Volume.Name = "trackBar_Volume";
-            this.trackBar_Volume.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar_Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.trackBar_Volume.Size = new System.Drawing.Size(20, 55);
-            this.trackBar_Volume.TabIndex = 20;
-            this.trackBar_Volume.TickFrequency = 15;
-            this.trackBar_Volume.Value = 30;
+            trackBar_Volume.AutoSize = false;
+            trackBar_Volume.Location = new System.Drawing.Point(214, 3);
+            trackBar_Volume.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar_Volume.Maximum = 100;
+            trackBar_Volume.Name = "trackBar_Volume";
+            trackBar_Volume.Orientation = System.Windows.Forms.Orientation.Vertical;
+            trackBar_Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            trackBar_Volume.Size = new System.Drawing.Size(23, 63);
+            trackBar_Volume.TabIndex = 20;
+            trackBar_Volume.TickFrequency = 15;
+            trackBar_Volume.Value = 30;
             // 
             // checkBox_musicPlayer
             // 
-            this.checkBox_musicPlayer.AutoSize = true;
-            this.checkBox_musicPlayer.Location = new System.Drawing.Point(52, 25);
-            this.checkBox_musicPlayer.Name = "checkBox_musicPlayer";
-            this.checkBox_musicPlayer.Size = new System.Drawing.Size(64, 17);
-            this.checkBox_musicPlayer.TabIndex = 21;
-            this.checkBox_musicPlayer.Text = "♫ mode";
-            this.checkBox_musicPlayer.UseVisualStyleBackColor = true;
+            checkBox_musicPlayer.AutoSize = true;
+            checkBox_musicPlayer.Location = new System.Drawing.Point(61, 29);
+            checkBox_musicPlayer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBox_musicPlayer.Name = "checkBox_musicPlayer";
+            checkBox_musicPlayer.Size = new System.Drawing.Size(70, 19);
+            checkBox_musicPlayer.TabIndex = 21;
+            checkBox_musicPlayer.Text = "♫ mode";
+            checkBox_musicPlayer.UseVisualStyleBackColor = true;
             // 
             // panel_audioPlayback
             // 
-            this.panel_audioPlayback.Controls.Add(this.checkBox_DT);
-            this.panel_audioPlayback.Controls.Add(this.trackBar_position);
-            this.panel_audioPlayback.Controls.Add(this.checkBox_musicPlayer);
-            this.panel_audioPlayback.Controls.Add(this.button_StopPreview);
-            this.panel_audioPlayback.Controls.Add(this.checkBox_autoPlay);
-            this.panel_audioPlayback.Controls.Add(this.button_StartPreview);
-            this.panel_audioPlayback.Location = new System.Drawing.Point(0, 0);
-            this.panel_audioPlayback.Name = "panel_audioPlayback";
-            this.panel_audioPlayback.Size = new System.Drawing.Size(169, 60);
-            this.panel_audioPlayback.TabIndex = 19;
+            panel_audioPlayback.Controls.Add(checkBox_DT);
+            panel_audioPlayback.Controls.Add(trackBar_position);
+            panel_audioPlayback.Controls.Add(checkBox_musicPlayer);
+            panel_audioPlayback.Controls.Add(button_StopPreview);
+            panel_audioPlayback.Controls.Add(checkBox_autoPlay);
+            panel_audioPlayback.Controls.Add(button_StartPreview);
+            panel_audioPlayback.Location = new System.Drawing.Point(0, 0);
+            panel_audioPlayback.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel_audioPlayback.Name = "panel_audioPlayback";
+            panel_audioPlayback.Size = new System.Drawing.Size(197, 69);
+            panel_audioPlayback.TabIndex = 19;
             // 
             // checkBox_DT
             // 
-            this.checkBox_DT.AutoSize = true;
-            this.checkBox_DT.Location = new System.Drawing.Point(122, 25);
-            this.checkBox_DT.Name = "checkBox_DT";
-            this.checkBox_DT.Size = new System.Drawing.Size(41, 17);
-            this.checkBox_DT.TabIndex = 23;
-            this.checkBox_DT.Text = "DT";
-            this.checkBox_DT.UseVisualStyleBackColor = true;
+            checkBox_DT.AutoSize = true;
+            checkBox_DT.Location = new System.Drawing.Point(142, 29);
+            checkBox_DT.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBox_DT.Name = "checkBox_DT";
+            checkBox_DT.Size = new System.Drawing.Size(40, 19);
+            checkBox_DT.TabIndex = 23;
+            checkBox_DT.Text = "DT";
+            checkBox_DT.UseVisualStyleBackColor = true;
             // 
             // trackBar_position
             // 
-            this.trackBar_position.AutoSize = false;
-            this.trackBar_position.Location = new System.Drawing.Point(4, 4);
-            this.trackBar_position.Maximum = 100;
-            this.trackBar_position.Name = "trackBar_position";
-            this.trackBar_position.Size = new System.Drawing.Size(162, 20);
-            this.trackBar_position.TabIndex = 11;
-            this.trackBar_position.TickFrequency = 5;
+            trackBar_position.AutoSize = false;
+            trackBar_position.Location = new System.Drawing.Point(5, 5);
+            trackBar_position.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar_position.Maximum = 100;
+            trackBar_position.Name = "trackBar_position";
+            trackBar_position.Size = new System.Drawing.Size(189, 23);
+            trackBar_position.TabIndex = 11;
+            trackBar_position.TickFrequency = 5;
             // 
             // button_StopPreview
             // 
-            this.button_StopPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_StopPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button_StopPreview.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button_StopPreview.Location = new System.Drawing.Point(25, 34);
-            this.button_StopPreview.Name = "button_StopPreview";
-            this.button_StopPreview.Size = new System.Drawing.Size(23, 23);
-            this.button_StopPreview.TabIndex = 9;
-            this.button_StopPreview.Text = "⏸";
-            this.button_StopPreview.UseVisualStyleBackColor = true;
+            button_StopPreview.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            button_StopPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            button_StopPreview.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            button_StopPreview.Location = new System.Drawing.Point(29, 39);
+            button_StopPreview.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button_StopPreview.Name = "button_StopPreview";
+            button_StopPreview.Size = new System.Drawing.Size(27, 27);
+            button_StopPreview.TabIndex = 9;
+            button_StopPreview.Text = "⏸";
+            button_StopPreview.UseVisualStyleBackColor = true;
             // 
             // checkBox_autoPlay
             // 
-            this.checkBox_autoPlay.AutoSize = true;
-            this.checkBox_autoPlay.Location = new System.Drawing.Point(52, 41);
-            this.checkBox_autoPlay.Name = "checkBox_autoPlay";
-            this.checkBox_autoPlay.Size = new System.Drawing.Size(67, 17);
-            this.checkBox_autoPlay.TabIndex = 22;
-            this.checkBox_autoPlay.Text = "Autoplay";
-            this.checkBox_autoPlay.UseVisualStyleBackColor = true;
+            checkBox_autoPlay.AutoSize = true;
+            checkBox_autoPlay.Location = new System.Drawing.Point(61, 47);
+            checkBox_autoPlay.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBox_autoPlay.Name = "checkBox_autoPlay";
+            checkBox_autoPlay.Size = new System.Drawing.Size(74, 19);
+            checkBox_autoPlay.TabIndex = 22;
+            checkBox_autoPlay.Text = "Autoplay";
+            checkBox_autoPlay.UseVisualStyleBackColor = true;
             // 
             // button_StartPreview
             // 
-            this.button_StartPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_StartPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button_StartPreview.Location = new System.Drawing.Point(0, 34);
-            this.button_StartPreview.Name = "button_StartPreview";
-            this.button_StartPreview.Size = new System.Drawing.Size(23, 23);
-            this.button_StartPreview.TabIndex = 10;
-            this.button_StartPreview.Text = "▶";
-            this.button_StartPreview.UseVisualStyleBackColor = true;
+            button_StartPreview.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            button_StartPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            button_StartPreview.Location = new System.Drawing.Point(0, 39);
+            button_StartPreview.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button_StartPreview.Name = "button_StartPreview";
+            button_StartPreview.Size = new System.Drawing.Size(27, 27);
+            button_StartPreview.TabIndex = 10;
+            button_StartPreview.Text = "▶";
+            button_StartPreview.UseVisualStyleBackColor = true;
             // 
             // MusicControlView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.trackBar_Volume);
-            this.Controls.Add(this.panel_audioPlayback);
-            this.Name = "MusicControlView";
-            this.Size = new System.Drawing.Size(214, 60);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Volume)).EndInit();
-            this.panel_audioPlayback.ResumeLayout(false);
-            this.panel_audioPlayback.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_position)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(trackBar_Volume);
+            Controls.Add(panel_audioPlayback);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "MusicControlView";
+            Size = new System.Drawing.Size(251, 69);
+            ((System.ComponentModel.ISupportInitialize)trackBar_Volume).EndInit();
+            panel_audioPlayback.ResumeLayout(false);
+            panel_audioPlayback.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar_position).EndInit();
+            ResumeLayout(false);
 
         }
 

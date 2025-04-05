@@ -28,40 +28,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label_UpdateText = new System.Windows.Forms.Label();
-            this.label_CollectionManagerStatus = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            label_UpdateText = new System.Windows.Forms.Label();
+            label_CollectionManagerStatus = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // label_UpdateText
             // 
-            this.label_UpdateText.AutoSize = true;
-            this.label_UpdateText.Location = new System.Drawing.Point(1, 0);
-            this.label_UpdateText.Name = "label_UpdateText";
-            this.label_UpdateText.Size = new System.Drawing.Size(75, 13);
-            this.label_UpdateText.TabIndex = 13;
-            this.label_UpdateText.Text = "<UpdateText>";
+            label_UpdateText.AutoSize = true;
+            label_UpdateText.Location = new System.Drawing.Point(1, 0);
+            label_UpdateText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_UpdateText.Name = "label_UpdateText";
+            label_UpdateText.Size = new System.Drawing.Size(82, 15);
+            label_UpdateText.TabIndex = 13;
+            label_UpdateText.Text = "<UpdateText>";
             // 
             // label_CollectionManagerStatus
             // 
-            this.label_CollectionManagerStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_CollectionManagerStatus.Location = new System.Drawing.Point(182, 0);
-            this.label_CollectionManagerStatus.Name = "label_CollectionManagerStatus";
-            this.label_CollectionManagerStatus.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label_CollectionManagerStatus.Size = new System.Drawing.Size(828, 17);
-            this.label_CollectionManagerStatus.TabIndex = 10;
-            this.label_CollectionManagerStatus.Text = "<CollectionManagerStatus>";
+            label_CollectionManagerStatus.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label_CollectionManagerStatus.Location = new System.Drawing.Point(212, 0);
+            label_CollectionManagerStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_CollectionManagerStatus.Name = "label_CollectionManagerStatus";
+            label_CollectionManagerStatus.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            label_CollectionManagerStatus.Size = new System.Drawing.Size(966, 20);
+            label_CollectionManagerStatus.TabIndex = 10;
+            label_CollectionManagerStatus.Text = "<CollectionManagerStatus>";
             // 
             // InfoTextView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label_CollectionManagerStatus);
-            this.Controls.Add(this.label_UpdateText);
-            this.Name = "InfoTextView";
-            this.Size = new System.Drawing.Size(1010, 17);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(label_CollectionManagerStatus);
+            Controls.Add(label_UpdateText);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "InfoTextView";
+            Size = new System.Drawing.Size(1178, 20);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

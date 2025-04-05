@@ -28,154 +28,163 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label_Stars = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label_OD = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label_CS = new System.Windows.Forms.Label();
-            this.label_AR = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label_BeatmapName = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            pictureBox1 = new System.Windows.Forms.PictureBox();
+            label3 = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            label_Stars = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            label_OD = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            label_CS = new System.Windows.Forms.Label();
+            label_AR = new System.Windows.Forms.Label();
+            panel1 = new System.Windows.Forms.Panel();
+            label_BeatmapName = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(281, 183);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 13;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            pictureBox1.Location = new System.Drawing.Point(4, 0);
+            pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new System.Drawing.Size(328, 211);
+            pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 13;
+            pictureBox1.TabStop = false;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(26, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "OD:";
+            label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(4, 58);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(27, 15);
+            label3.TabIndex = 3;
+            label3.Text = "OD:";
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "AR: ";
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(4, 31);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(28, 15);
+            label1.TabIndex = 1;
+            label1.Text = "AR: ";
             // 
             // label_Stars
             // 
-            this.label_Stars.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_Stars.AutoSize = true;
-            this.label_Stars.Location = new System.Drawing.Point(120, 50);
-            this.label_Stars.Name = "label_Stars";
-            this.label_Stars.Size = new System.Drawing.Size(31, 13);
-            this.label_Stars.TabIndex = 8;
-            this.label_Stars.Text = "        ";
+            label_Stars.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label_Stars.AutoSize = true;
+            label_Stars.Location = new System.Drawing.Point(140, 58);
+            label_Stars.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_Stars.Name = "label_Stars";
+            label_Stars.Size = new System.Drawing.Size(31, 15);
+            label_Stars.TabIndex = 8;
+            label_Stars.Text = "        ";
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(90, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "CS:";
+            label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(105, 31);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(24, 15);
+            label2.TabIndex = 2;
+            label2.Text = "CS:";
             // 
             // label_OD
             // 
-            this.label_OD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_OD.AutoSize = true;
-            this.label_OD.Location = new System.Drawing.Point(35, 50);
-            this.label_OD.Name = "label_OD";
-            this.label_OD.Size = new System.Drawing.Size(31, 13);
-            this.label_OD.TabIndex = 7;
-            this.label_OD.Text = "        ";
+            label_OD.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label_OD.AutoSize = true;
+            label_OD.Location = new System.Drawing.Point(41, 58);
+            label_OD.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_OD.Name = "label_OD";
+            label_OD.Size = new System.Drawing.Size(31, 15);
+            label_OD.TabIndex = 7;
+            label_OD.Text = "        ";
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(90, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Stars:";
+            label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(105, 58);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(35, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Stars:";
             // 
             // label_CS
             // 
-            this.label_CS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_CS.AutoSize = true;
-            this.label_CS.Location = new System.Drawing.Point(120, 27);
-            this.label_CS.Name = "label_CS";
-            this.label_CS.Size = new System.Drawing.Size(31, 13);
-            this.label_CS.TabIndex = 6;
-            this.label_CS.Text = "        ";
+            label_CS.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label_CS.AutoSize = true;
+            label_CS.Location = new System.Drawing.Point(140, 31);
+            label_CS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_CS.Name = "label_CS";
+            label_CS.Size = new System.Drawing.Size(31, 15);
+            label_CS.TabIndex = 6;
+            label_CS.Text = "        ";
             // 
             // label_AR
             // 
-            this.label_AR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_AR.AutoSize = true;
-            this.label_AR.Location = new System.Drawing.Point(37, 27);
-            this.label_AR.Name = "label_AR";
-            this.label_AR.Size = new System.Drawing.Size(28, 13);
-            this.label_AR.TabIndex = 5;
-            this.label_AR.Text = "       ";
+            label_AR.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label_AR.AutoSize = true;
+            label_AR.Location = new System.Drawing.Point(43, 31);
+            label_AR.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_AR.Name = "label_AR";
+            label_AR.Size = new System.Drawing.Size(28, 15);
+            label_AR.TabIndex = 5;
+            label_AR.Text = "       ";
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.label_BeatmapName);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.label_Stars);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label_OD);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label_CS);
-            this.panel1.Controls.Add(this.label_AR);
-            this.panel1.Location = new System.Drawing.Point(3, 183);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(281, 65);
-            this.panel1.TabIndex = 14;
+            panel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panel1.Controls.Add(label_BeatmapName);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(label_Stars);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(label_OD);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(label_CS);
+            panel1.Controls.Add(label_AR);
+            panel1.Location = new System.Drawing.Point(4, 211);
+            panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(328, 75);
+            panel1.TabIndex = 14;
             // 
             // label_BeatmapName
             // 
-            this.label_BeatmapName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_BeatmapName.AutoSize = true;
-            this.label_BeatmapName.Location = new System.Drawing.Point(3, 6);
-            this.label_BeatmapName.Name = "label_BeatmapName";
-            this.label_BeatmapName.Size = new System.Drawing.Size(100, 13);
-            this.label_BeatmapName.TabIndex = 9;
-            this.label_BeatmapName.Text = "                               ";
+            label_BeatmapName.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label_BeatmapName.AutoSize = true;
+            label_BeatmapName.Location = new System.Drawing.Point(4, 7);
+            label_BeatmapName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_BeatmapName.Name = "label_BeatmapName";
+            label_BeatmapName.Size = new System.Drawing.Size(100, 15);
+            label_BeatmapName.TabIndex = 9;
+            label_BeatmapName.Text = "                               ";
             // 
             // BeatmapThumbnailView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.panel1);
-            this.Name = "BeatmapThumbnailView";
-            this.Size = new System.Drawing.Size(284, 248);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(pictureBox1);
+            Controls.Add(panel1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "BeatmapThumbnailView";
+            Size = new System.Drawing.Size(331, 286);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
 
         }
 

@@ -28,79 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox_apiKey = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.SuspendLayout();
+            textBox_apiKey = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            button1 = new System.Windows.Forms.Button();
+            button2 = new System.Windows.Forms.Button();
+            linkLabel1 = new System.Windows.Forms.LinkLabel();
+            SuspendLayout();
             // 
             // textBox_apiKey
             // 
-            this.textBox_apiKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_apiKey.Location = new System.Drawing.Point(109, 6);
-            this.textBox_apiKey.Name = "textBox_apiKey";
-            this.textBox_apiKey.PasswordChar = '*';
-            this.textBox_apiKey.Size = new System.Drawing.Size(328, 20);
-            this.textBox_apiKey.TabIndex = 0;
+            textBox_apiKey.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBox_apiKey.Location = new System.Drawing.Point(127, 7);
+            textBox_apiKey.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBox_apiKey.Name = "textBox_apiKey";
+            textBox_apiKey.PasswordChar = '*';
+            textBox_apiKey.Size = new System.Drawing.Size(382, 23);
+            textBox_apiKey.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "osu!Stats api key:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(14, 10);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(97, 15);
+            label1.TabIndex = 1;
+            label1.Text = "osu!Stats api key:";
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(362, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
+            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+            button1.Location = new System.Drawing.Point(422, 37);
+            button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(88, 27);
+            button1.TabIndex = 2;
+            button1.Text = "Save";
+            button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(281, 32);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
+            button2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            button2.Location = new System.Drawing.Point(328, 37);
+            button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(88, 27);
+            button2.TabIndex = 3;
+            button2.Text = "Cancel";
+            button2.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(11, 32);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(171, 26);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Key can be obtained at:\r\nosustats.ppy.sh/collections/apikey";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1_LinkClicked);
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new System.Drawing.Point(13, 37);
+            linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new System.Drawing.Size(189, 30);
+            linkLabel1.TabIndex = 4;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Key can be obtained at:\r\nosustats.ppy.sh/collections/apikey";
+            linkLabel1.LinkClicked += LinkLabel1_LinkClicked;
             // 
             // OsustatsApiLoginFormView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 67);
-            this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox_apiKey);
-            this.Name = "OsustatsApiLoginFormView";
-            this.Text = "Collection Manager - osu!Stats sync";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(524, 77);
+            Controls.Add(linkLabel1);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(label1);
+            Controls.Add(textBox_apiKey);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "OsustatsApiLoginFormView";
+            Text = "Collection Manager - osu!Stats sync";
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

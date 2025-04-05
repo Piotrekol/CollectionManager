@@ -28,250 +28,234 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
-            this.column_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.Total = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.textBox_collectionNameSearch = new System.Windows.Forms.TextBox();
-            this.CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.renameCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.intersectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.differenceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inverseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CollectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.exportBeatmapSetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).BeginInit();
-            this.CollectionContextMenuStrip.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            panel1 = new System.Windows.Forms.Panel();
+            label1 = new System.Windows.Forms.Label();
+            ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
+            olvColumn1 = new BrightIdeasSoftware.OLVColumn();
+            Total = new BrightIdeasSoftware.OLVColumn();
+            olvColumn2 = new BrightIdeasSoftware.OLVColumn();
+            column_id = new BrightIdeasSoftware.OLVColumn();
+            textBox_collectionNameSearch = new System.Windows.Forms.TextBox();
+            CreateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            renameCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            deleteCollectionMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            DuplicateMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            mergeWithMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            intersectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            differenceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            inverseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            CollectionContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(components);
+            exportBeatmapSetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ListViewCollections).BeginInit();
+            CollectionContextMenuStrip.SuspendLayout();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.ListViewCollections);
-            this.panel1.Controls.Add(this.textBox_collectionNameSearch);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(464, 384);
-            this.panel1.TabIndex = 8;
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(ListViewCollections);
+            panel1.Controls.Add(textBox_collectionNameSearch);
+            panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel1.Location = new System.Drawing.Point(0, 0);
+            panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(541, 443);
+            panel1.TabIndex = 8;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Search using collection names:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(-2, 0);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(170, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Search using collection names:";
             // 
             // ListViewCollections
             // 
-            this.ListViewCollections.AllColumns.Add(this.olvColumn1);
-            this.ListViewCollections.AllColumns.Add(this.Total);
-            this.ListViewCollections.AllColumns.Add(this.olvColumn2);
-            this.ListViewCollections.AllColumns.Add(this.column_id);
-            this.ListViewCollections.AllowDrop = true;
-            this.ListViewCollections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListViewCollections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumn1,
-            this.Total,
-            this.olvColumn2});
-            this.ListViewCollections.EmptyListMsg = "No collections loaded";
-            this.ListViewCollections.HideSelection = false;
-            this.ListViewCollections.Location = new System.Drawing.Point(1, 39);
-            this.ListViewCollections.Name = "ListViewCollections";
-            this.ListViewCollections.ShowGroups = false;
-            this.ListViewCollections.Size = new System.Drawing.Size(463, 345);
-            this.ListViewCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.ListViewCollections.TabIndex = 5;
-            this.ListViewCollections.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ListViewCollections.UseCompatibleStateImageBehavior = false;
-            this.ListViewCollections.UseCustomSelectionColors = true;
-            this.ListViewCollections.View = System.Windows.Forms.View.Details;
-            this.ListViewCollections.VirtualMode = true;
-            this.ListViewCollections.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListViewCollections_KeyDown);
-            this.ListViewCollections.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewCollections_KeyUp);
-            // 
-            // column_id
-            // 
-            this.column_id.AspectName = "Id";
-            this.column_id.DisplayIndex = 2;
-            this.column_id.IsEditable = false;
-            this.column_id.IsVisible = false;
-            this.column_id.Text = "Id";
-            this.column_id.Width = 40;
+            ListViewCollections.AllColumns.Add(olvColumn1);
+            ListViewCollections.AllColumns.Add(Total);
+            ListViewCollections.AllColumns.Add(olvColumn2);
+            ListViewCollections.AllColumns.Add(column_id);
+            ListViewCollections.AllowDrop = true;
+            ListViewCollections.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            ListViewCollections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn1, Total, olvColumn2 });
+            ListViewCollections.EmptyListMsg = "No collections loaded";
+            ListViewCollections.Location = new System.Drawing.Point(1, 45);
+            ListViewCollections.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ListViewCollections.Name = "ListViewCollections";
+            ListViewCollections.ShowGroups = false;
+            ListViewCollections.Size = new System.Drawing.Size(540, 397);
+            ListViewCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            ListViewCollections.TabIndex = 5;
+            ListViewCollections.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(192, 255, 192);
+            ListViewCollections.UseCompatibleStateImageBehavior = false;
+            ListViewCollections.UseCustomSelectionColors = true;
+            ListViewCollections.View = System.Windows.Forms.View.Details;
+            ListViewCollections.VirtualMode = true;
+            ListViewCollections.KeyDown += ListViewCollections_KeyDown;
+            ListViewCollections.KeyUp += ListViewCollections_KeyUp;
             // 
             // olvColumn1
             // 
-            this.olvColumn1.AspectName = "Name";
-            this.olvColumn1.MaximumWidth = 400;
-            this.olvColumn1.MinimumWidth = 20;
-            this.olvColumn1.Text = "Name";
-            this.olvColumn1.Width = 100;
+            olvColumn1.AspectName = "Name";
+            olvColumn1.MaximumWidth = 400;
+            olvColumn1.MinimumWidth = 20;
+            olvColumn1.Text = "Name";
+            olvColumn1.Width = 100;
             // 
             // Total
             // 
-            this.Total.AspectName = "NumberOfBeatmaps";
-            this.Total.Text = "Count";
+            Total.AspectName = "NumberOfBeatmaps";
+            Total.Text = "Count";
             // 
             // olvColumn2
             // 
-            this.olvColumn2.AspectName = "NumberOfMissingBeatmaps";
-            this.olvColumn2.Text = "Missing";
+            olvColumn2.AspectName = "NumberOfMissingBeatmaps";
+            olvColumn2.Text = "Missing";
+            // 
+            // column_id
+            // 
+            column_id.AspectName = "Id";
+            column_id.DisplayIndex = 2;
+            column_id.IsEditable = false;
+            column_id.IsVisible = false;
+            column_id.Text = "Id";
+            column_id.Width = 40;
             // 
             // textBox_collectionNameSearch
             // 
-            this.textBox_collectionNameSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 16);
-            this.textBox_collectionNameSearch.Name = "textBox_collectionNameSearch";
-            this.textBox_collectionNameSearch.Size = new System.Drawing.Size(463, 20);
-            this.textBox_collectionNameSearch.TabIndex = 1;
+            textBox_collectionNameSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 18);
+            textBox_collectionNameSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBox_collectionNameSearch.Name = "textBox_collectionNameSearch";
+            textBox_collectionNameSearch.Size = new System.Drawing.Size(540, 23);
+            textBox_collectionNameSearch.TabIndex = 1;
             // 
             // CreateMenuStrip
             // 
-            this.CreateMenuStrip.Name = "CreateMenuStrip";
-            this.CreateMenuStrip.Size = new System.Drawing.Size(181, 22);
-            this.CreateMenuStrip.Tag = "Create";
-            this.CreateMenuStrip.Text = "Create";
-            this.CreateMenuStrip.ToolTipText = "Create new collection";
-            this.CreateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            CreateMenuStrip.Name = "CreateMenuStrip";
+            CreateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            CreateMenuStrip.Tag = "Create";
+            CreateMenuStrip.Text = "Create";
+            CreateMenuStrip.ToolTipText = "Create new collection";
+            CreateMenuStrip.Click += MenuStripClick;
             // 
             // renameCollectionMenuStrip
             // 
-            this.renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
-            this.renameCollectionMenuStrip.ShortcutKeyDisplayString = "F2";
-            this.renameCollectionMenuStrip.Size = new System.Drawing.Size(181, 22);
-            this.renameCollectionMenuStrip.Tag = "Rename";
-            this.renameCollectionMenuStrip.Text = "Rename";
-            this.renameCollectionMenuStrip.ToolTipText = "Rename currently selected collection";
-            this.renameCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            renameCollectionMenuStrip.Name = "renameCollectionMenuStrip";
+            renameCollectionMenuStrip.ShortcutKeyDisplayString = "F2";
+            renameCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            renameCollectionMenuStrip.Tag = "Rename";
+            renameCollectionMenuStrip.Text = "Rename";
+            renameCollectionMenuStrip.ToolTipText = "Rename currently selected collection";
+            renameCollectionMenuStrip.Click += MenuStripClick;
             // 
             // deleteCollectionMenuStrip
             // 
-            this.deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
-            this.deleteCollectionMenuStrip.ShortcutKeyDisplayString = "Del";
-            this.deleteCollectionMenuStrip.Size = new System.Drawing.Size(181, 22);
-            this.deleteCollectionMenuStrip.Tag = "Delete";
-            this.deleteCollectionMenuStrip.Text = "Delete";
-            this.deleteCollectionMenuStrip.ToolTipText = "Delete currently selected collections";
-            this.deleteCollectionMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            deleteCollectionMenuStrip.Name = "deleteCollectionMenuStrip";
+            deleteCollectionMenuStrip.ShortcutKeyDisplayString = "Del";
+            deleteCollectionMenuStrip.Size = new System.Drawing.Size(180, 22);
+            deleteCollectionMenuStrip.Tag = "Delete";
+            deleteCollectionMenuStrip.Text = "Delete";
+            deleteCollectionMenuStrip.ToolTipText = "Delete currently selected collections";
+            deleteCollectionMenuStrip.Click += MenuStripClick;
             // 
             // copyToolStripMenuItem
             // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.copyToolStripMenuItem.Tag = "Copy";
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
+            copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            copyToolStripMenuItem.Tag = "Copy";
+            copyToolStripMenuItem.Text = "Copy";
+            copyToolStripMenuItem.Click += MenuStripClick;
             // 
             // pasteToolStripMenuItem
             // 
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+V";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.pasteToolStripMenuItem.Tag = "Paste";
-            this.pasteToolStripMenuItem.Text = "Paste";
-            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            pasteToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+V";
+            pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            pasteToolStripMenuItem.Tag = "Paste";
+            pasteToolStripMenuItem.Text = "Paste";
+            pasteToolStripMenuItem.Click += MenuStripClick;
             // 
             // DuplicateMenuStrip
             // 
-            this.DuplicateMenuStrip.Name = "DuplicateMenuStrip";
-            this.DuplicateMenuStrip.Size = new System.Drawing.Size(181, 22);
-            this.DuplicateMenuStrip.Tag = "Duplicate";
-            this.DuplicateMenuStrip.Text = "Duplicate";
-            this.DuplicateMenuStrip.ToolTipText = "Create a copy of currently selected collection";
-            this.DuplicateMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            DuplicateMenuStrip.Name = "DuplicateMenuStrip";
+            DuplicateMenuStrip.Size = new System.Drawing.Size(180, 22);
+            DuplicateMenuStrip.Tag = "Duplicate";
+            DuplicateMenuStrip.Text = "Duplicate";
+            DuplicateMenuStrip.ToolTipText = "Create a copy of currently selected collection";
+            DuplicateMenuStrip.Click += MenuStripClick;
             // 
             // mergeWithMenuStrip
             // 
-            this.mergeWithMenuStrip.Name = "mergeWithMenuStrip";
-            this.mergeWithMenuStrip.Size = new System.Drawing.Size(181, 22);
-            this.mergeWithMenuStrip.Tag = "Merge";
-            this.mergeWithMenuStrip.Text = "Merge selected";
-            this.mergeWithMenuStrip.ToolTipText = "Merge beatmaps from selected collections into new collection";
-            this.mergeWithMenuStrip.Click += new System.EventHandler(this.MenuStripClick);
+            mergeWithMenuStrip.Name = "mergeWithMenuStrip";
+            mergeWithMenuStrip.Size = new System.Drawing.Size(180, 22);
+            mergeWithMenuStrip.Tag = "Merge";
+            mergeWithMenuStrip.Text = "Merge selected";
+            mergeWithMenuStrip.ToolTipText = "Merge beatmaps from selected collections into new collection";
+            mergeWithMenuStrip.Click += MenuStripClick;
             // 
             // intersectMenuItem
             // 
-            this.intersectMenuItem.Name = "intersectMenuItem";
-            this.intersectMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.intersectMenuItem.Tag = "Intersect";
-            this.intersectMenuItem.Text = "Intersection";
-            this.intersectMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in all selected collections" +
-    "";
-            this.intersectMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            intersectMenuItem.Name = "intersectMenuItem";
+            intersectMenuItem.Size = new System.Drawing.Size(180, 22);
+            intersectMenuItem.Tag = "Intersect";
+            intersectMenuItem.Text = "Intersection";
+            intersectMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in all selected collections";
+            intersectMenuItem.Click += MenuStripClick;
             // 
             // differenceMenuItem
             // 
-            this.differenceMenuItem.Name = "differenceMenuItem";
-            this.differenceMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.differenceMenuItem.Tag = "Difference";
-            this.differenceMenuItem.Text = "Difference";
-            this.differenceMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in only one of the selected" +
-    " collections";
-            this.differenceMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            differenceMenuItem.Name = "differenceMenuItem";
+            differenceMenuItem.Size = new System.Drawing.Size(180, 22);
+            differenceMenuItem.Tag = "Difference";
+            differenceMenuItem.Text = "Difference";
+            differenceMenuItem.ToolTipText = "Create a collection that contains beatmaps that exist in only one of the selected collections";
+            differenceMenuItem.Click += MenuStripClick;
             // 
             // inverseToolStripMenuItem
             // 
-            this.inverseToolStripMenuItem.Name = "inverseToolStripMenuItem";
-            this.inverseToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.inverseToolStripMenuItem.Tag = "Inverse";
-            this.inverseToolStripMenuItem.Text = "Inverse";
-            this.inverseToolStripMenuItem.ToolTipText = "Create new collection that contains every beatmap not present in all selected col" +
-    "lections";
-            this.inverseToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            inverseToolStripMenuItem.Name = "inverseToolStripMenuItem";
+            inverseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            inverseToolStripMenuItem.Tag = "Inverse";
+            inverseToolStripMenuItem.Text = "Inverse";
+            inverseToolStripMenuItem.ToolTipText = "Create new collection that contains every beatmap not present in all selected collections";
+            inverseToolStripMenuItem.Click += MenuStripClick;
             // 
             // CollectionContextMenuStrip
             // 
-            this.CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CreateMenuStrip,
-            this.renameCollectionMenuStrip,
-            this.deleteCollectionMenuStrip,
-            this.copyToolStripMenuItem,
-            this.pasteToolStripMenuItem,
-            this.DuplicateMenuStrip,
-            this.mergeWithMenuStrip,
-            this.intersectMenuItem,
-            this.differenceMenuItem,
-            this.inverseToolStripMenuItem,
-            this.exportBeatmapSetsToolStripMenuItem});
-            this.CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
-            this.CollectionContextMenuStrip.Size = new System.Drawing.Size(182, 246);
+            CollectionContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { CreateMenuStrip, renameCollectionMenuStrip, deleteCollectionMenuStrip, copyToolStripMenuItem, pasteToolStripMenuItem, DuplicateMenuStrip, mergeWithMenuStrip, intersectMenuItem, differenceMenuItem, inverseToolStripMenuItem, exportBeatmapSetsToolStripMenuItem });
+            CollectionContextMenuStrip.Name = "CollectionContextMenuStrip";
+            CollectionContextMenuStrip.Size = new System.Drawing.Size(181, 246);
             // 
             // exportBeatmapSetsToolStripMenuItem
             // 
-            this.exportBeatmapSetsToolStripMenuItem.Name = "exportBeatmapSetsToolStripMenuItem";
-            this.exportBeatmapSetsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.exportBeatmapSetsToolStripMenuItem.Tag = "Export";
-            this.exportBeatmapSetsToolStripMenuItem.Text = "Export beatmap sets";
-            this.exportBeatmapSetsToolStripMenuItem.Click += new System.EventHandler(this.MenuStripClick);
+            exportBeatmapSetsToolStripMenuItem.Name = "exportBeatmapSetsToolStripMenuItem";
+            exportBeatmapSetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            exportBeatmapSetsToolStripMenuItem.Tag = "Export";
+            exportBeatmapSetsToolStripMenuItem.Text = "Export beatmap sets";
+            exportBeatmapSetsToolStripMenuItem.Click += MenuStripClick;
             // 
             // CollectionListingView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
-            this.Name = "CollectionListingView";
-            this.Size = new System.Drawing.Size(464, 384);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ListViewCollections)).EndInit();
-            this.CollectionContextMenuStrip.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(panel1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "CollectionListingView";
+            Size = new System.Drawing.Size(541, 443);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ListViewCollections).EndInit();
+            CollectionContextMenuStrip.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 

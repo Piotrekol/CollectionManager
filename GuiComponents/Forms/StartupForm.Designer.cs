@@ -28,34 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.startupView1 = new GuiComponents.Controls.StartupView();
-            this.SuspendLayout();
+            startupView1 = new GuiComponents.Controls.StartupView();
+            SuspendLayout();
             // 
             // startupView1
             // 
-            this.startupView1.CollectionButtonsEnabled = true;
-            this.startupView1.CollectionStatusText = "";
-            this.startupView1.DatabaseButtonsEnabled = true;
-            this.startupView1.LoadDatabaseStatusText = "...";
-            this.startupView1.LoadOsuCollectionButtonEnabled = true;
-            this.startupView1.Location = new System.Drawing.Point(0, 0);
-            this.startupView1.Name = "startupView1";
-            this.startupView1.Size = new System.Drawing.Size(519, 379);
-            this.startupView1.TabIndex = 0;
-            this.startupView1.UseSelectedOptionsOnStartup = false;
+            startupView1.CollectionButtonsEnabled = true;
+            startupView1.CollectionStatusText = "";
+            startupView1.DatabaseButtonsEnabled = true;
+            startupView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            startupView1.LoadDatabaseStatusText = "...";
+            startupView1.LoadLazerDatabaseButtonEnabled = true;
+            startupView1.LoadOsuCollectionButtonEnabled = true;
+            startupView1.Location = new System.Drawing.Point(0, 0);
+            startupView1.Name = "startupView1";
+            startupView1.Size = new System.Drawing.Size(519, 461);
+            startupView1.TabIndex = 0;
+            startupView1.UseSelectedOptionsOnStartup = false;
+            startupView1.UseSelectedOptionsOnStartupEnabled = true;
             // 
             // StartupForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(519, 379);
-            this.Controls.Add(this.startupView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(535, 418);
-            this.MinimumSize = new System.Drawing.Size(535, 418);
-            this.Name = "StartupForm";
-            this.Text = "osu! Collection Manager";
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            ClientSize = new System.Drawing.Size(519, 461);
+            Controls.Add(startupView1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MaximumSize = new System.Drawing.Size(535, 500);
+            MinimumSize = new System.Drawing.Size(535, 500);
+            Name = "StartupForm";
+            Text = "osu! Collection Manager";
+            ResumeLayout(false);
 
         }
 

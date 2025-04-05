@@ -30,135 +30,145 @@ namespace GuiComponents.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.mainSidePanelView1 = new GuiComponents.Controls.MainSidePanelView();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.combinedListingView1 = new GuiComponents.Controls.CombinedListingView();
-            this.tabControlEx1 = new GuiComponents.Controls.TabControlEx();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.combinedBeatmapPreviewView1 = new GuiComponents.Controls.CombinedBeatmapPreviewView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.collectionTextView1 = new GuiComponents.Controls.CollectionTextView();
-            this.infoTextView1 = new GuiComponents.Controls.InfoTextView();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.tabControlEx1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.SuspendLayout();
+            mainSidePanelView1 = new MainSidePanelView();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            combinedListingView1 = new CombinedListingView();
+            tabControlEx1 = new TabControlEx();
+            tabPage1 = new System.Windows.Forms.TabPage();
+            combinedBeatmapPreviewView1 = new CombinedBeatmapPreviewView();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            collectionTextView1 = new CollectionTextView();
+            infoTextView1 = new InfoTextView();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            tabControlEx1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            SuspendLayout();
             // 
             // mainSidePanelView1
             // 
-            this.mainSidePanelView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mainSidePanelView1.Location = new System.Drawing.Point(0, 0);
-            this.mainSidePanelView1.Name = "mainSidePanelView1";
-            this.mainSidePanelView1.Size = new System.Drawing.Size(1356, 23);
-            this.mainSidePanelView1.TabIndex = 1;
+            mainSidePanelView1.Dock = System.Windows.Forms.DockStyle.Top;
+            mainSidePanelView1.Location = new System.Drawing.Point(0, 0);
+            mainSidePanelView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            mainSidePanelView1.Name = "mainSidePanelView1";
+            mainSidePanelView1.Size = new System.Drawing.Size(1582, 27);
+            mainSidePanelView1.TabIndex = 1;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(3, 42);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            splitContainer1.Location = new System.Drawing.Point(4, 48);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.combinedListingView1);
-            this.splitContainer1.Panel1MinSize = 50;
+            splitContainer1.Panel1.Controls.Add(combinedListingView1);
+            splitContainer1.Panel1MinSize = 50;
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControlEx1);
-            this.splitContainer1.Size = new System.Drawing.Size(1351, 508);
-            this.splitContainer1.SplitterDistance = 883;
-            this.splitContainer1.TabIndex = 3;
+            splitContainer1.Panel2.Controls.Add(tabControlEx1);
+            splitContainer1.Size = new System.Drawing.Size(1576, 586);
+            splitContainer1.SplitterDistance = 1030;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 3;
             // 
             // combinedListingView1
             // 
-            this.combinedListingView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.combinedListingView1.Location = new System.Drawing.Point(0, 0);
-            this.combinedListingView1.Name = "combinedListingView1";
-            this.combinedListingView1.Size = new System.Drawing.Size(883, 508);
-            this.combinedListingView1.TabIndex = 0;
+            combinedListingView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            combinedListingView1.Location = new System.Drawing.Point(0, 0);
+            combinedListingView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            combinedListingView1.Name = "combinedListingView1";
+            combinedListingView1.Size = new System.Drawing.Size(1030, 586);
+            combinedListingView1.TabIndex = 0;
             // 
             // tabControlEx1
             // 
-            this.tabControlEx1.Controls.Add(this.tabPage1);
-            this.tabControlEx1.Controls.Add(this.tabPage2);
-            this.tabControlEx1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlEx1.Location = new System.Drawing.Point(0, 0);
-            this.tabControlEx1.Name = "tabControlEx1";
-            this.tabControlEx1.SelectedIndex = 0;
-            this.tabControlEx1.Size = new System.Drawing.Size(464, 508);
-            this.tabControlEx1.TabIndex = 0;
+            tabControlEx1.Controls.Add(tabPage1);
+            tabControlEx1.Controls.Add(tabPage2);
+            tabControlEx1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControlEx1.Location = new System.Drawing.Point(0, 0);
+            tabControlEx1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabControlEx1.Name = "tabControlEx1";
+            tabControlEx1.SelectedIndex = 0;
+            tabControlEx1.Size = new System.Drawing.Size(541, 586);
+            tabControlEx1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.combinedBeatmapPreviewView1);
-            this.tabPage1.Location = new System.Drawing.Point(0, 20);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(462, 487);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "map preview";
+            tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            tabPage1.Controls.Add(combinedBeatmapPreviewView1);
+            tabPage1.Location = new System.Drawing.Point(0, 22);
+            tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage1.Size = new System.Drawing.Size(539, 563);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "map preview";
             // 
             // combinedBeatmapPreviewView1
             // 
-            this.combinedBeatmapPreviewView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.combinedBeatmapPreviewView1.Location = new System.Drawing.Point(3, 3);
-            this.combinedBeatmapPreviewView1.Name = "combinedBeatmapPreviewView1";
-            this.combinedBeatmapPreviewView1.Size = new System.Drawing.Size(456, 481);
-            this.combinedBeatmapPreviewView1.TabIndex = 0;
+            combinedBeatmapPreviewView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            combinedBeatmapPreviewView1.Location = new System.Drawing.Point(4, 3);
+            combinedBeatmapPreviewView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            combinedBeatmapPreviewView1.Name = "combinedBeatmapPreviewView1";
+            combinedBeatmapPreviewView1.Size = new System.Drawing.Size(531, 557);
+            combinedBeatmapPreviewView1.TabIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage2.Controls.Add(this.collectionTextView1);
-            this.tabPage2.Location = new System.Drawing.Point(0, 20);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(462, 487);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Collection text";
+            tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            tabPage2.Controls.Add(collectionTextView1);
+            tabPage2.Location = new System.Drawing.Point(0, 22);
+            tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage2.Size = new System.Drawing.Size(539, 563);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Collection text";
             // 
             // collectionTextView1
             // 
-            this.collectionTextView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.collectionTextView1.Location = new System.Drawing.Point(3, 3);
-            this.collectionTextView1.Name = "collectionTextView1";
-            this.collectionTextView1.Size = new System.Drawing.Size(456, 481);
-            this.collectionTextView1.TabIndex = 0;
+            collectionTextView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            collectionTextView1.Location = new System.Drawing.Point(4, 3);
+            collectionTextView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            collectionTextView1.Name = "collectionTextView1";
+            collectionTextView1.Size = new System.Drawing.Size(531, 557);
+            collectionTextView1.TabIndex = 0;
             // 
             // infoTextView1
             // 
-            this.infoTextView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.infoTextView1.Location = new System.Drawing.Point(0, 23);
-            this.infoTextView1.Name = "infoTextView1";
-            this.infoTextView1.Size = new System.Drawing.Size(1356, 16);
-            this.infoTextView1.TabIndex = 4;
+            infoTextView1.CMStatusVisiable = true;
+            infoTextView1.Dock = System.Windows.Forms.DockStyle.Top;
+            infoTextView1.Location = new System.Drawing.Point(0, 27);
+            infoTextView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            infoTextView1.Name = "infoTextView1";
+            infoTextView1.Size = new System.Drawing.Size(1582, 18);
+            infoTextView1.TabIndex = 4;
             // 
             // MainFormView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1356, 550);
-            this.Controls.Add(this.infoTextView1);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.mainSidePanelView1);
-            this.Name = "MainFormView";
-            this.Text = "Collection Manager by Piotrekol";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.tabControlEx1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1582, 635);
+            Controls.Add(infoTextView1);
+            Controls.Add(splitContainer1);
+            Controls.Add(mainSidePanelView1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "MainFormView";
+            Text = "Collection Manager by Piotrekol";
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            tabControlEx1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 

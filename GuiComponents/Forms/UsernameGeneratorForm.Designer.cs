@@ -28,27 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.usernameGeneratorView1 = new GuiComponents.Controls.UsernameGeneratorView();
-            this.SuspendLayout();
+            usernameGeneratorView1 = new GuiComponents.Controls.UsernameGeneratorView();
+            SuspendLayout();
             // 
             // usernameGeneratorView1
             // 
-            this.usernameGeneratorView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.usernameGeneratorView1.Location = new System.Drawing.Point(0, 0);
-            this.usernameGeneratorView1.Name = "usernameGeneratorView1";
-            this.usernameGeneratorView1.Size = new System.Drawing.Size(382, 261);
-            this.usernameGeneratorView1.Status = null;
-            this.usernameGeneratorView1.TabIndex = 0;
+            usernameGeneratorView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            usernameGeneratorView1.Location = new System.Drawing.Point(0, 0);
+            usernameGeneratorView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            usernameGeneratorView1.Name = "usernameGeneratorView1";
+            usernameGeneratorView1.Size = new System.Drawing.Size(446, 301);
+            usernameGeneratorView1.Status = null;
+            usernameGeneratorView1.TabIndex = 0;
             // 
             // UsernameGeneratorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 261);
-            this.Controls.Add(this.usernameGeneratorView1);
-            this.Name = "UsernameGeneratorForm";
-            this.Text = "Collection Manager - Username generator";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(446, 301);
+            Controls.Add(usernameGeneratorView1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "UsernameGeneratorForm";
+            Text = "Collection Manager - Username generator";
+            ResumeLayout(false);
 
         }
 

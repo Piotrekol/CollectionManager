@@ -28,52 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox_textType = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            textBox1 = new System.Windows.Forms.TextBox();
+            comboBox_textType = new System.Windows.Forms.ComboBox();
+            label1 = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(0, 30);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(312, 324);
-            this.textBox1.TabIndex = 0;
+            textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBox1.Location = new System.Drawing.Point(0, 35);
+            textBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            textBox1.Size = new System.Drawing.Size(363, 373);
+            textBox1.TabIndex = 0;
             // 
             // comboBox_textType
             // 
-            this.comboBox_textType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_textType.FormattingEnabled = true;
-            this.comboBox_textType.Location = new System.Drawing.Point(72, 3);
-            this.comboBox_textType.Name = "comboBox_textType";
-            this.comboBox_textType.Size = new System.Drawing.Size(153, 21);
-            this.comboBox_textType.TabIndex = 1;
+            comboBox_textType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox_textType.FormattingEnabled = true;
+            comboBox_textType.Location = new System.Drawing.Point(84, 3);
+            comboBox_textType.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            comboBox_textType.Name = "comboBox_textType";
+            comboBox_textType.Size = new System.Drawing.Size(178, 23);
+            comboBox_textType.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Text format:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(4, 7);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(70, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Text format:";
             // 
             // CollectionTextView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox_textType);
-            this.Controls.Add(this.textBox1);
-            this.Name = "CollectionTextView";
-            this.Size = new System.Drawing.Size(312, 354);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(label1);
+            Controls.Add(comboBox_textType);
+            Controls.Add(textBox1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "CollectionTextView";
+            Size = new System.Drawing.Size(364, 408);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

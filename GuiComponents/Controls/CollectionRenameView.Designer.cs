@@ -28,120 +28,130 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label_Error = new System.Windows.Forms.Label();
-            this.panel_bottom = new System.Windows.Forms.Panel();
-            this.button_cancel = new System.Windows.Forms.Button();
-            this.button_rename = new System.Windows.Forms.Button();
-            this.panel_Top = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label_orginalCollectionName = new System.Windows.Forms.Label();
-            this.textBox_newCollectionName = new System.Windows.Forms.TextBox();
-            this.panel_bottom.SuspendLayout();
-            this.panel_Top.SuspendLayout();
-            this.SuspendLayout();
+            label_Error = new System.Windows.Forms.Label();
+            panel_bottom = new System.Windows.Forms.Panel();
+            button_cancel = new System.Windows.Forms.Button();
+            button_rename = new System.Windows.Forms.Button();
+            panel_Top = new System.Windows.Forms.Panel();
+            label2 = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            label_orginalCollectionName = new System.Windows.Forms.Label();
+            textBox_newCollectionName = new System.Windows.Forms.TextBox();
+            panel_bottom.SuspendLayout();
+            panel_Top.SuspendLayout();
+            SuspendLayout();
             // 
             // label_Error
             // 
-            this.label_Error.AutoSize = true;
-            this.label_Error.Location = new System.Drawing.Point(32, 4);
-            this.label_Error.Name = "label_Error";
-            this.label_Error.Size = new System.Drawing.Size(125, 13);
-            this.label_Error.TabIndex = 11;
-            this.label_Error.Text = "This name already exists!";
-            this.label_Error.Visible = false;
+            label_Error.AutoSize = true;
+            label_Error.Location = new System.Drawing.Point(37, 5);
+            label_Error.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_Error.Name = "label_Error";
+            label_Error.Size = new System.Drawing.Size(137, 15);
+            label_Error.TabIndex = 11;
+            label_Error.Text = "This name already exists!";
+            label_Error.Visible = false;
             // 
             // panel_bottom
             // 
-            this.panel_bottom.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.panel_bottom.Controls.Add(this.label_Error);
-            this.panel_bottom.Controls.Add(this.button_cancel);
-            this.panel_bottom.Controls.Add(this.button_rename);
-            this.panel_bottom.Location = new System.Drawing.Point(31, 66);
-            this.panel_bottom.Name = "panel_bottom";
-            this.panel_bottom.Size = new System.Drawing.Size(188, 46);
-            this.panel_bottom.TabIndex = 10;
+            panel_bottom.Anchor = System.Windows.Forms.AnchorStyles.None;
+            panel_bottom.Controls.Add(label_Error);
+            panel_bottom.Controls.Add(button_cancel);
+            panel_bottom.Controls.Add(button_rename);
+            panel_bottom.Location = new System.Drawing.Point(36, 76);
+            panel_bottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel_bottom.Name = "panel_bottom";
+            panel_bottom.Size = new System.Drawing.Size(219, 53);
+            panel_bottom.TabIndex = 10;
             // 
             // button_cancel
             // 
-            this.button_cancel.Location = new System.Drawing.Point(110, 20);
-            this.button_cancel.Name = "button_cancel";
-            this.button_cancel.Size = new System.Drawing.Size(75, 23);
-            this.button_cancel.TabIndex = 5;
-            this.button_cancel.Text = "Cancel";
-            this.button_cancel.UseVisualStyleBackColor = true;
+            button_cancel.Location = new System.Drawing.Point(128, 23);
+            button_cancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button_cancel.Name = "button_cancel";
+            button_cancel.Size = new System.Drawing.Size(88, 27);
+            button_cancel.TabIndex = 5;
+            button_cancel.Text = "Cancel";
+            button_cancel.UseVisualStyleBackColor = true;
             // 
             // button_rename
             // 
-            this.button_rename.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_rename.Enabled = false;
-            this.button_rename.Location = new System.Drawing.Point(5, 20);
-            this.button_rename.Name = "button_rename";
-            this.button_rename.Size = new System.Drawing.Size(75, 23);
-            this.button_rename.TabIndex = 4;
-            this.button_rename.Text = "Rename";
-            this.button_rename.UseVisualStyleBackColor = true;
+            button_rename.DialogResult = System.Windows.Forms.DialogResult.OK;
+            button_rename.Enabled = false;
+            button_rename.Location = new System.Drawing.Point(6, 23);
+            button_rename.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button_rename.Name = "button_rename";
+            button_rename.Size = new System.Drawing.Size(88, 27);
+            button_rename.TabIndex = 4;
+            button_rename.Text = "Rename";
+            button_rename.UseVisualStyleBackColor = true;
             // 
             // panel_Top
             // 
-            this.panel_Top.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.panel_Top.Controls.Add(this.label2);
-            this.panel_Top.Controls.Add(this.label1);
-            this.panel_Top.Controls.Add(this.label_orginalCollectionName);
-            this.panel_Top.Controls.Add(this.textBox_newCollectionName);
-            this.panel_Top.Location = new System.Drawing.Point(0, 0);
-            this.panel_Top.MaximumSize = new System.Drawing.Size(254, 63);
-            this.panel_Top.Name = "panel_Top";
-            this.panel_Top.Size = new System.Drawing.Size(254, 63);
-            this.panel_Top.TabIndex = 9;
+            panel_Top.Anchor = System.Windows.Forms.AnchorStyles.None;
+            panel_Top.Controls.Add(label2);
+            panel_Top.Controls.Add(label1);
+            panel_Top.Controls.Add(label_orginalCollectionName);
+            panel_Top.Controls.Add(textBox_newCollectionName);
+            panel_Top.Location = new System.Drawing.Point(0, 0);
+            panel_Top.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel_Top.MaximumSize = new System.Drawing.Size(296, 73);
+            panel_Top.Name = "panel_Top";
+            panel_Top.Size = new System.Drawing.Size(296, 73);
+            panel_Top.TabIndex = 9;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "New name:";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(20, 43);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(67, 15);
+            label2.TabIndex = 1;
+            label2.Text = "New name:";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Orginal name:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(7, 8);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(82, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Orginal name:";
             // 
             // label_orginalCollectionName
             // 
-            this.label_orginalCollectionName.AutoSize = true;
-            this.label_orginalCollectionName.Location = new System.Drawing.Point(81, 7);
-            this.label_orginalCollectionName.Name = "label_orginalCollectionName";
-            this.label_orginalCollectionName.Size = new System.Drawing.Size(27, 13);
-            this.label_orginalCollectionName.TabIndex = 2;
-            this.label_orginalCollectionName.Text = "from";
+            label_orginalCollectionName.AutoSize = true;
+            label_orginalCollectionName.Location = new System.Drawing.Point(94, 8);
+            label_orginalCollectionName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label_orginalCollectionName.Name = "label_orginalCollectionName";
+            label_orginalCollectionName.Size = new System.Drawing.Size(33, 15);
+            label_orginalCollectionName.TabIndex = 2;
+            label_orginalCollectionName.Text = "from";
             // 
             // textBox_newCollectionName
             // 
-            this.textBox_newCollectionName.Location = new System.Drawing.Point(84, 34);
-            this.textBox_newCollectionName.Name = "textBox_newCollectionName";
-            this.textBox_newCollectionName.Size = new System.Drawing.Size(150, 20);
-            this.textBox_newCollectionName.TabIndex = 3;
+            textBox_newCollectionName.Location = new System.Drawing.Point(98, 39);
+            textBox_newCollectionName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBox_newCollectionName.Name = "textBox_newCollectionName";
+            textBox_newCollectionName.Size = new System.Drawing.Size(174, 23);
+            textBox_newCollectionName.TabIndex = 3;
             // 
             // CollectionRenameView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel_bottom);
-            this.Controls.Add(this.panel_Top);
-            this.Name = "CollectionRenameView";
-            this.Size = new System.Drawing.Size(255, 112);
-            this.panel_bottom.ResumeLayout(false);
-            this.panel_bottom.PerformLayout();
-            this.panel_Top.ResumeLayout(false);
-            this.panel_Top.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(panel_bottom);
+            Controls.Add(panel_Top);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "CollectionRenameView";
+            Size = new System.Drawing.Size(298, 129);
+            panel_bottom.ResumeLayout(false);
+            panel_bottom.PerformLayout();
+            panel_Top.ResumeLayout(false);
+            panel_Top.PerformLayout();
+            ResumeLayout(false);
 
         }
 
