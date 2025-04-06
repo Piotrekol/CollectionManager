@@ -73,7 +73,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
     {
         get
         {
-            var beatmaps = new Beatmaps();
+            Beatmaps beatmaps = [];
             if (ListViewBeatmaps.SelectedObjects.Count > 0)
             {
                 foreach (object o in ListViewBeatmaps.SelectedObjects)
@@ -132,7 +132,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
     public static DateTimeOffset d = new DateTime(2006, 1, 1);
     private Mods _currentMods = Mods.Nm;
     private PlayMode _currentPlayMode = PlayMode.Osu;
-    private DifficultyCalculator _difficultyCalculator = new DifficultyCalculator();
+    private DifficultyCalculator _difficultyCalculator = new();
     private void InitListView()
     {
         //listview
@@ -150,6 +150,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         column_cs.AspectToStringFormat = format;
         column_od.AspectToStringFormat = format;
         column_hp.AspectToStringFormat = format;
+        column_stars.AspectToStringFormat = format;
+
+        LastPlayed.AspectToStringConverter = FormatDateTimeOffset;
+        EditDate.AspectToStringConverter = FormatDateTimeOffset;
 
         column_stars.AspectGetter = rowObject =>
         {
@@ -197,16 +201,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
             return null;
         };
-        LastPlayed.AspectToStringConverter = delegate (object cellValue)
-        {
-            if (cellValue == null)
-            {
-                return string.Empty;
-            }
 
-            DateTimeOffset val = (DateTimeOffset)cellValue;
-            return val > d ? $"{val}" : "Never";
-        };
         column_bpm.AspectGetter = rowObject =>
         {
             if (rowObject is Beatmap beatmap)
@@ -262,10 +257,21 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
     }
 
+    private static string FormatDateTimeOffset(object cellValue)
+    {
+        if (cellValue is null)
+        {
+            return string.Empty;
+        }
+
+        DateTimeOffset dateTimeOffset = (DateTimeOffset)cellValue;
+        return dateTimeOffset > d ? $"{dateTimeOffset.LocalDateTime}" : "Never";
+    }
+
     private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)
     {
         modelDropEventArgs.Handled = true;
-        var beatmaps = new Beatmaps();
+        Beatmaps beatmaps = [];
         foreach (object sourceModel in modelDropEventArgs.SourceModels)
         {
             beatmaps.Add((BeatmapExtension)sourceModel);
@@ -280,7 +286,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
     public void FilteringFinished()
     {
-        var selectedBeatmap = SelectedBeatmap;
+        Beatmap selectedBeatmap = SelectedBeatmap;
         ListViewBeatmaps.UpdateColumnFiltering();
         ListViewBeatmaps.EndUpdate();
         UpdateResultsCount();

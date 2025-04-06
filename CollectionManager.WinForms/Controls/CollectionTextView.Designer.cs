@@ -74,6 +74,7 @@
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "CollectionTextView";
             Size = new System.Drawing.Size(364, 408);
+            VisibleChanged += CollectionTextView_VisibleChanged;
             ResumeLayout(false);
             PerformLayout();
 

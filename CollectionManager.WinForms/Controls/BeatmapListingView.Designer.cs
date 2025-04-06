@@ -62,7 +62,7 @@
             olvColumn10 = new BrightIdeasSoftware.OLVColumn();
             OsuGrade = new BrightIdeasSoftware.OLVColumn();
             LastPlayed = new BrightIdeasSoftware.OLVColumn();
-            olvColumn12 = new BrightIdeasSoftware.OLVColumn();
+            EditDate = new BrightIdeasSoftware.OLVColumn();
             olvColumn13 = new BrightIdeasSoftware.OLVColumn();
             TaikoGrade = new BrightIdeasSoftware.OLVColumn();
             CatchGrade = new BrightIdeasSoftware.OLVColumn();
@@ -235,7 +235,7 @@
             ListViewBeatmaps.AllColumns.Add(olvColumn10);
             ListViewBeatmaps.AllColumns.Add(OsuGrade);
             ListViewBeatmaps.AllColumns.Add(LastPlayed);
-            ListViewBeatmaps.AllColumns.Add(olvColumn12);
+            ListViewBeatmaps.AllColumns.Add(EditDate);
             ListViewBeatmaps.AllColumns.Add(olvColumn13);
             ListViewBeatmaps.AllColumns.Add(TaikoGrade);
             ListViewBeatmaps.AllColumns.Add(CatchGrade);
@@ -244,7 +244,7 @@
             ListViewBeatmaps.AllColumns.Add(olvColumn11);
             ListViewBeatmaps.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             ListViewBeatmaps.AutoGenerateColumns = false;
-            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn2, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, LastPlayed, olvColumn12 });
+            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn2, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, LastPlayed, EditDate });
             ListViewBeatmaps.DataSource = null;
             ListViewBeatmaps.EmptyListMsg = "No collection selected";
             ListViewBeatmaps.IsSimpleDragSource = true;
@@ -355,12 +355,12 @@
             LastPlayed.Text = "Last played";
             LastPlayed.Width = 75;
             // 
-            // olvColumn12
+            // EditDate
             // 
-            olvColumn12.AspectName = "EditDate";
-            olvColumn12.IsEditable = false;
-            olvColumn12.Text = "Last update";
-            olvColumn12.Width = 75;
+            EditDate.AspectName = "EditDate";
+            EditDate.IsEditable = false;
+            EditDate.Text = "Last update";
+            EditDate.Width = 75;
             // 
             // olvColumn13
             // 
@@ -451,7 +451,7 @@
         private System.Windows.Forms.ToolStripMenuItem SearchTitleMapMenuStrip;
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private BrightIdeasSoftware.OLVColumn LastPlayed;
-        private BrightIdeasSoftware.OLVColumn olvColumn12;
+        private BrightIdeasSoftware.OLVColumn EditDate;
         private System.Windows.Forms.ToolStripMenuItem OpenBeatmapFolderMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyUrlMenuStrip;

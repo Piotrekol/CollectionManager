@@ -7,13 +7,15 @@ using System.Collections.Generic;
 
 public class MapCacher : IMapDataManager
 {
-    public readonly object LockingObject = new();
-    public readonly Beatmaps Beatmaps = [];
-    public HashSet<string> BeatmapHashes = [];
     private readonly Dictionary<string, Beatmap> LoadedBeatmapsMd5Dict = [];
     private readonly Dictionary<int, Beatmap> LoadedBeatmapsMapIdDict = [];
+    private bool _massStoring;
+    private readonly HashSet<string> MassStoringBeatmapHashes = [];
+
+    public object LockingObject { get; } = new();
+    public Beatmaps Beatmaps { get; } = [];
     public event EventHandler BeatmapsModified;
-    private bool _massStoring = false;
+
     public MapCacher()
     {
 
@@ -22,16 +24,15 @@ public class MapCacher : IMapDataManager
     public void UnloadBeatmaps()
     {
         Beatmaps.Clear();
-        BeatmapHashes.Clear();
         EndMassStoring();
     }
+
     private void UpdateLookupDicts(Beatmap map, bool recalculate = false)
     {
         lock (LockingObject)
         {
             if (recalculate)
             {
-
                 LoadedBeatmapsMd5Dict.Clear();
                 LoadedBeatmapsMapIdDict.Clear();
                 foreach (Beatmap beatmap in Beatmaps)
@@ -43,45 +44,50 @@ public class MapCacher : IMapDataManager
 
             }
 
-            if (!LoadedBeatmapsMd5Dict.ContainsKey(map.Md5))
-            {
-                LoadedBeatmapsMd5Dict.Add(map.Md5, map);
-            }
-
-            if (!LoadedBeatmapsMapIdDict.ContainsKey(map.MapId))
-            {
-                LoadedBeatmapsMapIdDict.Add(map.MapId, map);
-            }
+            _ = LoadedBeatmapsMd5Dict.TryAdd(map.Md5, map);
+            _ = LoadedBeatmapsMapIdDict.TryAdd(map.MapId, map);
         }
     }
-    public void StartMassStoring() => _massStoring = true;
+    public void StartMassStoring()
+    {
+        _massStoring = true;
+
+        foreach (Beatmap beatmap in Beatmaps)
+        {
+            _ = MassStoringBeatmapHashes.Add(beatmap.Md5);
+        }
+    }
 
     public void EndMassStoring()
     {
         _massStoring = false;
+        MassStoringBeatmapHashes.Clear();
         UpdateLookupDicts(null, true);
         OnBeatmapsModified();
     }
 
     public void StoreBeatmap(Beatmap beatmap)
     {
-        if (!BeatmapHashes.Contains(beatmap.Md5))
+        if (_massStoring)
         {
-            _ = BeatmapHashes.Add(beatmap.Md5);
-            Beatmaps.Add((Beatmap)beatmap.Clone());
-            if (!_massStoring)
+            if (MassStoringBeatmapHashes.Add(beatmap.Md5))
             {
-                UpdateLookupDicts(beatmap);
-                OnBeatmapsModified();
+                Beatmaps.Add((Beatmap)beatmap.Clone());
             }
+
+            return;
         }
+
+        Beatmaps.Add((Beatmap)beatmap.Clone());
+        UpdateLookupDicts(beatmap);
+        OnBeatmapsModified();
     }
 
-    public bool BeatmapExistsInDatabase(string md5) => BeatmapHashes.Contains(md5);
+    public bool BeatmapExistsInDatabase(string md5) => Beatmaps.Any(beatmap => beatmap.Md5 == md5);
 
     private void OnBeatmapsModified() => BeatmapsModified?.Invoke(this, EventArgs.Empty);
 
-    public Beatmap GetByHash(string hash) => LoadedBeatmapsMd5Dict.ContainsKey(hash) ? LoadedBeatmapsMd5Dict[hash] : null;
+    public Beatmap GetByHash(string hash) => LoadedBeatmapsMd5Dict.TryGetValue(hash, out Beatmap value) ? value : null;
 
-    public Beatmap GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.ContainsKey(mapId) ? LoadedBeatmapsMapIdDict[mapId] : null;
+    public Beatmap GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
 }

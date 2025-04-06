@@ -5,7 +5,6 @@ using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.FileIo.OsuLazerDb;
 using CollectionManager.Core.Types;
 using CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
-using System;
 
 internal static class BeatmapInfoExtensions
 {
@@ -75,7 +74,7 @@ internal static class BeatmapInfoExtensions
 
         lazerBeatmap.ModPpStars.Add(
             ToPlayMode(beatmapInfo.Ruleset.ShortName),
-            new StarRating { { (int)PlayMode.Osu, Math.Round(beatmapInfo.StarRating, 2) } });
+            new StarRating { { (int)PlayMode.Osu, (float)beatmapInfo.StarRating } });
 
         return lazerBeatmap;
     }

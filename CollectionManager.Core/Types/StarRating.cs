@@ -3,18 +3,23 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class StarRating : IEnumerable<KeyValuePair<int, double>>
+public class StarRating : IEnumerable<KeyValuePair<int, float>>
 {
-    public SortedList<int, double> Values { get; } = [];
-    public void Add(int key, double value)
+    public SortedList<int, float>? Values { get; private set; }
+    public void Add(int key, float value)
         => this[key] = value;
 
     public bool ContainsKey(int key)
-        => Values.ContainsKey(key);
+        => Values?.ContainsKey(key) ?? false;
 
-    public IEnumerator<KeyValuePair<int, double>> GetEnumerator()
+    public IEnumerator<KeyValuePair<int, float>> GetEnumerator()
     {
-        foreach (KeyValuePair<int, double> kvPair in Values)
+        if (Values is null)
+        {
+            yield break;
+        }
+
+        foreach (KeyValuePair<int, float> kvPair in Values)
         {
             yield return kvPair;
         }
@@ -27,7 +32,12 @@ public class StarRating : IEnumerable<KeyValuePair<int, double>>
         unchecked
         {
             int hash = 17;
-            foreach (KeyValuePair<int, double> kvPair in Values)
+            if (Values is null)
+            {
+                return hash;
+            }
+
+            foreach (KeyValuePair<int, float> kvPair in Values)
             {
                 hash = (hash * 23) + kvPair.Key.GetHashCode();
                 hash = (hash * 23) + kvPair.Value.GetHashCode();
@@ -37,8 +47,14 @@ public class StarRating : IEnumerable<KeyValuePair<int, double>>
         }
     }
 
-    public double this[int key]
+    public float this[int key]
     {
-        get => Values[key]; set => Values[key] = value;
+        get => Values[key];
+
+        set
+        {
+            Values ??= [];
+            Values[key] = value;
+        }
     }
 }

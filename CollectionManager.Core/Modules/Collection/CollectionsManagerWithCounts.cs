@@ -5,10 +5,8 @@ using System.Collections.Generic;
 
 public class CollectionsManagerWithCounts : CollectionsManager
 {
-    private readonly HashSet<string> _missingBeatmapHashes = [];
-    private readonly HashSet<int> _downloadableMapSetIds = [];
-    public int MissingMapSetsCount => _downloadableMapSetIds.Count;
-    public int UnknownMapCount => _missingBeatmapHashes.Count;
+    public int MissingMapSetsCount { get; private set; }
+    public int UnknownMapCount { get; private set; }
     public int BeatmapsInCollectionsCount { get; private set; }
     public int CollectionsCount => LoadedCollections.Count;
 
@@ -19,6 +17,10 @@ public class CollectionsManagerWithCounts : CollectionsManager
     protected override void AfterCollectionsEdit()
     {
         int beatmapCount = 0;
+
+        HashSet<string> _missingBeatmapHashes = [];
+        HashSet<int> _downloadableMapSetIds = [];
+
         _missingBeatmapHashes.Clear();
         _downloadableMapSetIds.Clear();
         foreach (IOsuCollection collection in LoadedCollections)
@@ -43,6 +45,8 @@ public class CollectionsManagerWithCounts : CollectionsManager
         }
 
         BeatmapsInCollectionsCount = beatmapCount;
+        MissingMapSetsCount = _downloadableMapSetIds.Count;
+        UnknownMapCount = _missingBeatmapHashes.Count;
 
         base.AfterCollectionsEdit();
     }

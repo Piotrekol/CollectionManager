@@ -4,8 +4,12 @@ using System;
 
 public interface ICollectionTextView
 {
+    event EventHandler SaveTypeChanged;
+    event EventHandler IsVisibleChanged;
+
+    bool IsVisible { get; }
+
     string GeneratedText { set; }
     string SelectedSaveType { get; }
-    event EventHandler SaveTypeChanged;
     void SetListTypes(Array types);
 }

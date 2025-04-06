@@ -10,10 +10,9 @@ using System.Linq;
 using System.Threading;
 
 //TODO: refactor to allow for read/write access.
-public class OsuDatabaseLoader
+public class OsuDatabaseLoader : IDisposable
 {
     private readonly IMapDataManager _mapDataStorer;
-    private FileStream _fileStream;
     private BinaryReader _binaryReader;
     private readonly Beatmap _tempBeatmap;
 
@@ -36,14 +35,22 @@ public class OsuDatabaseLoader
     {
         if (FileExists(fullOsuDbPath))
         {
-            _fileStream = new FileStream(fullOsuDbPath, FileMode.Open, FileAccess.Read);
-            _binaryReader = new BinaryReader(_fileStream);
-            if (DatabaseContainsData(progress))
+            using FileStream fileStream = new(fullOsuDbPath, FileMode.Open, FileAccess.Read);
+
+            try
             {
-                ReadDatabaseEntries(progress, cancellationToken);
+                _binaryReader = new BinaryReader(fileStream);
+                if (DatabaseContainsData(progress))
+                {
+                    ReadDatabaseEntries(progress, cancellationToken);
+                }
+
+            }
+            finally
+            {
+                _binaryReader.Dispose();
             }
 
-            DestoryReader();
         }
 
         GC.Collect();
@@ -244,14 +251,15 @@ public class OsuDatabaseLoader
         for (int j = 0; j < num; j++)
         {
             int modEnum = (int)ConditionalRead();
-            double stars = Convert.ToDouble(ConditionalRead());
+            float stars = (float)ConditionalRead();
+
             if (!modPpStars.ContainsKey(modEnum))
             {
-                modPpStars.Add(modEnum, Math.Round(stars, 2));
+                modPpStars.Add(modEnum, stars);
             }
             else
             {
-                double star = Math.Round(stars, 2);
+                float star = stars;
                 if (modPpStars[modEnum] < star)
                 {
                     modPpStars[modEnum] = star;
@@ -326,13 +334,13 @@ public class OsuDatabaseLoader
             case 16:
             {
                 int num = _binaryReader.ReadInt32();
-                return num > 0 ? _binaryReader.ReadBytes(num) : num < 0 ? null : (object)(new byte[0]);
+                return num > 0 ? _binaryReader.ReadBytes(num) : num < 0 ? null : (object)Array.Empty<byte>();
 
             }
             case 17:
             {
                 int num = _binaryReader.ReadInt32();
-                return num > 0 ? _binaryReader.ReadChars(num) : num < 0 ? null : (object)(new char[0]);
+                return num > 0 ? _binaryReader.ReadChars(num) : num < 0 ? null : (object)Array.Empty<char>();
             }
             case 18:
             {
@@ -397,12 +405,12 @@ public class OsuDatabaseLoader
 
         return true;
     }
-    private void DestoryReader()
-    {
-        _fileStream.Close();
-        _binaryReader.Close();
-        _fileStream.Dispose();
-        _binaryReader.Dispose();
-    }
+
     protected virtual bool FileExists(string fullPath) => !string.IsNullOrEmpty(fullPath) && File.Exists(fullPath);
+
+    public void Dispose()
+    {
+        _binaryReader?.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

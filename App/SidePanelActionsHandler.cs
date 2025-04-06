@@ -476,7 +476,7 @@ public class SidePanelActionsHandler : IDisposable
     }
 
     private void LoadCollectionFile(object sender, object data = null)
-        => LoadCollection(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb/*.realm)|*.db;*.osdb;*.realm", "collection.db"));
+        => LoadCollections(data?.ToString() ?? _userDialogs.SelectFile("", "Collection database (*.db/*.osdb/*.realm)|*.db;*.osdb;*.realm", "collection.db"));
 
     private void LoadDefaultCollection(object sender, object data = null)
         => LoadCollections(Path.Combine(Initalizer.OsuDirectory, "collection.db"), Path.Combine(Initalizer.OsuDirectory, "client.realm"));
@@ -503,25 +503,8 @@ public class SidePanelActionsHandler : IDisposable
         }
 
         _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(collections));
-    }
 
-    private void LoadCollection(string fileLocation)
-    {
-        if (string.IsNullOrEmpty(fileLocation) || !File.Exists(fileLocation))
-        {
-            return;
-        }
-
-        try
-        {
-            OsuCollections loadedCollections = _osuFileIo.CollectionLoader.LoadCollection(fileLocation);
-            //var cc = string.Join("\n",loadedCollections.SelectMany(c => c.AllBeatmaps()).Select(bb => bb.Md5));
-            _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(loadedCollections));
-        }
-        catch (CorruptedFileException ex)
-        {
-            _userDialogs.OkMessageBox(ex.Message, "Error", MessageBoxType.Error);
-        }
+        GC.Collect();
     }
 
     private async void SaveDefaultCollection(object sender, object data = null)

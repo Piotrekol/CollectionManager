@@ -30,10 +30,10 @@ public abstract class Beatmap : ICloneable
     public PlayModeStars ModPpStars = [];
     public double StarsNomod => Stars(PlayMode);
 
-    public double Stars(PlayMode playMode, Mods mods = Mods.Nm)
+    public float Stars(PlayMode playMode, Mods mods = Mods.Nm)
     {
         mods &= Mods.MapChanging;
-        return ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods) ? ModPpStars[_playMode][(int)mods] : -1d;
+        return ModPpStars.ContainsKey(_playMode) && ModPpStars[_playMode].ContainsKey((int)mods) ? ModPpStars[_playMode][(int)mods] : -1f;
     }
 
     public double MaxBpm { get; set; }
@@ -288,9 +288,6 @@ public abstract class Beatmap : ICloneable
 
     public object Clone() => MemberwiseClone();
 
-    public string GetChecksum() =>
-        //Md5 ensures checksum uniqueness while hashcode provides a way of checking for map contents(updates) in .db
-        $"{Md5}{GetHashCode()}";
     public override int GetHashCode()
     {
         unchecked

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 
-public class OsuApi
+public class OsuApi : IDisposable
 {
 
     private readonly ImpatientWebClient _client = new();
@@ -122,7 +122,7 @@ public class OsuApi
             beatmap.ApprovedDate = approvedDate != null ? approvedDate.Value<DateTime?>() ?? DateTime.MinValue : DateTime.MinValue;
             beatmap.ModPpStars.Add(PlayMode.Osu, new StarRating
             {
-                { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
+                { 0, float.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture) }
             });
             beatmap.GenreId = int.Parse(json["genre_id"].ToString());
             beatmap.LanguageId = int.Parse(json["language_id"].ToString());
@@ -137,9 +137,9 @@ public class OsuApi
 
     public Beatmap GetBeatmap(int beatmapId)
     {
-        if (_downloadedBeatmaps.ContainsKey(beatmapId))
+        if (_downloadedBeatmaps.TryGetValue(beatmapId, out BeatmapExtension value))
         {
-            return _downloadedBeatmaps[beatmapId];
+            return value;
         }
 
         BeatmapExtension map = GetBeatmapResult(GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId);
@@ -153,9 +153,9 @@ public class OsuApi
 
     public Beatmap GetBeatmap(int beatmapId, PlayMode? gamemode)
     {
-        if (_downloadedBeatmaps.ContainsKey(beatmapId) && _downloadedBeatmaps[beatmapId].PlayMode == gamemode)
+        if (_downloadedBeatmaps.TryGetValue(beatmapId, out BeatmapExtension value) && value.PlayMode == gamemode)
         {
-            return _downloadedBeatmaps[beatmapId];
+            return value;
         }
 
         string link = GetBeatmapsURL + "?k=" + ApiKey + "&b=" + beatmapId;
@@ -270,7 +270,7 @@ public class OsuApi
             };
             beatmap.ModPpStars.Add(beatmap.PlayMode, new StarRating()
             {
-                { 0, Math.Round(double.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture), 2) }
+                { 0, float.Parse(json["difficultyrating"].ToString(), CultureInfo.InvariantCulture) }
             });
             beatmap.PlayMode = (PlayMode)int.Parse(json["mode"].ToString());
             //beatmap.OverallDifficulty = float.Parse(json["difficultyrating"].ToString(), );
@@ -282,5 +282,11 @@ public class OsuApi
         {
             return null;
         }
+    }
+
+    public void Dispose()
+    {
+        _client?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

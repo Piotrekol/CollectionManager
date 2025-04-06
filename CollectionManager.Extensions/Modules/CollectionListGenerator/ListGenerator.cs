@@ -9,7 +9,6 @@ using System.Text;
 
 public class ListGenerator
 {
-    private readonly StringBuilder _stringBuilder = new();
     private readonly Dictionary<CollectionListSaveType, IListGenerator> _listGenerators;
 
     public ListGenerator()
@@ -47,21 +46,22 @@ public class ListGenerator
         IListGenerator generator = _listGenerators[listType];
         generator.StartGenerating();
 
-        _ = _stringBuilder.Clear();
-        _ = _stringBuilder.Append(generator.GetListHeader(collections));
+        StringBuilder stringBuilder = new();
+        _ = stringBuilder.Clear();
+        _ = stringBuilder.Append(generator.GetListHeader(collections));
         for (int i = 0; i < collections.Count; i++)
         {
             Dictionary<int, Beatmaps> mapSets = collections[i].GetMapSets(beatmapListType);
-            _ = _stringBuilder.Append(
+            _ = stringBuilder.Append(
                 generator.GetCollectionBody(collections[i], mapSets, i)
                 );
 
         }
 
-        _ = _stringBuilder.Append(generator.GetListFooter(collections));
+        _ = stringBuilder.Append(generator.GetListFooter(collections));
 
         generator.EndGenerating();
 
-        return _stringBuilder.ToString();
+        return stringBuilder.ToString();
     }
 }

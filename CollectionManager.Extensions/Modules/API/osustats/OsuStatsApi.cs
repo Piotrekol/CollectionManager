@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 public class OsuStatsApi : IWebCollectionProvider, IDisposable
 {
     private readonly MapCacher _mapCacher;
-    private readonly OsdbCollectionHandler collectionHandler = new(null);
     private string _apiKey;
 
     private UserInformation _userInformation;
@@ -99,7 +98,7 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
             stream.CopyTo(fileStream);
         }
 
-        return collectionHandler.ReadOsdb(tempFile, _mapCacher);
+        return OsdbCollectionHandler.ReadOsdb(tempFile, _mapCacher);
     }
 
     public async Task<bool> RemoveCollection(int collectionId)
@@ -173,7 +172,7 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
     public async Task<IEnumerable<WebCollection>> SaveCollection(IOsuCollection collection)
     {
         using MemoryStream memoryStream = new();
-        collectionHandler.WriteOsdb([collection], memoryStream,
+        OsdbCollectionHandler.WriteOsdb([collection], memoryStream,
             collection.LastEditorUsername ?? "", true);
         memoryStream.Position = 0;
 
@@ -185,5 +184,9 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
         return GetCollectionList(await response.Content.ReadAsStringAsync());
     }
 
-    public void Dispose() => throw new NotImplementedException();
+    public void Dispose()
+    {
+        httpClient?.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

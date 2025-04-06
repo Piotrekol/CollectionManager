@@ -8,6 +8,8 @@ public partial class CollectionTextView : UserControl, ICollectionTextView
 {
 
     public event EventHandler SaveTypeChanged;
+    public event EventHandler IsVisibleChanged;
+
     public void SetListTypes(Array types) => comboBox_textType.DataSource = types;
 
     public string GeneratedText { set => textBox1.Text = value; }
@@ -22,6 +24,9 @@ public partial class CollectionTextView : UserControl, ICollectionTextView
     }
 
     public string SelectedSaveType => comboBox_textType.SelectedValue.ToString();
+
+    public bool IsVisible => Visible;
+
     private void textBox1_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyData == (Keys.Control | Keys.A))
@@ -30,4 +35,6 @@ public partial class CollectionTextView : UserControl, ICollectionTextView
             e.Handled = e.SuppressKeyPress = true;
         }
     }
+
+    private void CollectionTextView_VisibleChanged(object sender, EventArgs e) => IsVisibleChanged?.Invoke(this, EventArgs.Empty);
 }

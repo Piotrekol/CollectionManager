@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-public class ScoresDatabaseIo
+public class ScoresDatabaseIo : IDisposable
 {
     private readonly IScoreDataManager _scoreDataStorer;
     private FileStream _fileStream;
@@ -73,8 +73,8 @@ public class ScoresDatabaseIo
     }
     public virtual void SaveDb(Dictionary<string, Scores> scores, int version, string saveLocation)
     {
-        MemoryStream memStream = new();
-        OsuBinaryWriter writer = new(memStream);
+        using MemoryStream memStream = new();
+        using OsuBinaryWriter writer = new(memStream);
         int mapCount = scores.Keys.Count;
 
         writer.Write(version);
@@ -120,4 +120,10 @@ public class ScoresDatabaseIo
     }
     protected virtual bool FileExists(string fullPath) => !string.IsNullOrEmpty(fullPath) && File.Exists(fullPath);
 
+    public void Dispose()
+    {
+        _binaryReader?.Dispose();
+        _fileStream?.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }
