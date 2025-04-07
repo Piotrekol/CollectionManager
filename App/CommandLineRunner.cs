@@ -56,7 +56,7 @@ public class CommandLineRunner
         return true;
     }
 
-    private static string GetOsuLocation() => OsuFileIo.OsuPathResolver.GetOsuDir(p =>
+    private static string GetOsuLocation() => OsuPathResolver.GetOsuPath(p =>
                                                 {
                                                     Console.WriteLine($"Using osu! database found at \"{p}\".");
                                                     return true;

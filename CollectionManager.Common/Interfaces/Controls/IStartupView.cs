@@ -14,4 +14,5 @@ public interface IStartupView
     bool DatabaseButtonsEnabled { get; set; }
     bool LoadOsuCollectionButtonEnabled { get; set; }
     bool LoadLazerDatabaseButtonEnabled { get; set; }
+    bool LoadStableDatabaseButtonEnabled { get; set; }
 }

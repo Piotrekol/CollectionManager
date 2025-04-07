@@ -1,66 +1,79 @@
 ﻿namespace CollectionManager.Core.Modules.FileIo;
 
+using CollectionManager.Core.Extensions;
 using System;
 using System.IO;
 
 public sealed class OsuSettingsLoader
 {
-    public string CustomBeatmapDirectoryLocation { get; private set; } = "Songs";
+    private const string _defaultOsuSongsConfigEntryValue = "Songs";
+    private static readonly char[] _separator = ['='];
+
+    public string CustomBeatmapDirectoryLocation { get; private set; } = _defaultOsuSongsConfigEntryValue;
 
     public OsuSettingsLoader()
     {
 
     }
+
     public void Load(string osuDirectory)
     {
-        string FilePath = GetConfigFilePath(osuDirectory);
-        bool configFileExists = File.Exists(FilePath);
-        if (configFileExists)
-        {
-            ReadSettings(FilePath);
-        }
+        CustomBeatmapDirectoryLocation = _defaultOsuSongsConfigEntryValue;
 
-        string lazerFilesPath = Path.Combine(osuDirectory, "files");
-        string osuSongsPath = Path.Combine(osuDirectory, "Songs");
-        if (Path.IsPathRooted(osuDirectory) && Directory.Exists(lazerFilesPath))
+        string configFilePath = GetConfigFilePath(osuDirectory);
+
+        _ = TryGetSongsDirectory(configFilePath, out string songsDirectory);
+        string[] potentialDirectories = [
+            songsDirectory, // custom stable directory set in config
+            Path.Combine(osuDirectory, _defaultOsuSongsConfigEntryValue), // stable directory
+            Path.Combine(osuDirectory, "files") // lazer directory
+            ];
+
+        foreach (string directory in potentialDirectories)
         {
-            // Assuming osu!lazer
-            CustomBeatmapDirectoryLocation = lazerFilesPath;
-        }
-        else if (CustomBeatmapDirectoryLocation == "Songs" && Directory.Exists(osuSongsPath))
-        {
-            CustomBeatmapDirectoryLocation = osuSongsPath;
+            if (Directory.Exists(directory))
+            {
+                CustomBeatmapDirectoryLocation = directory;
+
+                return;
+            }
         }
     }
-    private string GetConfigFilePath(string osuDirectory)
+
+    private static string GetConfigFilePath(string osuDirectory)
     {
-        string filename = string.Format("osu!.{0}.cfg", StripInvalidCharacters(Environment.UserName));
+        string sanitizedUsername = Environment.UserName.StripInvalidFileNameCharacters().Replace(".", string.Empty);
+        string filename = $"osu!.{sanitizedUsername}.cfg";
+
         return Path.Combine(osuDirectory, filename);
     }
 
-    private string StripInvalidCharacters(string name)
+    private static bool TryGetSongsDirectory(string configPath, out string songsDirectory)
     {
-        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+        songsDirectory = null;
+
+        if (!File.Exists(configPath))
         {
-            name = name.Replace(invalidChar.ToString(), string.Empty);
+            return false;
         }
 
-        return name.Replace(".", string.Empty);
-    }
-    private void ReadSettings(string configPath)
-    {
         foreach (string cfgLine in File.ReadLines(configPath))
         {
-            if (cfgLine.StartsWith("BeatmapDirectory"))
+            if (cfgLine.StartsWith("BeatmapDirectory", StringComparison.InvariantCulture))
             {
-                string[] splitedLines = cfgLine.Split(new[] { '=' }, 2);
-                string songDirectory = splitedLines[1].Trim(' ');
+                string[] splitLines = cfgLine.Split(_separator, 2);
 
-                if (songDirectory != "Songs")
+                if (splitLines.Length < 2)
                 {
-                    CustomBeatmapDirectoryLocation = songDirectory;
+                    continue;
                 }
+
+                songsDirectory = splitLines[1].Trim(' ');
+
+                return true;
             }
         }
+
+        return false;
     }
 }

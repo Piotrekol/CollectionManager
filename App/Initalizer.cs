@@ -22,7 +22,7 @@ public class Initalizer : ApplicationContext
     public static CollectionsManagerWithCounts CollectionsManager;
     public static Beatmaps LoadedBeatmaps => OsuFileIo.LoadedMaps.Beatmaps;
     public static OsuCollections LoadedCollections => CollectionsManager.LoadedCollections;
-    public static string OsuDirectory;
+    public static string OsuDirectory { get; set; }
     public static CollectionEditor CollectionEditor { get; private set; }
     private IUserDialogs UserDialogs { get; set; }// = new GuiComponents.UserDialogs();
     public static OsuStatsApi WebCollectionProvider = new("", OsuFileIo.LoadedMaps);

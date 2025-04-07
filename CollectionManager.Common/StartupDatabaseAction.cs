@@ -6,4 +6,5 @@ public enum StartupDatabaseAction
     Unload,
     LoadFromDifferentLocation,
     LoadLazer,
+    LoadStable,
 }

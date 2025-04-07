@@ -9,7 +9,7 @@ using System.Linq;
 
 public static class BeatmapUtils
 {
-    public static string OsuSongsDirectory = "";
+    public static string OsuSongsDirectory { get; set; } = "";
 
     public static Dictionary<int, Beatmaps> GetMapSets(this IOsuCollection collection, BeatmapListType beatmapListType)
     {

@@ -67,6 +67,7 @@ public class StartupPresenter : IDisposable
         _view.CollectionButtonsEnabled = !(loadedCollectionFromFile || _startupSettings.AutoLoadMode);
         _view.DatabaseButtonsEnabled = true;
         _view.LoadLazerDatabaseButtonEnabled = OsuPathResolver.TryGetLazerDataPath(out _);
+        _view.LoadStableDatabaseButtonEnabled = OsuPathResolver.TryGetStablePath(out _);
 
         _view.CollectionStatusText = loadedCollectionFromFile
             ? $"Going to load {_collectionsManager.CollectionsCount} collections with {_collectionsManager.BeatmapsInCollectionsCount} beatmaps"
@@ -129,8 +130,9 @@ public class StartupPresenter : IDisposable
                 GC.Collect();
                 ((IProgress<string>)_databaseLoadProgressReporter).Report("osu! database unloaded");
                 break;
+
             case StartupDatabaseAction.LoadFromDifferentLocation:
-                string osuDirectory = Initalizer.OsuFileIo.OsuPathResolver.GetManualOsuDir(_userDialogs.SelectDirectory);
+                string osuDirectory = OsuPathResolver.GetManualOsuPath(_userDialogs.SelectDirectory);
 
                 if (!string.IsNullOrEmpty(osuDirectory))
                 {
@@ -140,6 +142,7 @@ public class StartupPresenter : IDisposable
                 }
 
                 break;
+
             case StartupDatabaseAction.LoadLazer:
                 if (OsuPathResolver.TryGetLazerDataPath(out string lazerLocation))
                 {
@@ -149,6 +152,17 @@ public class StartupPresenter : IDisposable
                 }
 
                 break;
+
+            case StartupDatabaseAction.LoadStable:
+                if (OsuPathResolver.TryGetStablePath(out string stableLocation))
+                {
+                    _view.LoadOsuCollectionButtonEnabled = true;
+                    _startupSettings.OsuLocation = stableLocation;
+                    _databaseLoadTask = Task.Run(() => LoadDatabase(_cancellationTokenSource.Token));
+                }
+
+                break;
+
             case StartupDatabaseAction.None:
                 break;
         }
@@ -187,7 +201,7 @@ public class StartupPresenter : IDisposable
     {
         OsuFileIo osuFileIo = Initalizer.OsuFileIo;
         string osuDirectory = Initalizer.OsuDirectory = string.IsNullOrEmpty(_startupSettings.OsuLocation)
-            ? osuFileIo.OsuPathResolver.GetOsuDir()
+            ? OsuPathResolver.GetOsuOrLazerPath()
             : _startupSettings.OsuLocation;
 
         string osuDbOrRealmPath = new[] { Path.Combine(osuDirectory, @"osu!.db"), Path.Combine(osuDirectory, @"client.realm") }

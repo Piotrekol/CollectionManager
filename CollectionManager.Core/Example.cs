@@ -11,7 +11,7 @@ internal class Class1
         OsuFileIo osuFileIo = new(new BeatmapExtension());
 
         //Automatic Detection of osu! directory location
-        string dir = osuFileIo.OsuPathResolver.GetOsuDir(ThisPathIsCorrect, SelectDirectoryDialog);
+        string dir = OsuPathResolver.GetOsuPath(ThisPathIsCorrect, SelectDirectoryDialog);
 
         string osuPath = @"E:\osu!\";
         string osuDbFileName = "osu!.db";
