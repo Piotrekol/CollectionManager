@@ -1,11 +1,11 @@
 ﻿namespace GuiComponents.Forms;
 
+using CollectionManager.Common;
 using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Forms;
 using CollectionManager.WinForms.Forms;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 public partial class LoginFormView : BaseForm, ILoginFormView
@@ -52,5 +52,5 @@ public partial class LoginFormView : BaseForm, ILoginFormView
         groupBox_login.Enabled = downloadSource.RequiresLogin && !downloadSource.UseCookiesLogin;
     }
 
-    private void richTextBox_description_LinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e) => Process.Start(e.LinkText);
+    private void richTextBox_description_LinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e) => ProcessExtensions.OpenUrl(e.LinkText);
 }

@@ -198,7 +198,7 @@ public class SidePanelActionsHandler : IDisposable
 
         if (newCollections.Count == 1)
         {
-            _ = Process.Start($"https://osustats.ppy.sh/collection/{newCollections[0].OnlineId}");
+            _ = ProcessExtensions.OpenUrl($"https://osustats.ppy.sh/collection/{newCollections[0].OnlineId}");
         }
     }
 
@@ -457,7 +457,7 @@ public class SidePanelActionsHandler : IDisposable
         {
             if (!string.IsNullOrWhiteSpace(updater.NewVersionLink))
             {
-                _ = Process.Start(updater.NewVersionLink);
+                _ = ProcessExtensions.OpenUrl(updater.NewVersionLink);
             }
         }
     }

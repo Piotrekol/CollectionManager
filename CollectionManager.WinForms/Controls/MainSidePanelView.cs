@@ -6,7 +6,6 @@ using CollectionManager.Common.Interfaces.Controls;
 using CollectionManager.Core.Types;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlineCollectionList
@@ -129,7 +128,7 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
         {
             Text = $"Open in browser"
         };
-        openOnWeb.Click += (s, a) => Process.Start($"https://osustats.ppy.sh/collection/{webCollection.OnlineId}");
+        openOnWeb.Click += (s, a) => ProcessExtensions.OpenUrl($"https://osustats.ppy.sh/collection/{webCollection.OnlineId}");
 
         return new ToolStripItem[] { loadCollection, uploadChanges, deleteCollection, openOnWeb };
     }

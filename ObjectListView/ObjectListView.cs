@@ -9006,7 +9006,11 @@ namespace BrightIdeasSoftware
             Cursor originalCursor = this.Cursor;
             try {
                 this.Cursor = Cursors.WaitCursor;
-                System.Diagnostics.Process.Start(args.Url);
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = args.Url,
+                    UseShellExecute = true
+                });
             } catch (Win32Exception) {
                 System.Media.SystemSounds.Beep.Play();
                 // ignore it

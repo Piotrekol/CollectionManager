@@ -8,9 +8,9 @@ using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Enums;
-using CollectionManager.Extensions.Modules.Exporter;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
+using CollectionManager.Extensions.Modules.Exporter;
 using CollectionManager.Extensions.Utils;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Misc;
@@ -206,9 +206,8 @@ public class BeatmapListingActionsHandler
         {
             foreach (int d in dataSet)
             {
-                OpenLink(string.Format(urlFormat, d));
+                _ = ProcessExtensions.OpenUrl(string.Format(urlFormat, d));
             }
         }
     }
-    private static void OpenLink(string url) => Process.Start(url);
 }
