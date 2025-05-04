@@ -11,17 +11,32 @@ public class CookieAwareWebClient : WebClient
     public int ClientId = -1;
     public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
     public int RequestTimeout { get; set; } = 5000;
+    public CookieContainer CookieContainer { get; set; }
+    private static readonly char[] separator = new[] { '=' };
+
+    public CookieAwareWebClient(CookieContainer container)
+    {
+        CookieContainer = container;
+    }
+
+    public CookieAwareWebClient()
+      : this(new CookieContainer())
+    { }
+
     public void SetCookies(string cookies, string[] cookiesToIgnore, string cookieDomain)
     {
         foreach (string nameValuePair in HttpUtility.UrlDecode(cookies).Split(';'))
         {
-            string[] split = nameValuePair.Split(new[] { '=' }, 2);
-            if (cookiesToIgnore.Contains(split[0].Trim()))
+            string[] split = nameValuePair.Split(separator, 2);
+            string cookieName = split[0].Trim();
+
+            if (cookiesToIgnore.Contains(cookieName) || split.Length is not 2)
             {
                 continue;
             }
 
-            CookieContainer.Add(new Cookie(split[0].Trim(), split[1], "/", cookieDomain));
+            string encodedCookieValue = HttpUtility.UrlEncode(split[1]);
+            CookieContainer.Add(new Cookie(cookieName, encodedCookieValue, "/", cookieDomain));
         }
     }
 
@@ -35,7 +50,7 @@ public class CookieAwareWebClient : WebClient
             WebResponse response = request.GetResponse() as HttpWebResponse;
             using StreamReader reader = new(response.GetResponseStream());
             string responseText = reader.ReadToEnd();
-            return responseText.IndexOf(stringToFind, StringComparison.InvariantCultureIgnoreCase) == -1;
+            return !responseText.Contains(stringToFind, StringComparison.InvariantCultureIgnoreCase);
         }
         catch (WebException e)
         {
@@ -68,18 +83,6 @@ public class CookieAwareWebClient : WebClient
         requestStream.Close();
     }
 
-    public CookieAwareWebClient(CookieContainer container)
-    {
-        CookieContainer = container;
-    }
-
-    public CookieAwareWebClient()
-      : this(new CookieContainer())
-    { }
-
-    public CookieContainer CookieContainer { get; private set; }
-
-    public void SetCustomCookieContainer(CookieContainer CookieContainer) => this.CookieContainer = CookieContainer;
     protected override WebRequest GetWebRequest(Uri address)
     {
         HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);

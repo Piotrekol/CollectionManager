@@ -10,8 +10,10 @@ using System.Net;
 public class OsuDownloader : DownloadManager
 {
     public DownloadThrottler DownloadThrottler { get; private set; }
-    public string QuotaCheckUrl => @"https://osu.ppy.sh/home/download-quota-check";
+    public static string QuotaCheckUrl => @"https://osu.ppy.sh/home/download-quota-check";
     private CookieAwareWebClient webClient;
+    private static readonly string[] cookiesToIgnore = new[] { "_encid" };
+
     public int GetUsedQuota()
     {
         if (webClient == null)
@@ -21,9 +23,9 @@ public class OsuDownloader : DownloadManager
 
         string data = webClient.DownloadString(QuotaCheckUrl);
         Dictionary<string, object> deserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-        if (deserialized.ContainsKey("quota_used"))
+        if (deserialized.TryGetValue("quota_used", out object value))
         {
-            return Convert.ToInt32(deserialized["quota_used"]);
+            return Convert.ToInt32(value);
         }
 
         return -1;
@@ -50,7 +52,7 @@ public class OsuDownloader : DownloadManager
             {
                 if (!string.IsNullOrEmpty(loginData.SiteCookies))
                 {
-                    client.SetCookies(loginData.SiteCookies, new[] { "_encid" }, ".ppy.sh");
+                    client.SetCookies(loginData.SiteCookies, cookiesToIgnore, ".ppy.sh");
                     if (!client.IsLoggedIn(@"https://osu.ppy.sh/rankings/osu/country", "sign in / register"))
                     {
                         return false;
@@ -70,7 +72,7 @@ public class OsuDownloader : DownloadManager
             }
             else
             {
-                client.SetCustomCookieContainer(cookies);
+                client.CookieContainer = cookies;
             }
 
             webClients.Add(client);
