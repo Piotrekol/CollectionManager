@@ -405,14 +405,14 @@ public class SidePanelActionsHandler : IDisposable
             _usernameGeneratorForm = GuiComponentsProvider.Instance.GetClassImplementing<IUsernameGeneratorForm>();
             UsernameGeneratorModel model = new();
             model.Start +=
-                (s, a) => new Thread(() =>
+                (s, a) => new Thread(async () =>
                     {
-                        model.GeneratedUsernames = _osuSite.GetUsernames(model.StartRank, model.EndRank,
+                        model.GeneratedUsernames = await _osuSite.GetUsernamesAsync(model.StartRank, model.EndRank,
                        (string logMessage, int completionPrecentage) =>
                        {
                            model.Status = logMessage;
                            model.CompletionPrecentage = completionPrecentage;
-                       });
+                       }, CancellationToken.None);
                         model.EmitComplete();
                     }).Start();
             model.Complete += (s, a) => Helpers.SetClipboardText(model.GeneratedUsernamesStr);

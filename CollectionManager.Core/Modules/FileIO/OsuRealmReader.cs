@@ -3,10 +3,11 @@ using Realms;
 using Realms.Exceptions;
 using System.Text.RegularExpressions;
 
-public class OsuRealmReader
+public partial class OsuRealmReader
 {
     private const ulong _lastValidatedRealmSchemaVersion = 48;
-    private static readonly Regex _lastNumber = new("(\\d+)(?!.*\\d)", RegexOptions.Compiled);
+    [GeneratedRegex("(\\d+)(?!.*\\d)")]
+    private static partial Regex LastNumberRegex();
 
     protected static Realm GetRealm(string realmFilePath, bool readOnly = true)
     {
@@ -29,7 +30,7 @@ public class OsuRealmReader
                 throw new RealmNotValidatedException($"Opening osu!lazer database failed. Consider reporting this on github. {exception.Message}");
             }
 
-            Match numberMatch = _lastNumber.Match(exception.Message);
+            Match numberMatch = LastNumberRegex().Match(exception.Message);
             string schemaVersionOrMessage = numberMatch.Success
                 ? numberMatch.Value
                 : exception.Message;
