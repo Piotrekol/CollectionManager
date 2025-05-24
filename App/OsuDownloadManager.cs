@@ -44,8 +44,11 @@ public sealed class OsuDownloadManager
     public bool DownloadDirectoryIsSet => !string.IsNullOrEmpty(DownloadDirectory);
     private long _downloadId;
     public bool? DownloadWithVideo { get; set; }
+
     public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
     {
+        const string loginFailedMessage = "Login failed. Ensure that your login/password or cookies are correct.";
+
         if (IsLoggedIn)
         {
             return true;
@@ -59,7 +62,15 @@ public sealed class OsuDownloadManager
         {
             DownloadDirectory = downloaderSettings.DownloadDirectory;
             DownloadWithVideo = downloaderSettings.DownloadWithVideo;
-            return LogIn(downloaderSettings.LoginData);
+
+            if (TryLogIn(downloaderSettings.LoginData))
+            {
+                return true;
+            }
+
+            userDialogs.OkMessageBox(loginFailedMessage, "Error", MessageBoxType.Error);
+
+            return false;
         }
 
         DownloadDirectory = userDialogs.SelectDirectory("Select directory for saved beatmaps", true);
@@ -70,7 +81,7 @@ public sealed class OsuDownloadManager
 
         DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader", MessageBoxType.Question);
         LoginData userLoginData = loginForm.GetLoginData(DownloadSources);
-        if (LogIn(userLoginData))
+        if (TryLogIn(userLoginData))
         {
             Settings.Default.DownloadManager_DownloaderSettings = JsonConvert.SerializeObject(new DownloaderSettings
             {
@@ -78,6 +89,10 @@ public sealed class OsuDownloadManager
                 DownloadDirectory = DownloadDirectory,
                 LoginData = userLoginData
             });
+        }
+        else
+        {
+            userDialogs.OkMessageBox(loginFailedMessage, "Error", MessageBoxType.Error);
         }
 
         return IsLoggedIn;
@@ -119,7 +134,7 @@ public sealed class OsuDownloadManager
         DownloadBeatmap(null, true);
     }
 
-    public bool LogIn(LoginData loginData)
+    private bool TryLogIn(LoginData loginData)
     {
         if (string.IsNullOrEmpty(loginData.DownloadSource))
         {
