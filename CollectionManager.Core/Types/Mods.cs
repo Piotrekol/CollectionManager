@@ -35,7 +35,7 @@ public enum Mods
     K1 = 1 << 26,
     K3 = 1 << 27,
     K2 = 1 << 28,
-    Sv2 = 1 << 29,
+    V2 = 1 << 29, // score v2
     Lm = 1 << 30,
     SpeedChanging = Dt | Ht | Nc,
     MapChanging = Hr | Ez | SpeedChanging

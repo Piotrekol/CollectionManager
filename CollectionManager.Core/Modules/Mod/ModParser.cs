@@ -62,7 +62,7 @@ public class ModParser
         new OsuMod(Mods.K1, "1K", "1 Key"),
         new OsuMod(Mods.K3, "3K", "3 Keys"),
         new OsuMod(Mods.K2, "2K", "2 Keys"),
-        new OsuMod(Mods.Sv2, "SV2", "Score V2"),
+        new OsuMod(Mods.V2, "V2", "Score V2"),
         new OsuMod(Mods.Lm, "LM", "Last Mod"),
     ];
 
