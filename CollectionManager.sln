@@ -29,6 +29,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{DA4F3623-F491-41FF-9FA1-E023C54830E5}"
+	ProjectSection(SolutionItems) = preProject
+		InnoSetup\script.iss = InnoSetup\script.iss
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +102,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
 		{0C2E6C9E-8FAE-43EE-BA81-A66D44F97EB1} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
+		{DA4F3623-F491-41FF-9FA1-E023C54830E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B279722-47B2-4CC1-AF2D-9C5FA9E9259D}

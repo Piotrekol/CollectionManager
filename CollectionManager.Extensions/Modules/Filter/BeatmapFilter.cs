@@ -12,10 +12,17 @@ using System.Text.RegularExpressions;
 public class BeatmapFilter
 {
     public const string SpaceReplacement = "!._!";
-    private Beatmaps _beatmaps;
-    public Dictionary<string, bool> BeatmapHashHidden = [];
+    public Dictionary<string, bool> BeatmapHashHidden { get; } = [];
+    public Mods MainMods => mainMods ?? Mods.Nm;
+    public PlayMode MainPlayMode => mainPlayMode ?? PlayMode.Osu;
 
-    private delegate bool searchFilter(Beatmap m);
+    private Mods? mainMods;
+    private PlayMode? mainPlayMode;
+    private readonly bool BeatmapExtensionIsUsed;
+    private string _lastSearchString = string.Empty;
+    private readonly Dictionary<string, Scores> _scores = [];
+    private Beatmaps _beatmaps;
+
     internal static readonly NumberFormatInfo nfi = new CultureInfo(@"en-US", false).NumberFormat;
 
     private static readonly Regex regComparison = new(@"^(\w*)([<>=]=?|!=)(.*)$");
@@ -31,10 +38,7 @@ public class BeatmapFilter
             (?: e [+-]? \d+ )?  
             $
         ");
-
-    private readonly bool BeatmapExtensionIsUsed;
-    private string _lastSearchString = string.Empty;
-    private readonly Dictionary<string, Scores> _scores = [];
+    private delegate bool searchFilter(Beatmap m);
 
     public BeatmapFilter(Beatmaps beatmaps, Scores scores, Beatmap baseBeatmap)
     {
@@ -52,7 +56,7 @@ public class BeatmapFilter
     public void SetScores(Scores scores)
     {
         _scores.Clear();
-        foreach (Core.Interfaces.IReplay score in scores)
+        foreach (IReplay score in scores)
         {
             if (!_scores.TryGetValue(score.MapHash, out Scores value))
             {
@@ -67,12 +71,16 @@ public class BeatmapFilter
     public void UpdateSearch(string searchString)
     {
         _lastSearchString = searchString;
+        mainMods = null;
+        mainPlayMode = null;
         searchString = searchString.ToLower(CultureInfo.CurrentCulture);
-        string[] words = searchString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-        if (_beatmaps == null)
+
+        if (_beatmaps is null)
         {
             return;
         }
+
+        List<List<searchFilter>> orGroupFilters = CreateSearchFilterGroups(searchString);
 
         lock (_beatmaps)
         {
@@ -81,33 +89,70 @@ public class BeatmapFilter
                 BeatmapHashHidden[beatmap.Md5] = false;
             }
 
-            if (!words.Any(s => s.StartsWith("mods")))
+            if (orGroupFilters.Count == 0)
             {
-                CurrentMods = Mods.Nm;
+                return;
             }
 
-            foreach (string w in words)
+            foreach (Beatmap b in _beatmaps)
             {
-                searchFilter filter = GetSearchFilter(w);
-                if (filter == null)
+                bool isMatch = false;
+                foreach (List<searchFilter> andFilters in orGroupFilters)
                 {
-                    continue;
+                    bool groupMatch = true;
+                    foreach (searchFilter filter in andFilters)
+                    {
+                        if (!filter(b))
+                        {
+                            groupMatch = false;
+                            break;
+                        }
+                    }
+
+                    if (groupMatch)
+                    {
+                        isMatch = true;
+                        break;
+                    }
                 }
 
-                foreach (Beatmap b in _beatmaps)
+                if (!isMatch)
                 {
-                    if (!BeatmapHashHidden[b.Md5] && !filter(b))
-                    {
-                        BeatmapHashHidden[b.Md5] = true;
-                    }
+                    BeatmapHashHidden[b.Md5] = true;
                 }
             }
         }
     }
 
-    public Mods CurrentMods { get; private set; } = Mods.Nm;
-    public PlayMode CurrentPlayMode { get; private set; } = PlayMode.Osu;
-    private double GetStars(Beatmap b) => b.Stars(CurrentPlayMode, CurrentMods);
+    private List<List<searchFilter>> CreateSearchFilterGroups(string searchString)
+    {
+        string[] orGroups = searchString.Split(" or ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        List<List<searchFilter>> orGroupFilters = [];
+        foreach (string group in orGroups)
+        {
+            string[] andWords = group.Split(" and ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            List<searchFilter> andFilters = [];
+            foreach (string words in andWords)
+            {
+                FilterGroupData groupData = new();
+                foreach (string word in words.Split(" "))
+                {
+                    searchFilter filter = GetSearchFilter(word, groupData);
+                    if (filter != null)
+                    {
+                        andFilters.Add(filter);
+                    }
+                }
+            }
+
+            orGroupFilters.Add(andFilters);
+        }
+
+        return orGroupFilters;
+    }
+
+    private static double GetStars(Beatmap b, PlayMode playMode, Mods mods) => b.Stars(playMode, mods);
 
     private IReplay GetTopScore(string mapHash)
         => GetScores(mapHash)?
@@ -115,17 +160,13 @@ public class BeatmapFilter
                 => first.TotalScore > second.TotalScore ? first : second)
             ?? null;
 
+    private bool HasScores(string mapHash)
+        => _scores.TryGetValue(mapHash, out Scores value) && value.Count > 0;
     private Scores GetScores(string mapHash)
         => _scores.TryGetValue(mapHash, out Scores value)
             ? value : null;
 
-    /// <summary>
-    /// Returns beatmapFilter delegate for specified searchWord.
-    /// Unimplemented: key/keys/speed/unplayed
-    ///  </summary>
-    /// <param name="searchWord"></param>
-    /// <returns></returns>
-    private searchFilter GetSearchFilter(string searchWord)
+    private searchFilter GetSearchFilter(string searchWord, FilterGroupData groupData)
     {
         Match match = regComparison.Match(searchWord);
         if (match.Success)
@@ -150,7 +191,7 @@ public class BeatmapFilter
                     case "star":
                     case "stars":
                         return delegate (Beatmap b)
-                        { return isPatternMatch(Math.Round(GetStars(b), 2), op, num); };
+                        { return isPatternMatch(Math.Round(GetStars(b, groupData.PlayMode, groupData.Mods), 2), op, num); };
 
                     case "cs":
                         return delegate (Beatmap b)
@@ -220,24 +261,24 @@ public class BeatmapFilter
                     case "hasscore":
                         return b =>
                         {
-                            IReplay topScore = GetTopScore(b.Md5);
-                            return isPatternMatch(topScore == null ? 0 : 1, op, num);
+                            bool hasScore = HasScores(b.Md5);
+                            return isPatternMatch(hasScore ? 1 : 0, op, num);
                         };
                     case "haslocalactivity":
                         return b =>
                         {
-                            bool hasTopScore = GetTopScore(b.Md5) != null;
+                            bool hasScores = HasScores(b.Md5);
                             bool hasRank = b.OsuGrade != OsuGrade.Null || b.CatchGrade != OsuGrade.Null || b.TaikoGrade != OsuGrade.Null || b.ManiaGrade != OsuGrade.Null;
                             bool hasValidLastPlayed = b.LastPlayed.HasValue && b.LastPlayed.Value > DateTimeOffset.MinValue;
 
                             if (num == 0)
                             {
-                                return isPatternMatch(hasTopScore == false ? 0 : 1, op, num)
+                                return isPatternMatch(hasScores == false ? 0 : 1, op, num)
                                        && isPatternMatch(hasValidLastPlayed == false ? 0 : 1, op, num)
                                        && isPatternMatch(hasRank == false ? 0 : 1, op, num);
                             }
 
-                            return isPatternMatch(hasTopScore == false ? 0 : 1, op, num)
+                            return isPatternMatch(hasScores == false ? 0 : 1, op, num)
                                    || isPatternMatch(hasValidLastPlayed == false ? 0 : 1, op, num)
                                    || isPatternMatch(hasRank == false ? 0 : 1, op, num);
                         };
@@ -247,7 +288,8 @@ public class BeatmapFilter
             switch (key)
             {
                 case "mods":
-                    CurrentMods = ToMods(val);
+                    groupData.Mods = ToMods(val);
+                    mainMods ??= groupData.Mods;
                     return null;
                 case "artist":
                     string artist = val.Replace(SpaceReplacement, " ");
@@ -263,7 +305,9 @@ public class BeatmapFilter
                     { return b.Creator.Contains(creator, StringComparison.CurrentCultureIgnoreCase); };
                 case "mode":
                     num = descriptorToNum(val, ModePairs);
-                    CurrentPlayMode = (PlayMode)num;
+                    groupData.PlayMode = (PlayMode)num;
+                    mainPlayMode ??= groupData.PlayMode;
+
                     return delegate (Beatmap b)
                     { return isPatternMatch((double)b.PlayMode, op, num); };
                 case "status":
@@ -276,10 +320,19 @@ public class BeatmapFilter
                 case "hasscoreswithmods":
                 case "hasscorewithmods":
                     int mods = (int)ToMods(val);
+                    if (mods == 0)
+                    {
+                        return b =>
+                        {
+                            bool? hasScoresWithMatchingMods = GetScores(b.Md5)?.Any(s => s.Mods == 0);
+                            return hasScoresWithMatchingMods ?? false;
+                        };
+                    }
+
                     return b =>
                     {
-                        bool? hasScoresWithMathingMods = GetScores(b.Md5)?.Any(s => (s.Mods & mods) != 0);
-                        return hasScoresWithMathingMods ?? false;
+                        bool? hasScoresWithMatchingMods = GetScores(b.Md5)?.Any(s => (s.Mods & mods) == mods);
+                        return hasScoresWithMatchingMods ?? false;
                     };
             }
         }
@@ -477,7 +530,7 @@ public class BeatmapFilter
 
     private static Mods ToMods(string shorthandMods)
     {
-        List<string> splitMods = Regex.Split(shorthandMods, @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
+        List<string> splitMods = Regex.Split(shorthandMods.Replace(",", string.Empty), @"([A-Za-z]{2})").Where(s => !string.IsNullOrEmpty(s)).ToList();
         Mods mods = Mods.Nm;
 
         foreach (string mod in splitMods)

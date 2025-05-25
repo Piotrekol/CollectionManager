@@ -9,8 +9,8 @@ using System.Windows.Forms;
 public class BeatmapListFilter : ICommonModelFilter, IDisposable
 {
     private readonly BeatmapFilter _beatmapFilter;
-    public Mods CurrentMods => _beatmapFilter.CurrentMods;
-    public PlayMode CurrentPlayMode => _beatmapFilter.CurrentPlayMode;
+    public Mods CurrentMods => _beatmapFilter.MainMods;
+    public PlayMode CurrentPlayMode => _beatmapFilter.MainPlayMode;
     private string _searchString;
     private readonly object _searchStringLockingObject = new();
     private readonly Timer timer;

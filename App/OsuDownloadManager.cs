@@ -47,7 +47,7 @@ public sealed class OsuDownloadManager
 
     public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
     {
-        const string loginFailedMessage = "Login failed. Ensure that your login/password or cookies are correct.";
+        const string loginFailedMessage = "Login failed. Ensure that your login/password or cookies are correct";
 
         if (IsLoggedIn)
         {
