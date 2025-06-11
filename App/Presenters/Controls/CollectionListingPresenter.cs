@@ -149,7 +149,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgsExtension.ExportBeatmaps(selectedCollections.Names);
+                args = CollectionExportEditArgs.ExportBeatmaps(selectedCollections.Names);
                 break;
             case "Copy":
                 if (selectedCollections == null)

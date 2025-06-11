@@ -10,12 +10,9 @@ using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Enums;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
-using CollectionManager.Extensions.Modules.Exporter;
 using CollectionManager.Extensions.Utils;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Misc;
-using CollectionManagerApp.Presenters.Forms;
-using System.IO;
 
 public class BeatmapListingActionsHandler
 {
@@ -46,77 +43,11 @@ public class BeatmapListingActionsHandler
             {BeatmapListingAction.ExportBeatmapSets, ExportBeatmapSets },
         };
     }
+    public void Bind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
 
-    public void Bind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
-    {
-        beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
-        if (collectionListingModel != null)
-        {
-            collectionListingModel.CollectionEditing += CollectionListingModel_CollectionEditing;
-        }
-    }
-
-    public void UnBind(IBeatmapListingModel beatmapListingModel, ICollectionListingModel collectionListingModel = null)
-    {
-        beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
-        if (collectionListingModel != null)
-        {
-            collectionListingModel.CollectionEditing -= CollectionListingModel_CollectionEditing;
-        }
-    }
+    public void UnBind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
 
     private void BeatmapListingModel_BeatmapOperation(object sender, BeatmapListingAction args) => _beatmapOperationHandlers[args](sender);
-    private void CollectionListingModel_CollectionEditing(object sender, CollectionEditArgs e)
-    {
-        if (e.Action != CollectionManager.Core.Enums.CollectionEdit.ExportBeatmaps)
-        {
-            return;
-        }
-
-        List<Beatmap> beatmaps = [.. e.CollectionNames
-            .Select(Initalizer.CollectionsManager.GetCollectionByName)
-            .SelectMany(c => c.AllBeatmaps())];
-
-        _ = ExportBeatmapSetsAsync(beatmaps);
-    }
-
-    private void ExportBeatmapSets(object sender)
-    {
-        if (sender is not IBeatmapListingModel beatmapListingModel)
-        {
-            return;
-        }
-
-        _ = ExportBeatmapSetsAsync(beatmapListingModel.SelectedBeatmaps?.ToList());
-    }
-
-    private async Task ExportBeatmapSetsAsync(List<Beatmap> beatmaps)
-    {
-        if (beatmaps?.Count == 0)
-        {
-            _userDialogs.OkMessageBox("No beatmaps selected.", "Info");
-
-            return;
-        }
-
-        string saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
-
-        if (!Directory.Exists(saveDirectory))
-        {
-            return;
-        }
-
-        BeatmapExporter beatmapExporter = new(BeatmapUtils.OsuSongsDirectory, saveDirectory);
-        BeatmapExportFormPresenter exportPresenter = new(_userDialogs, beatmapExporter);
-        try
-        {
-            await exportPresenter.ExportAsync(beatmaps, saveDirectory);
-        }
-        catch (Exception ex)
-        {
-            _userDialogs.OkMessageBox($"Error occurred during beatmap export: {ex}", "Error", MessageBoxType.Error);
-        }
-    }
 
     private void PullWholeMapsets(object sender)
     {
@@ -154,6 +85,17 @@ public class BeatmapListingActionsHandler
             OsuDownloadManager.Instance.DownloadBeatmaps(model.SelectedBeatmaps);
         }
     }
+
+    private void ExportBeatmapSets(object sender)
+    {
+        if (sender is not IBeatmapListingModel beatmapListingModel)
+        {
+            return;
+        }
+
+        _collectionEditor.EditCollection(CollectionExportEditArgs.ExportBeatmaps(beatmapListingModel.SelectedBeatmaps));
+    }
+
     private void OpenBeatmapFolder(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;

@@ -2,12 +2,14 @@ namespace CollectionManagerApp;
 
 using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Forms;
+using CollectionManager.Core.Enums;
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Modules.API.osustats;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Misc;
+using CollectionManagerApp.Misc.Collection.Strategies;
 using CollectionManagerApp.Models.Controls;
 using CollectionManagerApp.Models.Forms;
 using CollectionManagerApp.Presenters.Controls;
@@ -34,7 +36,7 @@ public class Initalizer : ApplicationContext
         UserDialogs = GuiComponentsProvider.Instance.GetClassImplementing<IUserDialogs>();
 
         //Init "main" classes
-        CollectionsManager = new CollectionsManagerWithCounts(OsuFileIo.LoadedMaps);
+        CollectionsManager = new CollectionsManagerWithCounts(OsuFileIo.LoadedMaps, new() { { CollectionEdit.ExportBeatmaps, new ExportBeatmapsStrategy(UserDialogs) } });
 
         ICollectionAddRenameForm collectionAddRemoveForm = GuiComponentsProvider.Instance.GetClassImplementing<ICollectionAddRenameForm>();
         CollectionEditor = new CollectionEditor(CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);

@@ -7,6 +7,7 @@ using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using CollectionManagerApp.Misc;
+using System.Collections.Generic;
 
 public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
 {
@@ -56,6 +57,6 @@ public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
     public bool IsCollectionNameValid(string name)
         => _collectionsManager.IsCollectionNameValid(name);
 
-    public string GetValidCollectionName(string desiredName, List<string> aditionalNames = null)
-        => _collectionsManager.GetValidCollectionName(desiredName, aditionalNames);
+    public string GetValidCollectionName(string desiredName, IReadOnlyList<string> additionalReservedNames = null)
+        => _collectionsManager.GetValidCollectionName(desiredName, additionalReservedNames);
 }
