@@ -2,7 +2,6 @@
 
 using CollectionManager.Core.Enums;
 using CollectionManager.Core.Modules.Collection;
-using CollectionManager.Core.Types;
 
 internal class CollectionEditArgsExtension : CollectionEditArgs
 {
@@ -10,8 +9,8 @@ internal class CollectionEditArgsExtension : CollectionEditArgs
     {
     }
 
-    public static CollectionEditArgs ExportBeatmaps(OsuCollections collections) => new CollectionEditArgsExtension(CollectionEdit.ExportBeatmaps)
+    public static CollectionEditArgs ExportBeatmaps(IReadOnlyList<string> collections) => new CollectionEditArgsExtension(CollectionEdit.ExportBeatmaps)
     {
-        Collections = collections
+        CollectionNames = collections
     };
 }

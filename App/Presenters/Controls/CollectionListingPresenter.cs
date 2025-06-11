@@ -62,7 +62,7 @@ public class CollectionListingPresenter
             }
         }
 
-        _model.EmitCollectionEditing(CollectionEditArgs.ReorderCollections(collections, targetCollection, placeBefore, sortColumn, sortOrder));
+        _model.EmitCollectionEditing(CollectionEditArgs.ReorderCollections(collections.Names, targetCollection.Name, placeBefore, sortColumn, sortOrder));
     }
 
     private void ViewOnBeatmapsDropped(object sender, Beatmaps args, string collectionName) => _model.EmitCollectionEditing(CollectionEditArgs.AddBeatmaps(collectionName, args));
@@ -90,7 +90,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.RemoveCollections(selectedCollections);
+                args = CollectionEditArgs.RemoveCollections(selectedCollections.Names);
                 break;
             case "Merge":
                 if (selectedCollections == null)
@@ -98,7 +98,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.MergeCollections(selectedCollections, selectedCollections[0].Name);
+                args = CollectionEditArgs.MergeCollections(selectedCollections.Names, $"{selectedCollections[0].Name}_Merged");
                 break;
             case "Intersect":
                 if (selectedCollections == null)
@@ -106,7 +106,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.IntersectCollections(selectedCollections, selectedCollections[0].Name);
+                args = CollectionEditArgs.IntersectCollections(selectedCollections.Names, $"{selectedCollections[0].Name}_Intersection");
                 break;
             case "Inverse":
                 if (selectedCollections == null)
@@ -114,7 +114,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.InverseCollections(selectedCollections, selectedCollections[0].Name);
+                args = CollectionEditArgs.InverseCollections(selectedCollections.Names, $"{selectedCollections[0].Name}_Inverse");
                 break;
             case "Difference":
                 if (selectedCollections == null)
@@ -122,7 +122,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.DifferenceCollections(selectedCollections, selectedCollections[0].Name);
+                args = CollectionEditArgs.DifferenceCollections(selectedCollections.Names, $"{selectedCollections[0].Name}_Difference");
                 break;
             case "Create":
                 args = CollectionEditArgs.AddCollections(null);
@@ -141,7 +141,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgs.DuplicateCollection(_view.SelectedCollection);
+                args = CollectionEditArgs.DuplicateCollection(_view.SelectedCollection.Name, $"{_view.SelectedCollection.Name}_Duplicated");
                 break;
             case "Export":
                 if (selectedCollections == null)
@@ -149,7 +149,7 @@ public class CollectionListingPresenter
                     return;
                 }
 
-                args = CollectionEditArgsExtension.ExportBeatmaps(selectedCollections);
+                args = CollectionEditArgsExtension.ExportBeatmaps(selectedCollections.Names);
                 break;
             case "Copy":
                 if (selectedCollections == null)

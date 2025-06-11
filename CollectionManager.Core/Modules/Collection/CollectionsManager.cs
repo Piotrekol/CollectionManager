@@ -2,6 +2,7 @@ namespace CollectionManager.Core.Modules.Collection;
 
 using CollectionManager.Core.Enums;
 using CollectionManager.Core.Interfaces;
+using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ using System.Text;
 
 public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
 {
-    public readonly OsuCollections LoadedCollections = [];
-    public Beatmaps LoadedBeatmaps;
+    public OsuCollections LoadedCollections { get; } = [];
+    private MapCacher MapCacher;
     private readonly string ReorderCharsString;
     private const string reorderSeparator = "| ";
-    private int CollectionLoadId = 0;
+    private int CollectionLoadId;
     private readonly Lazy<Dictionary<string, Func<IOsuCollection, object>>> CollectionFieldSortSelectors = new(() => new()
     {
         { nameof(IOsuCollection.Id), c => c.Id },
@@ -23,25 +24,12 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         { nameof(IOsuCollection.NumberOfBeatmaps), c => c.NumberOfBeatmaps },
     });
 
-    public CollectionsManager(Beatmaps loadedBeatmaps)
+    public CollectionsManager(MapCacher loadedBeatmaps)
     {
-        LoadedBeatmaps = loadedBeatmaps;
+        MapCacher = loadedBeatmaps;
         ReorderCharsString = "0123456789";//!$)]},.? ABCDEFGHIJKLMNOPQRSTUVWXYZ @#%^&*(+[{;':\\\"<>/
     }
 
-    /*
-     add collection
-     remove collection
-     edit collection name
-     merge x collections
-     intersect x collections
-     inverse map sum of x collections
-     difference x collections
-     clear collections
-     reorder collections
-     add beatmaps to collection
-     remove beatmaps from collection
-     */
     private void EditCollection(CollectionEditArgs args, bool suspendRefresh = false)
     {
         CollectionEdit action = args.Action;
@@ -50,10 +38,12 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
             return;
         }
 
+        List<IOsuCollection> argCollections = [.. args.CollectionNames.Select(GetCollectionByName).Where(c => c != null)];
+
         if (action == CollectionEdit.Add)
         {
             List<string> collectionNames = [];
-            foreach (IOsuCollection collection in args.Collections)
+            foreach (IOsuCollection collection in args.NewCollections)
             {
                 string name = GetValidCollectionName(collection.Name, collectionNames);
 
@@ -62,16 +52,15 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
                 collectionNames.Add(name);
             }
 
-            LoadedCollections.AddRange(args.Collections);
+            LoadedCollections.AddRange(args.NewCollections);
         }
         else if (action == CollectionEdit.AddOrMergeIfExists)
         {
-            foreach (IOsuCollection collection in args.Collections)
+            foreach (IOsuCollection collection in argCollections)
             {
                 if (CollectionNameExists(collection.Name))
                 {
-                    EditCollection(CollectionEditArgs.MergeCollections(
-                        [GetCollectionByName(collection.Name), collection], collection.Name), true);
+                    EditCollection(CollectionEditArgs.MergeCollections([collection.Name, collection.Name], collection.Name), true);
                 }
                 else
                 {
@@ -92,14 +81,13 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         }
         else if (action == CollectionEdit.Merge)
         {
-            OsuCollections collections = args.Collections;
             string newCollectionName = args.NewName;
-            if (collections.Count > 0)
+            if (argCollections.Count > 0)
             {
-                IOsuCollection masterCollection = collections[0];
-                for (int i = 1; i < collections.Count; i++)
+                IOsuCollection masterCollection = argCollections[0];
+                for (int i = 1; i < argCollections.Count; i++)
                 {
-                    IOsuCollection collectionToMerge = collections[i];
+                    IOsuCollection collectionToMerge = argCollections[i];
                     foreach (BeatmapExtension beatmap in collectionToMerge.AllBeatmaps())
                     {
                         masterCollection.AddBeatmap(beatmap);
@@ -116,12 +104,11 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         }
         else if (action == CollectionEdit.Intersect)
         {
-            IOsuCollection targetCollection = args.Collections.Last();
-            args.Collections.RemoveAt(args.Collections.Count - 1);
-            IOsuCollection mainCollection = args.Collections[0];
-            args.Collections.RemoveAt(0);
+            OsuCollection targetCollection = new(MapCacher) { Name = args.NewName };
+            IOsuCollection mainCollection = argCollections[0];
+            argCollections.RemoveAt(0);
             IEnumerable<BeatmapExtension> beatmaps = mainCollection.AllBeatmaps();
-            foreach (IOsuCollection collection in args.Collections)
+            foreach (IOsuCollection collection in argCollections)
             {
                 beatmaps = beatmaps.Intersect(collection.AllBeatmaps(), new CollectionBeatmapComparer()).ToList();
             }
@@ -135,10 +122,9 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         }
         else if (action == CollectionEdit.Inverse)
         {
-            IOsuCollection targetCollection = args.Collections.Last();
-            args.Collections.RemoveAt(args.Collections.Count - 1);
-            IEnumerable<BeatmapExtension> beatmaps = LoadedBeatmaps.AsEnumerable().Cast<BeatmapExtension>();
-            foreach (IOsuCollection collection in args.Collections)
+            OsuCollection targetCollection = new(MapCacher) { Name = args.NewName };
+            IEnumerable<BeatmapExtension> beatmaps = MapCacher.Beatmaps.AsEnumerable().Cast<BeatmapExtension>();
+            foreach (IOsuCollection collection in argCollections)
             {
                 beatmaps = beatmaps.Except(collection.AllBeatmaps(), new CollectionBeatmapComparer());
             }
@@ -152,12 +138,11 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         }
         else if (action == CollectionEdit.Difference)
         {
-            IOsuCollection targetCollection = args.Collections.Last();
-            args.Collections.RemoveAt(args.Collections.Count - 1);
-            IOsuCollection mainCollection = args.Collections[0];
-            args.Collections.RemoveAt(0);
+            OsuCollection targetCollection = new(MapCacher) { Name = args.NewName };
+            IOsuCollection mainCollection = argCollections[0];
+            argCollections.RemoveAt(0);
             IEnumerable<BeatmapExtension> beatmaps = mainCollection.AllBeatmaps();
-            foreach (IOsuCollection collection in args.Collections)
+            foreach (IOsuCollection collection in argCollections)
             {
                 beatmaps = beatmaps.Concat(collection.AllBeatmaps());
             }
@@ -179,32 +164,32 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         {
             LoadedCollections.Clear();
         }
-        else if (action == CollectionEdit.Reorder)
+        else if (action == CollectionEdit.Reorder && args is CollectionReorderEditArgs reorderEditArgs)
         {
-            if (!CollectionFieldSortSelectors.Value.TryGetValue(args.SortColumn, out Func<IOsuCollection, object> sortFieldSelector))
+            if (!CollectionFieldSortSelectors.Value.TryGetValue(reorderEditArgs.SortColumn, out Func<IOsuCollection, object> sortFieldSelector))
             {
                 throw new InvalidOperationException("Unrecognized collection sort column");
             }
 
-            List<IOsuCollection> collectionsToReorder = args.Collections.OrderByDescending(sortFieldSelector).ToList();
+            List<IOsuCollection> collectionsToReorder = argCollections.OrderByDescending(sortFieldSelector).ToList();
             List<IOsuCollection> orderedLoadedCollections = LoadedCollections.OrderByDescending(sortFieldSelector).ToList();
-            if (args.SortOrder == SortOrder.Ascending)
+            if (reorderEditArgs.SortOrder == SortOrder.Ascending)
             {
                 collectionsToReorder.Reverse();
                 orderedLoadedCollections.Reverse();
             }
 
-            OsuCollection targetCollection = args.TargetCollection;
+            IOsuCollection targetCollection = GetCollectionByName(reorderEditArgs.TargetSortCollectionName);
             foreach (IOsuCollection coll in collectionsToReorder)
             {
                 _ = orderedLoadedCollections.Remove(coll);
             }
 
             int targetCollectionIndex = orderedLoadedCollections.IndexOf(targetCollection);
-            orderedLoadedCollections.InsertRange(args.PlaceCollectionsBefore ? targetCollectionIndex : targetCollectionIndex + 1, collectionsToReorder);
+            orderedLoadedCollections.InsertRange(reorderEditArgs.PlaceCollectionsBefore ? targetCollectionIndex : targetCollectionIndex + 1, collectionsToReorder);
             int amountOfCharactersRequired = 0;
             int variations = 0;
-            while (orderedLoadedCollections.Count() > variations)
+            while (orderedLoadedCollections.Count > variations)
             {
                 variations = Enumerable.Range(1, ++amountOfCharactersRequired).Aggregate(0, (acc, i) => Convert.ToInt32(Math.Pow(ReorderCharsString.Length, i)) + acc);
             }
@@ -229,7 +214,7 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         }
         else
         {
-            IOsuCollection collection = GetCollectionByName(args.OrginalName);
+            IOsuCollection collection = GetCollectionByName(args.CollectionNames[0]);
 
             if (action == CollectionEdit.Rename)
             {
@@ -257,7 +242,15 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
             }
             else if (action == CollectionEdit.Duplicate)
             {
-                throw new NotImplementedException("Call AddCollections followed with AddBeatmaps instead");
+                IOsuCollection sourceCollection = GetCollectionByName(args.CollectionNames[0]);
+                OsuCollection newCollection = new(MapCacher) { Name = args.NewName };
+
+                foreach (BeatmapExtension beatmap in sourceCollection.AllBeatmaps())
+                {
+                    newCollection.AddBeatmap(beatmap);
+                }
+
+                EditCollection(CollectionEditArgs.AddCollections([newCollection]), true);
             }
         }
 

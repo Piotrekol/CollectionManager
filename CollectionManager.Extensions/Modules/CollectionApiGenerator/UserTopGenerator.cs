@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-public class UserTopGenerator
+public sealed class UserTopGenerator : IDisposable
 {
     private readonly string StartingProcessing = "Preparing...";
     private readonly string ParsingUser = "Processing \"{0}\" | {1}";
@@ -63,7 +63,7 @@ public class UserTopGenerator
 
         _osuApi = new OsuApi(osuApiKey);
         _mapCacher = mapCacher;
-        _collectionManager = new CollectionsManager(_mapCacher.Beatmaps);
+        _collectionManager = new CollectionsManager(_mapCacher);
     }
 
     public OsuCollections GetPlayersCollections(CollectionGeneratorConfiguration cfg, LogCollectionGeneration logger, CancellationToken cancellationToken)
@@ -86,7 +86,7 @@ public class UserTopGenerator
 
                 Log(username, ParsingFinished, ++processedCounter / (double)totalUsernames * 100);
 
-                _collectionManager.EditCollection(CollectionEditArgs.AddOrMergeCollections(collections));
+                _collectionManager.EditCollection(CollectionEditArgs.AddOrMergeCollections(collections.Names));
             }
 
             c.AddRange(_collectionManager.LoadedCollections);
@@ -244,6 +244,8 @@ public class UserTopGenerator
             return "Invalid format!";
         }
     }
+
+    public void Dispose() => _osuApi.Dispose();
 
     public delegate void LogCollectionGeneration(string logMessage, double precentage);
 }

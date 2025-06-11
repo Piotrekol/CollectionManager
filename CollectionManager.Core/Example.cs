@@ -30,7 +30,7 @@ internal class Class1
         string osuSongsFolderLocation = osuFileIo.OsuSettings.CustomBeatmapDirectoryLocation;
 
         //Create Collection manager instance
-        CollectionsManagerWithCounts collectionManager = new(osuFileIo.OsuDatabase.LoadedMaps.Beatmaps);
+        CollectionsManagerWithCounts collectionManager = new(osuFileIo.OsuDatabase.LoadedMaps);
         //or just this:
         //var collectionManager = new CollectionsManager(osuFileIo.OsuDatabase.LoadedMaps.Beatmaps);
 
@@ -64,7 +64,7 @@ internal class Class1
         //Merge our collections into one.
         //Note that while I do not impose a limit on collection name length, osu! does and it will be truncated upon opening collection in osu! client.
         collectionManager.EditCollection(
-            CollectionEditArgs.MergeCollections([ourCollection, ourSecondCollection]
+            CollectionEditArgs.MergeCollections([ourCollection.Name, ourSecondCollection.Name]
             , "Collection created from 2 Example collections")
             );
 

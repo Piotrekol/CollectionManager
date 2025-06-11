@@ -1,5 +1,6 @@
 ﻿namespace CollectionManager.Core.Modules.Collection;
 
+using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using System.Collections.Generic;
 
@@ -10,7 +11,7 @@ public class CollectionsManagerWithCounts : CollectionsManager
     public int BeatmapsInCollectionsCount { get; private set; }
     public int CollectionsCount => LoadedCollections.Count;
 
-    public CollectionsManagerWithCounts(Beatmaps loadedBeatmaps) : base(loadedBeatmaps)
+    public CollectionsManagerWithCounts(MapCacher loadedBeatmaps) : base(loadedBeatmaps)
     {
     }
 

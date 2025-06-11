@@ -183,7 +183,7 @@ public class SidePanelActionsHandler : IDisposable
             newCollections.AddRange(await webCollection.Save(Initalizer.WebCollectionProvider));
         }
 
-        _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(oldCollections));
+        _collectionEditor.EditCollection(CollectionEditArgs.RemoveCollections(oldCollections.Names));
         _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(newCollections));
 
         IOnlineCollectionList sidePanel = (IOnlineCollectionList)_mainForm.SidePanelView;

@@ -10,16 +10,14 @@ using CollectionManagerApp.Misc;
 
 public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
 {
-    private readonly ICollectionEditor _collectionEditor;
-    private readonly ICollectionNameValidator _collectionNameValidator;
+    private readonly CollectionsManager _collectionsManager;
     private readonly ICollectionAddRenameForm _collectionAddRenameForm;
     private readonly MapCacher _mapCacher;
 
-    public CollectionEditor(ICollectionEditor collectionEditor, ICollectionNameValidator collectionNameValidator,
+    public CollectionEditor(CollectionsManager collectionsManager,
         ICollectionAddRenameForm collectionAddRenameForm, MapCacher mapCacher)
     {
-        _collectionEditor = collectionEditor;
-        _collectionNameValidator = collectionNameValidator;
+        _collectionsManager = collectionsManager;
         _collectionAddRenameForm = collectionAddRenameForm;
         _mapCacher = mapCacher;
     }
@@ -31,7 +29,7 @@ public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
             bool isRenameform = args.Action == CollectionEdit.Rename;
 
             string newCollectionName = _collectionAddRenameForm
-                .GetCollectionName(IsCollectionNameValid, args.OrginalName, isRenameform);
+                .GetCollectionName(IsCollectionNameValid, args.CollectionNames.FirstOrDefault(), isRenameform);
 
             if (newCollectionName == "")
             {
@@ -41,46 +39,23 @@ public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
             switch (args.Action)
             {
                 case CollectionEdit.Rename:
-                    args = CollectionEditArgs.RenameCollection(args.OrginalName, newCollectionName);
+                    args = CollectionEditArgs.RenameCollection(args.CollectionNames[0], newCollectionName);
                     break;
                 case CollectionEdit.Add:
                     args = CollectionEditArgs.AddCollections([new OsuCollection(_mapCacher) { Name = newCollectionName }]);
                     break;
             }
         }
-        else if (args.Action is CollectionEdit.Intersect or CollectionEdit.Difference)
-        {
-            if (args.Collections.Count < 2)
-            {
-                return;
-            }
 
-            args.Collections.Add(new OsuCollection(_mapCacher) { Name = GetValidCollectionName(args.NewName) });
-        }
-        else if (args.Action == CollectionEdit.Inverse)
-        {
-            args.Collections.Add(new OsuCollection(_mapCacher) { Name = GetValidCollectionName(args.NewName) });
-        }
-        else if (args.Action == CollectionEdit.Duplicate)
-        {
-            OsuCollection newCollection = new(_mapCacher) { Name = GetValidCollectionName(args.OrginalName) };
-            _collectionEditor.EditCollection(
-                CollectionEditArgs.AddCollections([newCollection])
-            );
-            Beatmaps beatmaps = [.. args.Collections[0].AllBeatmaps()];
-
-            args = CollectionEditArgs.AddBeatmaps(newCollection.Name, beatmaps);
-        }
-
-        _collectionEditor.EditCollection(args);
+        _collectionsManager.EditCollection(args);
     }
 
     public OsuCollections GetCollectionsForBeatmaps(Beatmaps beatmaps)
-        => _collectionEditor.GetCollectionsForBeatmaps(beatmaps);
+        => _collectionsManager.GetCollectionsForBeatmaps(beatmaps);
 
     public bool IsCollectionNameValid(string name)
-        => _collectionNameValidator.IsCollectionNameValid(name);
+        => _collectionsManager.IsCollectionNameValid(name);
 
     public string GetValidCollectionName(string desiredName, List<string> aditionalNames = null)
-        => _collectionNameValidator.GetValidCollectionName(desiredName, aditionalNames);
+        => _collectionsManager.GetValidCollectionName(desiredName, aditionalNames);
 }

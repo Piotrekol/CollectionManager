@@ -73,7 +73,11 @@ public class BeatmapListingActionsHandler
             return;
         }
 
-        _ = ExportBeatmapSetsAsync(e.Collections.AllBeatmaps().Cast<Beatmap>().ToList());
+        List<Beatmap> beatmaps = [.. e.CollectionNames
+            .Select(Initalizer.CollectionsManager.GetCollectionByName)
+            .SelectMany(c => c.AllBeatmaps())];
+
+        _ = ExportBeatmapSetsAsync(beatmaps);
     }
 
     private void ExportBeatmapSets(object sender)

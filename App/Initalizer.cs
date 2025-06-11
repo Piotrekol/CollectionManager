@@ -34,10 +34,10 @@ public class Initalizer : ApplicationContext
         UserDialogs = GuiComponentsProvider.Instance.GetClassImplementing<IUserDialogs>();
 
         //Init "main" classes
-        CollectionsManager = new CollectionsManagerWithCounts(LoadedBeatmaps);
+        CollectionsManager = new CollectionsManagerWithCounts(OsuFileIo.LoadedMaps);
 
         ICollectionAddRenameForm collectionAddRemoveForm = GuiComponentsProvider.Instance.GetClassImplementing<ICollectionAddRenameForm>();
-        CollectionEditor = new CollectionEditor(CollectionsManager, CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
+        CollectionEditor = new CollectionEditor(CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
 
         UpdateChecker updateChecker = new();
         InfoTextModel infoTextModel = new(updateChecker);

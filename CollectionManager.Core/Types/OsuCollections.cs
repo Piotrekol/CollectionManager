@@ -30,4 +30,6 @@ public class OsuCollections : RangeObservableCollection<IOsuCollection>
     {
         add => base.PropertyChanged += value; remove => base.PropertyChanged -= value;
     }
+    public IReadOnlyList<string> Names
+        => this.Select(collection => collection.Name).ToList().AsReadOnly();
 }

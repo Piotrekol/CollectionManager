@@ -5,123 +5,184 @@ using CollectionManager.Core.Types;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// Provides arguments for editing collections, as well as factory methods for actions.
+/// </summary>
 public class CollectionEditArgs : EventArgs
 {
-    public CollectionEdit Action { get; protected set; }
-    public string OrginalName { get; protected set; }
-    public string NewName { get; protected set; }
-    public OsuCollections Collections { get; protected set; }
-    public OsuCollection TargetCollection { get; protected set; }
-    public Beatmaps Beatmaps { get; protected set; }
-    public IList<string> CollectionNames { get; protected set; }
-    public bool PlaceCollectionsBefore { get; protected set; }
-    public string SortColumn { get; private set; }
-    public SortOrder SortOrder { get; private set; }
 
+    /// <summary>
+    /// The type of action being performed.
+    /// </summary>
+    public CollectionEdit Action { get; protected set; }
+
+    /// <summary>
+    /// The name of the new collection, if applicable.
+    /// </summary>
+    public string NewName { get; protected set; }
+
+    /// <summary>
+    /// The names of the existing collections involved in the action.
+    /// </summary>
+    public IReadOnlyList<string> CollectionNames { get; protected set; } = [];
+
+    /// <summary>
+    /// The beatmaps involved in the action, if applicable.
+    /// </summary>
+    public IEnumerable<Beatmap> Beatmaps { get; protected set; } = [];
+
+    public OsuCollections NewCollections { get; protected set; } = [];
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CollectionEditArgs"/> class with the specified action.
+    /// </summary>
+    /// <param name="action">The action to perform.</param>
     public CollectionEditArgs(CollectionEdit action)
     {
         Action = action;
     }
-    #region Add Collection
+
+    /// <summary>
+    /// Creates arguments for adding new collections.
+    /// </summary>
+    /// <param name="collections">The collections to add.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the add action.</returns>
     public static CollectionEditArgs AddCollections(OsuCollections collections) => new(CollectionEdit.Add)
     {
-        Collections = collections
+        NewCollections = collections
     };
-    #endregion
-    #region Remove Collection
-    public static CollectionEditArgs RemoveCollections(IList<string> collectionNames) => new(CollectionEdit.Remove)
+
+    /// <summary>
+    /// Creates arguments for removing collections.
+    /// </summary>
+    /// <param name="collectionNames">The names of the collections to remove.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the remove action.</returns>
+    public static CollectionEditArgs RemoveCollections(IReadOnlyList<string> collectionNames) => new(CollectionEdit.Remove)
     {
         CollectionNames = collectionNames
     };
-    public static CollectionEditArgs RemoveCollections(OsuCollections collections)
-    {
-        List<string> names = [];
-        foreach (IOsuCollection collection in collections)
-        {
-            names.Add(collection.Name);
-        }
 
-        return RemoveCollections(names);
-    }
-    #endregion
-    #region Rename Collection
+    /// <summary>
+    /// Creates arguments for renaming a collection.
+    /// </summary>
+    /// <param name="oldName">The current name of the collection.</param>
+    /// <param name="NewName">The new name for the collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the rename action.</returns>
     public static CollectionEditArgs RenameCollection(string oldName, string NewName) => new(CollectionEdit.Rename)
     {
-        OrginalName = oldName,
+        CollectionNames = [oldName],
         NewName = NewName
     };
+
+    /// <summary>
+    /// Creates arguments for renaming a collection by <see cref="IOsuCollection"/>.
+    /// </summary>
+    /// <param name="collection">The collection to rename.</param>
+    /// <param name="newName">The new name for the collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the rename action.</returns>
     public static CollectionEditArgs RenameCollection(IOsuCollection collection, string newName) => RenameCollection(collection.Name, newName);
-    #endregion
-    #region merge Collections
-    public static CollectionEditArgs MergeCollections(OsuCollections collections, string newName) => new(CollectionEdit.Merge)
+
+    /// <summary>
+    /// Creates arguments for merging collections.
+    /// </summary>
+    /// <param name="collections">The collections to merge.</param>
+    /// <param name="newName">The name for the merged collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the merge action.</returns>
+    public static CollectionEditArgs MergeCollections(IReadOnlyList<string> collectionNames, string newName) => new(CollectionEdit.Merge)
     {
-        Collections = collections,
+        CollectionNames = collectionNames,
         NewName = newName
     };
-    #endregion
-    #region intersect Collections
-    public static CollectionEditArgs IntersectCollections(OsuCollections collections, string newName) => new(CollectionEdit.Intersect)
+
+    /// <summary>
+    /// Creates arguments for intersecting collections.
+    /// </summary>
+    /// <param name="collectionNames">The collections to intersect.</param>
+    /// <param name="newName">The name for the intersected collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the intersect action.</returns>
+    public static CollectionEditArgs IntersectCollections(IReadOnlyList<string> collectionNames, string newName) => new(CollectionEdit.Intersect)
     {
-        Collections = collections,
+        CollectionNames = collectionNames,
         NewName = newName
     };
-    #endregion
-    #region Inverse Collections
-    public static CollectionEditArgs InverseCollections(OsuCollections collections, string newName) => new(CollectionEdit.Inverse)
+
+    /// <summary>
+    /// Creates arguments for inverting collections.
+    /// </summary>
+    /// <param name="collectionNames">The collections to invert.</param>
+    /// <param name="newName">The name for the inverted collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the inverse action.</returns>
+    public static CollectionEditArgs InverseCollections(IReadOnlyList<string> collectionNames, string newName) => new(CollectionEdit.Inverse)
     {
-        Collections = collections,
+        CollectionNames = collectionNames,
         NewName = newName
     };
-    #endregion
-    #region Difference Collections
-    public static CollectionEditArgs DifferenceCollections(OsuCollections collections, string newName) => new(CollectionEdit.Difference)
+
+    /// <summary>
+    /// Creates arguments for finding the difference between collections.
+    /// </summary>
+    /// <param name="collectionNames">The collections to compare.</param>
+    /// <param name="newName">The name for the resulting collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the difference action.</returns>
+    public static CollectionEditArgs DifferenceCollections(IReadOnlyList<string> collectionNames, string newName) => new(CollectionEdit.Difference)
     {
-        Collections = collections,
+        CollectionNames = collectionNames,
         NewName = newName
     };
-    #endregion
-    #region Clear Collections
+
+    /// <summary>
+    /// Creates arguments for clearing all collections.
+    /// </summary>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the clear action.</returns>
     public static CollectionEditArgs ClearCollections() => new(CollectionEdit.Clear);
-    #endregion
-    #region Add Beatmaps to collection
-    public static CollectionEditArgs AddBeatmaps(string collectionName, Beatmaps beatmaps) => new(CollectionEdit.AddBeatmaps)
+
+    /// <summary>
+    /// Creates arguments for adding beatmaps to a collection.
+    /// </summary>
+    /// <param name="collectionName">The name of the collection to add beatmaps to.</param>
+    /// <param name="beatmaps">The beatmaps to add.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the add beatmaps action.</returns>
+    public static CollectionEditArgs AddBeatmaps(string collectionName, IEnumerable<Beatmap> beatmaps) => new(CollectionEdit.AddBeatmaps)
     {
         Beatmaps = beatmaps,
-        OrginalName = collectionName
+        CollectionNames = [collectionName]
     };
 
-    #endregion
-    #region Reorder collections using special characters placed at the begining of the name, this modifies ALL collection names
-    public static CollectionEditArgs ReorderCollections(OsuCollections collections, OsuCollection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder) => new(CollectionEdit.Reorder)
-    {
-        Collections = collections,
-        TargetCollection = targetCollection,
-        PlaceCollectionsBefore = placeBefore,
-        SortColumn = sortColumn,
-        SortOrder = sortOrder
-    };
-    #endregion
-    #region Remove beatmaps from collection
-    public static CollectionEditArgs RemoveBeatmaps(string collectionName, Beatmaps beatmaps) => new(CollectionEdit.RemoveBeatmaps)
+    /// <summary>
+    /// Creates arguments for removing beatmaps from a collection.
+    /// </summary>
+    /// <param name="collectionName">The name of the collection to remove beatmaps from.</param>
+    /// <param name="beatmaps">The beatmaps to remove.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the remove beatmaps action.</returns>
+    public static CollectionEditArgs RemoveBeatmaps(string collectionName, IEnumerable<Beatmap> beatmaps) => new(CollectionEdit.RemoveBeatmaps)
     {
         Beatmaps = beatmaps,
-        OrginalName = collectionName
+        CollectionNames = [collectionName]
     };
-    #endregion
-    #region Add or merge if exists
-    public static CollectionEditArgs AddOrMergeCollections(OsuCollections collections) => new(CollectionEdit.AddOrMergeIfExists)
+
+    /// <summary>
+    /// Creates arguments for adding or merging collections if they already exist.
+    /// </summary>
+    /// <param name="collectionNames">The names of the collections to add or merge.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the add or merge action.</returns>
+    public static CollectionEditArgs AddOrMergeCollections(IReadOnlyList<string> collectionNames) => new(CollectionEdit.AddOrMergeIfExists)
     {
-        Collections = collections
+        CollectionNames = collectionNames
     };
-    #endregion
 
-    #region duplicate
-    public static CollectionEditArgs DuplicateCollection(IOsuCollection collection) => new(CollectionEdit.Duplicate)
+    /// <summary>
+    /// Creates arguments for duplicating a collection.
+    /// </summary>
+    /// <param name="collectionName">The name of the collection to duplicate.</param>
+    /// <param name="newName">The new name for the duplicated collection.</param>
+    /// <returns>A <see cref="CollectionEditArgs"/> instance for the duplicate action.</returns>
+    public static CollectionEditArgs DuplicateCollection(string collectionName, string newName) => new(CollectionEdit.Duplicate)
     {
-        OrginalName = collection.Name,
-        Collections = [collection]
+        CollectionNames = [collectionName],
+        NewName = newName
     };
 
-    #endregion
-
+    /// <inheritdoc cref="CollectionReorderEditArgs.ReorderCollections(IReadOnlyList{string}, string, bool, string, SortOrder)"/>
+    public static CollectionReorderEditArgs ReorderCollections(IReadOnlyList<string> collectionNames, string targetCollectionSortName, bool placeBefore, string sortColumn, SortOrder sortOrder)
+        => CollectionReorderEditArgs.ReorderCollections(collectionNames, targetCollectionSortName, placeBefore, sortColumn, sortOrder);
 }
