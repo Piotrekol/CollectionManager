@@ -1,9 +1,8 @@
-﻿using CollectionManager.DataTypes;
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Interfaces
+using CollectionManager.Core.Types;
+
+public interface IBeatmapListingPresenter
 {
-    public interface IBeatmapListingPresenter
-    {
-        Beatmaps Beatmaps { get; set; }
-    }
+    Beatmaps Beatmaps { get; set; }
 }

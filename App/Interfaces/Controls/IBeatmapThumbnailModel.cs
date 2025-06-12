@@ -1,6 +1,5 @@
-﻿namespace App.Interfaces
+﻿namespace CollectionManagerApp.Interfaces.Controls;
+
+public interface IBeatmapThumbnailModel : IGenericMapSetterModel
 {
-    public interface IBeatmapThumbnailModel : IGenericMapSetterModel
-    {
-    }
 }

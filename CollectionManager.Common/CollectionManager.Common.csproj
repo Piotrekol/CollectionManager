@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CollectionManager.Core\CollectionManager.Core.csproj" />
+	</ItemGroup>
+</Project>

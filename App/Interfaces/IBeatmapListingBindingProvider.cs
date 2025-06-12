@@ -1,8 +1,8 @@
-﻿namespace App.Interfaces
+﻿namespace CollectionManagerApp.Interfaces;
+using CollectionManagerApp.Interfaces.Controls;
+
+public interface IBeatmapListingBindingProvider
 {
-    public interface IBeatmapListingBindingProvider
-    {
-        void Bind(IBeatmapListingModel model);
-        void UnBind(IBeatmapListingModel model);
-    }
+    void Bind(IBeatmapListingModel model);
+    void UnBind(IBeatmapListingModel model);
 }

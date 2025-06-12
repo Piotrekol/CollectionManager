@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using CollectionManagerExtensionsDll.Modules.DownloadManager.API;
-using Gui.Misc;
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Interfaces
+using CollectionManager.Common.Interfaces;
+using CollectionManager.Extensions.Modules.Downloader.Api;
+
+public interface IDownloadManagerModel
 {
-    public interface IDownloadManagerModel
-    {
-        event EventHandler DownloadItemsChanged;
-        event EventHandler<EventArgs<DownloadItem>> DownloadItemUpdated;
+    event EventHandler DownloadItemsChanged;
+    event EventHandler<DownloadItem> DownloadItemUpdated;
 
-        event EventHandler LogInStatusChanged;
-        event EventHandler LogInRequest;
-        event EventHandler StartDownloads;
-        event EventHandler StopDownloads;
-        void EmitStartDownloads();
-        void EmitStopDownloads();
-        void EmitLoginRequest();
-        ICollection<DownloadItem> DownloadItems { get; set; }
-        bool IsLoggedIn { get; set; }
-    }
+    event EventHandler LogInStatusChanged;
+    event EventHandler LogInRequest;
+    event EventHandler StartDownloads;
+    event EventHandler StopDownloads;
+    void EmitStartDownloads();
+    void EmitStopDownloads();
+    void EmitLoginRequest();
+    ICollection<IDownloadItem> DownloadItems { get; set; }
+    bool IsLoggedIn { get; set; }
 }

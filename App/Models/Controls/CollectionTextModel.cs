@@ -1,35 +1,24 @@
-﻿using System;
-using CollectionManager.DataTypes;
-using App.Interfaces;
+﻿namespace CollectionManagerApp.Models.Controls;
 
-namespace App.Models
+using CollectionManager.Core.Types;
+using CollectionManagerApp.Interfaces.Controls;
+
+public class CollectionTextModel : ICollectionTextModel
 {
-    public class CollectionTextModel: ICollectionTextModel
+    public event EventHandler CollectionChanged;
+    public void SetCollections(OsuCollections collections) => Collections = collections;
+
+    private OsuCollections _collections;
+
+    public OsuCollections Collections
     {
-        public event EventHandler CollectionChanged;
-        public void SetCollections(Collections collections)
+        get => _collections;
+        set
         {
-            Collections = collections;
-        }
-
-        private Collections _collections;
-
-        public Collections Collections
-        {
-            get
-            {
-                return _collections;
-            }
-            set
-            {
-                _collections = value;
-                OnCollectionChanged();
-            }
-        }
-
-        protected virtual void OnCollectionChanged()
-        {
-            CollectionChanged?.Invoke(this, EventArgs.Empty);
+            _collections = value;
+            OnCollectionChanged();
         }
     }
+
+    protected virtual void OnCollectionChanged() => CollectionChanged?.Invoke(this, EventArgs.Empty);
 }

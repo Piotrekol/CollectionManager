@@ -1,29 +1,38 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerDll", "CollectionManagerDll\CollectionManagerDll.csproj", "{533AB47A-D1B5-45DB-A37E-F053FA3699C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Core", "CollectionManager.Core\CollectionManager.Core.csproj", "{533AB47A-D1B5-45DB-A37E-F053FA3699C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerExtensionsDll", "CollectionManagerExtensionsDll\CollectionManagerExtensionsDll.csproj", "{2BDF5D5F-1CB0-47A6-8138-E4DB961740F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Extensions", "CollectionManager.Extensions\CollectionManager.Extensions.csproj", "{2BDF5D5F-1CB0-47A6-8138-E4DB961740F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectListView2012", "ObjectListView\ObjectListView2012.csproj", "{18FEDA0C-D147-4286-B39A-01204808106A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer", "MusicPlayer\MusicPlayer.csproj", "{573A1557-C916-4ABE-BD52-94760D19CC29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Audio", "CollectionManager.Audio\CollectionManager.Audio.csproj", "{573A1557-C916-4ABE-BD52-94760D19CC29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuiComponents", "GuiComponents\GuiComponents.csproj", "{9F6C4BFE-5696-4513-BB06-90DC14A56CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.WinForms", "CollectionManager.WinForms\CollectionManager.WinForms.csproj", "{9F6C4BFE-5696-4513-BB06-90DC14A56CCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{14768636-102A-4A27-AB5A-9B5D1BA316A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Common", "CollectionManager.Common\CollectionManager.Common.csproj", "{14768636-102A-4A27-AB5A-9B5D1BA316A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerApp", "App\CollectionManagerApp.csproj", "{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionGenerator", "CollectionGenerator\CollectionGenerator.csproj", "{3070A7AA-7493-42A7-9E0E-74878453ABB4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerDllTests", "CollectionManagerDllTests\CollectionManagerDllTests.csproj", "{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Core.Tests", "CollectionManager.Core.Tests\CollectionManager.Core.Tests.csproj", "{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerExtensionsDllTests", "CollectionManagerExtensionsDllTests\CollectionManagerExtensionsDllTests.csproj", "{0C2E6C9E-8FAE-43EE-BA81-A66D44F97EB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Extensions.Tests", "CollectionManager.Extensions.Tests\CollectionManager.Extensions.Tests.csproj", "{0C2E6C9E-8FAE-43EE-BA81-A66D44F97EB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{DA4F3623-F491-41FF-9FA1-E023C54830E5}"
+	ProjectSection(SolutionItems) = preProject
+		InnoSetup\script.iss = InnoSetup\script.iss
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,12 +83,6 @@ Global
 		{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}.Remote Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}.Remote Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Remote Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3070A7AA-7493-42A7-9E0E-74878453ABB4}.Remote Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,6 +102,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4964F085-11B8-4CE0-BDE8-2894E2B48AE0} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
 		{0C2E6C9E-8FAE-43EE-BA81-A66D44F97EB1} = {92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}
+		{DA4F3623-F491-41FF-9FA1-E023C54830E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B279722-47B2-4CC1-AF2D-9C5FA9E9259D}

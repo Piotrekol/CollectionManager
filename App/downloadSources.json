@@ -9,7 +9,7 @@
     "DownloadsPerHour": 170,
     "DownloadThreads": 3,
     "RequestTimeout": 5000,
-    "FullyQualifiedHandlerName": "CollectionManagerExtensionsDll.Modules.DownloadManager.OsuDownloader, CollectionManagerExtensionsDll",
+    "FullyQualifiedHandlerName": "CollectionManager.Extensions.Modules.Downloader.OsuDownloader, CollectionManager.Extensions",
     "RequiresLogin": true,
     "UseCookiesLogin": true
   }

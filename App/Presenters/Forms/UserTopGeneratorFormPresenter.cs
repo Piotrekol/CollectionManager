@@ -1,26 +1,27 @@
-﻿using App.Interfaces;
-using App.Presenters.Controls;
-using GuiComponents.Interfaces;
+﻿namespace CollectionManagerApp.Presenters.Forms;
 
-namespace App.Presenters.Forms
+using CollectionManager.Common.Interfaces.Forms;
+using CollectionManagerApp.Interfaces.Controls;
+using CollectionManagerApp.Presenters.Controls;
+
+public class UserTopGeneratorFormPresenter
 {
-    public class UserTopGeneratorFormPresenter
+    private readonly IUserTopGeneratorModel _model;
+    private readonly IUserTopGeneratorForm _form;
+
+    public UserTopGeneratorFormPresenter(IUserTopGeneratorModel model, IUserTopGeneratorForm form)
     {
-        private readonly IUserTopGeneratorModel _model;
-        private readonly IUserTopGeneratorForm _form;
-
-        public UserTopGeneratorFormPresenter(IUserTopGeneratorModel model, IUserTopGeneratorForm form)
+        _model = model;
+        _form = form;
+        form.Closing += (s, a) =>
         {
-            _model = model;
-            _form = form;
-            form.Closing += (s, a) =>
+            _model.EmitAbort();
+            if (_model.Collections != null)
             {
-                _model.EmitAbort();
-                if (_model.Collections != null)
-                    _model.EmitSaveCollections();
-            };
-            new UserTopGeneratorPresenter(model, form.UserTopGeneratorView);
+                _model.EmitSaveCollections();
+            }
+        };
+        _ = new UserTopGeneratorPresenter(model, form.UserTopGeneratorView);
 
-        }
     }
 }

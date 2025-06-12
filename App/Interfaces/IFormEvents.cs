@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace CollectionManagerApp.Interfaces;
 
-namespace App.Interfaces
+public interface IFormEvents
 {
-    public interface IFormEvents
-    {
-        event EventHandler FormClosed;
-        event EventHandler FormClosing;
-        void EmitFormClosing();
-        void EmitFormClosed();
-    }
+    event EventHandler FormClosed;
+    event EventHandler FormClosing;
+    void EmitFormClosing();
+    void EmitFormClosed();
 }

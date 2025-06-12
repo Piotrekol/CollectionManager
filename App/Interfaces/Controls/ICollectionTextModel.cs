@@ -1,12 +1,10 @@
-﻿using System;
-using CollectionManager.DataTypes;
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-namespace App.Interfaces
+using CollectionManager.Core.Types;
+
+public interface ICollectionTextModel
 {
-    public interface ICollectionTextModel
-    {
-        event EventHandler CollectionChanged;
-        void SetCollections(Collections collections);
-        Collections Collections { get; }
-    }
+    event EventHandler CollectionChanged;
+    void SetCollections(OsuCollections collections);
+    OsuCollections Collections { get; }
 }

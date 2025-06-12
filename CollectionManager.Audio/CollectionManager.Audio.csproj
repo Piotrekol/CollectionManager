@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Content Include="SoundTouch\lib\COPYING.TXT" />
+    <Content Include="SoundTouch\lib\SoundTouch.dll" />
+    <Content Include="SoundTouch\lib\SoundTouch_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="NAudio.Vorbis" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionManager.Common\CollectionManager.Common.csproj" />
+  </ItemGroup>
+</Project>

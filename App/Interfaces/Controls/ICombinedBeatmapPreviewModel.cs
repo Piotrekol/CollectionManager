@@ -1,7 +1,6 @@
-﻿namespace App.Interfaces
-{
-    public interface ICombinedBeatmapPreviewModel : IGenericMapSetterModel
-    {
+﻿namespace CollectionManagerApp.Interfaces.Controls;
 
-    }
+public interface ICombinedBeatmapPreviewModel : IGenericMapSetterModel
+{
+
 }

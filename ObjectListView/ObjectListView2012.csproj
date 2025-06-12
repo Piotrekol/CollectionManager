@@ -5,7 +5,6 @@
     <AssemblyName>ObjectListView</AssemblyName>
     <FileUpgradeFlags />
     <UpgradeBackupLocation />
-    <TargetFramework>net48</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
     <AssemblyTitle>ObjectListView</AssemblyTitle>
@@ -34,12 +33,6 @@
     <DebugType>pdbonly</DebugType>
     <DocumentationFile>bin\$(Configuration)\ObjectListView.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Accessibility" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Update="DataTreeListView.cs" />
     <Compile Update="Implementation\Enums.cs" />
@@ -106,5 +99,8 @@
   <ItemGroup>
     <Compile Remove="Implementation\DragSource.cs" />
     <Compile Remove="Implementation\DropSink.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
 </Project>

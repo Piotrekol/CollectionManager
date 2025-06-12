@@ -76,6 +76,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using MethodInvoker = System.Windows.Forms.MethodInvoker;
 
 namespace BrightIdeasSoftware
 {
@@ -413,7 +414,11 @@ namespace BrightIdeasSoftware
 
                 // Get around the 'private' marker on 'virtualListSize' field using reflection
                 if (virtualListSizeFieldInfo == null) {
-                    virtualListSizeFieldInfo = typeof(ListView).GetField("virtualListSize", BindingFlags.NonPublic | BindingFlags.Instance);
+#if NET7_0_OR_GREATER
+                    virtualListSizeFieldInfo = typeof(ListView).GetField("_virtualListSize", BindingFlags.NonPublic | BindingFlags.Instance);
+#else
+                     virtualListSizeFieldInfo = typeof(ListView).GetField("virtualListSize", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
                     System.Diagnostics.Debug.Assert(virtualListSizeFieldInfo != null);
                 }
 

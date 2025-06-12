@@ -1,0 +1,47 @@
+<Project>
+	<PropertyGroup>
+		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<NoWarn>$(NoWarn);WFO1000</NoWarn>
+		<TargetFrameworkBaseVersion>net9.0</TargetFrameworkBaseVersion>
+	</PropertyGroup>
+
+	<!--Winforms projects-->
+	<PropertyGroup Condition="($(MSBuildProjectName) == 'CollectionManagerApp'
+									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
+									or $(MSBuildProjectName) == 'ObjectListView2012'
+									)">
+		<TargetFrameworks>$(TargetFrameworkBaseVersion)-windows</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	
+	<!--Rest of the projects, condition is reverse of above-->
+	<PropertyGroup Condition="!($(MSBuildProjectName) == 'CollectionManagerApp'
+									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
+									or $(MSBuildProjectName) == 'ObjectListView2012'
+									)">
+		<TargetFrameworks>$(TargetFrameworkBaseVersion)</TargetFrameworks>
+	</PropertyGroup>
+	
+	<!--Packages config-->
+	<PropertyGroup>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/Piotrekol/CollectionManager</PackageProjectUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<AssemblyVersion>1.1.0</AssemblyVersion>
+		<FileVersion>1.1.0</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="System" />
+		<Using Include="System.Collections.Generic" />
+		<Using Include="System.Diagnostics" />
+		<Using Include="System.Linq" />
+		<Using Include="System.Threading.Tasks" />
+	</ItemGroup>
+
+</Project>
