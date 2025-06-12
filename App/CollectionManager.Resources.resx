@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GeneralHelp" xml:space="preserve">
+    <value>General tips:
+\tRight click on any table header name to configure which ones should be displayed.
+\tLeft click on any table header name to sort it.
+\tDrag &amp; drop beatmaps between different collections or from beatmap listing. Click on one beatmap, shift-click on another and drag away. Use ctrl+a to select all beatmaps.
+\tCollections can be reordered by dragging them around. Order will be preserved ingame.
+
+All parameters/arguments below are case insensitive.
+
+Standard osu! search parameters:
+\tstar, stars\t\t: Star rating of the beatmap (affected by mode/mods).
+\tcs\t\t\t: Circle size.
+\thp\t\t\t: HP drain rate.
+\tod\t\t\t: Overall difficulty.
+\tar\t\t\t: Approach rate.
+\tkey, keys\t\t\t: Mania key count.
+\tbpm\t\t\t: Beatmap BPM.
+\tlength\t\t\t: Total length of the beatmap in seconds.
+\tdrain\t\t\t: Draining time of the beatmap in seconds.
+\tplayed\t\t\t: Days since last played.
+\tcircles\t\t\t: Number of circles.
+\tsliders\t\t\t: Number of sliders.
+\tspinners\t\t\t: Number of spinners.
+\tartist\t\t\t: Artist name.
+\ttitle\t\t\t: Title name.
+\tcreator\t\t\t: Creator name.
+\tmode\t\t\t: Play mode.
+\tstatus\t\t\t: Beatmap status.
+\tspeed\t\t\t: Not supported in CM.
+
+\t&lt;number&gt;\t\t: Matches map ID, mapset ID, or thread ID.
+\t&lt;text&gt;\t\t\t: beatmap text search.
+
+Custom CM search parameters:
+\tmods\t\t\t: Sets mods used in other parameters and stats shown in beatmap list.
+\tobjects\t\t\t: Total number of map hit objects.
+\tmiss, misses\t\t: Miss count in top beatmap score.
+\tc300, count300\t\t: Number of 300s in top beatmap score.
+\tc100, count100\t\t: Number of 100s in top beatmap score.
+\tc50, count50\t\t: Number of 50s in top beatmap score.
+\tcombo\t\t\t: Max combo in top beatmap score.
+\tperfect\t\t\t: Whether top score is a full combo (1 for yes, 0 for no).
+\thasScore\t\t\t: Whether there is any score set on the beatmap (1 for yes, 0 for no).
+\thasLocalActivity\t\t: Whether there is score, rank, or last played set on the beatmap (1 for yes, 0 for no).
+\thasScoreWithMods\t: Whether there is a score set with specified mods. This will return beatmaps containing any score that contains at least mods provided.
+
+CM search supports flat AND/OR grouping. OR groups are evaluated after AND groups (OR has lower precedence than AND).
+
+Operators:
+\t=\t: Equal to.
+\t!=\t: Not equal to.
+\t&lt;\t: Less than.
+\t&gt;\t: Greater than.
+\t&lt;=\t: Less than or equal to.
+\t&gt;=\t: Greater than or equal to.
+
+Mod Acronyms:
+\tNM\t: No Mod
+\tNF\t: No Fail
+\tEZ\t: Easy
+\tTD\t: Touch Device
+\tHD\t: Hidden
+\tHR\t: Hard Rock
+\tSD\t: Sudden Death
+\tDT\t: Double Time
+\tRX\t: Relax
+\tHT\t: Half Time
+\tNC\t: Nightcore
+\tFL\t: Flashlight
+\tSO\t: Spun Out
+\tPF\t: Perfect
+\tAP\t: Auto Pilot
+\tAT\t: Auto
+\tFI\t: Fade In
+\tRD\t: Random
+\tTP\t: Target Practice
+\tCN\t: Cinema
+\tV2\t: ScoreV2
+\tMR\t: Mirror
+\tK1-9\t: Mania key mods
+
+Gamemodes - partial match supported:
+\tosu!\t\t: Standard
+\ttaiko\t\t: Taiko
+\tcatchthebeat,
+\tctb\t\t: Catch the Beat
+\tosu!mania,
+\tosumania,
+\tmania,
+\to!m\t\t: Mania
+
+Beatmap statuses - partial match supported:
+\tunknown, notSubmitted, pending, ranked, approved, qualified, loved
+
+Examples:
+\tar=9\t\t\t: ar equal to 9.
+\tod&gt;=8.5\t\t\t: od greater than or equal to 8.5.
+\tstatus=ranked\t\t: beatmap is ranked.
+\tstatus=r\t\t\t: beatmap is ranked (using partial match).
+\tmode=m\t\t: beatmap is a mania-only diff (using partial match).
+\thasLocalActivity=1\t: all touched beatmaps (played at least partialy once).
+\thasScoreWithMods=HDHR\t: beatmaps that have a local score with HDHR mods enabled.
+\tstatus=r or status=l or status=q or status=a\t: beatmap has ranking (status is either ranked, loved, qualified or approved).
+</value>
+  </data>
+</root>

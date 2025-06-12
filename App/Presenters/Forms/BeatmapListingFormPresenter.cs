@@ -1,5 +1,6 @@
 ﻿namespace CollectionManagerApp.Presenters.Forms;
 
+using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Forms;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Models.Controls;
@@ -10,13 +11,13 @@ public class BeatmapListingFormPresenter
     private readonly IBeatmapListingForm _view;
     private readonly ICombinedBeatmapPreviewModel _combinedBeatmapPreviewModel;
     public readonly IBeatmapListingModel BeatmapListingModel;
-    public BeatmapListingFormPresenter(IBeatmapListingForm view)
+    public BeatmapListingFormPresenter(IBeatmapListingForm view, IUserDialogs userDialogs)
     {
         _view = view;
         //_view.BeatmapListingView.SelectedBeatmapChanged += BeatmapListingView_SelectedBeatmapChanged;
         BeatmapListingModel = new BeatmapListingModel(Initalizer.LoadedBeatmaps);
         BeatmapListingModel.SelectedBeatmapChanged += BeatmapListingView_SelectedBeatmapChanged;
-        _ = new BeatmapListingPresenter(_view.BeatmapListingView, BeatmapListingModel);
+        _ = new BeatmapListingPresenter(_view.BeatmapListingView, BeatmapListingModel, userDialogs);
 
         _combinedBeatmapPreviewModel = new CombinedBeatmapPreviewModel();
         CombinedBeatmapPreviewPresenter presenter = new(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);

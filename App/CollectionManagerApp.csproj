@@ -35,11 +35,20 @@
 		<Content Include="Resources\logo.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<EmbeddedResource Update="CollectionManager.Resources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CollectionManager.Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 			<SubType>Designer</SubType>
 		</EmbeddedResource>
+		<Compile Update="CollectionManager.Resources.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>CollectionManager.Resources.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>

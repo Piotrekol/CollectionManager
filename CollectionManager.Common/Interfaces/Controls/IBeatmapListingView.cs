@@ -15,6 +15,7 @@ public interface IBeatmapListingView
     event EventHandler SearchTextChanged;
     event EventHandler SelectedBeatmapChanged;
     event EventHandler SelectedBeatmapsChanged;
+    event EventHandler BeatmapSearchHelpClicked;
     event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
     event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
     event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;

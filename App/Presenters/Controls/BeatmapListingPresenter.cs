@@ -1,5 +1,6 @@
 ﻿namespace CollectionManagerApp.Presenters.Controls;
 
+using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Controls;
 using CollectionManager.Core.Types;
 using CollectionManagerApp.Interfaces.Controls;
@@ -11,6 +12,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 {
     private readonly IBeatmapListingView _view;
     private readonly IBeatmapListingModel _model;
+    private readonly IUserDialogs _userDialogs;
 
     private Beatmaps _beatmaps;
 
@@ -23,18 +25,20 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
             _view.SetBeatmaps(value);
         }
     }
-    public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model)
+    public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model, IUserDialogs userDialogs)
     {
         _view = view;
         _view.SearchTextChanged += ViewOnSearchTextChanged;
         _view.SelectedBeatmapChanged += (s, a) => _model.SelectedBeatmap = _view.SelectedBeatmap;
         _view.SelectedBeatmapsChanged += (s, a) => _model.SelectedBeatmaps = _view.SelectedBeatmaps;
+        _view.BeatmapSearchHelpClicked += _view_BeatmapSearchHelpClicked;
 
         _view.BeatmapsDropped += (s, a) => _model.EmitBeatmapsDropped(s, a);
         _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
         _view.ColumnsToggled += (s, a) => OnColumnsToggled(a);
 
         _model = model;
+        _userDialogs = userDialogs;
         _model.BeatmapsChanged += _model_BeatmapsChanged;
         _model.FilteringStarted += ModelOnFilteringStarted;
         _model.FilteringFinished += _model_FilteringFinished;
@@ -69,4 +73,5 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 
     private void _model_BeatmapsChanged(object sender, EventArgs e) => Beatmaps = _model.GetBeatmaps();
 
+    private void _view_BeatmapSearchHelpClicked(object sender, EventArgs e) => ResourceStrings.GeneralHelpDialog(_userDialogs);
 }

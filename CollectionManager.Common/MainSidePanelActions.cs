@@ -21,4 +21,7 @@ public enum MainSidePanelActions
     RemoveWebCollection,
     SaveDefaultCollection,
     ResetApplicationSettings,
+    SyntaxHelp,
+    Discord,
+    Github,
 }

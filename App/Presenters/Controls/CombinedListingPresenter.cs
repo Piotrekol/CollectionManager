@@ -29,7 +29,7 @@ public class CombinedListingPresenter
 
         _webCollectionProvider = webCollectionProvider;
         _userDialogs = userDialogs;
-        _ = new BeatmapListingPresenter(_beatmapsView, BeatmapListingModel);
+        _ = new BeatmapListingPresenter(_beatmapsView, BeatmapListingModel, userDialogs);
         _ = new CollectionListingPresenter(_collectionsView, collectionListingModel, userDialogs);
 
         BeatmapListingModel.SelectedBeatmapsChanged += BeatmapListingModelOnSelectedBeatmapsChanged;

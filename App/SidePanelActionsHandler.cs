@@ -83,7 +83,10 @@ public class SidePanelActionsHandler : IDisposable
             {MainSidePanelActions.UploadCollectionChanges, UploadCollectionChanges },
             {MainSidePanelActions.UploadNewCollections, UploadNewCollections },
             {MainSidePanelActions.RemoveWebCollection ,RemoveWebCollection },
-            {MainSidePanelActions.ResetApplicationSettings,ResetApplicationSettings },
+            {MainSidePanelActions.ResetApplicationSettings, ResetApplicationSettings },
+            {MainSidePanelActions.SyntaxHelp, SyntaxHelp },
+            {MainSidePanelActions.Discord, DiscordLink },
+            {MainSidePanelActions.Github, GithubLink }
         };
 
         _mainForm.SidePanelView.SidePanelOperation += SidePanelViewOnSidePanelOperation;
@@ -92,6 +95,12 @@ public class SidePanelActionsHandler : IDisposable
         _mainFormPresenter.InfoTextModel.UpdateTextClicked += FormUpdateTextClicked;
         _mainForm.Closing += FormOnClosing;
     }
+
+    private void GithubLink(object sender, object data) => ProcessExtensions.OpenUrl("https://github.com/Piotrekol/CollectionManager");
+
+    private void DiscordLink(object sender, object data) => ProcessExtensions.OpenUrl("https://osustats.ppy.sh/discord");
+
+    private void SyntaxHelp(object sender, object data) => ResourceStrings.GeneralHelpDialog(_userDialogs);
 
     public void LoadOsuCollection() => LoadDefaultCollection(null, null);
 
@@ -683,7 +692,7 @@ public class SidePanelActionsHandler : IDisposable
         if (_beatmapListingForm == null || _beatmapListingForm.IsDisposed)
         {
             _beatmapListingForm = GuiComponentsProvider.Instance.GetClassImplementing<IBeatmapListingForm>();
-            BeatmapListingFormPresenter presenter = new(_beatmapListingForm);
+            BeatmapListingFormPresenter presenter = new(_beatmapListingForm, _userDialogs);
             _beatmapListingBindingProvider.Bind(presenter.BeatmapListingModel);
             _beatmapListingForm.Closing += (s, a) => _beatmapListingBindingProvider.UnBind(presenter.BeatmapListingModel);
         }

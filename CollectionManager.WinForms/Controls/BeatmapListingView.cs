@@ -19,6 +19,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
     public event EventHandler SearchTextChanged;
     public event EventHandler SelectedBeatmapChanged;
     public event EventHandler SelectedBeatmapsChanged;
+    public event EventHandler BeatmapSearchHelpClicked;
 
     public event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
     public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
@@ -360,4 +361,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
             MenuStripClick(DeleteMapMenuStrip, e);
         }
     }
+
+    private void button_searchHelp_Click(object sender, EventArgs e) => BeatmapSearchHelpClicked?.Invoke(this, EventArgs.Empty);
 }

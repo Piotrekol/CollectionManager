@@ -56,9 +56,13 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
         { OnGenerateCollections(); };
         Menu_GetMissingMapData.Click += delegate
         { OnGetMissingMapData(); };
-        Menu_osustatsLogin.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
-        Menu_saveOsuCollection.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
-        Menu_resetSettings.Click += (s, a) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ResetApplicationSettings);
+
+        Menu_osustatsLogin.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
+        Menu_saveOsuCollection.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
+        Menu_resetSettings.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ResetApplicationSettings);
+        Menu_searchSyntax.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SyntaxHelp);
+        Menu_discord.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.Discord);
+        Menu_github.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.Github);
 
         WebCollections.CollectionChanged += WebCollectionsOnCollectionChanged;
     }

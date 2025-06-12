@@ -69,6 +69,7 @@
             ManiaGrade = new BrightIdeasSoftware.OLVColumn();
             olvColumn9 = new BrightIdeasSoftware.OLVColumn();
             olvColumn11 = new BrightIdeasSoftware.OLVColumn();
+            button_searchHelp = new System.Windows.Forms.Button();
             BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).BeginInit();
             SuspendLayout();
@@ -76,13 +77,13 @@
             // label_resultsCount
             // 
             label_resultsCount.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            label_resultsCount.AutoSize = true;
-            label_resultsCount.Location = new System.Drawing.Point(822, 0);
+            label_resultsCount.Location = new System.Drawing.Point(885, -1);
             label_resultsCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label_resultsCount.Name = "label_resultsCount";
-            label_resultsCount.Size = new System.Drawing.Size(45, 15);
+            label_resultsCount.Size = new System.Drawing.Size(186, 15);
             label_resultsCount.TabIndex = 17;
             label_resultsCount.Text = "0 maps";
+            label_resultsCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label1
             // 
@@ -100,7 +101,7 @@
             textBox_beatmapSearch.Location = new System.Drawing.Point(4, 17);
             textBox_beatmapSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             textBox_beatmapSearch.Name = "textBox_beatmapSearch";
-            textBox_beatmapSearch.Size = new System.Drawing.Size(946, 23);
+            textBox_beatmapSearch.Size = new System.Drawing.Size(1067, 23);
             textBox_beatmapSearch.TabIndex = 15;
             // 
             // BeatmapsContextMenuStrip
@@ -253,7 +254,7 @@
             ListViewBeatmaps.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             ListViewBeatmaps.Name = "ListViewBeatmaps";
             ListViewBeatmaps.ShowGroups = false;
-            ListViewBeatmaps.Size = new System.Drawing.Size(946, 498);
+            ListViewBeatmaps.Size = new System.Drawing.Size(1094, 498);
             ListViewBeatmaps.TabIndex = 14;
             ListViewBeatmaps.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(192, 255, 192);
             ListViewBeatmaps.UseCompatibleStateImageBehavior = false;
@@ -406,17 +407,29 @@
             olvColumn11.IsVisible = false;
             olvColumn11.Text = "MapId";
             // 
+            // button_searchHelp
+            // 
+            button_searchHelp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            button_searchHelp.Location = new System.Drawing.Point(1073, 17);
+            button_searchHelp.Name = "button_searchHelp";
+            button_searchHelp.Size = new System.Drawing.Size(22, 23);
+            button_searchHelp.TabIndex = 18;
+            button_searchHelp.Text = "?";
+            button_searchHelp.UseVisualStyleBackColor = true;
+            button_searchHelp.Click += button_searchHelp_Click;
+            // 
             // BeatmapListingView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(button_searchHelp);
             Controls.Add(ListViewBeatmaps);
             Controls.Add(label_resultsCount);
             Controls.Add(label1);
             Controls.Add(textBox_beatmapSearch);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "BeatmapListingView";
-            Size = new System.Drawing.Size(950, 546);
+            Size = new System.Drawing.Size(1098, 546);
             BeatmapsContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).EndInit();
             ResumeLayout(false);
@@ -466,5 +479,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn11;
         private BrightIdeasSoftware.OLVColumn column_bpm;
         private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsMenuItem;
+        private System.Windows.Forms.Button button_searchHelp;
     }
 }

@@ -101,6 +101,8 @@ public class UserDialogs : IUserDialogs
         _ = MessageBox.Show(null, text, caption, MessageBoxButtons.OK, icon);
     }
 
+    public void TextMessageBox(string text, string caption) => TextBoxForm.ShowDialog(text, caption);
+
     private static MessageBoxIcon GetMessageBoxIcon(MessageBoxType messageBoxType)
         => messageBoxType switch
         {

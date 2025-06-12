@@ -54,7 +54,7 @@ public class ModParser
         new OsuMod(Mods.K7, "7K", "7 Keys"),
         new OsuMod(Mods.K8, "8K", "8 Keys"),
         new OsuMod(Mods.Fi, "FI", "Fade In"),
-        new OsuMod(Mods.Rn, "RD", "Random"),
+        new OsuMod(Mods.Rd, "RD", "Random"),
         new OsuMod(Mods.Cm, "CN", "Cinema"),
         new OsuMod(Mods.Tp, "TP", "Target Practice"),
         new OsuMod(Mods.K9, "9K", "9 Keys"),
@@ -92,7 +92,7 @@ public class ModParser
             if ((modsEnum & (int)mod.Value) > 0)
             {
                 _ = modStr.Append(shortMod ? mod.ShortMod : mod.LongMod);
-                _ = modStr.Append(",");
+                _ = modStr.Append(',');
             }
         }
 

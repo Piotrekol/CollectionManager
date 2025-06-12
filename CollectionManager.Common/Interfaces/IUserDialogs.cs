@@ -14,4 +14,5 @@ public interface IUserDialogs
     (bool Result, bool doNotAskAgain) YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, string doNotAskAgainText = null);
     IProgressForm ProgressForm(Progress<string> userProgressMessage, Progress<int> completionPercentage);
     void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
+    void TextMessageBox(string text, string caption);
 }
