@@ -169,31 +169,32 @@ public class OsuCollection : IEnumerable, IOsuCollection
         AddBeatmap(new BeatmapExtension() { MapId = mapId });
     }
 
-    private static void ProcessAdditionalProps(BeatmapExtension src, BeatmapExtension dest) => dest.UserComment = src.UserComment;
     protected virtual void ProcessNewlyAddedMap(BeatmapExtension map)
     {
         lock (LoadedMaps.LockingObject)
         {
             _ = _beatmapHashes.Add(map.Md5);
 
-            BeatmapExtension knownMap = (BeatmapExtension)LoadedMaps.GetByHash(map.Md5);
+            Beatmap knownMap = LoadedMaps.GetByHash(map.Md5);
             if (knownMap != null)
             {
-                ProcessAdditionalProps(map, knownMap);
                 KnownBeatmaps.Add(knownMap);
                 return;
             }
 
-            knownMap = (BeatmapExtension)LoadedMaps.GetByMapId(map.MapId);
+            knownMap = LoadedMaps.GetByMapId(map.MapId);
             if (map.MapId > 10 && knownMap != null)
             {
                 //Remove previously added map hash
                 _ = _beatmapHashes.Remove(map.Md5);
                 //And add our local version of the map that instead.
                 _ = _beatmapHashes.Add(knownMap.Md5);
-                ProcessAdditionalProps(map, knownMap);
                 KnownBeatmaps.Add(knownMap);
-                knownMap.LocalVersionDiffers = true;
+
+                if (knownMap is BeatmapExtension knownMapEx)
+                {
+                    knownMapEx.LocalVersionDiffers = true;
+                }
 
                 return;
             }

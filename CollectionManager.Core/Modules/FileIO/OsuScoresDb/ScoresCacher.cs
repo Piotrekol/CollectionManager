@@ -26,7 +26,7 @@ public class ScoresCacher : IScoreDataManager
     }
 
     public Scores GetScores(Beatmap map)
-        => GetScores(map.Md5);
+        => GetScores(map.Hash);
 
     public Scores GetScores(string mapHash)
         => ScoreList.FirstOrDefault(s => s.Key.Equals(mapHash, StringComparison.Ordinal)).Value;
