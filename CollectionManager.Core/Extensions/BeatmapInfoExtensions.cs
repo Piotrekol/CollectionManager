@@ -21,7 +21,7 @@ internal static class BeatmapInfoExtensions
             Creator = beatmapInfo.Metadata.Author.Username,
             DiffName = beatmapInfo.DifficultyName,
             Md5 = beatmapInfo.MD5Hash,
-            MapHash = beatmapInfo.Hash,
+            Hash = beatmapInfo.Hash,
             Mp3Name = beatmapInfo.Metadata.AudioFile,
             Tags = beatmapInfo.Metadata.Tags,
             State = (byte)ToLocalState(beatmapInfo.Status),

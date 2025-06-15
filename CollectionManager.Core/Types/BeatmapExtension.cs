@@ -1,7 +1,6 @@
 ﻿namespace CollectionManager.Core.Types;
 public class BeatmapExtension : Beatmap
 {
-    #region ICeBeatmapProps
     public string Name => ToString();
 
     public bool DataDownloaded { get; set; }
@@ -11,6 +10,5 @@ public class BeatmapExtension : Beatmap
 
     public DateTimeOffset LastScoreDate { get; set; } = DateTimeOffset.MinValue;
     public int ScoresCount { get; set; }
-
-    #endregion
+    public override string Hash { get => Md5; set => Md5 = value; }
 }

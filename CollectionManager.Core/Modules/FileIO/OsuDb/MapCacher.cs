@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class MapCacher : IMapDataManager
 {
-    private readonly Dictionary<string, Beatmap> LoadedBeatmapsMd5Dict = [];
+    private readonly Dictionary<string, Beatmap> LoadedBeatmapsHashDict = [];
     private readonly Dictionary<int, Beatmap> LoadedBeatmapsMapIdDict = [];
     private bool _massStoring;
     private readonly HashSet<string> MassStoringBeatmapHashes = [];
@@ -33,7 +33,7 @@ public class MapCacher : IMapDataManager
         {
             if (recalculate)
             {
-                LoadedBeatmapsMd5Dict.Clear();
+                LoadedBeatmapsHashDict.Clear();
                 LoadedBeatmapsMapIdDict.Clear();
                 foreach (Beatmap beatmap in Beatmaps)
                 {
@@ -44,7 +44,8 @@ public class MapCacher : IMapDataManager
 
             }
 
-            _ = LoadedBeatmapsMd5Dict.TryAdd(map.Md5, map);
+            _ = LoadedBeatmapsHashDict.TryAdd(map.Md5, map);
+            _ = LoadedBeatmapsHashDict.TryAdd(map.Hash, map);
             _ = LoadedBeatmapsMapIdDict.TryAdd(map.MapId, map);
         }
     }
@@ -55,6 +56,7 @@ public class MapCacher : IMapDataManager
         foreach (Beatmap beatmap in Beatmaps)
         {
             _ = MassStoringBeatmapHashes.Add(beatmap.Md5);
+            _ = MassStoringBeatmapHashes.Add(beatmap.Hash);
         }
     }
 
@@ -87,7 +89,7 @@ public class MapCacher : IMapDataManager
 
     private void OnBeatmapsModified() => BeatmapsModified?.Invoke(this, EventArgs.Empty);
 
-    public Beatmap GetByHash(string hash) => LoadedBeatmapsMd5Dict.TryGetValue(hash, out Beatmap value) ? value : null;
+    public Beatmap GetByHash(string hash) => LoadedBeatmapsHashDict.TryGetValue(hash, out Beatmap value) ? value : null;
 
     public Beatmap GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
 }

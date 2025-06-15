@@ -33,7 +33,7 @@ public class BeatmapListingFormPresenter
     private void BeatmapListingView_SelectedBeatmapChanged(object sender, EventArgs e)
     {
         Beatmap selectedBeatmap = BeatmapListingModel.SelectedBeatmap;
-        _combinedBeatmapPreviewModel.SetBeatmap(BeatmapListingModel.SelectedBeatmap);
+        _combinedBeatmapPreviewModel.SetBeatmap(selectedBeatmap);
 
         Scores scores = selectedBeatmap is null ? null : Initalizer.OsuFileIo.ScoresDatabase.GetScores(selectedBeatmap);
         _scoresListingModel.Scores = scores;
