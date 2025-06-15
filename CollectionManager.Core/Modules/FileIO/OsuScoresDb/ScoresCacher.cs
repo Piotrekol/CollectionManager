@@ -73,7 +73,7 @@ public class ScoresCacher : IScoreDataManager
             string mapHash = scoresKv.Key;
             Scores scores = scoresKv.Value;
 
-            if (mapDataManager.GetByHash(mapHash) is not BeatmapExtension beatmap || scores is null || scores.Count == 0)
+            if (scores is null || scores.Count == 0 || mapDataManager.GetByHash(mapHash) is not BeatmapExtension beatmap)
             {
                 continue;
             }
