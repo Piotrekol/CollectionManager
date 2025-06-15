@@ -234,6 +234,7 @@ public class StartupPresenter : IDisposable
         {
             osuFileIo.ScoresLoader.ReadDb(Path.Combine(osuDirectory, @"scores.db"), cancellationToken);
             _view.LoadDatabaseStatusText += $"{Environment.NewLine}Loaded {osuFileIo.ScoresDatabase.Scores.Count} scores";
+            osuFileIo.ScoresDatabase.UpdateBeatmapsScoreMetadata(osuFileIo.LoadedMaps);
         }
         catch (Exception)
         {

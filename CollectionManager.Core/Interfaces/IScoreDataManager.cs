@@ -10,4 +10,5 @@ public interface IScoreDataManager
     void EndMassStoring();
     void Clear();
     void Store(IReplay replay);
+    void UpdateBeatmapsScoreMetadata(IMapDataManager mapDataManager);
 }

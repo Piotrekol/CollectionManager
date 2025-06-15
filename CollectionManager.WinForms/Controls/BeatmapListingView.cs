@@ -154,6 +154,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
         LastPlayed.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
         EditDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        LastScoreDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
 
         column_stars.AspectGetter = rowObject =>
         {

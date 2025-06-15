@@ -9,5 +9,8 @@ public class BeatmapExtension : Beatmap
     public bool LocalVersionDiffers { get; set; }
     public string UserComment { get; set; } = "";
 
+    public DateTimeOffset? LastScoreDate { get; set; }
+    public int ScoresCount { get; set; }
+
     #endregion
 }
