@@ -27,6 +27,8 @@ public sealed class OsuLazerDatabase
         using Realm localRealm = GetRealm(realmFilePath);
         LoadScores(localRealm, progress);
         LoadBeatmaps(localRealm, progress, cancellationToken);
+
+        _scoresDatabase.UpdateBeatmapsScoreMetadata(_mapDataManager);
     }
 
     private void LoadScores(Realm realm, IProgress<string> progress)
