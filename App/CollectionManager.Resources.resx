@@ -159,7 +159,8 @@ Custom CM search parameters:
 \tc50, count50\t\t: Number of 50s in top beatmap score.
 \tcombo\t\t\t: Max combo in top beatmap score.
 \tperfect\t\t\t: Whether top score is a full combo (1 for yes, 0 for no).
-\thasScore\t\t\t: Whether there is any score set on the beatmap (1 for yes, 0 for no).
+\tscores\t\t\t: Amount of scores set on beatmap.
+\tlastScore\t\t\t: Days since last score was set.
 \thasLocalActivity\t\t: Whether there is score, rank, or last played set on the beatmap (1 for yes, 0 for no).
 \thasScoreWithMods\t: Whether there is a score set with specified mods. This will return beatmaps containing any score that contains at least mods provided.
 
@@ -218,6 +219,8 @@ Examples:
 \tstatus=r\t\t\t: beatmap is ranked (using partial match).
 \tmode=m\t\t: beatmap is a mania-only diff (using partial match).
 \thasLocalActivity=1\t: all touched beatmaps (played at least partialy once).
+\tscores&gt;0\t\t\t: beatmaps that have a local score.
+\tlastScore&lt;90\t\t: beatmaps that have a local score set in last 90 days.
 \thasScoreWithMods=HDHR\t: beatmaps that have a local score with HDHR mods enabled.
 \tstatus=r or status=l or status=q or status=a\t: beatmap has ranking (status is either ranked, loved, qualified or approved).
 </value>
