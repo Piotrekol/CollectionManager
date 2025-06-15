@@ -258,11 +258,26 @@ public class BeatmapFilter
                         return b => isScorePatternMatch(b.Md5, (s) => s.MaxCombo, op, num);
                     case "perfect":
                         return b => isScorePatternMatch(b.Md5, (s) => s.Perfect ? 1 : 0, op, num);
-                    case "hasscore":
+                    case "scores":
                         return b =>
                         {
-                            bool hasScore = HasScores(b.Md5);
-                            return isPatternMatch(hasScore ? 1 : 0, op, num);
+                            int scoreCount = b is BeatmapExtension beatmapExtension
+                                ? beatmapExtension.ScoresCount
+                                : -1;
+
+                            return isPatternMatch(scoreCount, op, num);
+                        };
+                    case "lastscore":
+                        return b =>
+                        {
+                            DateTimeOffset lastScoreDate = DateTimeOffset.MinValue;
+
+                            if (b is BeatmapExtension beatmapExtension)
+                            {
+                                lastScoreDate = beatmapExtension.LastScoreDate;
+                            }
+
+                            return isPatternMatch((DateTime.Now - lastScoreDate).Days, op, num);
                         };
                     case "haslocalactivity":
                         return b =>
