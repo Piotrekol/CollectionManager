@@ -5,6 +5,7 @@ using CollectionManager.Core.Types;
 public interface IScoreDataManager
 {
     Scores Scores { get; }
+    Scores GetScores(Beatmap map);
     void StartMassStoring();
     void EndMassStoring();
     void Clear();

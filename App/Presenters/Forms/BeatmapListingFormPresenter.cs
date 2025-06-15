@@ -2,6 +2,7 @@
 
 using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Forms;
+using CollectionManager.Core.Types;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Models.Controls;
 using CollectionManagerApp.Presenters.Controls;
@@ -10,7 +11,9 @@ public class BeatmapListingFormPresenter
 {
     private readonly IBeatmapListingForm _view;
     private readonly ICombinedBeatmapPreviewModel _combinedBeatmapPreviewModel;
-    public readonly IBeatmapListingModel BeatmapListingModel;
+    private readonly IScoresListingModel _scoresListingModel;
+    public IBeatmapListingModel BeatmapListingModel { get; private set; }
+
     public BeatmapListingFormPresenter(IBeatmapListingForm view, IUserDialogs userDialogs)
     {
         _view = view;
@@ -22,7 +25,17 @@ public class BeatmapListingFormPresenter
         _combinedBeatmapPreviewModel = new CombinedBeatmapPreviewModel();
         CombinedBeatmapPreviewPresenter presenter = new(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);
         presenter.MusicControlModel.NextMapRequest += (s, a) => _view.BeatmapListingView.SelectNextOrFirst();
+
+        _scoresListingModel = new ScoresListingModel();
+        _ = new ScoresListingPresenter(_view.ScoresListingView, _scoresListingModel);
     }
 
-    private void BeatmapListingView_SelectedBeatmapChanged(object sender, EventArgs e) => _combinedBeatmapPreviewModel.SetBeatmap(BeatmapListingModel.SelectedBeatmap);
+    private void BeatmapListingView_SelectedBeatmapChanged(object sender, EventArgs e)
+    {
+        Beatmap selectedBeatmap = BeatmapListingModel.SelectedBeatmap;
+        _combinedBeatmapPreviewModel.SetBeatmap(BeatmapListingModel.SelectedBeatmap);
+
+        Scores scores = selectedBeatmap is null ? null : Initalizer.OsuFileIo.ScoresDatabase.GetScores(selectedBeatmap);
+        _scoresListingModel.Scores = scores;
+    }
 }
