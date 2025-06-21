@@ -2,7 +2,6 @@
 
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.FileIo;
-using CollectionManager.Core.Types;
 
 public static class Helpers
 {
@@ -52,6 +51,4 @@ public static class Helpers
 
         writer.Write(replay.OnlineScoreId);
     }
-
-    public static Beatmap GetMap(this IReplay replay, IMapDataManager mapCacher) => mapCacher.GetByHash(replay.MapHash);
 }

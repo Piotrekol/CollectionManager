@@ -270,12 +270,9 @@ public class BeatmapFilter
                     case "lastscore":
                         return b =>
                         {
-                            DateTimeOffset lastScoreDate = DateTimeOffset.MinValue;
-
-                            if (b is BeatmapExtension beatmapExtension)
-                            {
-                                lastScoreDate = beatmapExtension.LastScoreDate;
-                            }
+                            DateTimeOffset lastScoreDate = b is BeatmapExtension beatmapExtension
+                                ? beatmapExtension.LastScoreDate
+                                : DateTimeOffset.MinValue;
 
                             return isPatternMatch((DateTime.Now - lastScoreDate).Days, op, num);
                         };
