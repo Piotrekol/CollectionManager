@@ -6,8 +6,6 @@ using System.Text;
 
 public class ReorderStrategy : ICollectionEditStrategy
 {
-    private readonly string ReorderCharsString;
-    private const string reorderSeparator = "| ";
     private readonly Lazy<Dictionary<string, Func<IOsuCollection, object>>> CollectionFieldSortSelectors = new(() => new()
     {
         { nameof(IOsuCollection.Id), c => c.Id },
@@ -16,9 +14,13 @@ public class ReorderStrategy : ICollectionEditStrategy
         { nameof(IOsuCollection.NumberOfBeatmaps), c => c.NumberOfBeatmaps },
     });
 
-    public ReorderStrategy(string reorderChars = "0123456789")
+    public string ReorderCharsString { get; set; }
+    public string ReorderSeparator { get; set; }
+
+    public ReorderStrategy(string reorderChars = "0123456789", string reorderSeparator = "| ")
     {
         ReorderCharsString = reorderChars;
+        ReorderSeparator = reorderSeparator;
     }
 
     public void Execute(CollectionsManager manager, CollectionEditArgs args)
@@ -28,13 +30,12 @@ public class ReorderStrategy : ICollectionEditStrategy
             throw new InvalidOperationException("Invalid args for reorder action.");
         }
 
-        List<IOsuCollection> argCollections = manager.GetCollectionByNames(args.CollectionNames);
-
         if (!CollectionFieldSortSelectors.Value.TryGetValue(reorderEditArgs.SortColumn, out Func<IOsuCollection, object> sortFieldSelector))
         {
             throw new InvalidOperationException("Unrecognized collection sort column");
         }
 
+        List<IOsuCollection> argCollections = manager.GetCollectionByNames(reorderEditArgs.CollectionNames);
         List<IOsuCollection> collectionsToReorder = argCollections.OrderByDescending(sortFieldSelector).ToList();
         List<IOsuCollection> orderedLoadedCollections = manager.LoadedCollections.OrderByDescending(sortFieldSelector).ToList();
 
@@ -53,30 +54,33 @@ public class ReorderStrategy : ICollectionEditStrategy
 
         int targetCollectionIndex = orderedLoadedCollections.IndexOf(targetCollection);
         orderedLoadedCollections.InsertRange(reorderEditArgs.PlaceCollectionsBefore ? targetCollectionIndex : targetCollectionIndex + 1, collectionsToReorder);
-        int amountOfCharactersRequired = 0;
-        int variations = 0;
-        while (orderedLoadedCollections.Count > variations)
-        {
-            variations = Enumerable.Range(1, ++amountOfCharactersRequired).Aggregate(0, (acc, i) => Convert.ToInt32(Math.Pow(ReorderCharsString.Length, i)) + acc);
-        }
 
-        List<string> reorderStrings = new(variations);
-        for (int i = 1; i <= amountOfCharactersRequired; i++)
-        {
-            reorderStrings.AddRange(CombinationsWithRepetition(ReorderCharsString, i));
-        }
-
-        reorderStrings.Sort();
+        List<string> reorderStrings = GetReorderStrings(orderedLoadedCollections.Count);
         int collectionIndex = 0;
         foreach (IOsuCollection collection in orderedLoadedCollections)
         {
-            if (collection.Name.Contains(reorderSeparator))
+            if (collection.Name.Contains(ReorderSeparator))
             {
-                collection.Name = collection.Name.Substring(collection.Name.IndexOf(reorderSeparator) + reorderSeparator.Length + 1);
+                collection.Name = collection.Name.Substring(collection.Name.IndexOf(ReorderSeparator, StringComparison.Ordinal) + ReorderSeparator.Length + 1);
             }
 
-            collection.Name = $"{reorderStrings[collectionIndex++]}{reorderSeparator} {collection.Name}";
+            collection.Name = $"{reorderStrings[collectionIndex++]}{ReorderSeparator} {collection.Name}";
         }
+    }
+
+    private List<string> GetReorderStrings(int collectionCount)
+    {
+        List<string> reorderStrings = [];
+        int numberOfCharacters = 0;
+
+        while (reorderStrings.Count < collectionCount)
+        {
+            reorderStrings.AddRange(CombinationsWithRepetition(ReorderCharsString, ++numberOfCharacters));
+        }
+
+        reorderStrings.Sort();
+
+        return reorderStrings;
     }
 
     private static string Combinations(string symbols, int number, int stringLength)
