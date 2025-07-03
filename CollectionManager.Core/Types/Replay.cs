@@ -1,6 +1,7 @@
 ﻿namespace CollectionManager.Core.Types;
 
 using CollectionManager.Core.Enums;
+using CollectionManager.Core.Extensions;
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.FileIo;
 using System;
@@ -29,6 +30,8 @@ public class Replay : IReplay, ICloneable
     public int CompressedReplayLength { get; set; }
     public byte[] CompressedReplay { get; set; }
     public long OnlineScoreId { get; set; } = -1;
+
+    public double Accuracy => this.CalculateAccuracy() * 100;
 
     public static IReplay Read(OsuBinaryReader reader, IReplay outobj = null, bool minimalLoad = true, int? version = null)
     {

@@ -7,7 +7,7 @@ using System.Linq;
 
 public class ScoresCacher : IScoreDataManager
 {
-    public Dictionary<string, Scores> ScoreList = [];
+    public Dictionary<string, Scores> ScoreList { get; } = [];
     public Scores Scores { get; private set; } = [];
     public HashSet<string> ScoreHashes { get; private set; } = [];
     public void StartMassStoring()
@@ -26,16 +26,16 @@ public class ScoresCacher : IScoreDataManager
     }
 
     public Scores GetScores(Beatmap map)
-        => GetScores(map.Md5);
+        => GetScores(map.Hash);
 
     public Scores GetScores(string mapHash)
-        => ScoreList.FirstOrDefault(s => s.Key.Equals(mapHash)).Value;
+        => ScoreList.FirstOrDefault(s => s.Key.Equals(mapHash, StringComparison.Ordinal)).Value;
 
     public void Remove(string mapHash)
     {
-        if (ScoreList.ContainsKey(mapHash))
+        if (ScoreList.TryGetValue(mapHash, out Scores value))
         {
-            foreach (IReplay score in ScoreList[mapHash])
+            foreach (IReplay score in value)
             {
                 _ = Scores.Remove(score);
                 _ = ScoreHashes.Remove(score.ReplayHash);
@@ -44,6 +44,7 @@ public class ScoresCacher : IScoreDataManager
             _ = ScoreList.Remove(mapHash);
         }
     }
+
     public void Store(IReplay replay)
     {
         if (ScoreHashes.Contains(replay.ReplayHash))
@@ -53,9 +54,9 @@ public class ScoresCacher : IScoreDataManager
 
         _ = ScoreHashes.Add(replay.ReplayHash);
 
-        if (ScoreList.ContainsKey(replay.MapHash))
+        if (ScoreList.TryGetValue(replay.MapHash, out Scores value))
         {
-            ScoreList[replay.MapHash].Add(replay);
+            value.Add(replay);
         }
         else
         {
@@ -63,5 +64,22 @@ public class ScoresCacher : IScoreDataManager
         }
 
         Scores.Add(replay);
+    }
+
+    public void UpdateBeatmapsScoreMetadata(IMapDataManager mapDataManager)
+    {
+        foreach (KeyValuePair<string, Scores> scoresKv in ScoreList)
+        {
+            string mapHash = scoresKv.Key;
+            Scores scores = scoresKv.Value;
+
+            if (scores is null || scores.Count == 0 || mapDataManager.GetByHash(mapHash) is not BeatmapExtension beatmap)
+            {
+                continue;
+            }
+
+            beatmap.ScoresCount = scores.Count;
+            beatmap.LastScoreDate = scores.Max(s => s.Date);
+        }
     }
 }

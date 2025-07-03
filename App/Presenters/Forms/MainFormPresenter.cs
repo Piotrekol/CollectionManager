@@ -17,7 +17,7 @@ public class MainFormPresenter
     public IInfoTextModel InfoTextModel;
     public readonly IBeatmapListingModel BeatmapListingModel;
     public readonly ICollectionListingModel CollectionListingModel;
-
+    private readonly IScoresListingModel _scoresListingModel;
     public MainFormPresenter(IMainFormView view, IMainFormModel mainFormModel, IInfoTextModel infoTextModel, IWebCollectionProvider webCollectionProvider)
     {
         _view = view;
@@ -40,6 +40,9 @@ public class MainFormPresenter
 
         _collectionTextModel = new CollectionTextModel();
         _ = new CollectionTextPresenter(_view.CollectionTextView, _collectionTextModel);
+
+        _scoresListingModel = new ScoresListingModel();
+        _ = new ScoresListingPresenter(_view.ScoresListingView, _scoresListingModel);
 
         //General information (Collections loaded, update check etc.)
         InfoTextModel = infoTextModel;
@@ -67,6 +70,12 @@ public class MainFormPresenter
         }
     }
 
-    private void BeatmapListingViewOnSelectedBeatmapChanged(object sender, EventArgs eventArgs) => _combinedBeatmapPreviewModel.SetBeatmap(_view.CombinedListingView.beatmapListingView.SelectedBeatmap);
+    private void BeatmapListingViewOnSelectedBeatmapChanged(object sender, EventArgs eventArgs)
+    {
+        Beatmap selectedBeatmap = _view.CombinedListingView.beatmapListingView.SelectedBeatmap;
+        _combinedBeatmapPreviewModel.SetBeatmap(selectedBeatmap);
 
+        Scores scores = selectedBeatmap is null ? null : Initalizer.OsuFileIo.ScoresDatabase.GetScores(selectedBeatmap);
+        _scoresListingModel.Scores = scores;
+    }
 }

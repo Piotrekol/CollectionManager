@@ -23,6 +23,7 @@ public abstract class Beatmap : ICloneable
     public string DiffName { get; set; }
     public string Mp3Name { get; set; }
     public string Md5 { get; set; }
+    public abstract string Hash { get; set; }
     public string OsuFileName { get; set; }
     public string MapLink => MapId == 0 ? MapSetLink : @"https://osu.ppy.sh/b/" + MapId;
     public string MapSetLink => MapSetId == 0 ? string.Empty : @"https://osu.ppy.sh/s/" + MapSetId;

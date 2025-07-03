@@ -15,6 +15,7 @@ public partial class MainFormView : BaseForm, IMainFormView
     {
         InitializeComponent();
         splitContainer1.Paint += Helpers.SplitterPaint;
+        splitContainer2.Paint += Helpers.SplitterPaintHorizontal;
         AllowDrop = true;
         DragEnter += Form1_DragEnter;
         DragDrop += Form1_DragDrop;
@@ -26,6 +27,7 @@ public partial class MainFormView : BaseForm, IMainFormView
     public IMainSidePanelView SidePanelView => mainSidePanelView1;
     public ICollectionTextView CollectionTextView => collectionTextView1;
     public IInfoTextView InfoTextView => infoTextView1;
+    public IScoresListingView ScoresListingView => scoresListingView1;
 
     private void Form1_DragEnter(object sender, DragEventArgs e)
     {

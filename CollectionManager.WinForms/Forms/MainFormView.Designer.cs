@@ -37,9 +37,11 @@ namespace GuiComponents.Forms
             tabControlEx1 = new TabControlEx();
             tabPage1 = new System.Windows.Forms.TabPage();
             combinedBeatmapPreviewView1 = new CombinedBeatmapPreviewView();
+            scoresListingView1 = new ScoresListingView();
             tabPage2 = new System.Windows.Forms.TabPage();
             collectionTextView1 = new CollectionTextView();
             infoTextView1 = new InfoTextView();
+            splitContainer2 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -47,6 +49,10 @@ namespace GuiComponents.Forms
             tabControlEx1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
             SuspendLayout();
             // 
             // mainSidePanelView1
@@ -102,23 +108,33 @@ namespace GuiComponents.Forms
             // tabPage1
             // 
             tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            tabPage1.Controls.Add(combinedBeatmapPreviewView1);
+            tabPage1.Controls.Add(splitContainer2);
             tabPage1.Location = new System.Drawing.Point(0, 22);
             tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage1.Size = new System.Drawing.Size(539, 563);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "map preview";
+            tabPage1.Text = "Map";
             // 
             // combinedBeatmapPreviewView1
             // 
             combinedBeatmapPreviewView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            combinedBeatmapPreviewView1.Location = new System.Drawing.Point(4, 3);
+            combinedBeatmapPreviewView1.Location = new System.Drawing.Point(0, 0);
             combinedBeatmapPreviewView1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             combinedBeatmapPreviewView1.Name = "combinedBeatmapPreviewView1";
-            combinedBeatmapPreviewView1.Size = new System.Drawing.Size(531, 557);
+            combinedBeatmapPreviewView1.Size = new System.Drawing.Size(531, 386);
             combinedBeatmapPreviewView1.TabIndex = 0;
+            // 
+            // scoresListingView1
+            // 
+            scoresListingView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            scoresListingView1.Location = new System.Drawing.Point(0, 0);
+            scoresListingView1.ModParser = null;
+            scoresListingView1.Name = "scoresListingView1";
+            scoresListingView1.Scores = null;
+            scoresListingView1.Size = new System.Drawing.Size(531, 167);
+            scoresListingView1.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -151,6 +167,24 @@ namespace GuiComponents.Forms
             infoTextView1.Size = new System.Drawing.Size(1582, 18);
             infoTextView1.TabIndex = 4;
             // 
+            // splitContainer2
+            // 
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer2.Location = new System.Drawing.Point(4, 3);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(combinedBeatmapPreviewView1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(scoresListingView1);
+            splitContainer2.Size = new System.Drawing.Size(531, 557);
+            splitContainer2.SplitterDistance = 386;
+            splitContainer2.TabIndex = 0;
+            // 
             // MainFormView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -169,6 +203,10 @@ namespace GuiComponents.Forms
             tabControlEx1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -183,5 +221,7 @@ namespace GuiComponents.Forms
         private CombinedBeatmapPreviewView combinedBeatmapPreviewView1;
         private InfoTextView infoTextView1;
         private CombinedListingView combinedListingView1;
+        private ScoresListingView scoresListingView1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
