@@ -1,5 +1,6 @@
 ﻿namespace CollectionManagerApp.Presenters.Forms;
 
+using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Forms;
 using CollectionManagerApp.Interfaces.Controls;
 using CollectionManagerApp.Presenters.Controls;
@@ -9,7 +10,7 @@ public class UserTopGeneratorFormPresenter
     private readonly IUserTopGeneratorModel _model;
     private readonly IUserTopGeneratorForm _form;
 
-    public UserTopGeneratorFormPresenter(IUserTopGeneratorModel model, IUserTopGeneratorForm form)
+    public UserTopGeneratorFormPresenter(IUserTopGeneratorModel model, IUserTopGeneratorForm form, IUserDialogs userDialogs)
     {
         _model = model;
         _form = form;
@@ -21,7 +22,7 @@ public class UserTopGeneratorFormPresenter
                 _model.EmitSaveCollections();
             }
         };
-        _ = new UserTopGeneratorPresenter(model, form.UserTopGeneratorView);
+        _ = new UserTopGeneratorPresenter(model, form.UserTopGeneratorView, userDialogs);
 
     }
 }

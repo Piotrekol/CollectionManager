@@ -1,5 +1,7 @@
 ﻿namespace CollectionManagerApp.Presenters.Controls;
 
+using CollectionManager.Common;
+using CollectionManager.Common.Interfaces;
 using CollectionManager.Common.Interfaces.Controls;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.DataTypes;
@@ -10,11 +12,13 @@ public class UserTopGeneratorPresenter
 {
     private readonly IUserTopGeneratorModel _model;
     private readonly IUserTopGenerator _view;
+    private readonly IUserDialogs _userDialogs;
 
-    public UserTopGeneratorPresenter(IUserTopGeneratorModel model, IUserTopGenerator view)
+    public UserTopGeneratorPresenter(IUserTopGeneratorModel model, IUserTopGenerator view, IUserDialogs userDialogs)
     {
         _model = model;
         _view = view;
+        _userDialogs = userDialogs;
 
         _view.Start += ViewOnStart;
         _view.Abort += ViewOnAbort;
@@ -33,9 +37,10 @@ public class UserTopGeneratorPresenter
 
     private void ViewOnStart(object sender, EventArgs eventArgs)
     {
-        //TODO: show some sort of error on missing api key
         if (string.IsNullOrEmpty(_view.ApiKey))
         {
+            _userDialogs.OkMessageBox("Legacy osu! API key is required to continue. You can obtain one at the bottom of your osu settings on osu website.", "Api key required", MessageBoxType.Error);
+
             return;
         }
 

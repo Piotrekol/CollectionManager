@@ -384,24 +384,21 @@ public class SidePanelActionsHandler : IDisposable
         if (_userTopGeneratorForm == null || _userTopGeneratorForm.IsDisposed)
         {
             _userTopGeneratorForm = GuiComponentsProvider.Instance.GetClassImplementing<IUserTopGeneratorForm>();
-            UserTopGeneratorModel model = new((a) =>
-                CollectionsApiGenerator.CreateCollectionName(new ApiScore() { EnabledMods = (int)(Mods.Hr | Mods.Hd) },
-                "Piotrekol", a));
+
+            UserTopGeneratorModel model = new((a) => CollectionsApiGenerator.CreateCollectionName(new ApiScore() { EnabledMods = (int)(Mods.Hr | Mods.Hd) }, "Piotrekol", a));
             model.GenerateUsernames += GenerateUsernames;
-            _ = new UserTopGeneratorFormPresenter(model, _userTopGeneratorForm);
+            _ = new UserTopGeneratorFormPresenter(model, _userTopGeneratorForm, _userDialogs);
+
             model.Start += (s, a) => _collectionGenerator.GenerateCollection(model.GeneratorConfiguration);
-            model.SaveCollections +=
-                (s, a) => _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(model.Collections));
+            model.SaveCollections += (s, a) => _collectionEditor.EditCollection(CollectionEditArgs.AddCollections(model.Collections));
             model.Abort += async (s, a) => await _collectionGenerator.AbortAsync();
-            _collectionGenerator.StatusUpdated +=
-                (s, a) =>
+            _collectionGenerator.StatusUpdated += (s, a) =>
                 {
                     model.GenerationStatus = _collectionGenerator.Status;
                     model.GenerationCompletionPrecentage = _collectionGenerator.ProcessingCompletionPercentage;
                 };
 
-            _collectionGenerator.CollectionsUpdated +=
-                (s, a) => model.Collections = _collectionGenerator.Collections;
+            _collectionGenerator.CollectionsUpdated += (s, a) => model.Collections = _collectionGenerator.Collections;
         }
 
         _userTopGeneratorForm.Show();

@@ -52,4 +52,23 @@ internal static class Helpers
             }
         }
     }
+    public static void SplitterPaintHorizontal(object sender, PaintEventArgs e)
+    {
+        if (sender is SplitContainer s)
+        {
+            int left = 5;
+            int right = s.Width - 5;
+            int top = s.SplitterDistance;
+            int bottom = top + s.SplitterWidth - 1;
+            e.Graphics.DrawLine(Pens.Silver, left, top, right, top);
+            e.Graphics.DrawLine(Pens.Silver, left, bottom, right, bottom);
+            int halfHeight = s.SplitterWidth / 2;
+            for (int CurrRight = right; CurrRight > left; CurrRight -= 10)
+            {
+                //e.Graphics.DrawLine(Pens.Silver, left, top, right, top);
+                e.Graphics.DrawLine(Pens.Silver, CurrRight, top, CurrRight - 5, top + halfHeight);
+            }
+        }
+    }
+
 }

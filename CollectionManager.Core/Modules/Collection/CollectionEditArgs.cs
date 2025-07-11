@@ -165,9 +165,9 @@ public class CollectionEditArgs : EventArgs
     /// </summary>
     /// <param name="collectionNames">The names of the collections to add or merge.</param>
     /// <returns>A <see cref="CollectionEditArgs"/> instance for the add or merge action.</returns>
-    public static CollectionEditArgs AddOrMergeCollections(IReadOnlyList<string> collectionNames) => new(CollectionEdit.AddOrMergeIfExists)
+    public static CollectionEditArgs AddOrMergeCollections(OsuCollections collections) => new(CollectionEdit.AddOrMergeIfExists)
     {
-        CollectionNames = collectionNames
+        NewCollections = collections
     };
 
     /// <summary>

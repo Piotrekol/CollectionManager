@@ -69,13 +69,18 @@ internal static class ScoreInfoExtensions
 
         if (stats is not null)
         {
-            //TODO: I'm unsure if this mapping is correct, recheck.
-            replay.C300 = stats.perfect ?? 0;
-            replay.C100 = stats.ok ?? 0;
-            replay.C50 = stats.meh ?? 0;
-            replay.Geki = stats.good ?? 0;
-            replay.Katu = stats.great ?? 0;
+            replay.C300 = stats.great ?? 0;
+            // osu, taiko, mania and fallback for ctb
+            replay.C100 = stats.ok ?? stats.large_tick_hit ?? 0;
+            // osu, taiko, mania and fallback for ctb
+            replay.C50 = stats.meh ?? stats.small_tick_hit ?? 0;
             replay.Miss = stats.miss ?? 0;
+
+            //gekis and katus are unrecoverable for taiko scores - lazer stores sum of these.
+            //Mania or ctb
+            replay.Geki = stats.perfect ?? stats.large_bonus ?? 0;
+            //Mania or ctb or taiko
+            replay.Katu = stats.good ?? stats.small_tick_hit ?? stats.large_bonus ?? 0;
         }
 
         return replay;

@@ -1,7 +1,8 @@
 ﻿namespace CollectionManager.Extensions.DataTypes;
 
+using CollectionManager.Core.Enums;
+using CollectionManager.Core.Extensions;
 using CollectionManager.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,15 +11,15 @@ public class ScoreSaveConditions
     /// <summary>
     /// Minimum pp on a score required for it to be eligible for saving.
     /// </summary>
-    public double MinimumPp { get; set; } = 0;
+    public double MinimumPp { get; set; }
     /// <summary>
     /// Maximum pp on a score required for it to be eligible for saving.
     /// </summary>
-    public double MaximumPp { get; set; } = 2000;
+    public double MaximumPp { get; set; } = 5000;
     /// <summary>
     /// Minimum acc on a score required for it to be eligible for saving.
     /// </summary>
-    public double MinimumAcc { get; set; } = 0;
+    public double MinimumAcc { get; set; }
     /// <summary>
     /// Maximum acc on a score required for it to be eligible for saving.
     /// </summary>
@@ -32,7 +33,7 @@ public class ScoreSaveConditions
     /// </summary>
     public List<Mods> ModCombinations { get; set; } = [];
 
-    public bool IsEligibleForSaving(ApiScore score)
+    public bool IsEligibleForSaving(ApiScore score, PlayMode gamemode)
     {
         if (score.Pp < MinimumPp || score.Pp > MaximumPp)
         {
@@ -61,11 +62,7 @@ public class ScoreSaveConditions
                */
         }
 
-        //acc calc...(osu! mode)
-        int totalHits = score.Countmiss + score.Count50 + score.Count100 + score.Count300;
-        int pointsOfHits = (score.Count50 * 50) + (score.Count100 * 100) + (score.Count300 * 300);
-        double acc = pointsOfHits / (double)(totalHits * 300) * 100;
-        acc = Math.Round(acc, 2);
+        double acc = ReplayExtensions.OsuScore.CalculateAccuracy(gamemode, score.Count50, score.Count100, score.Count300, score.Countmiss, score.Countgeki, score.Countkatu);
 
         if (acc < MinimumAcc || acc > MaximumAcc)
         {

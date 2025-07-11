@@ -4,6 +4,7 @@ using CollectionManager.Common.Interfaces.Controls;
 using System;
 using System.Windows.Forms;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2011:Avoid infinite recursion", Justification = "WinForms Invoke calls.")]
 public partial class UserTopGeneratorView : UserControl, IUserTopGenerator
 {
 
@@ -21,7 +22,7 @@ public partial class UserTopGeneratorView : UserControl, IUserTopGenerator
         {
             if (label_collectionNameExample.InvokeRequired)
             {
-                _ = label_collectionNameExample.BeginInvoke((MethodInvoker)(() => CollectionNamingExample = value));
+                _ = label_collectionNameExample.Invoke(() => CollectionNamingExample = value);
                 return;
             }
 
@@ -45,7 +46,7 @@ public partial class UserTopGeneratorView : UserControl, IUserTopGenerator
         {
             if (label_processingStatus.InvokeRequired)
             {
-                _ = label_processingStatus.BeginInvoke((MethodInvoker)(() => ProcessingStatus = value));
+                _ = label_processingStatus.Invoke(() => ProcessingStatus = value);
                 return;
             }
 
@@ -83,7 +84,7 @@ public partial class UserTopGeneratorView : UserControl, IUserTopGenerator
         {
             if (progressBar_usernames.InvokeRequired)
             {
-                _ = progressBar_usernames.BeginInvoke((MethodInvoker)(() => ProcessingCompletionPrecentage = value));
+                _ = progressBar_usernames.Invoke(() => ProcessingCompletionPrecentage = value);
                 return;
             }
 
@@ -97,7 +98,7 @@ public partial class UserTopGeneratorView : UserControl, IUserTopGenerator
         {
             if (InvokeRequired)
             {
-                _ = BeginInvoke((MethodInvoker)(() => IsRunning = value));
+                _ = Invoke(() => IsRunning = value);
                 return;
             }
 

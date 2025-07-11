@@ -8,4 +8,5 @@ public interface IMainFormView : IForm
     IMainSidePanelView SidePanelView { get; }
     ICollectionTextView CollectionTextView { get; }
     IInfoTextView InfoTextView { get; }
+    IScoresListingView ScoresListingView { get; }
 }

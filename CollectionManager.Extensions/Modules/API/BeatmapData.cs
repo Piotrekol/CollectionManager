@@ -8,11 +8,12 @@ using CollectionManager.Extensions.Modules.CollectionApiGenerator;
 using System.Collections.Generic;
 using System.Linq;
 
-public class BeatmapData
+public sealed class BeatmapData : IDisposable
 {
-    private readonly Dictionary<UserTopGenerator.BeatmapModePair, Beatmap> _beatmapCache = [];
+    private readonly Dictionary<BeatmapModePair, Beatmap> _beatmapCache = [];
     private readonly OsuApi _osuApi;
     private readonly IMapDataManager _mapCacher;
+
     public BeatmapData(string apiKey, IMapDataManager mapCacher)
     {
         _mapCacher = mapCacher;
@@ -79,7 +80,7 @@ public class BeatmapData
             return null;
         }
 
-        _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(result.MapId, result.PlayMode), result);
+        _beatmapCache.Add(new BeatmapModePair(result.MapId, result.PlayMode), result);
         return result;
     }
 
@@ -103,7 +104,9 @@ public class BeatmapData
             return null;
         }
 
-        _beatmapCache.Add(new UserTopGenerator.BeatmapModePair(beatmapId, result.PlayMode), result);
+        _beatmapCache.Add(new BeatmapModePair(beatmapId, result.PlayMode), result);
         return result;
     }
+
+    public void Dispose() => _osuApi?.Dispose();
 }

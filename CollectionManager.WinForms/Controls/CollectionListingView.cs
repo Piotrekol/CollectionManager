@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows.Forms;
 using IOsuCollection = CollectionManager.Core.Types.IOsuCollection;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2011:Avoid infinite recursion", Justification = "WinForms invoke calls.")]
 public partial class CollectionListingView : UserControl, ICollectionListingView
 {
     public event GuiHelpers.LoadFileArgs OnLoadFile;
@@ -21,6 +22,13 @@ public partial class CollectionListingView : UserControl, ICollectionListingView
     {
         set
         {
+            if (ListViewCollections.InvokeRequired)
+            {
+                _ = ListViewCollections.Invoke(() => Collections = value);
+
+                return;
+            }
+
             ArrayList selectedCollections = SelectedCollections;
             ListViewCollections.SetObjects(value);
             SelectedCollections = selectedCollections;
@@ -32,6 +40,13 @@ public partial class CollectionListingView : UserControl, ICollectionListingView
         get => (IOsuCollection)ListViewCollections.SelectedObject;
         set
         {
+            if (ListViewCollections.InvokeRequired)
+            {
+                _ = ListViewCollections.Invoke(() => SelectedCollection = value);
+
+                return;
+            }
+
             ListViewCollections.SelectedObject = null;
             ListViewCollections.SelectedObject = value;
         }
@@ -41,6 +56,13 @@ public partial class CollectionListingView : UserControl, ICollectionListingView
         get => (ArrayList)ListViewCollections.SelectedObjects;
         private set
         {
+            if (ListViewCollections.InvokeRequired)
+            {
+                _ = ListViewCollections.Invoke(() => SelectedCollections = value);
+
+                return;
+            }
+
             ListViewCollections.SelectedObjects = value;
             ListViewCollections.EnsureSelectionIsVisible();
         }
@@ -50,6 +72,13 @@ public partial class CollectionListingView : UserControl, ICollectionListingView
         get => _collectionRenderer.Collections;
         set
         {
+            if (ListViewCollections.InvokeRequired)
+            {
+                _ = ListViewCollections.Invoke(() => HighlightedCollections = value);
+
+                return;
+            }
+
             _collectionRenderer.Collections = value;
             ListViewCollections.Refresh();
         }

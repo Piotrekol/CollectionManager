@@ -24,6 +24,7 @@
     <PackageReleaseNotes>V2.8 added the ability to disable rows, and to have checkboxes in column headers</PackageReleaseNotes>
     <PackageTags>.Net WinForms Net20 Net40 ListView Controls</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>

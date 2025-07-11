@@ -69,6 +69,8 @@
             ManiaGrade = new BrightIdeasSoftware.OLVColumn();
             olvColumn9 = new BrightIdeasSoftware.OLVColumn();
             olvColumn11 = new BrightIdeasSoftware.OLVColumn();
+            ScoresCount = new BrightIdeasSoftware.OLVColumn();
+            LastScoreDate = new BrightIdeasSoftware.OLVColumn();
             button_searchHelp = new System.Windows.Forms.Button();
             BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).BeginInit();
@@ -243,9 +245,11 @@
             ListViewBeatmaps.AllColumns.Add(ManiaGrade);
             ListViewBeatmaps.AllColumns.Add(olvColumn9);
             ListViewBeatmaps.AllColumns.Add(olvColumn11);
+            ListViewBeatmaps.AllColumns.Add(ScoresCount);
+            ListViewBeatmaps.AllColumns.Add(LastScoreDate);
             ListViewBeatmaps.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             ListViewBeatmaps.AutoGenerateColumns = false;
-            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn2, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, LastPlayed, EditDate });
+            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn2, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, LastPlayed, EditDate, ScoresCount, LastScoreDate });
             ListViewBeatmaps.DataSource = null;
             ListViewBeatmaps.EmptyListMsg = "No collection selected";
             ListViewBeatmaps.IsSimpleDragSource = true;
@@ -407,6 +411,18 @@
             olvColumn11.IsVisible = false;
             olvColumn11.Text = "MapId";
             // 
+            // ScoresCount
+            // 
+            ScoresCount.AspectName = "ScoresCount";
+            ScoresCount.IsEditable = false;
+            ScoresCount.Text = "Scores";
+            // 
+            // LastScoreDate
+            // 
+            LastScoreDate.AspectName = "LastScoreDate";
+            LastScoreDate.IsEditable = false;
+            LastScoreDate.Text = "Last score";
+            // 
             // button_searchHelp
             // 
             button_searchHelp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
@@ -480,5 +496,7 @@
         private BrightIdeasSoftware.OLVColumn column_bpm;
         private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsMenuItem;
         private System.Windows.Forms.Button button_searchHelp;
+        private BrightIdeasSoftware.OLVColumn ScoresCount;
+        private BrightIdeasSoftware.OLVColumn LastScoreDate;
     }
 }

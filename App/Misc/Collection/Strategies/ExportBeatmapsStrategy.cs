@@ -29,7 +29,7 @@ public class ExportBeatmapsStrategy : ICollectionEditStrategy
             return;
         }
 
-        IEnumerable<BeatmapExtension> beatmaps = args.CollectionNames
+        IEnumerable<Beatmap> beatmaps = args.CollectionNames
             .Select(manager.GetCollectionByName)
             .SelectMany(c => c.AllBeatmaps());
 

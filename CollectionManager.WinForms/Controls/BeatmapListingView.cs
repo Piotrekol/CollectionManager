@@ -130,7 +130,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
         label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
     }
-    public static DateTimeOffset d = new DateTime(2006, 1, 1);
     private Mods _currentMods = Mods.Nm;
     private PlayMode _currentPlayMode = PlayMode.Osu;
     private DifficultyCalculator _difficultyCalculator = new();
@@ -153,8 +152,9 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         column_hp.AspectToStringFormat = format;
         column_stars.AspectToStringFormat = format;
 
-        LastPlayed.AspectToStringConverter = FormatDateTimeOffset;
-        EditDate.AspectToStringConverter = FormatDateTimeOffset;
+        LastPlayed.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        EditDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        LastScoreDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
 
         column_stars.AspectGetter = rowObject =>
         {
@@ -256,17 +256,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         dropsink.ModelDropped += DropsinkOnModelDropped;
         ListViewBeatmaps.DropSink = dropsink;
 
-    }
-
-    private static string FormatDateTimeOffset(object cellValue)
-    {
-        if (cellValue is null)
-        {
-            return string.Empty;
-        }
-
-        DateTimeOffset dateTimeOffset = (DateTimeOffset)cellValue;
-        return dateTimeOffset > d ? $"{dateTimeOffset.LocalDateTime}" : "Never";
     }
 
     private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)

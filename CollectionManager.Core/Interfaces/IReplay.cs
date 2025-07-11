@@ -28,4 +28,6 @@ public interface IReplay
     int CompressedReplayLength { get; set; }
     byte[] CompressedReplay { get; set; }
     long OnlineScoreId { get; set; }
+
+    double Accuracy { get; }
 }

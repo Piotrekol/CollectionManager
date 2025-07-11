@@ -4,6 +4,7 @@ using CollectionManager.Core.Types;
 
 public interface IMapDataManager
 {
+    Beatmaps Beatmaps { get; }
     void StartMassStoring();
     void EndMassStoring();
     void StoreBeatmap(Beatmap beatmap);
