@@ -79,10 +79,8 @@ public sealed class CollectionsApiGenerator : IDisposable
         }
         catch (OperationCanceledException)
         {
-            // User-invoked cancellation, do nothing.
+            Collections = [];
         }
-
-        Collections = [];
     }
 
     public void Dispose() => _cancellationTokenSource?.Dispose();
