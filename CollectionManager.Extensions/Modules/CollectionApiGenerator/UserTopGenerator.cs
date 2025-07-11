@@ -9,10 +9,12 @@ using CollectionManager.Extensions.DataTypes;
 using CollectionManager.Extensions.Modules.API.osu;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
-public sealed class UserTopGenerator : IDisposable
+public sealed partial class UserTopGenerator : IDisposable
 {
     private readonly string StartingProcessing = "Preparing...";
     private readonly string ParsingUser = "Processing \"{0}\" | {1}";
@@ -22,35 +24,16 @@ public sealed class UserTopGenerator : IDisposable
     private readonly string GettingUserFailed = "FAILED | Waiting {1}s and trying again.";
     private readonly string GettingBeatmapFailed = "FAILED | Waiting {1}s and trying again.";
     private readonly string Aborted = "FAILED | User aborted.";
-    private int _currentUserMissingMapCount;
 
     private readonly MapCacher _mapCacher;
     private readonly OsuApi _osuApi;
     private readonly CollectionsManager _collectionManager;
-    private LogCollectionGeneration _logger;
     private readonly Dictionary<UserModePair, IList<ApiScore>> _scoreCache = [];
     private readonly Dictionary<BeatmapModePair, Beatmap> _beatmapCache = [];
 
-    private class UserModePair
-    {
-        public UserModePair(string username, PlayMode playMode)
-        {
-            Username = username;
-            PlayMode = playMode;
-        }
-        public string Username { get; }
-        public PlayMode PlayMode { get; }
-    }
-    public class BeatmapModePair
-    {
-        public BeatmapModePair(int beatmapId, PlayMode playMode)
-        {
-            BeatmapId = beatmapId;
-            PlayMode = playMode;
-        }
-        public int BeatmapId { get; }
-        public PlayMode PlayMode { get; }
-    }
+    private LogCollectionGeneration _logger;
+    private int _currentUserMissingMapCount;
+    private string _lastLogUsername = string.Empty;
 
     public UserTopGenerator(string osuApiKey, MapCacher mapCacher)
     {
@@ -66,82 +49,89 @@ public sealed class UserTopGenerator : IDisposable
         _collectionManager = new CollectionsManager(_mapCacher);
     }
 
-    public OsuCollections GetPlayersCollections(CollectionGeneratorConfiguration cfg, LogCollectionGeneration logger, CancellationToken cancellationToken)
+    public async Task<OsuCollections> GetPlayersCollectionsAsync(CollectionGeneratorConfiguration configuration, LogCollectionGeneration logger, CancellationToken cancellationToken)
     {
-        int totalUsernames = cfg.Usernames.Count;
+        int totalUsernames = configuration.Usernames.Count;
         int processedCounter = 0;
-        OsuCollections c = [];
-        _osuApi.ApiKey = cfg.ApiKey;
+        OsuCollections newCollections = [];
+        _osuApi.ApiKey = configuration.ApiKey;
         _logger = logger;
         _logger?.Invoke(StartingProcessing, 0d);
         _collectionManager.EditCollection(CollectionEditArgs.ClearCollections());
+
         try
         {
-            foreach (string username in cfg.Usernames)
+            foreach (string username in configuration.Usernames)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                OsuCollections collections = GetPlayerCollections(username,
-                    cfg.CollectionNameSavePattern, cfg.Gamemode, cfg.ScoreSaveConditions, cancellationToken);
+                OsuCollections collections = await GetPlayerCollectionsAsync(username, configuration.CollectionNameSavePattern, (PlayMode)configuration.Gamemode, configuration.ScoreSaveConditions, cancellationToken);
 
                 Log(username, ParsingFinished, ++processedCounter / (double)totalUsernames * 100);
 
-                _collectionManager.EditCollection(CollectionEditArgs.AddOrMergeCollections(collections.Names));
+                _collectionManager.EditCollection(CollectionEditArgs.AddOrMergeCollections(collections));
             }
 
-            c.AddRange(_collectionManager.LoadedCollections);
-            _logger?.Invoke(string.Format(ParsingFinished, cfg.Usernames.Count), 100);
+            newCollections.AddRange(_collectionManager.LoadedCollections);
+            _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingFinished, configuration.Usernames.Count, cancellationToken), 100);
 
-            _logger = null;
-            return c;
+            return newCollections;
         }
-        catch (ThreadAbortException)
+        catch (OperationCanceledException)
         {
             _logger?.Invoke(Aborted, -1d);
-            return c;
+
+            throw;
+        }
+        finally
+        {
+            _logger = null;
         }
     }
 
-    private string _lastUsername = "";
     private void Log(string username, string message, double precentage = -1d)
     {
         if (string.IsNullOrEmpty(username))
         {
-            username = _lastUsername;
+            username = _lastLogUsername;
         }
         else
         {
-            _lastUsername = username;
+            _lastLogUsername = username;
         }
 
-        _logger?.Invoke(string.Format(ParsingUser, username, message), precentage);
+        _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingUser, username, message), precentage);
     }
-    private OsuCollections GetPlayerCollections(string username, string collectionNameSavePattern, int gamemode,
-        ScoreSaveConditions configuration, CancellationToken cancellationToken)
+    private async Task<OsuCollections> GetPlayerCollectionsAsync(string username, string collectionNameSavePattern, PlayMode gamemode, ScoreSaveConditions configuration, CancellationToken cancellationToken)
     {
         _currentUserMissingMapCount = 0;
-        IList<ApiScore> validScores = GetPlayerScores(username, (PlayMode)gamemode, configuration, cancellationToken);
+        IList<ApiScore> validScores = await GetPlayerScores(username, gamemode, configuration, cancellationToken);
         Dictionary<string, Beatmaps> collectionsDict = [];
         OsuCollections collections = [];
+
         foreach (ApiScore s in validScores)
         {
-            if (configuration.IsEligibleForSaving(s))
+            if (!configuration.IsEligibleForSaving(s, gamemode))
             {
-                string collectionName = CreateCollectionName(s, username, collectionNameSavePattern);
-                if (collectionsDict.TryGetValue(collectionName, out Beatmaps value))
-                {
-                    value.Add(GetBeatmapFromId(s.BeatmapId, (PlayMode)gamemode));
-                }
-                else
-                {
-                    collectionsDict.Add(collectionName, [GetBeatmapFromId(s.BeatmapId, (PlayMode)gamemode)]);
-                }
+                continue;
+            }
+
+            string collectionName = CreateCollectionName(s, username, collectionNameSavePattern);
+
+            if (collectionsDict.TryGetValue(collectionName, out Beatmaps beatmaps))
+            {
+                beatmaps.Add(await GetBeatmapFromId(s.BeatmapId, gamemode, cancellationToken));
+            }
+            else
+            {
+                collectionsDict.Add(collectionName, [await GetBeatmapFromId(s.BeatmapId, gamemode, cancellationToken)]);
             }
         }
 
         foreach (KeyValuePair<string, Beatmaps> c in collectionsDict)
         {
             OsuCollection collection = new(_mapCacher) { Name = c.Key };
+
             foreach (Beatmap beatmap in c.Value)
             {
                 collection.AddBeatmap(beatmap);
@@ -153,9 +143,9 @@ public sealed class UserTopGenerator : IDisposable
         return collections;
     }
 
-    private Beatmap GetBeatmapFromId(int beatmapId, PlayMode gamemode)
+    private async Task<Beatmap> GetBeatmapFromId(int beatmapId, PlayMode gamemode, CancellationToken cancellationToken)
     {
-        foreach (Core.Types.Beatmap loadedBeatmap in _mapCacher.Beatmaps)
+        foreach (Beatmap loadedBeatmap in _mapCacher.Beatmaps)
         {
             if (loadedBeatmap.MapId == beatmapId)
             {
@@ -164,6 +154,7 @@ public sealed class UserTopGenerator : IDisposable
         }
 
         Beatmap beatmapFromCache = _beatmapCache.FirstOrDefault(s => s.Key.BeatmapId == beatmapId & s.Key.PlayMode == gamemode).Value;
+
         if (beatmapFromCache != null)
         {
             return beatmapFromCache;
@@ -171,30 +162,37 @@ public sealed class UserTopGenerator : IDisposable
 
         Beatmap result;
         _currentUserMissingMapCount++;
+
         do
         {
             int i = 1;
             int Cooldown = 20;
+
             do
             {
-                Log(null, string.Format(GettingBeatmaps, _currentUserMissingMapCount));
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Log(null, string.Format(CultureInfo.InvariantCulture, GettingBeatmaps, _currentUserMissingMapCount));
                 result = _osuApi.GetBeatmap(beatmapId, gamemode);
             } while (result == null && i++ < 5);
+
             if (result == null)
             {
-                Log(null, string.Format(GettingBeatmapFailed, i, Cooldown));
-                Thread.Sleep(Cooldown * 1000);
+                Log(null, string.Format(CultureInfo.InvariantCulture, GettingBeatmapFailed, i, Cooldown));
+                await Task.Delay(Cooldown * 1000, cancellationToken);
             }
         } while (result == null);
+
         _beatmapCache.Add(new BeatmapModePair(beatmapId, gamemode), result);
+
         return result;
     }
 
-    private IList<ApiScore> GetPlayerScores(string username, PlayMode gamemode, ScoreSaveConditions configuration, CancellationToken cancellationToken)
+    private async Task<IList<ApiScore>> GetPlayerScores(string username, PlayMode gamemode, ScoreSaveConditions configuration, CancellationToken cancellationToken)
     {
-        Log(username, string.Format(GettingScores, 1));
-        IList<ApiScore> scoresFromCache =
-            _scoreCache.FirstOrDefault(s => s.Key.Username == username & s.Key.PlayMode == gamemode).Value;
+        Log(username, string.Format(CultureInfo.InvariantCulture, GettingScores, 1));
+        IList<ApiScore> scoresFromCache = _scoreCache.FirstOrDefault(s => s.Key.Username == username & s.Key.PlayMode == gamemode).Value;
+
         if (scoresFromCache != null)
         {
             return scoresFromCache;
@@ -207,23 +205,27 @@ public sealed class UserTopGenerator : IDisposable
         {
             int i = 1;
             int Cooldown = 20;
+
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                Log(username, string.Format(GettingScores, i));
+
+                Log(username, string.Format(CultureInfo.InvariantCulture, GettingScores, i));
                 scores = _osuApi.GetUserBest(username, gamemode);
             } while (scores == null && i++ < 5);
+
             if (scores == null)
             {
-                Log(username, string.Format(GettingUserFailed, i, Cooldown));
-                Thread.Sleep(Cooldown * 1000);
+                Log(username, string.Format(CultureInfo.InvariantCulture, GettingUserFailed, i, Cooldown));
+                await Task.Delay(Cooldown * 1000, cancellationToken);
             }
         } while (scores == null);
 
         _scoreCache.Add(new UserModePair(username, gamemode), scores);
+
         foreach (ApiScore s in scores)
         {
-            if (configuration.IsEligibleForSaving(s))
+            if (configuration.IsEligibleForSaving(s, gamemode))
             {
                 egibleScores.Add(s);
             }
@@ -236,8 +238,7 @@ public sealed class UserTopGenerator : IDisposable
     {
         try
         {
-            return string.Format(collectionNameFormat, username,
-                modParser.GetModsFromEnum(score.EnabledMods, true));
+            return string.Format(CultureInfo.InvariantCulture, collectionNameFormat, username, modParser.GetModsFromEnum(score.EnabledMods, true));
         }
         catch (FormatException)
         {

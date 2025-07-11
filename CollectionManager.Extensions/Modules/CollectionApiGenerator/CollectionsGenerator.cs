@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class CollectionsApiGenerator : IDisposable
+public sealed class CollectionsApiGenerator : IDisposable
 {
     public event EventHandler CollectionsUpdated;
     public event EventHandler StatusUpdated;
@@ -24,7 +24,7 @@ public class CollectionsApiGenerator : IDisposable
     }
     public double ProcessingCompletionPercentage { get; set; }
 
-    private Task _processingTask = Task.CompletedTask;
+    private Task<OsuCollections> _processingTask = Task.FromResult<OsuCollections>([]);
     private CancellationTokenSource _cancellationTokenSource;
     private OsuCollections _collections;
     private readonly MapCacher _loadedBeatmaps;
@@ -49,16 +49,21 @@ public class CollectionsApiGenerator : IDisposable
     public void GenerateCollection(CollectionGeneratorConfiguration configuration)
     {
         _userTopGenerator ??= new UserTopGenerator(configuration.ApiKey, _loadedBeatmaps);
-        _ = _cancellationTokenSource?.TryCancel();
+
+        if (_cancellationTokenSource?.TryCancel() ?? false)
+        {
+            _cancellationTokenSource?.Dispose();
+        }
+
         _cancellationTokenSource = new CancellationTokenSource();
 
-        if (_processingTask is null || !_processingTask.IsCompleted)
+        if (_processingTask is null || _processingTask.IsCompleted)
         {
-            _processingTask = Task.Run(() => Collections = _userTopGenerator.GetPlayersCollections(configuration, Log, _cancellationTokenSource.Token));
+            _processingTask = Task.Run(async () => Collections = await _userTopGenerator.GetPlayersCollectionsAsync(configuration, Log, _cancellationTokenSource.Token));
         }
     }
 
-    public void Log(string message, double percentage)
+    private void Log(string message, double percentage)
     {
         ProcessingCompletionPercentage = percentage;
         Status = message;
@@ -67,12 +72,18 @@ public class CollectionsApiGenerator : IDisposable
     public async Task AbortAsync()
     {
         _ = _cancellationTokenSource?.TryCancel();
-        await _processingTask.ConfigureAwait(false);
+
+        try
+        {
+            _ = await _processingTask.ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            // User-invoked cancellation, do nothing.
+        }
+
+        Collections = [];
     }
 
-    public void Dispose()
-    {
-        _cancellationTokenSource?.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => _cancellationTokenSource?.Dispose();
 }

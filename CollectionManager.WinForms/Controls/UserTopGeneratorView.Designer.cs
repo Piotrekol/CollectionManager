@@ -241,11 +241,12 @@
             numericUpDown_maximumPP.Name = "numericUpDown_maximumPP";
             numericUpDown_maximumPP.Size = new System.Drawing.Size(82, 23);
             numericUpDown_maximumPP.TabIndex = 21;
-            numericUpDown_maximumPP.Value = new decimal(new int[] { 2000, 0, 0, 0 });
+            numericUpDown_maximumPP.Value = new decimal(new int[] { 5000, 0, 0, 0 });
             // 
             // rb_scores_Adown
             // 
             rb_scores_Adown.AutoSize = true;
+            rb_scores_Adown.Enabled = false;
             rb_scores_Adown.Location = new System.Drawing.Point(227, 23);
             rb_scores_Adown.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             rb_scores_Adown.Name = "rb_scores_Adown";
@@ -259,6 +260,7 @@
             // rb_scores_Sup
             // 
             rb_scores_Sup.AutoSize = true;
+            rb_scores_Sup.Enabled = false;
             rb_scores_Sup.Location = new System.Drawing.Point(99, 22);
             rb_scores_Sup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             rb_scores_Sup.Name = "rb_scores_Sup";
@@ -273,6 +275,7 @@
             // 
             rb_scores_all.AutoSize = true;
             rb_scores_all.Checked = true;
+            rb_scores_all.Enabled = false;
             rb_scores_all.Location = new System.Drawing.Point(10, 22);
             rb_scores_all.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             rb_scores_all.Name = "rb_scores_all";
