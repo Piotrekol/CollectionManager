@@ -7,13 +7,16 @@ public class AddOrMergeIfExistsStrategy : ICollectionEditStrategy
 {
     public void Execute(CollectionsManager manager, CollectionEditArgs args)
     {
-        List<IOsuCollection> argCollections = manager.GetCollectionByNames(args.CollectionNames);
-
-        foreach (IOsuCollection collection in argCollections)
+        foreach (IOsuCollection collection in args.NewCollections)
         {
             if (manager.CollectionNameExists(collection.Name))
             {
-                manager.EditCollection(CollectionEditArgs.MergeCollections([collection.Name, collection.Name], collection.Name), true);
+                IOsuCollection masterCollection = manager.GetCollectionByName(collection.Name);
+
+                foreach (BeatmapExtension beatmap in collection.AllBeatmaps())
+                {
+                    masterCollection.AddBeatmap(beatmap);
+                }
             }
             else
             {
