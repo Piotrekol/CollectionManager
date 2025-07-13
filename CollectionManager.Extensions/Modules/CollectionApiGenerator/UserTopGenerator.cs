@@ -73,7 +73,7 @@ public sealed partial class UserTopGenerator : IDisposable
             }
 
             newCollections.AddRange(_collectionManager.LoadedCollections);
-            _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingFinished, configuration.Usernames.Count, cancellationToken), 100);
+            _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingFinished, configuration.Usernames.Count), 100);
 
             return newCollections;
         }

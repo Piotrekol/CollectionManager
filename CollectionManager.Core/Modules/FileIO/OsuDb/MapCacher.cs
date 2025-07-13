@@ -71,19 +71,31 @@ public class MapCacher : IMapDataManager
         OnBeatmapsModified();
     }
 
+    public void StoreBeatmaps(Beatmaps beatmaps)
+    {
+        StartMassStoring();
+
+        foreach (Beatmap beatmap in beatmaps)
+        {
+            StoreBeatmap(beatmap);
+        }
+
+        EndMassStoring();
+    }
+
     public void StoreBeatmap(Beatmap beatmap)
     {
         if (_massStoring)
         {
             if (MassStoringBeatmapHashes.Add(beatmap.Md5))
             {
-                Beatmaps.Add((Beatmap)beatmap.Clone());
+                Beatmaps.Add(beatmap);
             }
 
             return;
         }
 
-        Beatmaps.Add((Beatmap)beatmap.Clone());
+        Beatmaps.Add(beatmap);
         UpdateLookupDicts(beatmap);
         OnBeatmapsModified();
     }
