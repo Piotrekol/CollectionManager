@@ -15,7 +15,7 @@ public class OsuBinaryWriter : BinaryWriter
 
     public override void Write(string value)
     {
-        if (string.IsNullOrEmpty(value))
+        if (value is null)
         {
             Write((byte)0);
         }
@@ -25,4 +25,6 @@ public class OsuBinaryWriter : BinaryWriter
             base.Write(value);
         }
     }
+
+    public void Write(DateTimeOffset? value) => Write(value?.DateTime.ToBinary() ?? 0L);
 }

@@ -4,6 +4,7 @@ using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CommandLine;
 using System.IO;
+using System.Threading;
 
 public class CommandLineRunner
 {
@@ -27,7 +28,7 @@ public class CommandLineRunner
             }
             else
             {
-                OsuFileIo.OsuDatabase.Load(Path.Combine(parsedArgs.OsuLocation, "osu!.db"));
+                _ = OsuFileIo.OsuDatabase.Load(Path.Combine(parsedArgs.OsuLocation, "osu!.db"), null, CancellationToken.None);
             }
         }
 
