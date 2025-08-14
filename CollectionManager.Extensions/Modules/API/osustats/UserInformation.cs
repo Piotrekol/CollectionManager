@@ -1,6 +1,8 @@
 ﻿namespace CollectionManager.Extensions.Modules.API.osustats;
 
-public class UserInformation
+using CollectionManager.Common.Interfaces;
+
+public class UserInformation : IUserInformation
 {
     public string UserName { get; set; }
     public int OsuUserId { get; set; }
