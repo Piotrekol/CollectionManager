@@ -28,7 +28,7 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
 
     private readonly HttpClient httpClient = new();
 
-    public IUserInformation UserInformation => (IUserInformation)_userInformation;
+    public IUserInformation UserInformation => _userInformation;
     public string ApiKey
     {
         get => _apiKey;
