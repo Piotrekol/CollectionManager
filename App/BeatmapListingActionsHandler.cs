@@ -52,7 +52,7 @@ public class BeatmapListingActionsHandler
     private void PullWholeMapsets(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
-        if (model.SelectedBeatmaps?.Count > 0)
+        if (Initalizer.CollectionEditor != null && model.SelectedBeatmaps?.Count > 0 && model.CurrentCollection != null)
         {
             Beatmaps setBeatmaps = [];
 
