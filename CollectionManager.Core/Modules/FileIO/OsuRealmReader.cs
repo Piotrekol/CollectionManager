@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 public partial class OsuRealmReader
 {
-    private const ulong _lastValidatedRealmSchemaVersion = 49;
+    private const ulong _lastValidatedRealmSchemaVersion = 51;
     [GeneratedRegex("(\\d+)(?!.*\\d)")]
     private static partial Regex LastNumberRegex();
 

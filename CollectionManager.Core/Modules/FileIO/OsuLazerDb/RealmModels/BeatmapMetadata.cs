@@ -18,6 +18,8 @@ internal partial class BeatmapMetadata
     public string Source { get; set; } = string.Empty;
 
     public string Tags { get; set; } = string.Empty;
+    
+    public IList<string> UserTags { get; } = null!;
 
     public int PreviewTime { get; set; } = -1;
 
