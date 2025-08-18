@@ -142,5 +142,17 @@ namespace CollectionManagerApp.Properties {
                 this["ScoresColumns"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{}")]
+        public string BeatmapListingPresenterSettings {
+            get {
+                return ((string)(this["BeatmapListingPresenterSettings"]));
+            }
+            set {
+                this["BeatmapListingPresenterSettings"] = value;
+            }
+        }
     }
 }
