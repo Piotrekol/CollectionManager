@@ -9,7 +9,7 @@ public partial class CombinedListingView : UserControl, ICombinedListingView
     public CombinedListingView()
     {
         InitializeComponent();
-        splitContainer1.Paint += Helpers.SplitterPaint;
+        splitContainer1.Paint += WindowsFormsExtensions.SplitterPaint;
     }
 
     public IBeatmapListingView beatmapListingView => beatmapListingView1;

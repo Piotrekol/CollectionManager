@@ -5,6 +5,7 @@ using CollectionManager.Common;
 using CollectionManager.Common.Interfaces.Controls;
 using CollectionManager.Core.Types;
 using CollectionManager.WinForms;
+using CollectionManager.WinForms.FastObjectListView;
 using System;
 using System.Collections;
 using System.Drawing;

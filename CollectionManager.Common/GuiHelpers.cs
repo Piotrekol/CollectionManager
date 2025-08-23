@@ -14,4 +14,5 @@ public static class GuiHelpers
     public delegate void StartupCollectionEventArgs(object sender, StartupCollectionAction args);
     public delegate void StartupDatabaseEventArgs(object sender, StartupDatabaseAction args);
     public delegate void ColumnsToggledEventArgs(object sender, string[] visibleColumnAspectNames);
+    public delegate void BeatmapGroupColumnChangedEventArgs(object sender, string groupColumnName);
 }

@@ -13,6 +13,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
     private readonly IBeatmapListingView _view;
     private readonly IBeatmapListingModel _model;
     private readonly IUserDialogs _userDialogs;
+    private readonly BeatmapListingPresenterSettings _settings;
 
     private Beatmaps _beatmaps;
 
@@ -25,6 +26,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
             _view.SetBeatmaps(value);
         }
     }
+
     public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model, IUserDialogs userDialogs)
     {
         _view = view;
@@ -35,7 +37,8 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 
         _view.BeatmapsDropped += (s, a) => _model.EmitBeatmapsDropped(s, a);
         _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
-        _view.ColumnsToggled += (s, a) => OnColumnsToggled(a);
+        _view.ColumnsToggled += (_, aspectNames) => OnSettingsChanged(visibleAspectNames: aspectNames);
+        _view.BeatmapGroupColumnChanged += (_, columnName) => OnSettingsChanged(groupBy: columnName);
 
         _model = model;
         _userDialogs = userDialogs;
@@ -44,17 +47,47 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         _model.FilteringFinished += _model_FilteringFinished;
         _view.SetFilter(_model.GetFilter());
 
-        string[] visibleColumns = JsonConvert.DeserializeObject<string[]>(Settings.Default.BeatmapColumns);
-
-        if (visibleColumns.Length > 0)
-        {
-            _view.SetVisibleColumns(visibleColumns);
-        }
+        ConvertLegacyBeatmapSettings();
+        _settings = JsonConvert.DeserializeObject<BeatmapListingPresenterSettings>(Settings.Default.BeatmapListingPresenterSettings);
+        _view.SetVisibleColumns(_settings.VisibleColumns);
+        _view.SetGroupColumn(_settings.GroupBy);
 
         Beatmaps = _model.GetBeatmaps();
     }
 
-    private static void OnColumnsToggled(string[] visibleColumnAspectNames) => Settings.Default.BeatmapColumns = JsonConvert.SerializeObject(visibleColumnAspectNames);
+    private void OnSettingsChanged(string[] visibleAspectNames = null, string groupBy = null)
+    {
+        if (visibleAspectNames != null)
+        {
+            _settings.VisibleColumns = visibleAspectNames;
+        }
+
+        if (groupBy != null)
+        {
+            _settings.GroupBy = groupBy;
+        }
+
+        Settings.Default.BeatmapListingPresenterSettings = JsonConvert.SerializeObject(_settings);
+    }
+
+    private static void ConvertLegacyBeatmapSettings()
+    {
+        string[] legacyVisibleColumns = JsonConvert.DeserializeObject<string[]>(Settings.Default.BeatmapColumns);
+
+        if (legacyVisibleColumns.Length == 0)
+        {
+            return;
+        }
+
+        BeatmapListingPresenterSettings settings = new()
+        {
+            VisibleColumns = legacyVisibleColumns,
+            GroupBy = ""
+        };
+
+        Settings.Default.BeatmapColumns = "[]";
+        Settings.Default.BeatmapListingPresenterSettings = JsonConvert.SerializeObject(settings);
+    }
 
     private void _model_FilteringFinished(object sender, EventArgs e)
     {

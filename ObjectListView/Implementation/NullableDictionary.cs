@@ -39,7 +39,7 @@ namespace BrightIdeasSoftware {
     /// <typeparam name="TValue">The type of the values to be stored</typeparam>
     /// <remarks>This is not a full implementation and is only meant to handle
     /// collecting groups by their keys, since groups can have null as a key value.</remarks>
-    internal class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue> {
+    public class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue> {
         private bool hasNullKey;
         private TValue nullValue;
 
