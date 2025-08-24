@@ -80,13 +80,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
 
     public Beatmap SelectedBeatmap
     {
-        get
-        {
-            return (Beatmap)ListViewBeatmaps.SelectedObject
+        get => (Beatmap)ListViewBeatmaps.SelectedObject
                 ?? (ListViewBeatmaps.SelectedObjects.Count != 0
                     ? (Beatmap)ListViewBeatmaps.SelectedObjects[0]
                     : null);
-        }
 
         private set
         {
@@ -307,8 +304,8 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
         ListViewBeatmaps.SortGroupItemsByPrimaryColumn = false;
         ListViewBeatmaps.PrimarySortColumn = column_name;
 
-        var singularFormat = "{0}";
-        var pluralFormat = "{0} ({1} maps)";
+        string singularFormat = "{0}";
+        string pluralFormat = "{0} ({1} maps)";
 
         foreach (OLVColumn column in ListViewBeatmaps.Columns)
         {
@@ -329,7 +326,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
             column_MapId,
             column_LocalVersionDiffers,
         ];
-
 
         _displayColumns = [
             new(null, "No grouping"),
@@ -378,10 +374,27 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
 
     public void SetFilter(ICommonModelFilter filter) => ListViewBeatmaps.AdditionalFilter = new CommonModelFilter(filter);
 
-    public void FilteringStarted() => ListViewBeatmaps.BeginUpdate();
+    public void FilteringStarted()
+    {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            _ = ListViewBeatmaps.BeginInvoke(FilteringStarted);
+
+            return;
+        }
+
+        ListViewBeatmaps.BeginUpdate();
+    }
 
     public void FilteringFinished()
     {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            _ = ListViewBeatmaps.BeginInvoke(FilteringFinished);
+
+            return;
+        }
+
         Beatmap selectedBeatmap = SelectedBeatmap;
         ListViewBeatmaps.UpdateColumnFiltering();
         ListViewBeatmaps.EndUpdate();
@@ -403,7 +416,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     protected virtual void OnSelectedBeatmapsChanged() => SelectedBeatmapsChanged?.Invoke(this, EventArgs.Empty);
 
     protected virtual void OnSelectedBeatmapChanged() => SelectedBeatmapChanged?.Invoke(this, EventArgs.Empty);
-
 
     private void MenuStripClick(object sender, EventArgs e)
     {
@@ -460,8 +472,5 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
         ListViewBeatmaps.SetObjects(currentObjects);
     }
 
-    public void Dispose()
-    {
-        ListViewBeatmaps.SetObjects(Enumerable.Empty<Beatmap>());
-    }
+    public new void Dispose() => ListViewBeatmaps.SetObjects(Enumerable.Empty<Beatmap>());
 }

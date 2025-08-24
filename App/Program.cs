@@ -1,6 +1,6 @@
 ﻿namespace CollectionManagerApp;
-using CollectionManagerApp.Misc;
-using System.IO;
+
+using CollectionManager.App.Shared.Misc;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -28,17 +28,12 @@ internal static class Program
         Application.ThreadException += (_, exArgs) => HandleException(exArgs.Exception);
         TaskScheduler.UnobservedTaskException += (_, exArgs) => HandleException(exArgs.Exception);
 
-        if (args.Length > 0 && !File.Exists(args[0]))
-        {
-            //This somewhat breaks console interaction/output can't be easily piped
-            _ = AttachConsole(-1);
-
-            return CommandLineRunner.Process(args) ? 0 : -1;
-        }
-
-        Initalizer app = new();
+        SettingsProvider settingsProvider = new(Properties.Settings.Default);
+        WinFormsClipboard clipboard = new();
+        WinFormsGuiComponentsProvider guiComponentsProvider = new();
+        WinFormsInitalizer app = new(settingsProvider, clipboard, guiComponentsProvider);
         _ = app.Run(args);
-        Application.Run(app);
+        Application.Run(app.ApplicationContext);
 
         return 0;
     }

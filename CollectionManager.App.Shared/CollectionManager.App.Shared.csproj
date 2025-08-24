@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<ProjectReference Include="..\CollectionManager.Core\CollectionManager.Core.csproj" />
+		<ProjectReference Include="..\CollectionManager.Extensions\CollectionManager.Extensions.csproj" />
+		<ProjectReference Include="..\CollectionManager.Common\CollectionManager.Common.csproj" />
+		<ProjectReference Include="..\CollectionManager.Audio\CollectionManager.Audio.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="CollectionManager.App.Shared.Resources.Designer.cs">
+	    <DependentUpon>CollectionManager.App.Shared.Resources.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="CollectionManager.App.Shared.Resources.resx">
+	    <LastGenOutput>CollectionManager.App.Shared.Resources.Designer.cs</LastGenOutput>
+	    <Generator>ResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="downloadSources.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+</Project>

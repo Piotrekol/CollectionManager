@@ -9,7 +9,7 @@ public class BaseForm : Form, IForm
 {
     protected BaseForm()
     {
-        FormClosing += (s, e) => Closing?.Invoke(this, e);
+        FormClosing += (s, e) => Closing?.Invoke(this, new((Common.CloseReason)e.CloseReason));
         StartPosition = FormStartPosition.CenterParent;
         Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         Font = new Font("Segoe UI", 9f);
@@ -17,5 +17,5 @@ public class BaseForm : Form, IForm
 
     public void ShowAndBlock() => ShowDialog();
 
-    public event EventHandler Closing;
+    public event EventHandler<Common.FormClosingEventArgs> Closing;
 }
