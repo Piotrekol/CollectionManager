@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 public sealed class OsuDownloadManager
 {
@@ -43,7 +44,7 @@ public sealed class OsuDownloadManager
     private long _downloadId;
     public bool? DownloadWithVideo { get; set; }
 
-    public bool AskUserForSaveDirectoryAndLogin(IUserDialogs userDialogs, ILoginFormView loginForm)
+    public async Task<bool> AskUserForSaveDirectoryAndLoginAsync(IUserDialogs userDialogs, ILoginFormView loginForm)
     {
         const string loginFailedMessage = "Login failed. Ensure that your login/password or cookies are correct";
 
@@ -55,7 +56,9 @@ public sealed class OsuDownloadManager
         DownloaderSettings downloaderSettings = JsonConvert.DeserializeObject<DownloaderSettings>(Initalizer.Settings.DownloadManager_DownloaderSettings);
         downloaderSettings.LoginData ??= new LoginData();
 
-        bool useExistingSettings = downloaderSettings.IsValid(DownloadSources) && userDialogs.YesNoMessageBox($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
+        bool useExistingSettings = downloaderSettings.IsValid(DownloadSources)
+            && await userDialogs.YesNoMessageBoxAsync($"Reuse last downloader settings? {Environment.NewLine}{downloaderSettings}", "DownloadManager - Reuse settings", MessageBoxType.Question);
+
         if (useExistingSettings)
         {
             DownloadDirectory = downloaderSettings.DownloadDirectory;
@@ -66,18 +69,18 @@ public sealed class OsuDownloadManager
                 return true;
             }
 
-            userDialogs.OkMessageBox(loginFailedMessage, "Error", MessageBoxType.Error);
+            await userDialogs.OkMessageBoxAsync(loginFailedMessage, "Error", MessageBoxType.Error);
 
             return false;
         }
 
-        DownloadDirectory = userDialogs.SelectDirectory("Select directory for saved beatmaps", true);
+        DownloadDirectory = await userDialogs.SelectDirectoryAsync("Select directory for saved beatmaps", true);
         if (!DownloadDirectoryIsSet)
         {
             return false;
         }
 
-        DownloadWithVideo = userDialogs.YesNoMessageBox("Download beatmaps with video?", "Beatmap downloader", MessageBoxType.Question);
+        DownloadWithVideo = await userDialogs.YesNoMessageBoxAsync("Download beatmaps with video?", "Beatmap downloader", MessageBoxType.Question);
         LoginData userLoginData = loginForm.GetLoginData(DownloadSources);
         if (TryLogIn(userLoginData))
         {
@@ -90,7 +93,7 @@ public sealed class OsuDownloadManager
         }
         else
         {
-            userDialogs.OkMessageBox(loginFailedMessage, "Error", MessageBoxType.Error);
+            await userDialogs.OkMessageBoxAsync(loginFailedMessage, "Error", MessageBoxType.Error);
         }
 
         return IsLoggedIn;
@@ -183,7 +186,7 @@ public sealed class OsuDownloadManager
         string oszFileName = beatmap.OszFileName();
         string downloadUrl = string.Format(SelectedDownloadSource.BaseDownloadUrl, beatmap.MapSetId) + (DownloadWithVideo != null && DownloadWithVideo.Value ? string.Empty : "?noVideo=1");
 
-        DownloadItem downloadItem = _mapDownloader.DownloadFileAsync(downloadUrl, oszFileName, string.Format(SelectedDownloadSource.Referer, beatmap.MapSetId), currentId, SelectedDownloadSource.RequestTimeout);
+        DownloadItem downloadItem = _mapDownloader.DownloadFile(downloadUrl, oszFileName, string.Format(SelectedDownloadSource.Referer, beatmap.MapSetId), currentId, SelectedDownloadSource.RequestTimeout);
         downloadItem.Id = currentId;
         return downloadItem;
     }

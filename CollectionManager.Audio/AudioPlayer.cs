@@ -70,8 +70,8 @@ internal abstract class AudioPlayer : IMusicPlayer
             }
         }
     }
-    public void Resume() => _waveOutDevice.Play();
-    public void Pause() => _waveOutDevice.Pause();
+    public void Resume() => _waveOutDevice?.Play();
+    public void Pause() => _waveOutDevice?.Pause();
     #endregion
 
     protected readonly object _lockingObject = new();

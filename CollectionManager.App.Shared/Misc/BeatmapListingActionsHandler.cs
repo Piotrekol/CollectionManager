@@ -13,6 +13,7 @@ using CollectionManager.Extensions.Enums;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
 using CollectionManager.Extensions.Utils;
+using System.Threading.Tasks;
 
 public class BeatmapListingActionsHandler
 {
@@ -36,8 +37,8 @@ public class BeatmapListingActionsHandler
             {BeatmapListingAction.CopyBeatmapsAsUrls, CopyBeatmapsAsUrls },
             {BeatmapListingAction.DeleteBeatmapsFromCollection, DeleteBeatmapsFromCollection },
             {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
-            {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmaps },
-            {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPages },
+            {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmapsAsync },
+            {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPagesAsync },
             {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder },
             {BeatmapListingAction.PullWholeMapSet, PullWholeMapsets },
             {BeatmapListingAction.ExportBeatmapSets, ExportBeatmapSets },
@@ -70,17 +71,17 @@ public class BeatmapListingActionsHandler
             );
         }
     }
-    private void DownloadBeatmapsManaged(object sender)
+    private async void DownloadBeatmapsManaged(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
         OsuDownloadManager manager = OsuDownloadManager.Instance;
         if (model.SelectedBeatmaps == null || !model.SelectedBeatmaps.Any())
         {
-            _userDialogs.OkMessageBox("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
+            await _userDialogs.OkMessageBoxAsync("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
             return;
         }
 
-        if (manager.AskUserForSaveDirectoryAndLogin(_userDialogs, _loginForm))
+        if (await manager.AskUserForSaveDirectoryAndLoginAsync(_userDialogs, _loginForm))
         {
             OsuDownloadManager.Instance.DownloadBeatmaps(model.SelectedBeatmaps);
         }
@@ -123,28 +124,28 @@ public class BeatmapListingActionsHandler
         Helpers.SetClipboardText(_listGenerator.GetAllMapsList([dummyCollection], CollectionListSaveType.BeatmapList));
     }
 
-    private void DownloadBeatmaps(object sender)
+    private async void DownloadBeatmapsAsync(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
 
         HashSet<int> mapIds = model.SelectedBeatmaps.GetUniqueMapSetIds();
-        MassOpen(mapIds, @"https://osu.ppy.sh/d/{0}");
+        await MassOpenAsync(mapIds, @"https://osu.ppy.sh/d/{0}");
     }
 
-    private void OpenBeatmapPages(object sender)
+    private async void OpenBeatmapPagesAsync(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
 
         HashSet<int> mapIds = model.SelectedBeatmaps.GetUniqueMapSetIds();
-        MassOpen(mapIds, @"https://osu.ppy.sh/s/{0}");
+        await MassOpenAsync(mapIds, @"https://osu.ppy.sh/s/{0}");
     }
 
-    private void MassOpen(HashSet<int> dataSet, string urlFormat)
+    private async Task MassOpenAsync(HashSet<int> dataSet, string urlFormat)
     {
         bool shouldContinue = true;
         if (dataSet.Count > 100)
         {
-            shouldContinue = _userDialogs.YesNoMessageBox("You are going to open " + dataSet.Count +
+            shouldContinue = await _userDialogs.YesNoMessageBoxAsync("You are going to open " + dataSet.Count +
                                          " map links at the same time in your default browser", "Are you sure?", MessageBoxType.Question);
         }
 

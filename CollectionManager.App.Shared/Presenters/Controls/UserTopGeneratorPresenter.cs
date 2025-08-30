@@ -20,7 +20,7 @@ public class UserTopGeneratorPresenter
         _view = view;
         _userDialogs = userDialogs;
 
-        _view.Start += ViewOnStart;
+        _view.Start += ViewOnStartEventHandler;
         _view.Abort += ViewOnAbort;
         _view.GenerateUsernames += (s, a) => _model.EmitGenerateUsernames();
         _view.CollectionNamingFormatChanged += _view_CollectionNamingFormatChanged;
@@ -35,11 +35,11 @@ public class UserTopGeneratorPresenter
 
     private void _view_CollectionNamingFormatChanged(object sender, EventArgs e) => _view.CollectionNamingExample = _model.GetCollectionNameExample(_view.CollectionNamingFormat);
 
-    private void ViewOnStart(object sender, EventArgs eventArgs)
+    private async void ViewOnStartEventHandler(object sender, EventArgs eventArgs)
     {
         if (string.IsNullOrEmpty(_view.ApiKey))
         {
-            _userDialogs.OkMessageBox("Legacy osu! API key is required to continue. You can obtain one at the bottom of your osu settings on osu website.", "Api key required", MessageBoxType.Error);
+            await _userDialogs.OkMessageBoxAsync("Legacy osu! API key is required to continue. You can obtain one at the bottom of your osu settings on osu website.", "Api key required", MessageBoxType.Error);
 
             return;
         }

@@ -33,7 +33,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         _view.SearchTextChanged += ViewOnSearchTextChanged;
         _view.SelectedBeatmapChanged += (s, a) => _model.SelectedBeatmap = _view.SelectedBeatmap;
         _view.SelectedBeatmapsChanged += (s, a) => _model.SelectedBeatmaps = _view.SelectedBeatmaps;
-        _view.BeatmapSearchHelpClicked += _view_BeatmapSearchHelpClicked;
+        _view.BeatmapSearchHelpClicked += _view_BeatmapSearchHelpClickedAsync;
 
         _view.BeatmapsDropped += (s, a) => _model.EmitBeatmapsDropped(s, a);
         _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
@@ -106,5 +106,5 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 
     private void _model_BeatmapsChanged(object sender, EventArgs e) => Beatmaps = _model.GetBeatmaps();
 
-    private void _view_BeatmapSearchHelpClicked(object sender, EventArgs e) => ResourceStrings.GeneralHelpDialog(_userDialogs);
+    private async void _view_BeatmapSearchHelpClickedAsync(object sender, EventArgs e) => await ResourceStrings.GeneralHelpDialogAsync(_userDialogs);
 }

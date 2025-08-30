@@ -31,7 +31,7 @@ public abstract class Initalizer
     public static IAppSettingsProvider Settings { get; private set; }
     public static IClipboard Clipboard { get; private set; }
     public static IGuiComponentsProvider GuiComponentsProvider { get; private set; }
-
+    public static IMainFormView MainForm { get; private set; }
     protected Initalizer(IAppSettingsProvider settings, IClipboard clipboard, IGuiComponentsProvider guiComponentsProvider)
     {
         Settings = settings;
@@ -55,16 +55,16 @@ public abstract class Initalizer
         UpdateChecker updateChecker = new();
         InfoTextModel infoTextModel = new(updateChecker);
 
-        IMainFormView mainForm = GuiComponentsProvider.GetClassImplementing<IMainFormView>();
+        MainForm = GuiComponentsProvider.GetClassImplementing<IMainFormView>();
 
-        MainFormPresenter mainPresenter = new(mainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel, WebCollectionProvider);
+        MainFormPresenter mainPresenter = new(MainForm, new MainFormModel(CollectionEditor, UserDialogs), infoTextModel, WebCollectionProvider);
 
         ILoginFormView loginForm = GuiComponentsProvider.GetClassImplementing<ILoginFormView>();
-        GuiActionsHandler guiActionsHandler = new(OsuFileIo, CollectionsManager, UserDialogs, mainForm, mainPresenter, loginForm);
+        GuiActionsHandler guiActionsHandler = new(OsuFileIo, CollectionsManager, UserDialogs, MainForm, mainPresenter, loginForm);
 
         if (!string.IsNullOrWhiteSpace(Settings.Osustats_apiKey))
         {
-            guiActionsHandler.SidePanelActionsHandler.OsustatsLogin(null, Settings.Osustats_apiKey);
+            await PopulateOnlineWebCollectionsAsync(apiKey: Settings.Osustats_apiKey);
         }
 
         if (args.Length > 0)
@@ -80,7 +80,7 @@ public abstract class Initalizer
         await StartupPresenter.Run();
 
         SetTextData(infoTextModel);
-        mainForm.ShowAndBlock();
+        MainForm.ShowAndBlock();
 
         Quit();
     }
@@ -102,6 +102,28 @@ public abstract class Initalizer
             model.MissingMapSetsCount = CollectionsManager.MissingMapSetsCount;
             model.UnknownMapCount = CollectionsManager.UnknownMapCount;
         }
+    }
+
+    public static async Task PopulateOnlineWebCollectionsAsync(OsuStatsApi osuStatsApiProvider = default, string apiKey = default)
+    {
+        osuStatsApiProvider ??= WebCollectionProvider;
+
+        if (!string.IsNullOrWhiteSpace(apiKey))
+        {
+            osuStatsApiProvider.ApiKey = apiKey;
+        }
+
+        if (!await osuStatsApiProvider.IsCurrentKeyValid() || !osuStatsApiProvider.CanFetch())
+        {
+            return;
+        }
+
+        IOnlineCollectionList onlineListDisplayer = (IOnlineCollectionList)MainForm.SidePanelView;
+        Settings.Osustats_apiKey = osuStatsApiProvider.ApiKey;
+        onlineListDisplayer.UserInformation = osuStatsApiProvider.UserInformation;
+        onlineListDisplayer.WebCollections.Clear();
+        onlineListDisplayer.WebCollections.AddRange(await osuStatsApiProvider.GetMyCollectionList());
+        onlineListDisplayer.WebCollections.CallReset();
     }
 
     protected abstract void QuitApplication();

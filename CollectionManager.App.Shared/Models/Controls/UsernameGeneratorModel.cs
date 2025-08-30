@@ -26,13 +26,13 @@ public class UsernameGeneratorModel : IUsernameGeneratorModel
         }
     }
 
-    private int _completionPrecentage;
-    public int CompletionPrecentage
+    private int _completionPercentage;
+    public int CompletionPercentage
     {
-        get => _completionPrecentage;
+        get => _completionPercentage;
         set
         {
-            _completionPrecentage = value;
+            _completionPercentage = value;
             StatusChanged?.Invoke(this, EventArgs.Empty);
         }
     }

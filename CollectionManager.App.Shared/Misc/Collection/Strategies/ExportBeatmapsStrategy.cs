@@ -40,12 +40,12 @@ public class ExportBeatmapsStrategy : ICollectionEditStrategy
     {
         if (!beatmaps.Any())
         {
-            _userDialogs.OkMessageBox("No beatmaps selected.", "Info");
+            await _userDialogs.OkMessageBoxAsync("No beatmaps selected.", "Info");
 
             return;
         }
 
-        string saveDirectory = _userDialogs.SelectDirectory("Select directory for exported maps", true);
+        string saveDirectory = await _userDialogs.SelectDirectoryAsync("Select directory for exported maps", true);
 
         if (!Directory.Exists(saveDirectory))
         {
@@ -61,7 +61,7 @@ public class ExportBeatmapsStrategy : ICollectionEditStrategy
         }
         catch (Exception ex)
         {
-            _userDialogs.OkMessageBox($"Error occurred during beatmap export: {ex}", "Error", MessageBoxType.Error);
+            await _userDialogs.OkMessageBoxAsync($"Error occurred during beatmap export: {ex}", "Error", MessageBoxType.Error);
         }
     }
 }

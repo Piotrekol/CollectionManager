@@ -45,7 +45,7 @@ public static class Helpers
     public static string GetCollectionName(this ICollectionAddRenameForm form, Func<string, bool> isCollectionNameValid, string orginalName = "",
         bool isRenameForm = false)
     {
-        ICollectionAddRenameModel model = new CollectionAddRenameModel(isCollectionNameValid, orginalName);
+        CollectionAddRenameModel model = new(isCollectionNameValid, orginalName);
         _ = new CollectionAddRenameFormPresenter(form, model);
         form.IsRenameForm = isRenameForm;
         form.CollectionRenameView.OrginalCollectionName = orginalName;

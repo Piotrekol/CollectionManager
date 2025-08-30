@@ -28,7 +28,7 @@ public sealed class BeatmapExportFormPresenter
         IProgress<int> percentageProgressReporter = percentageProgress;
 
         using CancellationTokenSource cancelationTokenSource = new();
-        IProgressForm progressForm = _UserDialogs.ProgressForm(stringProgress, percentageProgress);
+        IProgressForm progressForm = await _UserDialogs.CreateProgressFormAsync(stringProgress, percentageProgress);
         progressForm.AbortClicked += (_, __) =>
         {
             if (!cancelationTokenSource.TryCancel())

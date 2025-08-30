@@ -10,7 +10,7 @@ public interface IUsernameGeneratorModel
     List<string> GeneratedUsernames { get; set; }
     string GeneratedUsernamesStr { get; }
     string Status { set; get; }
-    int CompletionPrecentage { get; set; }
+    int CompletionPercentage { get; set; }
     int StartRank { get; set; }
     int EndRank { get; set; }
     void EmitStart();

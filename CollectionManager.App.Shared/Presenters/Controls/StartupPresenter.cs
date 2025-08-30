@@ -10,6 +10,7 @@ using CollectionManager.Common.Interfaces.Controls;
 using CollectionManager.Common.Interfaces.Forms;
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
+using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Utils;
 using Newtonsoft.Json;
 using System.IO;
@@ -57,7 +58,7 @@ public class StartupPresenter : IDisposable
     {
         if (ShouldSkipStartupForm)
         {
-            DoCollectionAction();
+            _ = DoCollectionAction();
             return;
         }
 
@@ -94,22 +95,29 @@ public class StartupPresenter : IDisposable
             SaveSettings();
         }
 
-        DoCollectionAction();
+        await DoCollectionAction();
         CloseForm();
     }
 
-    private void DoCollectionAction()
+    private async Task DoCollectionAction()
     {
+        OsuCollections collections = null;
+
         switch (_startupSettings.StartupCollectionAction)
         {
             case StartupCollectionAction.None:
                 break;
             case StartupCollectionAction.LoadCollectionFromFile:
-                _sidePanelActionsHandler.LoadCollectionFile();
+                collections = await Initalizer.OsuFileIo.CollectionLoader.LoadCollectionFileAsync(_userDialogs);
                 break;
             case StartupCollectionAction.LoadOsuCollection:
-                _sidePanelActionsHandler.LoadOsuCollection();
+                collections = Initalizer.OsuFileIo.CollectionLoader.LoadDefaultCollection(Initalizer.OsuDirectory);
                 break;
+        }
+
+        if (collections is not null)
+        {
+            _collectionsManager.EditCollection(CollectionEditArgs.AddCollections(collections));
         }
     }
 
@@ -132,7 +140,7 @@ public class StartupPresenter : IDisposable
                 break;
 
             case StartupDatabaseAction.LoadFromDifferentLocation:
-                string osuDirectory = OsuPathResolver.GetManualOsuPath(_userDialogs.SelectDirectory);
+                string osuDirectory = await OsuPathResolver.GetManualOsuPathAsync(_userDialogs.SelectDirectoryAsync);
 
                 if (!string.IsNullOrEmpty(osuDirectory))
                 {

@@ -40,18 +40,18 @@ public class CollectionListingPresenter
         _view.RightClick += _view_RightClick;
         _view.SelectedCollectionsChanged += ViewOnSelectedCollectionsChanged;
         _view.BeatmapsDropped += ViewOnBeatmapsDropped;
-        _view.OnCollectionReorder += ViewOnCollectionReorder;
+        _view.OnCollectionReorder += ViewOnCollectionReorderEventHandler;
         _model = model;
         _userDialogs = userDialogs;
         _model.CollectionsChanged += ModelOnCollectionsChanged;
         Collections = _model.GetCollections();
     }
 
-    private void ViewOnCollectionReorder(object sender, OsuCollections collections, OsuCollection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder)
+    private async void ViewOnCollectionReorderEventHandler(object sender, OsuCollections collections, OsuCollection targetCollection, bool placeBefore, string sortColumn, SortOrder sortOrder)
     {
         if (!Initalizer.Settings.DontAskAboutReorderingCollections)
         {
-            (bool Result, bool doNotAskAgain) = _userDialogs.YesNoMessageBox($"Reordering collections will rename all loaded collections, proceed?", "Reordering", MessageBoxType.Question,
+            (bool Result, bool doNotAskAgain) = await _userDialogs.YesNoMessageBoxAsync($"Reordering collections will rename all loaded collections, proceed?", "Reordering", MessageBoxType.Question,
                     "Don't ask me again");
             Initalizer.Settings.DontAskAboutReorderingCollections = doNotAskAgain;
             Initalizer.Settings.Save();

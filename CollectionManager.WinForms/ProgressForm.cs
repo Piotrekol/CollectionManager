@@ -31,6 +31,7 @@ public partial class ProgressForm : BaseForm, IProgressForm
         form.button_cancel.Click += (_, __) => form.AbortClicked?.Invoke(form, EventArgs.Empty);
 
         form.Text = $"Collection Manager - Beatmap Export";
+
         return form;
     }
 

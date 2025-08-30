@@ -26,7 +26,7 @@ public class UsernameGeneratorPresenter
 
     private void _model_StatusChanged(object sender, EventArgs e)
     {
-        _view.CompletionPrecentage = _model.CompletionPrecentage;
+        _view.CompletionPrecentage = _model.CompletionPercentage;
         _view.Status = _model.Status;
     }
 

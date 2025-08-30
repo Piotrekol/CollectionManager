@@ -7,13 +7,13 @@ using System.IO;
 
 public sealed class OsuPathResolver
 {
-    public static string GetOsuPath(Func<string, bool> thisPathIsCorrect, Func<string, string> selectDirectoryDialog)
+    public static async Task<string> GetOsuPathAsync(Func<string, Task<bool>> thisPathIsCorrect, Func<string, Task<string>> selectDirectoryDialog)
     {
         string path = GetOsuOrLazerPath();
 
         if (string.IsNullOrWhiteSpace(path))
         {
-            return GetManualOsuPath(selectDirectoryDialog);
+            return await GetManualOsuPathAsync(selectDirectoryDialog);
         }
 
         if (thisPathIsCorrect is null)
@@ -21,11 +21,11 @@ public sealed class OsuPathResolver
             return path;
         }
 
-        bool result = thisPathIsCorrect(path);
+        bool result = await thisPathIsCorrect(path);
 
         return result
             ? path
-            : GetManualOsuPath(selectDirectoryDialog);
+            : await GetManualOsuPathAsync(selectDirectoryDialog);
     }
 
     public static string GetOsuOrLazerPath()
@@ -48,9 +48,9 @@ public sealed class OsuPathResolver
         return string.Empty;
     }
 
-    public static string GetManualOsuPath(Func<string, string> selectDirectoryDialog)
+    public static async Task<string> GetManualOsuPathAsync(Func<string, Task<string>> selectDirectoryDialog)
     {
-        string path = selectDirectoryDialog("Where is your osu! or lazer folder located at?");
+        string path = await selectDirectoryDialog("Where is your osu! or lazer folder located at?");
 
         return IsOsuUserDataDirectory(path)
             ? path
