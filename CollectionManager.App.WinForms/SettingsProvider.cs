@@ -1,7 +1,7 @@
-﻿namespace CollectionManagerApp;
+﻿namespace CollectionManager.App.Winforms;
 
 using CollectionManager.App.Shared;
-using CollectionManagerApp.Properties;
+using CollectionManager.App.Winforms.Properties;
 using System;
 
 internal class SettingsProvider : IAppSettingsProvider

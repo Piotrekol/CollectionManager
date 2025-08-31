@@ -1,4 +1,4 @@
-﻿namespace CollectionManagerApp;
+﻿namespace CollectionManager.App.Winforms;
 
 using CollectionManager.App.Shared.Misc;
 using System.IO;

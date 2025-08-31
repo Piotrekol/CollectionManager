@@ -37,18 +37,13 @@ public abstract class Initalizer
         Settings = settings;
         Clipboard = clipboard;
         GuiComponentsProvider = guiComponentsProvider;
+        UserDialogs = GuiComponentsProvider.GetClassImplementing<IUserDialogs>();
+        CollectionsManager = new CollectionsManagerWithCounts(OsuFileIo.LoadedMaps, new() { { CollectionEdit.ExportBeatmaps, new ExportBeatmapsStrategy(UserDialogs) } });
         _instance = this;
     }
 
-    public virtual async Task Run(string[] args)
+    public virtual async Task RunGui(string[] args)
     {
-
-        //IUserDialogs can be implemented in WinForm or WPF or Gtk or Console or...?
-        UserDialogs = GuiComponentsProvider.GetClassImplementing<IUserDialogs>();
-
-        //Init "main" classes
-        CollectionsManager = new CollectionsManagerWithCounts(OsuFileIo.LoadedMaps, new() { { CollectionEdit.ExportBeatmaps, new ExportBeatmapsStrategy(UserDialogs) } });
-
         ICollectionAddRenameForm collectionAddRemoveForm = GuiComponentsProvider.GetClassImplementing<ICollectionAddRenameForm>();
         CollectionEditor = new CollectionEditor(CollectionsManager, collectionAddRemoveForm, OsuFileIo.LoadedMaps);
 

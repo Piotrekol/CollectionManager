@@ -1,4 +1,4 @@
-﻿namespace CollectionManagerApp;
+﻿namespace CollectionManager.App.Winforms;
 
 using CollectionManager.App.Shared.Misc;
 using System.Runtime.InteropServices;
@@ -32,7 +32,7 @@ internal static class Program
         WinFormsClipboard clipboard = new();
         WinFormsGuiComponentsProvider guiComponentsProvider = new();
         WinFormsInitalizer app = new(settingsProvider, clipboard, guiComponentsProvider);
-        _ = app.Run(args);
+        _ = app.RunGui(args);
         Application.Run(app.ApplicationContext);
 
         return 0;

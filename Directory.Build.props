@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<!--Winforms projects-->
-	<PropertyGroup Condition="($(MSBuildProjectName) == 'CollectionManagerApp'
+	<PropertyGroup Condition="($(MSBuildProjectName) == 'CollectionManager.App.Winforms'
 									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
 									or $(MSBuildProjectName) == 'ObjectListView2012'
 									)">
@@ -19,7 +19,7 @@
 	</PropertyGroup>
 	
 	<!--Rest of the projects, condition is reverse of above-->
-	<PropertyGroup Condition="!($(MSBuildProjectName) == 'CollectionManagerApp'
+	<PropertyGroup Condition="!($(MSBuildProjectName) == 'CollectionManager.App.Winforms'
 									or $(MSBuildProjectName) == 'CollectionManager.WinForms'
 									or $(MSBuildProjectName) == 'ObjectListView2012'
 									)">

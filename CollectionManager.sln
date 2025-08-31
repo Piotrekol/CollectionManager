@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.WinForms"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.Common", "CollectionManager.Common\CollectionManager.Common.csproj", "{14768636-102A-4A27-AB5A-9B5D1BA316A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManagerApp", "App\CollectionManagerApp.csproj", "{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionManager.App.WinForms", "CollectionManager.App.WinForms\CollectionManager.App.WinForms.csproj", "{F87A0F61-B6F3-4B5E-8A1A-C19C8C8FEAA4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92C3C5D0-C2E6-41E9-970B-9B96792CA8A9}"
 EndProject
