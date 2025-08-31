@@ -20,8 +20,10 @@ public interface IBeatmapListingView
     event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
     event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
     event GuiHelpers.BeatmapGroupColumnChangedEventArgs BeatmapGroupColumnChanged;
+    event GuiHelpers.BeatmapGroupCollapsedChangedEventArgs BeatmapGroupCollapsedChanged;
 
     void SetGroupColumn(string columnName);
+    void SetGroupCollapse(bool collapseAllByDefault);
     void SetCurrentPlayMode(PlayMode playMode);
     void SetCurrentMods(Mods mods);
     void SetBeatmaps(IEnumerable beatmaps);

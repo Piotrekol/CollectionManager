@@ -1,21 +1,15 @@
 ﻿namespace CollectionManager.WinForms.FastObjectListView;
 
 using BrightIdeasSoftware;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 internal sealed class SortableFastListBeatmapGroupingStrategy : SortableFastListGroupingStrategy
 {
-    private OLVColumn _fixedColumn;
     private OLVColumn _nameColumn;
     private OLVColumn _setIdColumn;
 
-    public SortableFastListBeatmapGroupingStrategy(OLVColumn fixedColumn, OLVColumn nameColumn, OLVColumn setIdColumn)
+    public SortableFastListBeatmapGroupingStrategy(OLVColumn nameColumn, OLVColumn setIdColumn)
     {
-        _fixedColumn = fixedColumn;
         _nameColumn = nameColumn;
         _setIdColumn = setIdColumn;
     }

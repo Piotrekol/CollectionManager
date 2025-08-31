@@ -21,8 +21,9 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     private Mods _currentMods = Mods.Nm;
     private PlayMode _currentPlayMode = PlayMode.Osu;
     private DifficultyCalculator _difficultyCalculator = new();
-    private List<BeatmapGroupColumn> _displayColumns;
+    private List<BeatmapGroupColumn> _displayColumns = [];
     private readonly Dictionary<object, BeatmapListingAction> _menuStripClickActions;
+    private SortableFastListBeatmapGroupingStrategy _groupingStrategy;
 
     public event EventHandler SearchTextChanged;
     public event EventHandler SelectedBeatmapChanged;
@@ -32,6 +33,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
     public event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
     public event GuiHelpers.BeatmapGroupColumnChangedEventArgs BeatmapGroupColumnChanged;
+    public event GuiHelpers.BeatmapGroupCollapsedChangedEventArgs BeatmapGroupCollapsedChanged;
 
     public string SearchText => textBox_beatmapSearch.Text;
     public string ResultText { get; set; }
@@ -300,9 +302,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
         ListViewBeatmaps.ShowItemCountOnGroups = true;
         ListViewBeatmaps.HasCollapsibleGroups = true;
         ListViewBeatmaps.AlwaysGroupByColumn = column_Directory;
-        ListViewBeatmaps.GroupingStrategy = new SortableFastListBeatmapGroupingStrategy(column_Directory, column_name, column_SetId);
+        ListViewBeatmaps.GroupingStrategy = _groupingStrategy = new SortableFastListBeatmapGroupingStrategy(column_name, column_SetId);
         ListViewBeatmaps.SortGroupItemsByPrimaryColumn = false;
         ListViewBeatmaps.PrimarySortColumn = column_name;
+        ListViewBeatmaps.OLVGroups ??= [];
 
         string singularFormat = "{0}";
         string pluralFormat = "{0} ({1} maps)";
@@ -451,7 +454,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
 
         BeatmapGroupColumnChanged?.Invoke(this, selectedColumn.Text);
 
-        if (selectedColumn.OlvColumn == null)
+        bool hasGroupingColumn = selectedColumn.OlvColumn != null;
+        button_toggleCollapse.Enabled = hasGroupingColumn;
+
+        if (!hasGroupingColumn)
         {
             if (ListViewBeatmaps.ShowGroups)
             {
@@ -470,6 +476,29 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
         ListViewBeatmaps.ShowGroups = true;
 
         ListViewBeatmaps.SetObjects(currentObjects);
+    }
+
+    private void button_toggleCollapse_Click(object sender, EventArgs e) => SetGroupCollapse(!_groupingStrategy.Collapsed);
+
+    public void SetGroupCollapse(bool collapseAllByDefault)
+    {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            ListViewBeatmaps.Invoke(() => SetGroupCollapse(collapseAllByDefault));
+            return;
+        }
+
+        BeatmapGroupCollapsedChanged?.Invoke(this, collapseAllByDefault);
+        button_toggleCollapse.Text = collapseAllByDefault
+            ? BeatmapListingView_Resources.DoubleArrowDown
+            : BeatmapListingView_Resources.DoubleArrowUp;
+
+        foreach (OLVGroup group in ListViewBeatmaps.OLVGroups)
+        {
+            group.Collapsed = collapseAllByDefault;
+        }
+
+        _groupingStrategy.Collapsed = collapseAllByDefault;
     }
 
     public new void Dispose() => ListViewBeatmaps.SetObjects(Enumerable.Empty<Beatmap>());

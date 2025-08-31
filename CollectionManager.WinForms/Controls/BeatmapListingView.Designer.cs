@@ -73,6 +73,7 @@
             column_Directory = new BrightIdeasSoftware.OLVColumn();
             button_searchHelp = new System.Windows.Forms.Button();
             comboBox_grouping = new System.Windows.Forms.ComboBox();
+            button_toggleCollapse = new System.Windows.Forms.Button();
             BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).BeginInit();
             SuspendLayout();
@@ -80,10 +81,10 @@
             // label_resultsCount
             // 
             label_resultsCount.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            label_resultsCount.Location = new System.Drawing.Point(954, 5);
+            label_resultsCount.Location = new System.Drawing.Point(977, 5);
             label_resultsCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label_resultsCount.Name = "label_resultsCount";
-            label_resultsCount.Size = new System.Drawing.Size(140, 15);
+            label_resultsCount.Size = new System.Drawing.Size(117, 15);
             label_resultsCount.TabIndex = 17;
             label_resultsCount.Text = "0 maps";
             label_resultsCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -426,7 +427,7 @@
             // button_searchHelp
             // 
             button_searchHelp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            button_searchHelp.Location = new System.Drawing.Point(925, 0);
+            button_searchHelp.Location = new System.Drawing.Point(952, 0);
             button_searchHelp.Name = "button_searchHelp";
             button_searchHelp.Size = new System.Drawing.Size(22, 25);
             button_searchHelp.TabIndex = 18;
@@ -445,10 +446,22 @@
             comboBox_grouping.TabIndex = 19;
             comboBox_grouping.SelectedIndexChanged += comboBox_grouping_SelectedIndexChanged;
             // 
+            // button_toggleCollapse
+            // 
+            button_toggleCollapse.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            button_toggleCollapse.Location = new System.Drawing.Point(925, 0);
+            button_toggleCollapse.Name = "button_toggleCollapse";
+            button_toggleCollapse.Size = new System.Drawing.Size(22, 25);
+            button_toggleCollapse.TabIndex = 20;
+            button_toggleCollapse.Text = "⇈";
+            button_toggleCollapse.UseVisualStyleBackColor = true;
+            button_toggleCollapse.Click += button_toggleCollapse_Click;
+            // 
             // BeatmapListingView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(button_toggleCollapse);
             Controls.Add(comboBox_grouping);
             Controls.Add(button_searchHelp);
             Controls.Add(ListViewBeatmaps);
@@ -510,5 +523,6 @@
         private BrightIdeasSoftware.OLVColumn column_LastScoreDate;
         private BrightIdeasSoftware.OLVColumn column_Directory;
         private System.Windows.Forms.ComboBox comboBox_grouping;
+        private System.Windows.Forms.Button button_toggleCollapse;
     }
 }

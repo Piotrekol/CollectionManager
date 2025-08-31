@@ -4,14 +4,13 @@ using BrightIdeasSoftware;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 /// <summary>
 /// <see cref="FastListGroupingStrategy"> modified to also sort the groups by user selected column.
 /// </summary>
 internal abstract class SortableFastListGroupingStrategy : AbstractVirtualGroups
 {
     private List<int> _indexToGroupMap;
-
+    public bool Collapsed { get; set; }
 
     /// <summary>
     /// Create groups for FastListView
@@ -66,20 +65,19 @@ internal abstract class SortableFastListGroupingStrategy : AbstractVirtualGroups
                 SortValue = primarySortColumn.GetValue(map[key][0]) as IComparable,
                 Contents = map[key].ConvertAll(listView.IndexOf),
                 VirtualItemCount = map[key].Count,
-                State = GroupState.LVGS_COLLAPSIBLE
+                Collapsed = Collapsed
             };
 
-            if (parameters.GroupByColumn.GroupFormatter != null)
-            {
-                parameters.GroupByColumn.GroupFormatter(lvg, parameters);
-            }
+            parameters.GroupByColumn.GroupFormatter?.Invoke(lvg, parameters);
 
             groups.Add(lvg);
         }
 
         // Sort the groups
         if (parameters.GroupByOrder != System.Windows.Forms.SortOrder.None)
+        {
             groups.Sort(parameters.GroupComparer ?? new OLVGroupComparer(parameters.GroupByOrder));
+        }
 
         // Build an array that remembers which group each item belongs to.
         _indexToGroupMap = new List<int>(totalObjectCount);

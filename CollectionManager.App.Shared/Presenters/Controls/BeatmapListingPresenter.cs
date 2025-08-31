@@ -39,6 +39,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         _view.BeatmapOperation += (s, a) => _model.EmitBeatmapOperation(a);
         _view.ColumnsToggled += (_, aspectNames) => OnSettingsChanged(visibleAspectNames: aspectNames);
         _view.BeatmapGroupColumnChanged += (_, columnName) => OnSettingsChanged(groupBy: columnName);
+        _view.BeatmapGroupCollapsedChanged += (_, collapsed) => OnSettingsChanged(collapsed: collapsed);
 
         _model = model;
         _userDialogs = userDialogs;
@@ -49,6 +50,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 
         ConvertLegacyBeatmapSettings();
         _settings = JsonConvert.DeserializeObject<BeatmapListingPresenterSettings>(Initalizer.Settings.BeatmapListingPresenterSettings);
+        _view.SetGroupCollapse(_settings.Collapsed);
         _view.SetGroupColumn(groupBy ?? _settings.GroupBy);
 
         if (_settings.VisibleColumns.Length > 0)
@@ -59,7 +61,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         Beatmaps = _model.GetBeatmaps();
     }
 
-    private void OnSettingsChanged(string[] visibleAspectNames = null, string groupBy = null)
+    private void OnSettingsChanged(string[] visibleAspectNames = null, string groupBy = null, bool? collapsed = null)
     {
         if (visibleAspectNames != null)
         {
@@ -69,6 +71,11 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         if (groupBy != null)
         {
             _settings.GroupBy = groupBy;
+        }
+
+        if (collapsed != null)
+        {
+            _settings.Collapsed = collapsed.Value;
         }
 
         Initalizer.Settings.BeatmapListingPresenterSettings = JsonConvert.SerializeObject(_settings);
