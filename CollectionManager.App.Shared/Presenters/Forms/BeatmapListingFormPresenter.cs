@@ -21,7 +21,7 @@ public class BeatmapListingFormPresenter
         //_view.BeatmapListingView.SelectedBeatmapChanged += BeatmapListingView_SelectedBeatmapChanged;
         BeatmapListingModel = new BeatmapListingModel(Initalizer.LoadedBeatmaps);
         BeatmapListingModel.SelectedBeatmapChanged += BeatmapListingView_SelectedBeatmapChanged;
-        _ = new BeatmapListingPresenter(_view.BeatmapListingView, BeatmapListingModel, userDialogs);
+        _ = new BeatmapListingPresenter(_view.BeatmapListingView, BeatmapListingModel, userDialogs, groupBy: string.Empty);
 
         _combinedBeatmapPreviewModel = new CombinedBeatmapPreviewModel();
         CombinedBeatmapPreviewPresenter presenter = new(_view.CombinedBeatmapPreviewView, _combinedBeatmapPreviewModel);

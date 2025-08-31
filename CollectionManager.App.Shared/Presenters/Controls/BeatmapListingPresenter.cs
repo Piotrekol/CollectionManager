@@ -27,7 +27,7 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
         }
     }
 
-    public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model, IUserDialogs userDialogs)
+    public BeatmapListingPresenter(IBeatmapListingView view, IBeatmapListingModel model, IUserDialogs userDialogs, string groupBy = default)
     {
         _view = view;
         _view.SearchTextChanged += ViewOnSearchTextChanged;
@@ -49,8 +49,12 @@ public class BeatmapListingPresenter : IBeatmapListingPresenter
 
         ConvertLegacyBeatmapSettings();
         _settings = JsonConvert.DeserializeObject<BeatmapListingPresenterSettings>(Initalizer.Settings.BeatmapListingPresenterSettings);
-        _view.SetVisibleColumns(_settings.VisibleColumns);
-        _view.SetGroupColumn(_settings.GroupBy);
+        _view.SetGroupColumn(groupBy ?? _settings.GroupBy);
+
+        if (_settings.VisibleColumns.Length > 0)
+        {
+            _view.SetVisibleColumns(_settings.VisibleColumns);
+        }
 
         Beatmaps = _model.GetBeatmaps();
     }
