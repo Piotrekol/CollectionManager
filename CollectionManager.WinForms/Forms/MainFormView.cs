@@ -14,8 +14,8 @@ public partial class MainFormView : BaseForm, IMainFormView
     public MainFormView()
     {
         InitializeComponent();
-        splitContainer1.Paint += Helpers.SplitterPaint;
-        splitContainer2.Paint += Helpers.SplitterPaintHorizontal;
+        splitContainer1.Paint += WindowsFormsExtensions.SplitterPaint;
+        splitContainer2.Paint += WindowsFormsExtensions.SplitterPaintHorizontal;
         AllowDrop = true;
         DragEnter += Form1_DragEnter;
         DragDrop += Form1_DragDrop;

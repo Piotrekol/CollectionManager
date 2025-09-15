@@ -41,7 +41,7 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
         Menu_saveAllCollections.Click += delegate
         { OnSaveCollections(); };
         Menu_collectionsSplit.Click += delegate
-        { OnSaveInvidualCollections(); };
+        { OnSaveIndividualCollections(); };
         Menu_listAllCollections.Click += delegate
         { OnListAllMaps(); };
         Menu_listMissingMaps.Click += delegate
@@ -145,7 +145,7 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
 
     private void OnSaveCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveCollections);
 
-    private void OnSaveInvidualCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveInvidualCollections);
+    private void OnSaveIndividualCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveIndividualCollections);
 
     private void OnListAllMaps() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ListAllBeatmaps);
 

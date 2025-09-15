@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
   </ItemGroup>
@@ -8,6 +8,11 @@
     </Compile>
     <Compile Update="Controls\BeatmapListingView.Designer.cs">
       <DependentUpon>BeatmapListingView.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\BeatmapListingView.Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BeatmapListingView.Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="Controls\BeatmapThumbnailView.cs">
       <SubType>UserControl</SubType>
@@ -137,6 +142,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Controls\BeatmapListingView.Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BeatmapListingView.Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\BeatmapListingView.resx">
       <DependentUpon>BeatmapListingView.cs</DependentUpon>
     </EmbeddedResource>

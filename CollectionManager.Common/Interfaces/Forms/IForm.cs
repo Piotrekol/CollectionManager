@@ -9,5 +9,5 @@ public interface IForm
     void Show();
     void Close();
     event EventHandler Disposed;
-    event EventHandler Closing;
+    event EventHandler<FormClosingEventArgs> Closing;
 }

@@ -6,7 +6,7 @@ public enum MainSidePanelActions
     LoadDefaultCollection,
     ClearCollections,
     SaveCollections,
-    SaveInvidualCollections,
+    SaveIndividualCollections,
     ListMissingMaps,
     ShowBeatmapListing,
     ShowDownloadManager,

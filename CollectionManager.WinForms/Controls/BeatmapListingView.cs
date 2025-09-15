@@ -7,6 +7,7 @@ using CollectionManager.Core.Enums;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Modules;
 using CollectionManager.WinForms;
+using CollectionManager.WinForms.FastObjectListView;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,21 +15,28 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-public partial class BeatmapListingView : UserControl, IBeatmapListingView
+public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDisposable
 {
+    private bool _allowForDeletion;
+    private Mods _currentMods = Mods.Nm;
+    private PlayMode _currentPlayMode = PlayMode.Osu;
+    private DifficultyCalculator _difficultyCalculator = new();
+    private List<BeatmapGroupColumn> _displayColumns = [];
+    private readonly Dictionary<object, BeatmapListingAction> _menuStripClickActions;
+    private SortableFastListBeatmapGroupingStrategy _groupingStrategy;
+
     public event EventHandler SearchTextChanged;
     public event EventHandler SelectedBeatmapChanged;
     public event EventHandler SelectedBeatmapsChanged;
     public event EventHandler BeatmapSearchHelpClicked;
-
     public event GuiHelpers.BeatmapListingActionArgs BeatmapOperation;
     public event GuiHelpers.BeatmapsEventArgs BeatmapsDropped;
     public event GuiHelpers.ColumnsToggledEventArgs ColumnsToggled;
+    public event GuiHelpers.BeatmapGroupColumnChangedEventArgs BeatmapGroupColumnChanged;
+    public event GuiHelpers.BeatmapGroupCollapsedChangedEventArgs BeatmapGroupCollapsedChanged;
 
     public string SearchText => textBox_beatmapSearch.Text;
     public string ResultText { get; set; }
-
-    private bool _allowForDeletion;
 
     [Description("Should user be able to delete beatmaps from the list?"), Category("Layout")]
     public bool AllowForDeletion
@@ -60,9 +68,25 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         ListViewBeatmaps.RebuildColumns();
     }
 
+    public void SetGroupColumn(string columnName)
+    {
+        BeatmapGroupColumn groupColumn = _displayColumns.FirstOrDefault(groupColumn => groupColumn.Text == columnName);
+
+        if (groupColumn is null)
+        {
+            return;
+        }
+
+        comboBox_grouping.SelectedItem = groupColumn;
+    }
+
     public Beatmap SelectedBeatmap
     {
-        get => (Beatmap)ListViewBeatmaps.SelectedObject;
+        get => (Beatmap)ListViewBeatmaps.SelectedObject
+                ?? (ListViewBeatmaps.SelectedObjects.Count != 0
+                    ? (Beatmap)ListViewBeatmaps.SelectedObjects[0]
+                    : null);
+
         private set
         {
             ListViewBeatmaps.SelectedObject = value;
@@ -92,7 +116,21 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         InitializeComponent();
         InitListView();
         Bind();
+
+        _menuStripClickActions = new()
+        {
+            [DeleteMapMenuStrip] = BeatmapListingAction.DeleteBeatmapsFromCollection,
+            [DownloadMapInBrowserMenuStrip] = BeatmapListingAction.DownloadBeatmaps,
+            [DownloadMapManagedMenuStrip] = BeatmapListingAction.DownloadBeatmapsManaged,
+            [OpenBeatmapPageMapMenuStrip] = BeatmapListingAction.OpenBeatmapPages,
+            [copyAsTextMenuStrip] = BeatmapListingAction.CopyBeatmapsAsText,
+            [copyUrlMenuStrip] = BeatmapListingAction.CopyBeatmapsAsUrls,
+            [OpenBeatmapFolderMenuStrip] = BeatmapListingAction.OpenBeatmapFolder,
+            [PullMapsetMenuStrip] = BeatmapListingAction.PullWholeMapSet,
+            [exportBeatmapSetsMenuItem] = BeatmapListingAction.ExportBeatmapSets,
+        };
     }
+
     private void Bind()
     {
         textBox_beatmapSearch.TextChanged += delegate
@@ -130,12 +168,9 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
         label_resultsCount.Text = string.Format("{0} {1}", count, count == 1 ? "map" : "maps");
     }
-    private Mods _currentMods = Mods.Nm;
-    private PlayMode _currentPlayMode = PlayMode.Osu;
-    private DifficultyCalculator _difficultyCalculator = new();
     private void InitListView()
     {
-        //listview
+        // listview
         ListViewBeatmaps.FullRowSelect = true;
         ListViewBeatmaps.AllowColumnReorder = true;
         ListViewBeatmaps.Sorting = System.Windows.Forms.SortOrder.Descending;
@@ -143,8 +178,11 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         ListViewBeatmaps.UseTranslucentHotItem = true;
         ListViewBeatmaps.UseFiltering = true;
         ListViewBeatmaps.UseNotifyPropertyChanged = true;
-        ListViewBeatmaps.ShowItemCountOnGroups = true;
         ListViewBeatmaps.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
+
+        InitListViewGrouping();
+
+        // column display format
         string format = "{0:0.##}";
         column_ar.AspectToStringFormat = format;
         column_cs.AspectToStringFormat = format;
@@ -152,9 +190,9 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
         column_hp.AspectToStringFormat = format;
         column_stars.AspectToStringFormat = format;
 
-        LastPlayed.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
-        EditDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
-        LastScoreDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        column_LastPlayed.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        column_EditDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
+        column_LastScoreDate.AspectToStringConverter = DataListViewFormatter.FormatDateTimeOffset;
 
         column_stars.AspectGetter = rowObject =>
         {
@@ -258,6 +296,73 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
     }
 
+    private void InitListViewGrouping()
+    {
+        ListViewBeatmaps.ShowGroups = false;
+        ListViewBeatmaps.ShowItemCountOnGroups = true;
+        ListViewBeatmaps.HasCollapsibleGroups = true;
+        ListViewBeatmaps.AlwaysGroupByColumn = column_Directory;
+        ListViewBeatmaps.GroupingStrategy = _groupingStrategy = new SortableFastListBeatmapGroupingStrategy(column_name, column_SetId);
+        ListViewBeatmaps.SortGroupItemsByPrimaryColumn = false;
+        ListViewBeatmaps.PrimarySortColumn = column_name;
+        ListViewBeatmaps.OLVGroups ??= [];
+
+        string singularFormat = "{0}";
+        string pluralFormat = "{0} ({1} maps)";
+
+        foreach (OLVColumn column in ListViewBeatmaps.Columns)
+        {
+            column.GroupWithItemCountFormat = pluralFormat;
+            column.GroupWithItemCountSingularFormat = singularFormat;
+        }
+
+        ListViewBeatmaps.GroupExpandingCollapsing += OnGroupExpandingCollapsing;
+
+        // user group selection
+        comboBox_grouping.DisplayMember = nameof(BeatmapGroupColumn.Text);
+        List<OLVColumn> excludedGroupingColumns =
+        [
+            column_Comment,
+            column_LastPlayed,
+            column_LastScoreDate,
+            column_EditDate,
+            column_MapId,
+            column_LocalVersionDiffers,
+        ];
+
+        _displayColumns = [
+            new(null, "No grouping"),
+            new(column_Directory, "Beatmap Sets"),
+            new(null, "---------"),
+            new(column_stars, "Star rating"),
+            new(column_ar, "AR"),
+            new(column_cs, "CS"),
+            new(column_hp, "HP"),
+            new(column_od, "OD"),
+            new(column_bpm, "BPM"),
+            new(column_SetId, "Set id"),
+            new(ScoresCount, "Scores set count"),
+            new(column_state, "Status"),
+            new(OsuGrade, "Osu top rank"),
+            new(CatchGrade, "Catch top rank"),
+            new(TaikoGrade, "Taiko top rank"),
+            new(ManiaGrade, "Mania top rank"),
+        ];
+
+        comboBox_grouping.DataSource = _displayColumns;
+    }
+
+    private void OnGroupExpandingCollapsing(object sender, GroupExpandingCollapsingEventArgs args)
+    {
+        if (args.Group is null)
+        {
+            return;
+        }
+
+        args.Group.Collapsed = !args.Group.Collapsed;
+        args.Canceled = true;
+    }
+
     private void DropsinkOnModelDropped(object sender, ModelDropEventArgs modelDropEventArgs)
     {
         modelDropEventArgs.Handled = true;
@@ -272,10 +377,27 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
     public void SetFilter(ICommonModelFilter filter) => ListViewBeatmaps.AdditionalFilter = new CommonModelFilter(filter);
 
-    public void FilteringStarted() => ListViewBeatmaps.BeginUpdate();
+    public void FilteringStarted()
+    {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            _ = ListViewBeatmaps.BeginInvoke(FilteringStarted);
+
+            return;
+        }
+
+        ListViewBeatmaps.BeginUpdate();
+    }
 
     public void FilteringFinished()
     {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            _ = ListViewBeatmaps.BeginInvoke(FilteringFinished);
+
+            return;
+        }
+
         Beatmap selectedBeatmap = SelectedBeatmap;
         ListViewBeatmaps.UpdateColumnFiltering();
         ListViewBeatmaps.EndUpdate();
@@ -300,42 +422,12 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
 
     private void MenuStripClick(object sender, EventArgs e)
     {
-        if (sender == DeleteMapMenuStrip)
+        if (!_menuStripClickActions.TryGetValue(sender, out BeatmapListingAction action))
         {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.DeleteBeatmapsFromCollection);
+            throw new InvalidOperationException("Menu item has no associated action.");
         }
-        else if (sender == DownloadMapInBrowserMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.DownloadBeatmaps);
-        }
-        else if (sender == DownloadMapManagedMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.DownloadBeatmapsManaged);
-        }
-        else if (sender == OpenBeatmapPageMapMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.OpenBeatmapPages);
-        }
-        else if (sender == copyAsTextMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.CopyBeatmapsAsText);
-        }
-        else if (sender == copyUrlMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.CopyBeatmapsAsUrls);
-        }
-        else if (sender == OpenBeatmapFolderMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.OpenBeatmapFolder);
-        }
-        else if (sender == PullMapsetMenuStrip)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.PullWholeMapSet);
-        }
-        else if (sender == exportBeatmapSetsMenuItem)
-        {
-            BeatmapOperation?.Invoke(this, BeatmapListingAction.ExportBeatmapSets);
-        }
+
+        BeatmapOperation?.Invoke(this, action);
     }
 
     private void ListViewBeatmaps_KeyUp(object sender, KeyEventArgs e)
@@ -352,4 +444,62 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView
     }
 
     private void button_searchHelp_Click(object sender, EventArgs e) => BeatmapSearchHelpClicked?.Invoke(this, EventArgs.Empty);
+
+    private void comboBox_grouping_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (comboBox_grouping.SelectedItem is not BeatmapGroupColumn selectedColumn)
+        {
+            return;
+        }
+
+        BeatmapGroupColumnChanged?.Invoke(this, selectedColumn.Text);
+
+        bool hasGroupingColumn = selectedColumn.OlvColumn != null;
+        button_toggleCollapse.Enabled = hasGroupingColumn;
+
+        if (!hasGroupingColumn)
+        {
+            if (ListViewBeatmaps.ShowGroups)
+            {
+                ListViewBeatmaps.ShowGroups = false;
+            }
+
+            return;
+        }
+
+        IEnumerable currentObjects = ListViewBeatmaps.Objects;
+        ListViewBeatmaps.SetObjects(Enumerable.Empty<Beatmap>());
+
+        ListViewBeatmaps.AlwaysGroupByColumn = selectedColumn.OlvColumn;
+        ListViewBeatmaps.Sorting = System.Windows.Forms.SortOrder.Ascending;
+        ListViewBeatmaps.LastSortColumn = selectedColumn.OlvColumn;
+        ListViewBeatmaps.ShowGroups = true;
+
+        ListViewBeatmaps.SetObjects(currentObjects);
+    }
+
+    private void button_toggleCollapse_Click(object sender, EventArgs e) => SetGroupCollapse(!_groupingStrategy.Collapsed);
+
+    public void SetGroupCollapse(bool collapseAllByDefault)
+    {
+        if (ListViewBeatmaps.InvokeRequired)
+        {
+            ListViewBeatmaps.Invoke(() => SetGroupCollapse(collapseAllByDefault));
+            return;
+        }
+
+        BeatmapGroupCollapsedChanged?.Invoke(this, collapseAllByDefault);
+        button_toggleCollapse.Text = collapseAllByDefault
+            ? BeatmapListingView_Resources.DoubleArrowDown
+            : BeatmapListingView_Resources.DoubleArrowUp;
+
+        foreach (OLVGroup group in ListViewBeatmaps.OLVGroups)
+        {
+            group.Collapsed = collapseAllByDefault;
+        }
+
+        _groupingStrategy.Collapsed = collapseAllByDefault;
+    }
+
+    public new void Dispose() => ListViewBeatmaps.SetObjects(Enumerable.Empty<Beatmap>());
 }

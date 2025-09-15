@@ -280,7 +280,7 @@ public abstract class DownloadManager : IDisposable
             OnProgressUpdated(e);
         }
     }
-    public DownloadItem DownloadFileAsync(string url, string filename, string referer, object token, int requestTimeout)
+    public DownloadItem DownloadFile(string url, string filename, string referer, object token, int requestTimeout)
     {
         DownloadItem dlItem = new() { FileName = filename, Url = url, Referer = referer, UserToken = token, RequestTimeout = requestTimeout };
         lock (_urlsToDownload)

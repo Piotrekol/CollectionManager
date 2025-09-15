@@ -6,7 +6,7 @@
 #define MyAppVersion "4.2"
 #define MyAppPublisher "Piotrekol"
 #define MyAppURL "http://osustats.ppy.sh"
-#define MyAppExeName "CollectionManagerApp.exe"
+#define MyAppExeName "CollectionManager.App.WinForms.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -26,7 +26,7 @@ AllowNoIcons=no
 LicenseFile=.\license.txt
 OutputDir=.\output
 OutputBaseFilename=CollectionManagerSetup
-SetupIconFile=..\App\Resources\logo.ico
+SetupIconFile=..\CollectionManager.App.WinForms\Resources\logo.ico
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
@@ -59,44 +59,39 @@ Name: osdbAssociation; Description: "Associate "".osdb"" extension (Collection f
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\App\bin\Release\net9.0-windows\runtimes\win-x64\native\realm-wrappers.dll"; DestDir: "{app}\runtimes\win-x64\native\"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\runtimes\win\lib\net9.0\Microsoft.Win32.SystemEvents.dll"; DestDir: "{app}\runtimes\win\lib\net9.0\"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManager.Audio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManager.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManager.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManager.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManager.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManagerApp.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManagerApp.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManagerApp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManagerApp.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CollectionManagerApp.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Microsoft.Win32.SystemEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\MongoDB.Bson.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.Asio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.Midi.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.Vorbis.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.Wasapi.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NAudio.WinMM.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\NVorbis.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Realm.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\Remotion.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\System.Drawing.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\System.Formats.Nrbf.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\System.Private.Windows.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\System.Resources.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\App\bin\Release\net9.0-windows\ZstdSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\runtimes\win-x64\native\realm-wrappers.dll"; DestDir: "{app}\runtimes\win-x64\native\"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.WinMM.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NVorbis.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\ObjectListView.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\ObjectListView.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\Realm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\Remotion.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\SharpCompress.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\ZstdSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.Shared.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.WinForms.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.WinForms.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.WinForms.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.App.WinForms.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.Audio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CollectionManager.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\downloadSources.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\MongoDB.Bson.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.Asio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.Midi.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.Vorbis.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.Wasapi.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CollectionManager.App.WinForms\bin\Release\net9.0-windows\NAudio.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

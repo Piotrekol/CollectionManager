@@ -11,34 +11,36 @@ using System.Windows.Forms;
 
 public class UserDialogs : IUserDialogs
 {
-    public bool IsThisPathCorrect(string path)
+    private readonly char[] _fileFilterSeparator = ['|'];
+
+    public Task<bool> IsThisPathCorrectAsync(string path)
     {
         DialogResult dialogResult = MessageBox.Show(
                 "Detected osu in: " + Environment.NewLine + path + Environment.NewLine + "Is this correct?",
                 "osu! directory", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk);
-        return dialogResult == DialogResult.Yes;
 
+        return Task.FromResult(dialogResult == DialogResult.Yes);
     }
 
-    public string SelectDirectory(string text) => SelectDirectory(text, false);
+    public Task<string> SelectDirectoryAsync(string text) => SelectDirectoryAsync(text, false);
 
-    public string SelectDirectory(string text, bool showNewFolder = false)
+    public Task<string> SelectDirectoryAsync(string text, bool showNewFolder = false)
     {
         CommonOpenFileDialog dialog = new()
         {
             IsFolderPicker = true,
             Title = text
         };
+
         if (dialog.ShowDialog() == CommonFileDialogResult.Ok && Directory.Exists(dialog.FileName))
         {
-            return dialog.FileName;
+            return Task.FromResult(dialog.FileName);
         }
 
-        return string.Empty;
+        return Task.FromResult(string.Empty);
     }
-    private readonly char[] separator = new[] { '|' };
 
-    public string SelectFile(string text, string types = "", string filename = "")
+    public Task<string> SelectFileAsync(string text, string types = "", string filename = "")
     {
         CommonOpenFileDialog dialog = new()
         {
@@ -47,19 +49,19 @@ public class UserDialogs : IUserDialogs
         };
         if (!string.IsNullOrEmpty(types))
         {
-            string[] split = types.Split(separator, 2);
+            string[] split = types.Split(_fileFilterSeparator, 2);
             dialog.Filters.Add(new CommonFileDialogFilter(split[0], split[1]));
         }
 
         if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
         {
-            return dialog.FileName;
+            return Task.FromResult(dialog.FileName);
         }
 
-        return string.Empty;
+        return Task.FromResult(string.Empty);
     }
 
-    public string SaveFile(string title, string types = "all|*.*")
+    public Task<string> SaveFileAsync(string title, string types = "all|*.*")
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -69,39 +71,47 @@ public class UserDialogs : IUserDialogs
         _ = saveFileDialog.ShowDialog();
         if (saveFileDialog.FileName != "")
         {
-            return saveFileDialog.FileName;
+            return Task.FromResult(saveFileDialog.FileName);
         }
 
-        return string.Empty;
+        return Task.FromResult(string.Empty);
     }
 
-    public bool YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
+    public Task<bool> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
     {
         MessageBoxIcon icon = GetMessageBoxIcon(messageBoxType);
 
         DialogResult dialogResult = MessageBox.Show(null, text, caption, MessageBoxButtons.YesNo, icon);
 
-        return dialogResult == DialogResult.Yes;
+        return Task.FromResult(dialogResult == DialogResult.Yes);
     }
 
-    public (bool Result, bool doNotAskAgain) YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info,
+    public Task<(bool Result, bool doNotAskAgain)> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info,
         string doNotAskAgainText = null)
     {
         (DialogResult dialogResult, bool doNotAskAgain) = YesNoForm.ShowDialog(text, caption, doNotAskAgainText);
 
-        return (dialogResult == DialogResult.Yes, doNotAskAgain);
+        return Task.FromResult((dialogResult == DialogResult.Yes, doNotAskAgain));
     }
 
-    public IProgressForm ProgressForm(Progress<string> userProgressMessage, Progress<int> completionPercentage) => GuiComponents.ProgressForm.ShowDialog(userProgressMessage, completionPercentage);
+    public Task<IProgressForm> CreateProgressFormAsync(Progress<string> userProgressMessage, Progress<int> completionPercentage)
+        => Task.FromResult(GuiComponents.ProgressForm.ShowDialog(userProgressMessage, completionPercentage));
 
-    public void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
+    public Task OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
     {
         MessageBoxIcon icon = GetMessageBoxIcon(messageBoxType);
 
         _ = MessageBox.Show(null, text, caption, MessageBoxButtons.OK, icon);
+
+        return Task.CompletedTask;
     }
 
-    public void TextMessageBox(string text, string caption) => TextBoxForm.ShowDialog(text, caption);
+    public Task TextMessageBoxAsync(string text, string caption)
+    {
+        TextBoxForm.ShowDialog(text, caption);
+
+        return Task.CompletedTask;
+    }
 
     private static MessageBoxIcon GetMessageBoxIcon(MessageBoxType messageBoxType)
         => messageBoxType switch

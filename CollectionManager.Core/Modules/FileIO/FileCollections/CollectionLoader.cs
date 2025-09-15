@@ -1,5 +1,4 @@
 ﻿namespace CollectionManager.Core.Modules.FileIo.FileCollections;
-
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using System.IO;
@@ -40,7 +39,7 @@ public class CollectionLoader
     {
         string ext = Path.GetExtension(fileLocation);
 
-        return ext.ToLower() switch
+        return ext.ToLower(System.Globalization.CultureInfo.CurrentCulture) switch
         {
             ".db" => LoadOsuCollection(fileLocation),
             ".osdb" => LoadOsdbCollections(fileLocation),
@@ -53,7 +52,7 @@ public class CollectionLoader
     {
         string ext = Path.GetExtension(fileLocation);
 
-        switch (ext.ToLower())
+        switch (ext.ToLower(System.Globalization.CultureInfo.CurrentCulture))
         {
             case ".db":
                 SaveOsuCollection(collections, fileLocation);
@@ -67,5 +66,25 @@ public class CollectionLoader
             default:
                 return;
         }
+    }
+
+    public OsuCollections LoadDefaultCollection(string osuDirectory)
+        => LoadCollections(Path.Combine(osuDirectory, "collection.db"), Path.Combine(osuDirectory, "client.realm"));
+
+    public OsuCollections LoadCollections(params string[] fileLocations)
+    {
+        if (fileLocations == null || fileLocations.Length == 0 || fileLocations.Any(string.IsNullOrWhiteSpace))
+        {
+            return null;
+        }
+
+        OsuCollections collections = [];
+
+        foreach (string fileLocation in fileLocations.Where(File.Exists))
+        {
+            collections.AddRange(LoadCollection(fileLocation));
+        }
+
+        return collections;
     }
 }

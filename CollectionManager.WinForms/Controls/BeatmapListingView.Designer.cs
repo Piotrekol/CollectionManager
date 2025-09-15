@@ -30,7 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             label_resultsCount = new System.Windows.Forms.Label();
-            label1 = new System.Windows.Forms.Label();
             textBox_beatmapSearch = new System.Windows.Forms.TextBox();
             BeatmapsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(components);
             OpenDlMapMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +49,7 @@
             PullMapsetMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             exportBeatmapSetsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ListViewBeatmaps = new BrightIdeasSoftware.FastDataListView();
-            olvColumn2 = new BrightIdeasSoftware.OLVColumn();
+            column_name = new BrightIdeasSoftware.OLVColumn();
             olvColumn4 = new BrightIdeasSoftware.OLVColumn();
             column_stars = new BrightIdeasSoftware.OLVColumn();
             column_ar = new BrightIdeasSoftware.OLVColumn();
@@ -59,19 +58,22 @@
             column_od = new BrightIdeasSoftware.OLVColumn();
             column_bpm = new BrightIdeasSoftware.OLVColumn();
             column_state = new BrightIdeasSoftware.OLVColumn();
-            olvColumn10 = new BrightIdeasSoftware.OLVColumn();
+            column_LocalVersionDiffers = new BrightIdeasSoftware.OLVColumn();
             OsuGrade = new BrightIdeasSoftware.OLVColumn();
-            LastPlayed = new BrightIdeasSoftware.OLVColumn();
-            EditDate = new BrightIdeasSoftware.OLVColumn();
-            olvColumn13 = new BrightIdeasSoftware.OLVColumn();
+            column_LastPlayed = new BrightIdeasSoftware.OLVColumn();
+            column_EditDate = new BrightIdeasSoftware.OLVColumn();
+            column_Comment = new BrightIdeasSoftware.OLVColumn();
             TaikoGrade = new BrightIdeasSoftware.OLVColumn();
             CatchGrade = new BrightIdeasSoftware.OLVColumn();
             ManiaGrade = new BrightIdeasSoftware.OLVColumn();
-            olvColumn9 = new BrightIdeasSoftware.OLVColumn();
-            olvColumn11 = new BrightIdeasSoftware.OLVColumn();
+            column_SetId = new BrightIdeasSoftware.OLVColumn();
+            column_MapId = new BrightIdeasSoftware.OLVColumn();
             ScoresCount = new BrightIdeasSoftware.OLVColumn();
-            LastScoreDate = new BrightIdeasSoftware.OLVColumn();
+            column_LastScoreDate = new BrightIdeasSoftware.OLVColumn();
+            column_Directory = new BrightIdeasSoftware.OLVColumn();
             button_searchHelp = new System.Windows.Forms.Button();
+            comboBox_grouping = new System.Windows.Forms.ComboBox();
+            button_toggleCollapse = new System.Windows.Forms.Button();
             BeatmapsContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).BeginInit();
             SuspendLayout();
@@ -79,31 +81,22 @@
             // label_resultsCount
             // 
             label_resultsCount.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            label_resultsCount.Location = new System.Drawing.Point(885, -1);
+            label_resultsCount.Location = new System.Drawing.Point(977, 5);
             label_resultsCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label_resultsCount.Name = "label_resultsCount";
-            label_resultsCount.Size = new System.Drawing.Size(186, 15);
+            label_resultsCount.Size = new System.Drawing.Size(117, 15);
             label_resultsCount.TabIndex = 17;
             label_resultsCount.Text = "0 maps";
             label_resultsCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(4, -1);
-            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(166, 15);
-            label1.TabIndex = 16;
-            label1.Text = "Search just like you do in osu!:";
-            // 
             // textBox_beatmapSearch
             // 
             textBox_beatmapSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBox_beatmapSearch.Location = new System.Drawing.Point(4, 17);
+            textBox_beatmapSearch.Location = new System.Drawing.Point(1, 1);
             textBox_beatmapSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             textBox_beatmapSearch.Name = "textBox_beatmapSearch";
-            textBox_beatmapSearch.Size = new System.Drawing.Size(1067, 23);
+            textBox_beatmapSearch.PlaceholderText = "Search just like you do in osu!";
+            textBox_beatmapSearch.Size = new System.Drawing.Size(758, 23);
             textBox_beatmapSearch.TabIndex = 15;
             // 
             // BeatmapsContextMenuStrip
@@ -226,7 +219,7 @@
             // 
             // ListViewBeatmaps
             // 
-            ListViewBeatmaps.AllColumns.Add(olvColumn2);
+            ListViewBeatmaps.AllColumns.Add(column_name);
             ListViewBeatmaps.AllColumns.Add(olvColumn4);
             ListViewBeatmaps.AllColumns.Add(column_stars);
             ListViewBeatmaps.AllColumns.Add(column_ar);
@@ -235,30 +228,31 @@
             ListViewBeatmaps.AllColumns.Add(column_od);
             ListViewBeatmaps.AllColumns.Add(column_bpm);
             ListViewBeatmaps.AllColumns.Add(column_state);
-            ListViewBeatmaps.AllColumns.Add(olvColumn10);
+            ListViewBeatmaps.AllColumns.Add(column_LocalVersionDiffers);
             ListViewBeatmaps.AllColumns.Add(OsuGrade);
-            ListViewBeatmaps.AllColumns.Add(LastPlayed);
-            ListViewBeatmaps.AllColumns.Add(EditDate);
-            ListViewBeatmaps.AllColumns.Add(olvColumn13);
+            ListViewBeatmaps.AllColumns.Add(column_LastPlayed);
+            ListViewBeatmaps.AllColumns.Add(column_EditDate);
+            ListViewBeatmaps.AllColumns.Add(column_Comment);
             ListViewBeatmaps.AllColumns.Add(TaikoGrade);
             ListViewBeatmaps.AllColumns.Add(CatchGrade);
             ListViewBeatmaps.AllColumns.Add(ManiaGrade);
-            ListViewBeatmaps.AllColumns.Add(olvColumn9);
-            ListViewBeatmaps.AllColumns.Add(olvColumn11);
+            ListViewBeatmaps.AllColumns.Add(column_SetId);
+            ListViewBeatmaps.AllColumns.Add(column_MapId);
             ListViewBeatmaps.AllColumns.Add(ScoresCount);
-            ListViewBeatmaps.AllColumns.Add(LastScoreDate);
+            ListViewBeatmaps.AllColumns.Add(column_LastScoreDate);
+            ListViewBeatmaps.AllColumns.Add(column_Directory);
             ListViewBeatmaps.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             ListViewBeatmaps.AutoGenerateColumns = false;
-            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn2, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, LastPlayed, EditDate, ScoresCount, LastScoreDate });
+            ListViewBeatmaps.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { column_name, olvColumn4, column_stars, column_ar, column_cs, column_bpm, column_state, OsuGrade, column_LastPlayed, column_EditDate, ScoresCount, column_LastScoreDate, column_Directory });
             ListViewBeatmaps.DataSource = null;
             ListViewBeatmaps.EmptyListMsg = "No collection selected";
             ListViewBeatmaps.IsSimpleDragSource = true;
             ListViewBeatmaps.IsSimpleDropSink = true;
-            ListViewBeatmaps.Location = new System.Drawing.Point(4, 47);
+            ListViewBeatmaps.Location = new System.Drawing.Point(1, 30);
             ListViewBeatmaps.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             ListViewBeatmaps.Name = "ListViewBeatmaps";
             ListViewBeatmaps.ShowGroups = false;
-            ListViewBeatmaps.Size = new System.Drawing.Size(1094, 498);
+            ListViewBeatmaps.Size = new System.Drawing.Size(1096, 536);
             ListViewBeatmaps.TabIndex = 14;
             ListViewBeatmaps.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(192, 255, 192);
             ListViewBeatmaps.UseCompatibleStateImageBehavior = false;
@@ -267,13 +261,13 @@
             ListViewBeatmaps.VirtualMode = true;
             ListViewBeatmaps.KeyUp += ListViewBeatmaps_KeyUp;
             // 
-            // olvColumn2
+            // column_name
             // 
-            olvColumn2.AspectName = "Name";
-            olvColumn2.AspectToStringFormat = "";
-            olvColumn2.IsEditable = false;
-            olvColumn2.Text = "Name";
-            olvColumn2.Width = 200;
+            column_name.AspectName = "Name";
+            column_name.AspectToStringFormat = "";
+            column_name.IsEditable = false;
+            column_name.Text = "Name";
+            column_name.Width = 200;
             // 
             // olvColumn4
             // 
@@ -336,15 +330,15 @@
             column_state.IsEditable = false;
             column_state.Text = "State";
             // 
-            // olvColumn10
+            // column_LocalVersionDiffers
             // 
-            olvColumn10.AspectName = "LocalVersionDiffers";
-            olvColumn10.CheckBoxes = true;
-            olvColumn10.DisplayIndex = 10;
-            olvColumn10.IsEditable = false;
-            olvColumn10.IsVisible = false;
-            olvColumn10.Text = "Different version";
-            olvColumn10.Width = 90;
+            column_LocalVersionDiffers.AspectName = "LocalVersionDiffers";
+            column_LocalVersionDiffers.CheckBoxes = true;
+            column_LocalVersionDiffers.DisplayIndex = 10;
+            column_LocalVersionDiffers.IsEditable = false;
+            column_LocalVersionDiffers.IsVisible = false;
+            column_LocalVersionDiffers.Text = "Different version";
+            column_LocalVersionDiffers.Width = 90;
             // 
             // OsuGrade
             // 
@@ -353,26 +347,26 @@
             OsuGrade.Text = "Rank";
             OsuGrade.Width = 50;
             // 
-            // LastPlayed
+            // column_LastPlayed
             // 
-            LastPlayed.AspectName = "LastPlayed";
-            LastPlayed.IsEditable = false;
-            LastPlayed.Text = "Last played";
-            LastPlayed.Width = 75;
+            column_LastPlayed.AspectName = "LastPlayed";
+            column_LastPlayed.IsEditable = false;
+            column_LastPlayed.Text = "Last played";
+            column_LastPlayed.Width = 75;
             // 
-            // EditDate
+            // column_EditDate
             // 
-            EditDate.AspectName = "EditDate";
-            EditDate.IsEditable = false;
-            EditDate.Text = "Last update";
-            EditDate.Width = 75;
+            column_EditDate.AspectName = "EditDate";
+            column_EditDate.IsEditable = false;
+            column_EditDate.Text = "Last update";
+            column_EditDate.Width = 75;
             // 
-            // olvColumn13
+            // column_Comment
             // 
-            olvColumn13.AspectName = "UserComment";
-            olvColumn13.DisplayIndex = 10;
-            olvColumn13.IsVisible = false;
-            olvColumn13.Text = "Comment";
+            column_Comment.AspectName = "UserComment";
+            column_Comment.DisplayIndex = 10;
+            column_Comment.IsVisible = false;
+            column_Comment.Text = "Comment";
             // 
             // TaikoGrade
             // 
@@ -395,21 +389,21 @@
             ManiaGrade.IsVisible = false;
             ManiaGrade.Text = "Mania Rank";
             // 
-            // olvColumn9
+            // column_SetId
             // 
-            olvColumn9.AspectName = "MapSetId";
-            olvColumn9.DisplayIndex = 10;
-            olvColumn9.IsEditable = false;
-            olvColumn9.IsVisible = false;
-            olvColumn9.Text = "MapSetId";
+            column_SetId.AspectName = "MapSetId";
+            column_SetId.DisplayIndex = 10;
+            column_SetId.IsEditable = false;
+            column_SetId.IsVisible = false;
+            column_SetId.Text = "MapSetId";
             // 
-            // olvColumn11
+            // column_MapId
             // 
-            olvColumn11.AspectName = "MapId";
-            olvColumn11.DisplayIndex = 10;
-            olvColumn11.IsEditable = false;
-            olvColumn11.IsVisible = false;
-            olvColumn11.Text = "MapId";
+            column_MapId.AspectName = "MapId";
+            column_MapId.DisplayIndex = 10;
+            column_MapId.IsEditable = false;
+            column_MapId.IsVisible = false;
+            column_MapId.Text = "MapId";
             // 
             // ScoresCount
             // 
@@ -417,35 +411,65 @@
             ScoresCount.IsEditable = false;
             ScoresCount.Text = "Scores";
             // 
-            // LastScoreDate
+            // column_LastScoreDate
             // 
-            LastScoreDate.AspectName = "LastScoreDate";
-            LastScoreDate.IsEditable = false;
-            LastScoreDate.Text = "Last score";
+            column_LastScoreDate.AspectName = "LastScoreDate";
+            column_LastScoreDate.IsEditable = false;
+            column_LastScoreDate.Text = "Last score";
+            // 
+            // column_Directory
+            // 
+            column_Directory.AspectName = "Dir";
+            column_Directory.IsEditable = false;
+            column_Directory.IsVisible = false;
+            column_Directory.Text = "Directory";
             // 
             // button_searchHelp
             // 
             button_searchHelp.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            button_searchHelp.Location = new System.Drawing.Point(1073, 17);
+            button_searchHelp.Location = new System.Drawing.Point(952, 0);
             button_searchHelp.Name = "button_searchHelp";
-            button_searchHelp.Size = new System.Drawing.Size(22, 23);
+            button_searchHelp.Size = new System.Drawing.Size(22, 25);
             button_searchHelp.TabIndex = 18;
             button_searchHelp.Text = "?";
             button_searchHelp.UseVisualStyleBackColor = true;
             button_searchHelp.Click += button_searchHelp_Click;
             // 
+            // comboBox_grouping
+            // 
+            comboBox_grouping.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            comboBox_grouping.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox_grouping.FormattingEnabled = true;
+            comboBox_grouping.Location = new System.Drawing.Point(766, 1);
+            comboBox_grouping.Name = "comboBox_grouping";
+            comboBox_grouping.Size = new System.Drawing.Size(153, 23);
+            comboBox_grouping.TabIndex = 19;
+            comboBox_grouping.SelectedIndexChanged += comboBox_grouping_SelectedIndexChanged;
+            // 
+            // button_toggleCollapse
+            // 
+            button_toggleCollapse.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            button_toggleCollapse.Location = new System.Drawing.Point(925, 0);
+            button_toggleCollapse.Name = "button_toggleCollapse";
+            button_toggleCollapse.Size = new System.Drawing.Size(22, 25);
+            button_toggleCollapse.TabIndex = 20;
+            button_toggleCollapse.Text = "⇈";
+            button_toggleCollapse.UseVisualStyleBackColor = true;
+            button_toggleCollapse.Click += button_toggleCollapse_Click;
+            // 
             // BeatmapListingView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(button_toggleCollapse);
+            Controls.Add(comboBox_grouping);
             Controls.Add(button_searchHelp);
             Controls.Add(ListViewBeatmaps);
             Controls.Add(label_resultsCount);
-            Controls.Add(label1);
             Controls.Add(textBox_beatmapSearch);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "BeatmapListingView";
-            Size = new System.Drawing.Size(1098, 546);
+            Size = new System.Drawing.Size(1098, 567);
             BeatmapsContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ListViewBeatmaps).EndInit();
             ResumeLayout(false);
@@ -456,7 +480,7 @@
         #endregion
 
         public BrightIdeasSoftware.FastDataListView ListViewBeatmaps;
-        private BrightIdeasSoftware.OLVColumn olvColumn2;
+        private BrightIdeasSoftware.OLVColumn column_name;
         private BrightIdeasSoftware.OLVColumn olvColumn4;
         private BrightIdeasSoftware.OLVColumn column_stars;
         private BrightIdeasSoftware.OLVColumn column_state;
@@ -465,7 +489,6 @@
         private BrightIdeasSoftware.OLVColumn column_hp;
         private BrightIdeasSoftware.OLVColumn column_od;
         public System.Windows.Forms.Label label_resultsCount;
-        private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox textBox_beatmapSearch;
         private System.Windows.Forms.ContextMenuStrip BeatmapsContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OpenDlMapMenuStrip;
@@ -478,25 +501,28 @@
         private System.Windows.Forms.ToolStripMenuItem SearchMapsetMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem SearchArtistMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem SearchTitleMapMenuStrip;
-        private BrightIdeasSoftware.OLVColumn olvColumn10;
-        private BrightIdeasSoftware.OLVColumn LastPlayed;
-        private BrightIdeasSoftware.OLVColumn EditDate;
+        private BrightIdeasSoftware.OLVColumn column_LocalVersionDiffers;
+        private BrightIdeasSoftware.OLVColumn column_LastPlayed;
+        private BrightIdeasSoftware.OLVColumn column_EditDate;
         private System.Windows.Forms.ToolStripMenuItem OpenBeatmapFolderMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyUrlMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyAsTextMenuStrip;
-        private BrightIdeasSoftware.OLVColumn olvColumn13;
+        private BrightIdeasSoftware.OLVColumn column_Comment;
         private BrightIdeasSoftware.OLVColumn OsuGrade;
         private BrightIdeasSoftware.OLVColumn TaikoGrade;
         private BrightIdeasSoftware.OLVColumn CatchGrade;
         private BrightIdeasSoftware.OLVColumn ManiaGrade;
         private System.Windows.Forms.ToolStripMenuItem PullMapsetMenuStrip;
-        private BrightIdeasSoftware.OLVColumn olvColumn9;
-        private BrightIdeasSoftware.OLVColumn olvColumn11;
+        private BrightIdeasSoftware.OLVColumn column_SetId;
+        private BrightIdeasSoftware.OLVColumn column_MapId;
         private BrightIdeasSoftware.OLVColumn column_bpm;
         private System.Windows.Forms.ToolStripMenuItem exportBeatmapSetsMenuItem;
         private System.Windows.Forms.Button button_searchHelp;
         private BrightIdeasSoftware.OLVColumn ScoresCount;
-        private BrightIdeasSoftware.OLVColumn LastScoreDate;
+        private BrightIdeasSoftware.OLVColumn column_LastScoreDate;
+        private BrightIdeasSoftware.OLVColumn column_Directory;
+        private System.Windows.Forms.ComboBox comboBox_grouping;
+        private System.Windows.Forms.Button button_toggleCollapse;
     }
 }

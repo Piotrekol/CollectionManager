@@ -6,12 +6,12 @@ using CollectionManager.Core.Types;
 
 internal class Class1
 {
-    internal void Run()
+    internal async Task Run()
     {
         OsuFileIo osuFileIo = new(new BeatmapExtension());
 
         //Automatic Detection of osu! directory location
-        string dir = OsuPathResolver.GetOsuPath(ThisPathIsCorrect, SelectDirectoryDialog);
+        string dir = await OsuPathResolver.GetOsuPathAsync(ThisPathIsCorrectAsync, SelectDirectoryDialogAsync);
 
         string osuPath = @"E:\osu!\";
         string osuDbFileName = "osu!.db";
@@ -84,14 +84,14 @@ internal class Class1
         osuFileIo.CollectionLoader.SaveOsuCollection(collectionManager.LoadedCollections, ExampleCollectionFileLocation);
     }
 
-    private string SelectDirectoryDialog(string s) =>
+    private Task<string> SelectDirectoryDialogAsync(string s) =>
         //If result of ThisPathIsCorrect was false this would be executed
         //ask user to provide path themself?
-        string.Empty;
+        Task.FromResult(string.Empty);
 
-    private bool ThisPathIsCorrect(string s) =>
+    private Task<bool> ThisPathIsCorrectAsync(string s) =>
         //check with user that path provided in s is correct?
-        true;
+        Task.FromResult(true);
 
     private void LoadedCollections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {

@@ -34,6 +34,11 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
         get => _apiKey;
         set
         {
+            if (_apiKey == value)
+            {
+                return;
+            }
+
             _apiKey = value;
             _ = httpClient.DefaultRequestHeaders.Remove("ApiKey");
             httpClient.DefaultRequestHeaders.Add("ApiKey", value);

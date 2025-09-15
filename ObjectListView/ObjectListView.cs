@@ -6183,6 +6183,10 @@ namespace BrightIdeasSoftware
         /// <param name="hti"></param>
         /// <returns>True if the message has been handled</returns>
         protected virtual bool ProcessLButtonDoubleClick(OlvListViewHitTestInfo hti) {
+            if (hti.HitTestLocation == HitTestLocation.Group)
+            {
+                return TriggerGroupExpandCollapse(hti.Group);
+            }
 
             // If the user double clicked on a checkbox, ignore it
             return (hti.HitTestLocation == HitTestLocation.CheckBox);

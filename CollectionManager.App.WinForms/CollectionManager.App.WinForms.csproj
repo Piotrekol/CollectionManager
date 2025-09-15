@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<AssemblyTitle>osu! Collection Manager</AssemblyTitle>
+		<Product>Gui</Product>
+		<Copyright>Copyright ©  2017-present Piotrekol</Copyright>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PreBuildEvent />
+		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+		<PackageId>CollectionManagerApp</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CollectionManager.App.Shared\CollectionManager.App.Shared.csproj" />
+		<ProjectReference Include="..\CollectionManager.Core\CollectionManager.Core.csproj" />
+		<ProjectReference Include="..\CollectionManager.Extensions\CollectionManager.Extensions.csproj" />
+		<ProjectReference Include="..\CollectionManager.Common\CollectionManager.Common.csproj" />
+		<ProjectReference Include="..\CollectionManager.WinForms\CollectionManager.WinForms.csproj" />
+		<ProjectReference Include="..\CollectionManager.Audio\CollectionManager.Audio.csproj" />
+		<ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" />
+		<PackageReference Include="System.Drawing.Common" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Remove="Resources\logo.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\logo.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+</Project>

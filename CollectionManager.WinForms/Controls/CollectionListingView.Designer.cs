@@ -30,7 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             panel1 = new System.Windows.Forms.Panel();
-            label1 = new System.Windows.Forms.Label();
             ListViewCollections = new BrightIdeasSoftware.FastObjectListView();
             olvColumn1 = new BrightIdeasSoftware.OLVColumn();
             Total = new BrightIdeasSoftware.OLVColumn();
@@ -56,25 +55,14 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(label1);
             panel1.Controls.Add(ListViewCollections);
             panel1.Controls.Add(textBox_collectionNameSearch);
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(0, 0);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(541, 443);
+            panel1.Size = new System.Drawing.Size(541, 522);
             panel1.TabIndex = 8;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(-2, 0);
-            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(170, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Search using collection names:";
             // 
             // ListViewCollections
             // 
@@ -86,11 +74,11 @@
             ListViewCollections.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             ListViewCollections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumn1, Total, olvColumn2 });
             ListViewCollections.EmptyListMsg = "No collections loaded";
-            ListViewCollections.Location = new System.Drawing.Point(1, 45);
+            ListViewCollections.Location = new System.Drawing.Point(1, 27);
             ListViewCollections.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             ListViewCollections.Name = "ListViewCollections";
             ListViewCollections.ShowGroups = false;
-            ListViewCollections.Size = new System.Drawing.Size(540, 397);
+            ListViewCollections.Size = new System.Drawing.Size(539, 493);
             ListViewCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             ListViewCollections.TabIndex = 5;
             ListViewCollections.UnfocusedHighlightBackgroundColor = System.Drawing.Color.FromArgb(192, 255, 192);
@@ -131,10 +119,11 @@
             // textBox_collectionNameSearch
             // 
             textBox_collectionNameSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 18);
+            textBox_collectionNameSearch.Location = new System.Drawing.Point(1, 1);
             textBox_collectionNameSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             textBox_collectionNameSearch.Name = "textBox_collectionNameSearch";
-            textBox_collectionNameSearch.Size = new System.Drawing.Size(540, 23);
+            textBox_collectionNameSearch.PlaceholderText = "Search using collection names";
+            textBox_collectionNameSearch.Size = new System.Drawing.Size(539, 23);
             textBox_collectionNameSearch.TabIndex = 1;
             // 
             // CreateMenuStrip
@@ -250,7 +239,7 @@
             Controls.Add(panel1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "CollectionListingView";
-            Size = new System.Drawing.Size(541, 443);
+            Size = new System.Drawing.Size(541, 522);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ListViewCollections).EndInit();
@@ -262,7 +251,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
         private BrightIdeasSoftware.FastObjectListView ListViewCollections;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;

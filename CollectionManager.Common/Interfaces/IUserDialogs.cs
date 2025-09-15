@@ -5,14 +5,14 @@ using System;
 
 public interface IUserDialogs
 {
-    bool IsThisPathCorrect(string path);
-    string SelectDirectory(string text);
-    string SelectDirectory(string text, bool showNewFolder = false);
-    string SelectFile(string text, string types = "", string filename = "");
-    string SaveFile(string title, string types = "all|*.*");
-    bool YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
-    (bool Result, bool doNotAskAgain) YesNoMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, string doNotAskAgainText = null);
-    IProgressForm ProgressForm(Progress<string> userProgressMessage, Progress<int> completionPercentage);
-    void OkMessageBox(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
-    void TextMessageBox(string text, string caption);
+    Task<bool> IsThisPathCorrectAsync(string path);
+    Task<string> SelectDirectoryAsync(string text);
+    Task<string> SelectDirectoryAsync(string text, bool showNewFolder = false);
+    Task<string> SelectFileAsync(string text, string types = "", string filename = "");
+    Task<string> SaveFileAsync(string title, string types = "all|*.*");
+    Task<bool> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
+    Task<(bool Result, bool doNotAskAgain)> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, string doNotAskAgainText = null);
+    Task<IProgressForm> CreateProgressFormAsync(Progress<string> userProgressMessage, Progress<int> completionPercentage);
+    Task OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
+    Task TextMessageBoxAsync(string text, string caption);
 }
