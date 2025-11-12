@@ -104,7 +104,7 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         string newName = desiredName;
         IReadOnlyList<string> reservedNames = additionalReservedNames ?? Array.Empty<string>();
 
-        while (CollectionNameExists(newName) || reservedNames.Contains(newName))
+        while (!IsCollectionNameValid(newName) || reservedNames.Contains(newName))
         {
             newName = $"{desiredName}_{c++}";
         }
@@ -125,7 +125,7 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         return false;
     }
 
-    public bool IsCollectionNameValid(string name) => !CollectionNameExists(name);
+    public bool IsCollectionNameValid(string name) => !(string.IsNullOrEmpty(name) || CollectionNameExists(name));
 
     protected virtual void AfterCollectionsEdit() => LoadedCollections.CallReset();
 }

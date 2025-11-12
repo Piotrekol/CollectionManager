@@ -17,10 +17,9 @@ using System.Windows.Forms;
 
 public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDisposable
 {
-    private bool _allowForDeletion;
     private Mods _currentMods = Mods.Nm;
     private PlayMode _currentPlayMode = PlayMode.Osu;
-    private DifficultyCalculator _difficultyCalculator = new();
+    private readonly DifficultyCalculator _difficultyCalculator = new();
     private List<BeatmapGroupColumn> _displayColumns = [];
     private readonly Dictionary<object, BeatmapListingAction> _menuStripClickActions;
     private SortableFastListBeatmapGroupingStrategy _groupingStrategy;
@@ -41,10 +40,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     [Description("Should user be able to delete beatmaps from the list?"), Category("Layout")]
     public bool AllowForDeletion
     {
-        get => _allowForDeletion;
+        get;
         set
         {
-            _allowForDeletion = value;
+            field = value;
             DeleteMapMenuStrip.Enabled = value;
         }
     }
@@ -320,15 +319,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
 
         // user group selection
         comboBox_grouping.DisplayMember = nameof(BeatmapGroupColumn.Text);
-        List<OLVColumn> excludedGroupingColumns =
-        [
-            column_Comment,
-            column_LastPlayed,
-            column_LastScoreDate,
-            column_EditDate,
-            column_MapId,
-            column_LocalVersionDiffers,
-        ];
 
         _displayColumns = [
             new(null, "No grouping"),
