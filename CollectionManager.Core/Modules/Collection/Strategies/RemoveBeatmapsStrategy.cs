@@ -11,10 +11,7 @@ public class RemoveBeatmapsStrategy : ICollectionEditStrategy
 
         if (collection is not null)
         {
-            foreach (Beatmap beatmap in args.Beatmaps)
-            {
-                _ = collection.RemoveBeatmap(beatmap.Md5);
-            }
+            _ = collection.RemoveBeatmaps(args.Beatmaps.Select(b => b.Md5));
         }
     }
 }
