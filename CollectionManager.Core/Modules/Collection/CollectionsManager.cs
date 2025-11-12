@@ -1,4 +1,5 @@
 namespace CollectionManager.Core.Modules.Collection;
+
 using CollectionManager.Core.Enums;
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.Collection.Strategies;
@@ -65,7 +66,23 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
             AfterCollectionsEdit();
         }
     }
+
     public void EditCollection(CollectionEditArgs args) => EditCollection(args, false);
+
+    public void EditCollection(IReadOnlyList<CollectionEditArgs> args)
+    {
+        if (args is null || args.Count is 0)
+        {
+            return;
+        }
+
+        foreach (CollectionEditArgs arg in args)
+        {
+            EditCollection(arg, true);
+        }
+
+        AfterCollectionsEdit();
+    }
 
     public OsuCollections GetCollectionsForBeatmaps(Beatmaps beatmaps)
     {
