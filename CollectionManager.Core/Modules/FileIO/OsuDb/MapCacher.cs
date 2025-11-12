@@ -89,7 +89,19 @@ public class MapCacher : IMapDataManager
 
     private void OnBeatmapsModified() => BeatmapsModified?.Invoke(this, EventArgs.Empty);
 
-    public Beatmap GetByHash(string hash) => LoadedBeatmapsHashDict.TryGetValue(hash, out Beatmap value) ? value : null;
+    public Beatmap? GetByHash(string hash) => LoadedBeatmapsHashDict.TryGetValue(hash, out Beatmap value) ? value : null;
 
-    public Beatmap GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
+    public Beatmap? GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
+
+    public Beatmap? Get(string hash, int mapId)
+    {
+        Beatmap beatmap = GetByHash(hash);
+
+        if (beatmap is not null || mapId <= 10)
+        {
+            return beatmap;
+        }
+
+        return GetByMapId(mapId);
+    }
 }

@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 
 public class RangeObservableCollection<T> : ObservableCollection<T>
 {
-    private bool _suppressNotification = false;
+    private bool _suppressNotifications;
 
     public RangeObservableCollection()
     {
@@ -20,7 +20,7 @@ public class RangeObservableCollection<T> : ObservableCollection<T>
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
-        if (!_suppressNotification)
+        if (!_suppressNotifications)
         {
             base.OnCollectionChanged(e);
         }
@@ -28,42 +28,50 @@ public class RangeObservableCollection<T> : ObservableCollection<T>
 
     public void SilentRemove(T item)
     {
-        _suppressNotification = true;
+        _suppressNotifications = true;
         _ = Remove(item);
-        _suppressNotification = false;
+        _suppressNotifications = false;
     }
 
     public void SilentAdd(T item)
     {
-        _suppressNotification = true;
+        _suppressNotifications = true;
         Add(item);
-        _suppressNotification = false;
+        _suppressNotifications = false;
     }
 
     public void CallReset() => OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-    public void SuspendEvents(bool suspend = true)
-    {
-        _suppressNotification = suspend;
-        if (!suspend)
-        {
-            CallReset();
-        }
-    }
+
     public void AddRange(IEnumerable<T> list)
     {
-        if (list == null)
-        {
-            throw new ArgumentNullException("list");
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
-        _suppressNotification = true;
+        _suppressNotifications = true;
 
         foreach (T item in list)
         {
             Add(item);
         }
 
-        _suppressNotification = false;
-        //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        _suppressNotifications = false;
+    }
+
+    /// <summary>
+    /// Temporarily suspends collection changed events until the returned context is disposed.
+    /// </summary>
+    /// <returns>The suspend context.</returns>
+    public SuspendContext SuspendCollectionChangedEvents() => new(this);
+
+    public sealed class SuspendContext : IDisposable
+    {
+        private readonly RangeObservableCollection<T> _collection;
+
+        public SuspendContext(RangeObservableCollection<T> collection)
+        {
+            _collection = collection;
+            _collection._suppressNotifications = true;
+        }
+
+        public void Dispose() => _collection._suppressNotifications = false;
     }
 }
