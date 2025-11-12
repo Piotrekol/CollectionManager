@@ -7,10 +7,13 @@ using System.Collections.Generic;
 
 public class MapCacher : IMapDataManager
 {
+    public const int InvalidMapIdThreshold = 10;
+
     private readonly Dictionary<string, Beatmap> LoadedBeatmapsHashDict = [];
     private readonly Dictionary<int, Beatmap> LoadedBeatmapsMapIdDict = [];
-    private bool _massStoring;
     private readonly HashSet<string> MassStoringBeatmapHashes = [];
+
+    private bool _massStoring;
 
     public object LockingObject { get; } = new();
     public Beatmaps Beatmaps { get; } = [];
@@ -97,7 +100,7 @@ public class MapCacher : IMapDataManager
     {
         Beatmap beatmap = GetByHash(hash);
 
-        if (beatmap is not null || mapId <= 10)
+        if (beatmap is not null || mapId <= InvalidMapIdThreshold)
         {
             return beatmap;
         }

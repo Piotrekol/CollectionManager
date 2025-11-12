@@ -3,6 +3,7 @@
 using CollectionManager.App.Shared.Interfaces.Controls;
 using CollectionManager.Audio;
 using CollectionManager.Common.Interfaces.Controls;
+using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Utils;
 using System.ComponentModel;
@@ -147,7 +148,7 @@ public class MusicControlPresenter : IDisposable
 
         //this is user-invoked play request (_music player mode_ check above)
         //Is there a chance that preview of this beatmap exists in online source?
-        return map.MapSetId <= 20;
+        return map.MapSetId <= MapCacher.InvalidMapIdThreshold;
     }
 
     private void PlayBeatmap(Beatmap map)
@@ -160,7 +161,7 @@ public class MusicControlPresenter : IDisposable
         bool onlineSource = false;
         if (audioLocation == string.Empty)
         {
-            if (map.MapSetId <= 20)
+            if (map.MapSetId <= MapCacher.InvalidMapIdThreshold)
             {
                 return;
             }

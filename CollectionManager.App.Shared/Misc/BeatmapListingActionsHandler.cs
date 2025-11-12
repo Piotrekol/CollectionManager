@@ -8,11 +8,13 @@ using CollectionManager.Common.Interfaces.Forms;
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
+using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Enums;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
 using CollectionManager.Extensions.Utils;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class BeatmapListingActionsHandler
@@ -53,22 +55,59 @@ public class BeatmapListingActionsHandler
     private void PullWholeMapsets(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
+
         if (model.SelectedBeatmaps?.Count > 0)
         {
-            Beatmaps setBeatmaps = [];
+            HashSet<int> targetMapSetIds = [];
+            HashSet<string> targetDirs = [];
 
             foreach (Beatmap selectedBeatmap in model.SelectedBeatmaps)
             {
-                IEnumerable<Beatmap> set = selectedBeatmap.MapSetId <= 20
-                    ? Initalizer.LoadedBeatmaps.Where(b => b.Dir == selectedBeatmap.Dir)
-                    : Initalizer.LoadedBeatmaps.Where(b => b.MapSetId == selectedBeatmap.MapSetId);
-                setBeatmaps.AddRange(set);
-
+                if (selectedBeatmap.MapSetId <= MapCacher.InvalidMapIdThreshold)
+                {
+                    _ = targetDirs.Add(selectedBeatmap.Dir);
+                }
+                else
+                {
+                    _ = targetMapSetIds.Add(selectedBeatmap.MapSetId);
+                }
             }
 
-            Initalizer.CollectionEditor.EditCollection(
-                CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, setBeatmaps)
-            );
+            Dictionary<int, HashSet<Beatmap>> mapsetBeatmaps = [];
+            Dictionary<string, HashSet<Beatmap>> unsubmittedBeatmaps = [];
+
+            foreach (Beatmap beatmap in Initalizer.LoadedBeatmaps)
+            {
+                if (beatmap.MapSetId > 20 && targetMapSetIds.Contains(beatmap.MapSetId))
+                {
+                    if (!mapsetBeatmaps.TryGetValue(beatmap.MapSetId, out HashSet<Beatmap> value))
+                    {
+                        value = [];
+                        mapsetBeatmaps[beatmap.MapSetId] = value;
+                    }
+
+                    _ = value.Add(beatmap);
+                }
+                else if (beatmap.MapSetId <= MapCacher.InvalidMapIdThreshold && targetDirs.Contains(beatmap.Dir))
+                {
+                    if (!unsubmittedBeatmaps.TryGetValue(beatmap.Dir, out HashSet<Beatmap> value))
+                    {
+                        value = [];
+                        unsubmittedBeatmaps[beatmap.Dir] = value;
+                    }
+
+                    _ = value.Add(beatmap);
+                }
+            }
+
+            List<CollectionEditArgs> bulkEditArgs = new(mapsetBeatmaps.Count + unsubmittedBeatmaps.Count);
+
+            bulkEditArgs.AddRange(mapsetBeatmaps.Values
+                .Select(beatmaps => CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, beatmaps)));
+            bulkEditArgs.AddRange(unsubmittedBeatmaps.Values
+                .Select(beatmaps => CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, beatmaps)));
+
+            Initalizer.CollectionEditor.EditCollection(bulkEditArgs);
         }
     }
     private async void DownloadBeatmapsManaged(object sender)
