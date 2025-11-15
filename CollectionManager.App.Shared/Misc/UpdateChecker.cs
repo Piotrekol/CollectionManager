@@ -4,7 +4,6 @@ using CollectionManager.App.Shared.Interfaces;
 using CollectionManager.Extensions.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Reflection;
 
 public class UpdateChecker : IUpdateModel
 {
@@ -13,19 +12,47 @@ public class UpdateChecker : IUpdateModel
 
     public UpdateChecker()
     {
-        FileVersionInfo version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-        CurrentVersion = new Version(version.FileVersion);
+
     }
 
     public bool Error { get; private set; }
     public Version OnlineVersion { get; private set; }
     public string NewVersionLink { get; private set; }
-    public Version CurrentVersion { get; }
+    public Version CurrentVersion
+    {
+        get
+        {
+            if (field is not null)
+            {
+                return field;
+            }
+
+            string executableLocation = Environment.ProcessPath;
+
+            if (string.IsNullOrEmpty(executableLocation))
+            {
+                field = new Version(-1, -1, -1, -1);
+
+                return field;
+            }
+
+            FileVersionInfo version = FileVersionInfo.GetVersionInfo(executableLocation);
+            field = new Version(version.FileVersion);
+
+            return field;
+        }
+    }
 
     public bool UpdateIsAvailable => OnlineVersion != null && OnlineVersion > CurrentVersion;
 
     public bool CheckForUpdates()
     {
+        if (CurrentVersion.MajorRevision < 0)
+        {
+            Error = true;
+            return false;
+        }
+
         string data = GetStringData(githubUpdateUrl);
         if (string.IsNullOrEmpty(data))
         {
