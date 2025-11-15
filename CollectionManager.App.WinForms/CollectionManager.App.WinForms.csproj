@@ -26,12 +26,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommandLineParser" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="System.Drawing.Common" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<None Remove="Resources\logo.ico" />
-	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Resources\logo.ico" />
 	</ItemGroup>
