@@ -126,7 +126,17 @@ public static class BeatmapUtils
 
         if (beatmap is LazerBeatmap lazerBeatmap)
         {
+            if (string.IsNullOrWhiteSpace(lazerBeatmap.AudioRelativeFilePath))
+            {
+                return string.Empty;
+            }
+
             return Path.Combine(OsuSongsDirectory, lazerBeatmap.AudioRelativeFilePath);
+        }
+
+        if (string.IsNullOrWhiteSpace(beatmap.Mp3Name))
+        {
+            return string.Empty;
         }
 
         return Path.Combine(beatmap.BeatmapDirectory(), beatmap.Mp3Name);
