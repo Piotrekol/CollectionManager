@@ -14,6 +14,8 @@ using CollectionManager.Extensions.Enums;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
 using CollectionManager.Extensions.Utils;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,11 +43,50 @@ public class BeatmapListingActionsHandler
             {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
             {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmapsAsync },
             {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPagesAsync },
+            {BeatmapListingAction.OpenInOsu, OpenInOsu },
             {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder },
             {BeatmapListingAction.PullWholeMapSet, PullWholeMapsets },
             {BeatmapListingAction.ExportBeatmapSets, ExportBeatmapSets },
         };
     }
+
+    private async void OpenInOsu(object sender)
+    {
+        if (sender is not IBeatmapListingModel model || model.SelectedBeatmap is null)
+        {
+            return;
+        }
+
+        if (model.SelectedBeatmap.MapId <= 0)
+        {
+            string artist = model.SelectedBeatmap.Artist ?? string.Empty;
+            string title = model.SelectedBeatmap.Title ?? string.Empty;
+            string diffName = model.SelectedBeatmap.DiffName ?? string.Empty;
+
+            Helpers.SetClipboardText($"{artist} - {title} [{diffName}]");
+
+            await _userDialogs.OkMessageBoxAsync(
+                "Selected beatmap has no valid map id. Beatmap name was copied to your clipboard.",
+                "Info",
+                MessageBoxType.Info);
+
+            return;
+        }
+
+        try
+        {
+            _ = ProcessExtensions.OpenUrl($"osu://b/{model.SelectedBeatmap.MapId}");
+        }
+        catch (InvalidOperationException)
+        {
+            await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+        }
+        catch (Win32Exception)
+        {
+            await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+        }
+    }
+
     public void Bind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
 
     public void UnBind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;

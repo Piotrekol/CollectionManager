@@ -33,6 +33,7 @@
             textBox_beatmapSearch = new System.Windows.Forms.TextBox();
             BeatmapsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(components);
             OpenDlMapMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            OpenInOsuMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             OpenBeatmapPageMapMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             OpenBeatmapDownloadMapMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             DownloadMapManagedMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,10 +108,17 @@
             // 
             // OpenDlMapMenuStrip
             // 
-            OpenDlMapMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { OpenBeatmapPageMapMenuStrip, OpenBeatmapDownloadMapMenuStrip, OpenBeatmapFolderMenuStrip });
+            OpenDlMapMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { OpenInOsuMenuStrip, OpenBeatmapPageMapMenuStrip, OpenBeatmapDownloadMapMenuStrip, OpenBeatmapFolderMenuStrip });
             OpenDlMapMenuStrip.Name = "OpenDlMapMenuStrip";
             OpenDlMapMenuStrip.Size = new System.Drawing.Size(180, 22);
             OpenDlMapMenuStrip.Text = "Open";
+            // 
+            // OpenInOsuMenuStrip
+            // 
+            OpenInOsuMenuStrip.Name = "OpenInOsuMenuStrip";
+            OpenInOsuMenuStrip.Size = new System.Drawing.Size(191, 22);
+            OpenInOsuMenuStrip.Text = "In osu!";
+            OpenInOsuMenuStrip.Click += OpenInOsuMenuStrip_Click;
             // 
             // OpenBeatmapPageMapMenuStrip
             // 
@@ -492,6 +500,7 @@
         public System.Windows.Forms.TextBox textBox_beatmapSearch;
         private System.Windows.Forms.ContextMenuStrip BeatmapsContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OpenDlMapMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem OpenInOsuMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OpenBeatmapPageMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OpenBeatmapDownloadMapMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem DownloadMapManagedMenuStrip;

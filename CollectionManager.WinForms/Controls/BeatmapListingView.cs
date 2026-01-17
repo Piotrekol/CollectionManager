@@ -121,6 +121,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
             [DeleteMapMenuStrip] = BeatmapListingAction.DeleteBeatmapsFromCollection,
             [DownloadMapInBrowserMenuStrip] = BeatmapListingAction.DownloadBeatmaps,
             [DownloadMapManagedMenuStrip] = BeatmapListingAction.DownloadBeatmapsManaged,
+            [OpenInOsuMenuStrip] = BeatmapListingAction.OpenInOsu,
             [OpenBeatmapPageMapMenuStrip] = BeatmapListingAction.OpenBeatmapPages,
             [copyAsTextMenuStrip] = BeatmapListingAction.CopyBeatmapsAsText,
             [copyUrlMenuStrip] = BeatmapListingAction.CopyBeatmapsAsUrls,
@@ -434,6 +435,8 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     }
 
     private void button_searchHelp_Click(object sender, EventArgs e) => BeatmapSearchHelpClicked?.Invoke(this, EventArgs.Empty);
+
+    private void OpenInOsuMenuStrip_Click(object sender, EventArgs e) => MenuStripClick(sender, e);
 
     private void comboBox_grouping_SelectedIndexChanged(object sender, EventArgs e)
     {
