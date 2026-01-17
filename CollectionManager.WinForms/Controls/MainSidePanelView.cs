@@ -32,31 +32,20 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
     public MainSidePanelView()
     {
         InitializeComponent();
-        Menu_loadCollection.Click += delegate
-        { OnLoadCollection(); };
-        Menu_loadDefaultCollection.Click += delegate
-        { OnLoadDefaultCollection(); };
-        Menu_unloadCollections.Click += delegate
-        { OnClearCollections(); };
-        Menu_saveAllCollections.Click += delegate
-        { OnSaveCollections(); };
-        Menu_collectionsSplit.Click += delegate
-        { OnSaveIndividualCollections(); };
-        Menu_listAllCollections.Click += delegate
-        { OnListAllMaps(); };
-        Menu_listMissingMaps.Click += delegate
-        { OnListMissingMaps(); };
-        Menu_beatmapListing.Click += delegate
-        { OnShowBeatmapListing(); };
-        Menu_mapDownloads.Click += delegate
-        { OnShowDownloadManager(); };
-        Menu_downloadAllMissing.Click += delegate
-        { OnDownloadAllMissing(); };
-        Menu_GenerateCollections.Click += delegate
-        { OnGenerateCollections(); };
-        Menu_GetMissingMapData.Click += delegate
-        { OnGetMissingMapData(); };
 
+        Menu_loadCollection.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadCollection);
+        Menu_loadDefaultCollection.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadDefaultCollection);
+        Menu_unloadCollections.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ClearCollections);
+        Menu_saveAllCollectionsAsDb.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveCollectionsAsDb);
+        Menu_saveAllCollectionsAsOsdb.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveCollectionsAsOsdb);
+        Menu_collectionsSplit.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveIndividualCollections);
+        Menu_listAllCollections.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ListAllBeatmaps);
+        Menu_listMissingMaps.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ListMissingMaps);
+        Menu_beatmapListing.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowBeatmapListing);
+        Menu_mapDownloads.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowDownloadManager);
+        Menu_downloadAllMissing.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.DownloadAllMissing);
+        Menu_GenerateCollections.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.GenerateCollections);
+        Menu_GetMissingMapData.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.GetMissingMapData);
         Menu_osustatsLogin.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.OsustatsLogin);
         Menu_saveOsuCollection.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveDefaultCollection);
         Menu_resetSettings.Click += (_, _) => SidePanelOperation?.Invoke(this, MainSidePanelActions.ResetApplicationSettings);
@@ -136,27 +125,4 @@ public partial class MainSidePanelView : UserControl, IMainSidePanelView, IOnlin
 
         return new ToolStripItem[] { loadCollection, uploadChanges, deleteCollection, openOnWeb };
     }
-
-    private void OnLoadCollection() => SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadCollection);
-
-    private void OnLoadDefaultCollection() => SidePanelOperation?.Invoke(this, MainSidePanelActions.LoadDefaultCollection);
-
-    private void OnClearCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ClearCollections);
-
-    private void OnSaveCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveCollections);
-
-    private void OnSaveIndividualCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.SaveIndividualCollections);
-
-    private void OnListAllMaps() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ListAllBeatmaps);
-
-    private void OnListMissingMaps() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ListMissingMaps);
-
-    private void OnShowBeatmapListing() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowBeatmapListing);
-
-    private void OnShowDownloadManager() => SidePanelOperation?.Invoke(this, MainSidePanelActions.ShowDownloadManager);
-
-    protected virtual void OnDownloadAllMissing() => SidePanelOperation?.Invoke(this, MainSidePanelActions.DownloadAllMissing);
-
-    protected virtual void OnGenerateCollections() => SidePanelOperation?.Invoke(this, MainSidePanelActions.GenerateCollections);
-    protected virtual void OnGetMissingMapData() => SidePanelOperation?.Invoke(this, MainSidePanelActions.GetMissingMapData);
 }
