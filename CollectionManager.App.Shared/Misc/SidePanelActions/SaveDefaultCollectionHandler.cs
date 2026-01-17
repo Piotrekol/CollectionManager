@@ -5,6 +5,7 @@ using CollectionManager.Common;
 using CollectionManager.Common.Interfaces;
 using CollectionManager.Core.Modules.FileIo;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -33,7 +34,7 @@ public sealed class SaveDefaultCollectionHandler : IMainSidePanelActionHandler
 
             if (!File.Exists(fileLocation))
             {
-                await _userDialogs.OkMessageBoxAsync("Could not find collection file to overwritte!", "Error", MessageBoxType.Error);
+                await _userDialogs.OkMessageBoxAsync("Could not find collection file to overwritte!", caption("Error"), MessageBoxType.Error);
                 return;
             }
         }
@@ -42,7 +43,7 @@ public sealed class SaveDefaultCollectionHandler : IMainSidePanelActionHandler
         {
             if (SidePanelActionHelpers.OsuIsRunning(isLegacyCollectionFile))
             {
-                await _userDialogs.OkMessageBoxAsync("Close your osu! before saving collections!", "Error", MessageBoxType.Error);
+                await _userDialogs.OkMessageBoxAsync("Close your osu! before saving collections!", caption("Error"), MessageBoxType.Error);
                 return;
             }
         }
@@ -54,28 +55,32 @@ public sealed class SaveDefaultCollectionHandler : IMainSidePanelActionHandler
                 throw;
             }
 
-            await _userDialogs.OkMessageBoxAsync("Could not determine if osu! is running due to a permissions error.", "Warning", MessageBoxType.Warning);
+            await _userDialogs.OkMessageBoxAsync("Could not determine if osu! is running due to a permissions error.", caption("Warning"), MessageBoxType.Warning);
         }
 
         if (await _userDialogs.YesNoMessageBoxAsync($"Are you sure that you want to overwrite your existing osu! collection at \"{fileLocation}\"?",
-            "Are you sure?", MessageBoxType.Question))
+            caption(), MessageBoxType.Question))
         {
             await SidePanelActionHelpers.BeforeCollectionSave(Initalizer.LoadedCollections);
             string backupFolder = Path.Combine(Initalizer.OsuDirectory, "collectionBackups");
 
             if (!TryBackupOsuCollection(backupFolder))
             {
-                await _userDialogs.OkMessageBoxAsync("Could not create collection backup. Save aborted.", "Error", MessageBoxType.Error);
+                await _userDialogs.OkMessageBoxAsync("Could not create collection backup. Save aborted.", caption("Error"), MessageBoxType.Error);
                 return;
             }
 
             _osuFileIo.CollectionLoader.SaveCollection(Initalizer.LoadedCollections, fileLocation);
-            await _userDialogs.OkMessageBoxAsync($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", "Info", MessageBoxType.Success);
+            await _userDialogs.OkMessageBoxAsync($"Collections saved.{Environment.NewLine}Previous collection backup was saved in \"{backupFolder}\" and will be kept for 30 days.", caption("Success"), MessageBoxType.Success);
         }
         else
         {
-            await _userDialogs.OkMessageBoxAsync("Save Aborted", "Info", MessageBoxType.Warning);
+            await _userDialogs.OkMessageBoxAsync("Save Aborted", caption("Info"), MessageBoxType.Info);
         }
+
+        static string caption(string subAction = default) => subAction is null
+            ? "Default collection save"
+            : $"Default collection save - {subAction}";
     }
 
     private static bool TryBackupOsuCollection(string backupFolder)
@@ -116,6 +121,7 @@ public sealed class SaveDefaultCollectionHandler : IMainSidePanelActionHandler
 
         return true;
 
+        [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "Not relevant for file names.")]
         static string CalculateMD5(string filename)
         {
             using MD5 md5 = MD5.Create();
