@@ -9,6 +9,8 @@ using System.Linq;
 
 public static class BeatmapUtils
 {
+    private static readonly string[] _backgroundFileFormats = [".jpg", ".jpeg", ".png"];
+
     public static string OsuSongsDirectory { get; set; } = "";
 
     public static Dictionary<int, Beatmaps> GetMapSets(this IOsuCollection collection, BeatmapListType beatmapListType)
@@ -95,13 +97,21 @@ public static class BeatmapUtils
             string line;
             while ((line = file.ReadLine()) != null)
             {
-                if (line.Contains(".jpg", StringComparison.CurrentCultureIgnoreCase) || line.Contains(".png", StringComparison.CurrentCultureIgnoreCase))
+                if (_backgroundFileFormats.Any(fileFormat => line.Contains(fileFormat, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    string[] splited = line.Split(',');
-                    imageLocation = Path.Combine(beatmap.BeatmapDirectory(), splited[2].Trim('"'));
+                    string[] split = line.Split(',');
+
+                    if (split.Length < 3)
+                    {
+                        continue;
+                    }
+
+                    imageLocation = Path.Combine(beatmap.BeatmapDirectory(), split[2].Trim('"'));
+
                     if (!File.Exists(imageLocation))
                     {
-                        return string.Empty;
+                        imageLocation = string.Empty;
+                        continue;
                     }
 
                     break;
