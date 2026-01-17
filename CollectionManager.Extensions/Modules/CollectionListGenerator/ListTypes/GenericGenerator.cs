@@ -74,7 +74,7 @@ public abstract class GenericGenerator : IListGenerator
             }
         }
 
-        _ = sb.Append(_md5Output.ToString());
+        _ = sb.Append(_md5Output);
         _ = _md5Output.Clear();
     }
 }

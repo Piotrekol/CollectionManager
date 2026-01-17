@@ -10,36 +10,31 @@ using System.Text;
 public class UserListGenerator : GenericGenerator
 {
     public static string NewLine = "|NL|";
-    private string _mainHeader = "";
-    private string _mainFooter = "";
-    private string _collectionBodyFormat = "";
-    private string _collectionFooter = "";
-    private string _collectionHeaderTemplate = "";
 
     public string mainHeader
     {
-        get => _mainHeader; set => _mainHeader = value.Replace(NewLine, Environment.NewLine);
-    }
+        get; set => field = value.Replace(NewLine, Environment.NewLine);
+    } = "";
 
     public string mainFooter
     {
-        get => _mainFooter; set => _mainFooter = value.Replace(NewLine, Environment.NewLine);
-    }
+        get; set => field = value.Replace(NewLine, Environment.NewLine);
+    } = "";
 
     public string collectionBodyFormat
     {
-        get => _collectionBodyFormat; set => _collectionBodyFormat = value.Replace(NewLine, Environment.NewLine);
-    }
+        get; set => field = value.Replace(NewLine, Environment.NewLine);
+    } = "";
 
     public string collectionFooter
     {
-        get => _collectionFooter; set => _collectionFooter = value.Replace(NewLine, Environment.NewLine);
-    }
+        get; set => field = value.Replace(NewLine, Environment.NewLine);
+    } = "";
 
     public string collectionHeaderTemplate
     {
-        get => _collectionHeaderTemplate; set => _collectionHeaderTemplate = value.Replace(NewLine, Environment.NewLine);
-    }
+        get; set => field = value.Replace(NewLine, Environment.NewLine);
+    } = "";
 
     protected override string MainHeader => mainHeader;
     protected override string MainFooter => mainFooter;
@@ -67,8 +62,7 @@ public class UserListGenerator : GenericGenerator
             {
                 _ = map.MapId > 0
                     ? sb.Append(CollectionBodyFormat.RobotoFormat(map))
-                    : _md5Output.AppendFormat(CollectionBodyFormat, "http://osu.ppy.sh/b/0", map.Md5, "", "", "",
-                        map.Md5);
+                    : _md5Output.Append($"unsubmitted: {map.Artist} - {map.Title} [{map.DiffName}]{Environment.NewLine}");
             }
         }
         else
@@ -79,7 +73,7 @@ public class UserListGenerator : GenericGenerator
             }
         }
 
-        _ = sb.Append(_md5Output.ToString());
+        _ = sb.Append(_md5Output);
         _ = _md5Output.Clear();
 
     }
