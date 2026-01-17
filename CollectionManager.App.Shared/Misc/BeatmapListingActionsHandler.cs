@@ -65,10 +65,17 @@ public class BeatmapListingActionsHandler
 
             Helpers.SetClipboardText($"{artist} - {title} [{diffName}]");
 
-            await _userDialogs.OkMessageBoxAsync(
+            bool dialogShown = await _userDialogs.OkMessageBoxAsync(
                 "Selected beatmap has no valid map id. Beatmap name was copied to your clipboard.",
                 "Info",
-                MessageBoxType.Info);
+                MessageBoxType.Info,
+                TimeSpan.FromSeconds(5),
+                "Do not inform me again in this session, and instead always focus osu!");
+
+            if (!dialogShown)
+            {
+                FocusOsuIfRunning();
+            }
 
             return;
         }
@@ -79,12 +86,30 @@ public class BeatmapListingActionsHandler
         }
         catch (InvalidOperationException)
         {
-            await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+            _ = await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
         }
         catch (Win32Exception)
         {
-            await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+            _ = await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
         }
+    }
+
+    private static void FocusOsuIfRunning()
+    {
+        Process? osuProcess = Process.GetProcessesByName("osu!").FirstOrDefault();
+        if (osuProcess is null)
+        {
+            return;
+        }
+
+        IntPtr windowHandle = osuProcess.MainWindowHandle;
+        if (windowHandle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        _ = Win32Interop.ShowWindow(windowHandle, Win32Interop.SwRestore);
+        _ = Win32Interop.SetForegroundWindow(windowHandle);
     }
 
     public void Bind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
@@ -157,7 +182,7 @@ public class BeatmapListingActionsHandler
         OsuDownloadManager manager = OsuDownloadManager.Instance;
         if (model.SelectedBeatmaps == null || !model.SelectedBeatmaps.Any())
         {
-            await _userDialogs.OkMessageBoxAsync("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
+            _ = await _userDialogs.OkMessageBoxAsync("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
             return;
         }
 

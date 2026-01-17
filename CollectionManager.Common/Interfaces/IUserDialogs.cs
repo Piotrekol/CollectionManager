@@ -13,6 +13,6 @@ public interface IUserDialogs
     Task<bool> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
     Task<(bool Result, bool doNotAskAgain)> YesNoMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, string doNotAskAgainText = null);
     Task<IProgressForm> CreateProgressFormAsync(Progress<string> userProgressMessage, Progress<int> completionPercentage);
-    Task OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info);
+    Task<bool> OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, TimeSpan? autoCloseAfter = null, string? doNotInformAgainText = null);
     Task TextMessageBoxAsync(string text, string caption);
 }

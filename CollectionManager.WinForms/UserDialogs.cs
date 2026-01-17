@@ -12,6 +12,7 @@ using System.Windows.Forms;
 public class UserDialogs : IUserDialogs
 {
     private readonly char[] _fileFilterSeparator = ['|'];
+    private static readonly HashSet<string> _sessionSuppressedDialogs = [];
 
     public Task<bool> IsThisPathCorrectAsync(string path)
     {
@@ -97,13 +98,30 @@ public class UserDialogs : IUserDialogs
     public Task<IProgressForm> CreateProgressFormAsync(Progress<string> userProgressMessage, Progress<int> completionPercentage)
         => Task.FromResult(GuiComponents.ProgressForm.ShowDialog(userProgressMessage, completionPercentage));
 
-    public Task OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info)
+    public Task<bool> OkMessageBoxAsync(string text, string caption, MessageBoxType messageBoxType = MessageBoxType.Info, TimeSpan? autoCloseAfter = null, string? doNotInformAgainText = null)
     {
         MessageBoxIcon icon = GetMessageBoxIcon(messageBoxType);
 
-        _ = MessageBox.Show(null, text, caption, MessageBoxButtons.OK, icon);
+        string suppressionId = $"OK|{messageBoxType}|{caption}|{text}";
+        if (_sessionSuppressedDialogs.Contains(suppressionId))
+        {
+            return Task.FromResult(false);
+        }
 
-        return Task.CompletedTask;
+        if (autoCloseAfter is null)
+        {
+            _ = MessageBox.Show(null, text, caption, MessageBoxButtons.OK, icon);
+
+            return Task.FromResult(true);
+        }
+
+        (DialogResult _, bool suppressInSession) = OkForm.ShowDialog(text, caption, autoCloseAfter.Value, doNotInformAgainText);
+        if (suppressInSession)
+        {
+            _ = _sessionSuppressedDialogs.Add(suppressionId);
+        }
+
+        return Task.FromResult(true);
     }
 
     public Task TextMessageBoxAsync(string text, string caption)
