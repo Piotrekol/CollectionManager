@@ -6,7 +6,7 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<NoWarn>$(NoWarn);WFO1000</NoWarn>
-		<TargetFrameworkBaseVersion>net9.0</TargetFrameworkBaseVersion>
+		<TargetFrameworkBaseVersion>net10.0</TargetFrameworkBaseVersion>
 	</PropertyGroup>
 
 	<!--Winforms projects-->
