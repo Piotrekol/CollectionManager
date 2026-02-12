@@ -73,7 +73,7 @@ public class InfoTextPresenter
 
         if (updater.Error)
         {
-            _view.UpdateText = string.Format(CultureInfo.InvariantCulture, UpdateError, updater.CurrentVersion);
+            _view.UpdateText = string.Format(CultureInfo.InvariantCulture, UpdateError, updater.CurrentProductVersion);
             _view.ColorUpdateText = false;
         }
         else if (updater.OnlineVersion == null)
@@ -88,7 +88,7 @@ public class InfoTextPresenter
         else
         {
             _view.ColorUpdateText = false;
-            _view.UpdateText = string.Format(CultureInfo.InvariantCulture, NoUpdatesAvailable, updater.CurrentVersion);
+            _view.UpdateText = string.Format(CultureInfo.InvariantCulture, NoUpdatesAvailable, updater.CurrentProductVersion);
         }
     }
 }

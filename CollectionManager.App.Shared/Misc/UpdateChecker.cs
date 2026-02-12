@@ -1,47 +1,35 @@
-﻿namespace CollectionManager.App.Shared.Misc;
+namespace CollectionManager.App.Shared.Misc;
 
 using CollectionManager.App.Shared.Interfaces;
 using CollectionManager.Extensions.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 public class UpdateChecker : IUpdateModel
 {
     private const string baseGithubUrl = "https://api.github.com/repos/Piotrekol/CollectionManager";
     private const string githubUpdateUrl = baseGithubUrl + "/releases/latest";
 
-    public UpdateChecker()
+    private readonly Lazy<FileVersionInfo> _versionInfo = new(() =>
     {
+        string executableLocation = Environment.ProcessPath;
 
-    }
+        return string.IsNullOrEmpty(executableLocation)
+            ? null
+            : FileVersionInfo.GetVersionInfo(executableLocation);
+    });
 
     public bool Error { get; private set; }
     public Version OnlineVersion { get; private set; }
     public string NewVersionLink { get; private set; }
+    public string CurrentProductVersion
+        => _versionInfo.Value?.ProductVersion ?? "unknown";
+
     public Version CurrentVersion
-    {
-        get
-        {
-            if (field is not null)
-            {
-                return field;
-            }
-
-            string executableLocation = Environment.ProcessPath;
-
-            if (string.IsNullOrEmpty(executableLocation))
-            {
-                field = new Version(-1, -1, -1, -1);
-
-                return field;
-            }
-
-            FileVersionInfo version = FileVersionInfo.GetVersionInfo(executableLocation);
-            field = new Version(version.FileVersion);
-
-            return field;
-        }
-    }
+        => field ??= _versionInfo.Value is { FileVersion: { } v }
+        ? new Version(v)
+        : new Version(-1, -1, -1, -1);
 
     public bool UpdateIsAvailable => OnlineVersion != null && OnlineVersion > CurrentVersion;
 

@@ -6,6 +6,7 @@ public interface IUpdateModel
     bool Error { get; }
     Version OnlineVersion { get; }
     string NewVersionLink { get; }
+    string CurrentProductVersion { get; }
     Version CurrentVersion { get; }
     bool CheckForUpdates();
 }

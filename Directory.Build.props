@@ -34,6 +34,8 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<AssemblyVersion>1.1.0</AssemblyVersion>
 		<FileVersion>1.1.0</FileVersion>
+		<InformationalVersion>1.1.0</InformationalVersion>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
