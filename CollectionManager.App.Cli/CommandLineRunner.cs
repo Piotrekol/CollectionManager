@@ -1,5 +1,6 @@
 namespace CollectionManager.App.Cli;
 
+using CollectionManager.Core.Extensions;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CommandLine;
@@ -22,7 +23,8 @@ internal static class CommandLineRunner
 
         if (!parsedArgs.SkipOsuLocation)
         {
-            parsedArgs.OsuLocation ??= OsuPathResolver.GetOsuOrLazerPath();
+            PrepareUserOsuPath(parsedArgs);
+
             if (string.IsNullOrWhiteSpace(parsedArgs.OsuLocation))
             {
                 Console.WriteLine("Could not find osu!");
@@ -30,7 +32,7 @@ internal static class CommandLineRunner
             else
             {
                 Console.WriteLine($"Using osu! database found at \"{parsedArgs.OsuLocation}\".");
-                _ = osuFileIo.OsuDatabase.Load(Path.Combine(parsedArgs.OsuLocation, "osu!.db"), progress: null, cancellationToken: default);
+                _ = osuFileIo.OsuDatabase.Load(parsedArgs.OsuLocation, progress: null, cancellationToken: default);
             }
         }
 
@@ -59,7 +61,30 @@ internal static class CommandLineRunner
         return true;
     }
 
-    
+    private static void PrepareUserOsuPath(CommandLineOptions parsedArgs)
+    {
+        if (string.IsNullOrWhiteSpace(parsedArgs.OsuLocation))
+        {
+            OsuPathResult osuPath = OsuPathResolver.GetOsuOrLazerPath();
+            parsedArgs.OsuLocation = Path.Combine(osuPath.Path, osuPath.Type.GetDatabaseFileName());
+
+            return;
+        }
+
+        if (Path.HasExtension(parsedArgs.OsuLocation))
+        {
+            return;
+        }
+
+        if (OsuPathResolver.IsOsuStableDirectory(parsedArgs.OsuLocation))
+        {
+            parsedArgs.OsuLocation = Path.Combine(parsedArgs.OsuLocation, OsuType.Stable.GetDatabaseFileName());
+        }
+        else if (OsuPathResolver.IsOsuLazerDataDirectory(parsedArgs.OsuLocation))
+        {
+            parsedArgs.OsuLocation = Path.Combine(parsedArgs.OsuLocation, OsuType.Lazer.GetDatabaseFileName());
+        }
+    }
 
     private static void ConvertCollection(OsuFileIo osuFileIo, string inputFilePath, string outputFilePath)
     {

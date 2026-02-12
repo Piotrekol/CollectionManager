@@ -22,26 +22,26 @@ public class OsuDatabase
         _scoresDatabase = scoresDatabase;
     }
 
-    public bool Load(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
+    public bool Load(string filePath, IProgress<string> progress, CancellationToken cancellationToken)
     {
-        string fileExtension = Path.GetExtension(fileDir)?.ToLower(CultureInfo.InvariantCulture);
+        string fileExtension = Path.GetExtension(filePath)?.ToLower(CultureInfo.InvariantCulture);
 
         switch (fileExtension)
         {
             case ".db":
-                LoadStableBeatmaps(fileDir, progress, cancellationToken);
+                LoadStableBeatmaps(filePath, progress, cancellationToken);
                 break;
             case ".realm":
-                _lazerDatabaseLoader.Load(fileDir, progress, cancellationToken);
+                _lazerDatabaseLoader.Load(filePath, progress, cancellationToken);
                 break;
             default:
-                return false;
+                throw new InvalidOperationException($"Provided file path did not contain valid file extension. filePath: `{filePath}`");
         }
 
         return true;
     }
 
-    public void LoadStableBeatmaps(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
+    private void LoadStableBeatmaps(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
     {
         try
         {

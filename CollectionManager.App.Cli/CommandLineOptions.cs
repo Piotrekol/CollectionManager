@@ -13,7 +13,7 @@ internal sealed class CommandLineOptions
     [Option('i', "Input", Required = false, HelpText = "Input db/osdb collection file.")]
     public string InputFilePath { get; set; }
 
-    [Option('l', "OsuLocation", Required = false, HelpText = "Location of your osu! or directory where valid osu!.db can be found. If not provided, will be found automatically.")]
+    [Option('l', "OsuLocation", Required = false, HelpText = "Location of your osu! or directory where valid osu!.db or client.realm can be found. If not provided, will be found automatically.")]
     public string OsuLocation { get; set; }
 
     [Option('s', "SkipOsuLocation", Required = false, HelpText = "Skip loading of osu! database.")]
