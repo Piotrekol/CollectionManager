@@ -1,4 +1,5 @@
 ﻿namespace CollectionManager.Core.Modules.FileIo.FileCollections;
+
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using System.IO;
@@ -6,7 +7,6 @@ using System.IO;
 public class CollectionLoader
 {
     private readonly MapCacher _mapCacher;
-    private readonly OsdbCollectionHandler OsdbCollectionHandler = new(null);
     private readonly OsuCollectionHandler OsuCollectionHandler = new(null);
     private readonly LazerCollectionHandler LazerCollectionHandler = new();
 
@@ -48,23 +48,23 @@ public class CollectionLoader
         };
     }
 
-    public void SaveCollection(OsuCollections collections, string fileLocation)
+    public void SaveCollection(OsuCollections collections, string filePath)
     {
-        string ext = Path.GetExtension(fileLocation);
+        string ext = Path.GetExtension(filePath);
 
         switch (ext.ToLower(System.Globalization.CultureInfo.CurrentCulture))
         {
             case ".db":
-                SaveOsuCollection(collections, fileLocation);
+                SaveOsuCollection(collections, filePath);
                 break;
             case ".osdb":
-                SaveOsdbCollection(collections, fileLocation);
+                SaveOsdbCollection(collections, filePath);
                 break;
             case ".realm":
-                SaveOsuLazerCollection(collections, fileLocation);
+                SaveOsuLazerCollection(collections, filePath);
                 break;
             default:
-                return;
+                throw new InvalidOperationException($"Provided file path did not contain valid file extension. filePath: `{filePath}`");
         }
     }
 

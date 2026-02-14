@@ -4,5 +4,6 @@ public enum OsuType
 {
     Any,
     Stable,
-    Lazer
+    Lazer,
+    None = -1
 }

@@ -45,7 +45,7 @@ public sealed class OsuPathResolver
             return new OsuPathResult(path, foundType);
         }
 
-        return new OsuPathResult(string.Empty, OsuType.Any);
+        return new OsuPathResult(string.Empty, OsuType.None);
     }
 
     public static async Task<string> GetManualOsuPathAsync(Func<string, Task<string>> selectDirectoryDialog)
@@ -138,7 +138,7 @@ public sealed class OsuPathResolver
     /// <returns></returns>
     private static bool TryGetOsuPathFromRegistry(out string path, out OsuType foundType, OsuType osuType = OsuType.Any)
     {
-        foundType = OsuType.Any;
+        foundType = OsuType.None;
         if (!OperatingSystem.IsWindows())
         {
             path = null;

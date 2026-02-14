@@ -144,18 +144,51 @@ If you have a collection with missing maps, osu!Stats may be able to repair the 
 
 ## CLI Usage
 
-The following command-line options are supported:
+CLI is provided with main Installer or as standalone exe in `CollectionManager-CLI.zip`.
 
-`-o` / `--Output`: Required. Output filename with or without a path. The filename extension will specify which format to save in: `.db` or `.osdb`. 
+CLI uses sub-commands for different operations:
 
-`-b` / `--BeatmapIds`: Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
+* `convert` - Convert collection files between formats (.db/.osdb).
 
-`-i` / `--Input`: Input .db/.osdb collection file.
+  * `-i` / `--Input`: Required. Input .db/.osdb collection file.
 
-`-l` / `--OsuLocation`: The location of your osu! directory or a directory containing a valid osu!.db. If not provided, Collection Manager will attempt to find it automatically.
+* `create` - Create collection from beatmap IDs or hashes.
 
-`-s` / `--SkipOsuLocation`: Skip loading of osu! database.
+  * `-b` / `--BeatmapIds`: Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
 
-`--help`: Display the help screen.
+  * `-h` / `--Hashes`: Comma or whitespace separated list of beatmap hashes (MD5). This can also be a path to a file containing this list.
 
-`--version`: Display version information.
+Common options:
+
+* `-o` / `--Output`: Required. Output filename with or without a path. The filename extension will specify which format to save in: `.db` or `.osdb`. 
+
+* `-l` / `--OsuLocation`: The location of your osu! directory or a directory containing a valid osu!.db or client.realm. If not provided, Collection Manager will attempt to find it automatically.
+
+* `-s` / `--SkipOsuLocation`: Skip loading of osu! database.
+
+* `--version`: Display version information.
+
+* `--help`: Display help for specific command.
+
+### Examples
+
+**Convert collection format:**
+```bash
+CollectionManager.App.Cli.exe convert -i input.db -o output.osdb
+#or
+CollectionManager.App.Cli.exe convert -i input.osdb -o output.db
+```
+
+**Create collection from beatmap IDs or hashes:**
+```bash
+CollectionManager.App.Cli.exe create -b "1 2 3 4 5" -o mycollection.osdb
+#or
+CollectionManager.App.Cli.exe create -h "hash1 hash2 hash3" -o mycollection.osdb
+#or using file contents
+CollectionManager.App.Cli.exe create -b C:\path\to\ids-or-hashes.txt -o mycollection.osdb
+```
+
+**Specify osu! location manually, instead of autodetection:**
+```bash
+CollectionManager.App.Cli.exe create -b "1 2 3" -o output.osdb -l "C:\osu!"
+```

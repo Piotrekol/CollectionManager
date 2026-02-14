@@ -2,7 +2,6 @@
 
 using CollectionManager.Core.Enums;
 using CollectionManager.Core.Exceptions;
-using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using SharpCompress.Archives;
@@ -17,8 +16,6 @@ using System.Text;
 
 public class OsdbCollectionHandler
 {
-    private readonly ILogger _logger;
-
     private static readonly Dictionary<string, int> _versions = new()
     {
         {"o!dm", 1},
@@ -32,11 +29,6 @@ public class OsdbCollectionHandler
         {"o!dm7min", 1007},
         {"o!dm8min", 1008},
     };
-
-    public OsdbCollectionHandler(ILogger logger)
-    {
-        _logger = logger;
-    }
 
     public static string CurrentVersion(bool minimalWrite = false) => "o!dm8" + (minimalWrite ? "min" : "");
 
@@ -269,5 +261,4 @@ public class OsdbCollectionHandler
         memStream.Position = 0;
         return new BinaryReader(memStream);
     }
-
 }

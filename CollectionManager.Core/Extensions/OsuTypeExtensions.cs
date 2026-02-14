@@ -9,7 +9,7 @@ public static class OsuTypeExtensions
         {
             OsuType.Lazer => "client.realm",
             OsuType.Stable => "osu!.db",
-            OsuType.Any => null,
+            OsuType.None => null,
             _ => throw new NotImplementedException()
         };
 }
