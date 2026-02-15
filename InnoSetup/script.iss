@@ -43,10 +43,10 @@ PrivilegesRequired=lowest
 
 [Registry]
 
-Root: HKCR; Subkey: ".osdb";                             ValueData: "{#MyAppName}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""; Tasks: osdbAssociation
-Root: HKCR; Subkey: "{#MyAppName}";                     ValueData: "Program {#MyAppName}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""; Tasks: osdbAssociation
-Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon";             ValueData: "{app}\{#MyAppExeName},0";               ValueType: string;  ValueName: ""; Tasks: osdbAssociation
-Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#MyAppExeName}"" ""%1""";  ValueType: string;  ValueName: ""; Tasks: osdbAssociation
+Root: HKCU; Subkey: "Software\Classes\.osdb";                             ValueData: "{#MyAppName}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""; Tasks: osdbAssociation;
+Root: HKCU; Subkey: "Software\Classes\{#MyAppName}";                     ValueData: "Program {#MyAppName}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""; Tasks: osdbAssociation;
+Root: HKCU; Subkey: "Software\Classes\{#MyAppName}\DefaultIcon";             ValueData: "{app}\{#MyAppExeName},0";               ValueType: string;  ValueName: ""; Tasks: osdbAssociation;
+Root: HKCU; Subkey: "Software\Classes\{#MyAppName}\shell\open\command";  ValueData: """{app}\{#MyAppExeName}"" ""%1""";  ValueType: string;  ValueName: ""; Tasks: osdbAssociation;
 
 [CustomMessages]
 MyAppOld=The Setup detected application version 
