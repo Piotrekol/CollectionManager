@@ -68,7 +68,7 @@ jobs:
           Compress-Archive -Path ./CollectionManager.App.Cli/bin/publish/* -DestinationPath ./artifacts/CollectionManager-CLI.zip
 
       - name: Install InnoSetup
-        run: choco install innosetup -y
+        run: choco install innosetup inno-download-plugin -y
 
       - name: Build installer
         shell: pwsh
