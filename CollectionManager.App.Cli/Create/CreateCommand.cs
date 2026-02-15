@@ -5,6 +5,7 @@ using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CommandLine;
 using System.IO;
+using System.Threading.Tasks;
 
 [Verb("create", HelpText = "Create collection from beatmap IDs or hashes")]
 internal sealed class CreateCommand : CommonOptions
@@ -17,19 +18,21 @@ internal sealed class CreateCommand : CommonOptions
     [Option('h', "Hashes", Required = false, HelpText = "Comma or whitespace separated list of beatmap hashes (MD5). Can be also path to the file.\nYou should have all beatmaps mentioned available locally in order to generate ready-to-use collection file.")]
     public string Hashes { get; init; }
 
-    public int Run()
+    public Task<int> RunAsync()
     {
         if (!Validate())
         {
-            return 1;
+            return Task.FromResult(1);
         }
 
         using OsuFileIo osuFileIo = this.LoadOsuDatabase();
         Console.WriteLine("Creating collections.");
 
-        return !string.IsNullOrWhiteSpace(BeatmapIds)
+        int result = !string.IsNullOrWhiteSpace(BeatmapIds)
             ? ProcessBeatmapIds(osuFileIo)
             : ProcessHashes(osuFileIo);
+
+        return Task.FromResult(result);
     }
 
     private bool Validate()

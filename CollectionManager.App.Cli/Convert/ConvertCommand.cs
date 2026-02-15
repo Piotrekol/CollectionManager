@@ -4,6 +4,7 @@ using CollectionManager.App.Cli.Common;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
 using CommandLine;
+using System.Threading.Tasks;
 
 [Verb("convert", HelpText = "Convert collection files between formats (.db/.osdb)")]
 internal sealed class ConvertCommand : CommonOptions
@@ -11,7 +12,7 @@ internal sealed class ConvertCommand : CommonOptions
     [Option('i', "Input", Required = true, HelpText = "Input db/osdb collection file.")]
     public string InputFilePath { get; init; }
 
-    public int Run()
+    public Task<int> RunAsync()
     {
         using OsuFileIo osuFileIo = this.LoadOsuDatabase();
         Console.WriteLine("Converting collections.");
@@ -19,6 +20,6 @@ internal sealed class ConvertCommand : CommonOptions
         osuFileIo.CollectionLoader.SaveCollection(collections, OutputFilePath);
         Console.WriteLine("Done.");
 
-        return 0;
+        return Task.FromResult(0);
     }
 }
