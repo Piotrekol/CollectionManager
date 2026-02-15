@@ -215,13 +215,14 @@ public class StartupPresenter : IDisposable
     private void LoadDatabase(CancellationToken cancellationToken)
     {
         OsuFileIo osuFileIo = Initalizer.OsuFileIo;
-        string osuDirectory = Initalizer.OsuDirectory = string.IsNullOrEmpty(_startupSettings.OsuLocation)
-            ? OsuPathResolver.GetOsuOrLazerPath()
+        string osuDirectory = string.IsNullOrEmpty(_startupSettings.OsuLocation)
+            ? OsuPathResolver.GetOsuOrLazerPath().Path
             : _startupSettings.OsuLocation;
 
+        Initalizer.OsuDirectory = osuDirectory;
+
         string osuDbOrRealmPath = new[] { Path.Combine(osuDirectory, @"osu!.db"), Path.Combine(osuDirectory, @"client.realm") }
-            .Where(File.Exists)
-            .FirstOrDefault();
+            .FirstOrDefault(File.Exists);
 
         if (string.IsNullOrEmpty(osuDirectory) || !Directory.Exists(osuDirectory) || string.IsNullOrEmpty(osuDbOrRealmPath))
         {

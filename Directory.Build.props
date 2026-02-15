@@ -32,8 +32,10 @@
 		<PackageProjectUrl>https://github.com/Piotrekol/CollectionManager</PackageProjectUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<AssemblyVersion>1.1.0</AssemblyVersion>
-		<FileVersion>1.1.0</FileVersion>
+		<AssemblyVersion>69.68.0</AssemblyVersion>
+		<FileVersion>69.68.0</FileVersion>
+		<InformationalVersion>69.68.0</InformationalVersion>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

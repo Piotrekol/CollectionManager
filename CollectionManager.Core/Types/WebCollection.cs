@@ -81,6 +81,13 @@ public class WebCollection : OsuCollection
 
         return base.RemoveBeatmap(hash);
     }
+
+    public override int RemoveBeatmaps(IEnumerable<string> hashes)
+    {
+        Modified = true;
+
+        return base.RemoveBeatmaps(hashes);
+    }
 }
 
 public interface IWebCollectionProvider

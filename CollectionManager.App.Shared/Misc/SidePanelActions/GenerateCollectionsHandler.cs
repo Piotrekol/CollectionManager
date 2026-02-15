@@ -20,7 +20,7 @@ public sealed class GenerateCollectionsHandler : IMainSidePanelActionHandler, ID
     private readonly IUserDialogs _userDialogs;
     private readonly ICollectionEditor _collectionEditor;
 
-    private CollectionsApiGenerator _collectionGenerator;
+    private readonly CollectionsApiGenerator _collectionGenerator;
     private IUserTopGeneratorForm _userTopGeneratorForm;
     private IUsernameGeneratorForm _usernameGeneratorForm;
     private readonly OsuSite _osuSite = new();
@@ -94,5 +94,9 @@ public sealed class GenerateCollectionsHandler : IMainSidePanelActionHandler, ID
             model.CompletionPercentage = completionPercentage;
         };
 
-    public void Dispose() => throw new NotImplementedException();
+    public void Dispose()
+    {
+        _collectionGenerator.Dispose();
+        _osuSite.Dispose();
+    }
 }

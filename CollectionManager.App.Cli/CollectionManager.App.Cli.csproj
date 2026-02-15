@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<AssemblyTitle>osu! Collection Manager CLI</AssemblyTitle>
+		<Copyright>Copyright © 2017-present Piotrekol</Copyright>
+		<PackageId>CollectionManager.App.Cli</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CollectionManager.Core\CollectionManager.Core.csproj" />
+		<ProjectReference Include="..\CollectionManager.Extensions\CollectionManager.Extensions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" />
+	</ItemGroup>
+</Project>

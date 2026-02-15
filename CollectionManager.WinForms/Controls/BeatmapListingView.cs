@@ -17,10 +17,9 @@ using System.Windows.Forms;
 
 public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDisposable
 {
-    private bool _allowForDeletion;
     private Mods _currentMods = Mods.Nm;
     private PlayMode _currentPlayMode = PlayMode.Osu;
-    private DifficultyCalculator _difficultyCalculator = new();
+    private readonly DifficultyCalculator _difficultyCalculator = new();
     private List<BeatmapGroupColumn> _displayColumns = [];
     private readonly Dictionary<object, BeatmapListingAction> _menuStripClickActions;
     private SortableFastListBeatmapGroupingStrategy _groupingStrategy;
@@ -41,10 +40,10 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     [Description("Should user be able to delete beatmaps from the list?"), Category("Layout")]
     public bool AllowForDeletion
     {
-        get => _allowForDeletion;
+        get;
         set
         {
-            _allowForDeletion = value;
+            field = value;
             DeleteMapMenuStrip.Enabled = value;
         }
     }
@@ -122,6 +121,7 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
             [DeleteMapMenuStrip] = BeatmapListingAction.DeleteBeatmapsFromCollection,
             [DownloadMapInBrowserMenuStrip] = BeatmapListingAction.DownloadBeatmaps,
             [DownloadMapManagedMenuStrip] = BeatmapListingAction.DownloadBeatmapsManaged,
+            [OpenInOsuMenuStrip] = BeatmapListingAction.OpenInOsu,
             [OpenBeatmapPageMapMenuStrip] = BeatmapListingAction.OpenBeatmapPages,
             [copyAsTextMenuStrip] = BeatmapListingAction.CopyBeatmapsAsText,
             [copyUrlMenuStrip] = BeatmapListingAction.CopyBeatmapsAsUrls,
@@ -320,15 +320,6 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
 
         // user group selection
         comboBox_grouping.DisplayMember = nameof(BeatmapGroupColumn.Text);
-        List<OLVColumn> excludedGroupingColumns =
-        [
-            column_Comment,
-            column_LastPlayed,
-            column_LastScoreDate,
-            column_EditDate,
-            column_MapId,
-            column_LocalVersionDiffers,
-        ];
 
         _displayColumns = [
             new(null, "No grouping"),
@@ -444,6 +435,8 @@ public partial class BeatmapListingView : UserControl, IBeatmapListingView, IDis
     }
 
     private void button_searchHelp_Click(object sender, EventArgs e) => BeatmapSearchHelpClicked?.Invoke(this, EventArgs.Empty);
+
+    private void OpenInOsuMenuStrip_Click(object sender, EventArgs e) => MenuStripClick(sender, e);
 
     private void comboBox_grouping_SelectedIndexChanged(object sender, EventArgs e)
     {

@@ -8,11 +8,15 @@ using CollectionManager.Common.Interfaces.Forms;
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
+using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Enums;
 using CollectionManager.Extensions.Modules.CollectionListGenerator;
 using CollectionManager.Extensions.Modules.CollectionListGenerator.ListTypes;
 using CollectionManager.Extensions.Utils;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class BeatmapListingActionsHandler
@@ -39,11 +43,75 @@ public class BeatmapListingActionsHandler
             {BeatmapListingAction.DownloadBeatmapsManaged, DownloadBeatmapsManaged },
             {BeatmapListingAction.DownloadBeatmaps, DownloadBeatmapsAsync },
             {BeatmapListingAction.OpenBeatmapPages, OpenBeatmapPagesAsync },
+            {BeatmapListingAction.OpenInOsu, OpenInOsu },
             {BeatmapListingAction.OpenBeatmapFolder, OpenBeatmapFolder },
             {BeatmapListingAction.PullWholeMapSet, PullWholeMapsets },
             {BeatmapListingAction.ExportBeatmapSets, ExportBeatmapSets },
         };
     }
+
+    private async void OpenInOsu(object sender)
+    {
+        if (sender is not IBeatmapListingModel model || model.SelectedBeatmap is null)
+        {
+            return;
+        }
+
+        if (model.SelectedBeatmap.MapId <= 0)
+        {
+            string artist = model.SelectedBeatmap.Artist ?? string.Empty;
+            string title = model.SelectedBeatmap.Title ?? string.Empty;
+            string diffName = model.SelectedBeatmap.DiffName ?? string.Empty;
+
+            Helpers.SetClipboardText($"{artist} - {title} [{diffName}]");
+
+            bool dialogShown = await _userDialogs.OkMessageBoxAsync(
+                "Selected beatmap has no valid map id. Beatmap name was copied to your clipboard.",
+                "Info",
+                MessageBoxType.Info,
+                TimeSpan.FromSeconds(5),
+                "Do not inform me again in this session, and instead always focus osu!");
+
+            if (!dialogShown)
+            {
+                FocusOsuIfRunning();
+            }
+
+            return;
+        }
+
+        try
+        {
+            _ = ProcessExtensions.OpenUrl($"osu://b/{model.SelectedBeatmap.MapId}");
+        }
+        catch (InvalidOperationException)
+        {
+            _ = await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+        }
+        catch (Win32Exception)
+        {
+            _ = await _userDialogs.OkMessageBoxAsync("Unable to open osu! (osu:// protocol handler is not registered).", "Error", MessageBoxType.Error);
+        }
+    }
+
+    private static void FocusOsuIfRunning()
+    {
+        Process? osuProcess = Process.GetProcessesByName("osu!").FirstOrDefault();
+        if (osuProcess is null)
+        {
+            return;
+        }
+
+        IntPtr windowHandle = osuProcess.MainWindowHandle;
+        if (windowHandle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        _ = Win32Interop.ShowWindow(windowHandle, Win32Interop.SwRestore);
+        _ = Win32Interop.SetForegroundWindow(windowHandle);
+    }
+
     public void Bind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation += BeatmapListingModel_BeatmapOperation;
 
     public void UnBind(IBeatmapListingModel beatmapListingModel) => beatmapListingModel.BeatmapOperation -= BeatmapListingModel_BeatmapOperation;
@@ -53,22 +121,59 @@ public class BeatmapListingActionsHandler
     private void PullWholeMapsets(object sender)
     {
         IBeatmapListingModel model = (IBeatmapListingModel)sender;
+
         if (model.SelectedBeatmaps?.Count > 0)
         {
-            Beatmaps setBeatmaps = [];
+            HashSet<int> targetMapSetIds = [];
+            HashSet<string> targetDirs = [];
 
             foreach (Beatmap selectedBeatmap in model.SelectedBeatmaps)
             {
-                IEnumerable<Beatmap> set = selectedBeatmap.MapSetId <= 20
-                    ? Initalizer.LoadedBeatmaps.Where(b => b.Dir == selectedBeatmap.Dir)
-                    : Initalizer.LoadedBeatmaps.Where(b => b.MapSetId == selectedBeatmap.MapSetId);
-                setBeatmaps.AddRange(set);
-
+                if (selectedBeatmap.MapSetId <= MapCacher.InvalidMapIdThreshold)
+                {
+                    _ = targetDirs.Add(selectedBeatmap.Dir);
+                }
+                else
+                {
+                    _ = targetMapSetIds.Add(selectedBeatmap.MapSetId);
+                }
             }
 
-            Initalizer.CollectionEditor.EditCollection(
-                CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, setBeatmaps)
-            );
+            Dictionary<int, HashSet<Beatmap>> mapsetBeatmaps = [];
+            Dictionary<string, HashSet<Beatmap>> unsubmittedBeatmaps = [];
+
+            foreach (Beatmap beatmap in Initalizer.LoadedBeatmaps)
+            {
+                if (beatmap.MapSetId > 20 && targetMapSetIds.Contains(beatmap.MapSetId))
+                {
+                    if (!mapsetBeatmaps.TryGetValue(beatmap.MapSetId, out HashSet<Beatmap> value))
+                    {
+                        value = [];
+                        mapsetBeatmaps[beatmap.MapSetId] = value;
+                    }
+
+                    _ = value.Add(beatmap);
+                }
+                else if (beatmap.MapSetId <= MapCacher.InvalidMapIdThreshold && targetDirs.Contains(beatmap.Dir))
+                {
+                    if (!unsubmittedBeatmaps.TryGetValue(beatmap.Dir, out HashSet<Beatmap> value))
+                    {
+                        value = [];
+                        unsubmittedBeatmaps[beatmap.Dir] = value;
+                    }
+
+                    _ = value.Add(beatmap);
+                }
+            }
+
+            List<CollectionEditArgs> bulkEditArgs = new(mapsetBeatmaps.Count + unsubmittedBeatmaps.Count);
+
+            bulkEditArgs.AddRange(mapsetBeatmaps.Values
+                .Select(beatmaps => CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, beatmaps)));
+            bulkEditArgs.AddRange(unsubmittedBeatmaps.Values
+                .Select(beatmaps => CollectionEditArgs.AddBeatmaps(model.CurrentCollection.Name, beatmaps)));
+
+            Initalizer.CollectionEditor.EditCollection(bulkEditArgs);
         }
     }
     private async void DownloadBeatmapsManaged(object sender)
@@ -77,7 +182,7 @@ public class BeatmapListingActionsHandler
         OsuDownloadManager manager = OsuDownloadManager.Instance;
         if (model.SelectedBeatmaps == null || !model.SelectedBeatmaps.Any())
         {
-            await _userDialogs.OkMessageBoxAsync("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
+            _ = await _userDialogs.OkMessageBoxAsync("Select beatmaps with should be downloaded first, or use Online->Download all missing beatmaps option at the top instead", "Info", MessageBoxType.Info);
             return;
         }
 

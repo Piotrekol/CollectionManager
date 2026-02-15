@@ -8,23 +8,9 @@ using CollectionManager.Common.Interfaces.Forms;
 using CollectionManager.Core.Types;
 using CollectionManager.Extensions.Modules.Downloader.Api;
 using System.Collections.Specialized;
-using System.Reflection;
+
 public static class Helpers
 {
-    public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
-    {
-        ArgumentNullException.ThrowIfNull(assembly);
-
-        try
-        {
-            return assembly.GetTypes();
-        }
-        catch (ReflectionTypeLoadException e)
-        {
-            return e.Types.Where(t => t != null);
-        }
-    }
-
     public static LoginData GetLoginData(this ILoginFormView loginForm,
         IReadOnlyList<IDownloadSource> downloadSources)
     {

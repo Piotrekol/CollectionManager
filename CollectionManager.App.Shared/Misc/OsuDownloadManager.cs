@@ -10,7 +10,6 @@ using CollectionManager.Extensions.Utils;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 
 public sealed class OsuDownloadManager
@@ -27,7 +26,7 @@ public sealed class OsuDownloadManager
     private DownloadManager _mapDownloader;
     private readonly Lazy<List<DownloadSource>> _downloadSources = new(() =>
     {
-        string configLocation = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "downloadSources.json");
+        string configLocation = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "downloadSources.json");
         return !File.Exists(configLocation)
             ? throw new FileNotFoundException("download sources configuration is missing!")
             : JsonConvert.DeserializeObject<List<DownloadSource>>(File.ReadAllText(configLocation));
@@ -101,20 +100,8 @@ public sealed class OsuDownloadManager
 
     public void DownloadBeatmap(Beatmap beatmap) => DownloadBeatmap(beatmap, true);
 
-    public void PauseDownloads()
-    {
-        if (_mapDownloader != null)
-        {
-            _mapDownloader.StopDownloads = true;
-        }
-    }
-    public void ResumeDownloads()
-    {
-        if (_mapDownloader != null)
-        {
-            _mapDownloader.StopDownloads = false;
-        }
-    }
+    public void PauseDownloads() => _mapDownloader?.StopDownloads = true;
+    public void ResumeDownloads() => _mapDownloader?.StopDownloads = false;
 
     private void MapDownloaderOnProgressUpdated(object sender, DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
     {

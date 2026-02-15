@@ -1,4 +1,4 @@
-﻿namespace CollectionManager.Core.Modules.FileIo;
+namespace CollectionManager.Core.Modules.FileIo;
 
 using CollectionManager.Core.Types;
 using Microsoft.Win32;
@@ -9,43 +9,43 @@ public sealed class OsuPathResolver
 {
     public static async Task<string> GetOsuPathAsync(Func<string, Task<bool>> thisPathIsCorrect, Func<string, Task<string>> selectDirectoryDialog)
     {
-        string path = GetOsuOrLazerPath();
+        OsuPathResult result = GetOsuOrLazerPath();
 
-        if (string.IsNullOrWhiteSpace(path))
+        if (string.IsNullOrWhiteSpace(result.Path))
         {
             return await GetManualOsuPathAsync(selectDirectoryDialog);
         }
 
         if (thisPathIsCorrect is null)
         {
-            return path;
+            return result.Path;
         }
 
-        bool result = await thisPathIsCorrect(path);
+        bool isCorrect = await thisPathIsCorrect(result.Path);
 
-        return result
-            ? path
+        return isCorrect
+            ? result.Path
             : await GetManualOsuPathAsync(selectDirectoryDialog);
     }
 
-    public static string GetOsuOrLazerPath()
+    public static OsuPathResult GetOsuOrLazerPath()
     {
         if (TryGetRunningOsuPath(out string path))
         {
-            return path;
+            return new OsuPathResult(path, OsuType.Stable);
         }
 
         if (TryGetLazerDataPath(out path))
         {
-            return path;
+            return new OsuPathResult(path, OsuType.Lazer);
         }
 
-        if (TryGetOsuPathFromRegistry(out path))
+        if (TryGetOsuPathFromRegistry(out path, out OsuType foundType, OsuType.Any))
         {
-            return path;
+            return new OsuPathResult(path, foundType);
         }
 
-        return string.Empty;
+        return new OsuPathResult(string.Empty, OsuType.None);
     }
 
     public static async Task<string> GetManualOsuPathAsync(Func<string, Task<string>> selectDirectoryDialog)
@@ -65,7 +65,7 @@ public sealed class OsuPathResolver
             return true;
         }
 
-        if (TryGetOsuPathFromRegistry(out path, OsuType.Stable) && IsOsuStableDirectory(path))
+        if (TryGetOsuPathFromRegistry(out path, out _, OsuType.Stable) && IsOsuStableDirectory(path))
         {
             return true;
         }
@@ -136,8 +136,9 @@ public sealed class OsuPathResolver
     /// Attempts to retrieve osu! stable or lazer path from windows registry.
     /// </summary>
     /// <returns></returns>
-    private static bool TryGetOsuPathFromRegistry(out string path, OsuType osuType = OsuType.Any)
+    private static bool TryGetOsuPathFromRegistry(out string path, out OsuType foundType, OsuType osuType = OsuType.Any)
     {
+        foundType = OsuType.None;
         if (!OperatingSystem.IsWindows())
         {
             path = null;
@@ -149,15 +150,15 @@ public sealed class OsuPathResolver
             const string lazerKey = "osu.File.osz\\Shell\\Open\\Command";
             const string stableKey = "osustable.File.osz\\Shell\\Open\\Command";
 
-            string[] keys = osuType switch
+            (string key, OsuType type)[] keys = osuType switch
             {
-                OsuType.Any => [lazerKey, stableKey],
-                OsuType.Stable => [stableKey],
-                OsuType.Lazer => [lazerKey],
+                OsuType.Any => [(lazerKey, OsuType.Lazer), (stableKey, OsuType.Stable)],
+                OsuType.Stable => [(stableKey, OsuType.Stable)],
+                OsuType.Lazer => [(lazerKey, OsuType.Lazer)],
                 OsuType unknown => throw new InvalidOperationException($"OsuType {unknown} is not valid.")
             };
 
-            foreach (string key in keys)
+            foreach ((string key, OsuType type) in keys)
             {
                 using RegistryKey osuRegistryKey = Registry.ClassesRoot.OpenSubKey(key);
 
@@ -172,6 +173,7 @@ public sealed class OsuPathResolver
                 path = Path.GetDirectoryName(exePath);
                 if (IsOsuUserDataDirectory(path))
                 {
+                    foundType = type;
                     return true;
                 }
             }

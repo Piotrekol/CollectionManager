@@ -45,7 +45,7 @@ public class MRUFileCache
         {
             try
             {
-                ws.DownloadFile(url, filePath);
+                ws.DownloadFile(url, tempFilePath);
             }
             catch (WebException)
             {

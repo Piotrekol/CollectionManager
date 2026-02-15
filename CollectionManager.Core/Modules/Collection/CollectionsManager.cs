@@ -1,4 +1,5 @@
 namespace CollectionManager.Core.Modules.Collection;
+
 using CollectionManager.Core.Enums;
 using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.Collection.Strategies;
@@ -65,7 +66,23 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
             AfterCollectionsEdit();
         }
     }
+
     public void EditCollection(CollectionEditArgs args) => EditCollection(args, false);
+
+    public void EditCollection(IReadOnlyList<CollectionEditArgs> args)
+    {
+        if (args is null || args.Count is 0)
+        {
+            return;
+        }
+
+        foreach (CollectionEditArgs arg in args)
+        {
+            EditCollection(arg, true);
+        }
+
+        AfterCollectionsEdit();
+    }
 
     public OsuCollections GetCollectionsForBeatmaps(Beatmaps beatmaps)
     {
@@ -87,7 +104,7 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         string newName = desiredName;
         IReadOnlyList<string> reservedNames = additionalReservedNames ?? Array.Empty<string>();
 
-        while (CollectionNameExists(newName) || reservedNames.Contains(newName))
+        while (!IsCollectionNameValid(newName) || reservedNames.Contains(newName))
         {
             newName = $"{desiredName}_{c++}";
         }
@@ -108,7 +125,7 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
         return false;
     }
 
-    public bool IsCollectionNameValid(string name) => !CollectionNameExists(name);
+    public bool IsCollectionNameValid(string name) => !(string.IsNullOrEmpty(name) || CollectionNameExists(name));
 
     protected virtual void AfterCollectionsEdit() => LoadedCollections.CallReset();
 }

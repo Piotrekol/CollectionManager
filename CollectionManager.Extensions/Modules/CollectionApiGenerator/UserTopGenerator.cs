@@ -18,9 +18,10 @@ public sealed partial class UserTopGenerator : IDisposable
 {
     private readonly string StartingProcessing = "Preparing...";
     private readonly string ParsingUser = "Processing \"{0}\" | {1}";
-    private readonly string GettingScores = "Getting scores from api...(try {0} of 5)";
-    private readonly string GettingBeatmaps = "Getting missing beatmaps data from api... {0}";
-    private readonly string ParsingFinished = "Done processing {0} users! - Close this window to add created collections";
+    private readonly string GettingScores = "Getting scores from api... (try {0} of 5)";
+    private readonly string GettingBeatmaps = "Getting missing beatmaps data from api... {0}.";
+    private readonly string ParsingUserFinished = "Done.";
+    private readonly string ParsingFinished = "Done processing {0} users! - Close this window to add created collections.";
     private readonly string GettingUserFailed = "FAILED | Waiting {1}s and trying again.";
     private readonly string GettingBeatmapFailed = "FAILED | Waiting {1}s and trying again.";
     private readonly string Aborted = "FAILED | User aborted.";
@@ -67,13 +68,13 @@ public sealed partial class UserTopGenerator : IDisposable
 
                 OsuCollections collections = await GetPlayerCollectionsAsync(username, configuration.CollectionNameSavePattern, (PlayMode)configuration.Gamemode, configuration.ScoreSaveConditions, cancellationToken);
 
-                Log(username, ParsingFinished, ++processedCounter / (double)totalUsernames * 100);
+                Log(username, ParsingUserFinished, ++processedCounter / (double)totalUsernames * 100);
 
                 _collectionManager.EditCollection(CollectionEditArgs.AddOrMergeCollections(collections));
             }
 
             newCollections.AddRange(_collectionManager.LoadedCollections);
-            _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingFinished, configuration.Usernames.Count, cancellationToken), 100);
+            _logger?.Invoke(string.Format(CultureInfo.InvariantCulture, ParsingFinished, configuration.Usernames.Count), 100);
 
             return newCollections;
         }
@@ -190,7 +191,6 @@ public sealed partial class UserTopGenerator : IDisposable
 
     private async Task<IList<ApiScore>> GetPlayerScores(string username, PlayMode gamemode, ScoreSaveConditions configuration, CancellationToken cancellationToken)
     {
-        Log(username, string.Format(CultureInfo.InvariantCulture, GettingScores, 1));
         IList<ApiScore> scoresFromCache = _scoreCache.FirstOrDefault(s => s.Key.Username == username & s.Key.PlayMode == gamemode).Value;
 
         if (scoresFromCache != null)

@@ -4,53 +4,54 @@ using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.FileIo.OsuLazerDb;
 using CollectionManager.Core.Types;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 
 public class OsuDatabase
 {
-    public MapCacher LoadedMaps = new();
-    private readonly OsuDatabaseLoader _osuDatabaseLoader;
+    public MapCacher LoadedMaps { get; } = new();
     private readonly OsuLazerDatabase _lazerDatabaseLoader;
     private readonly IScoreDataManager _scoresDatabase;
 
-    public string OsuFileLocation { get; private set; }
-    public string SongsFolderLocation { get; set; }
-    public int NumberOfBeatmapsWithoutId { get; set; }
-
-    public bool DatabaseIsLoaded => _osuDatabaseLoader.LoadedSuccessfully;
-    public string Status => ((LOsuDatabaseLoader)_osuDatabaseLoader).status;
-    public int NumberOfBeatmaps => LoadedMaps.Beatmaps.Count;
-    public string Username => _osuDatabaseLoader.Username;
+    public StableOsuDatabaseData StableOsuDatabaseData { get; private set; }
 
     public OsuDatabase(Beatmap beatmapBase, IScoreDataManager scoresDatabase)
     {
-        _osuDatabaseLoader = new LOsuDatabaseLoader(LoadedMaps, beatmapBase);
         _lazerDatabaseLoader = new OsuLazerDatabase(LoadedMaps, scoresDatabase);
         _scoresDatabase = scoresDatabase;
     }
 
-    public bool Load(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
+    public bool Load(string filePath, IProgress<string> progress, CancellationToken cancellationToken)
     {
-        string fileExtension = Path.GetExtension(fileDir)?.ToLower();
-        OsuFileLocation = fileDir;
+        string fileExtension = Path.GetExtension(filePath)?.ToLower(CultureInfo.InvariantCulture);
 
         switch (fileExtension)
         {
             case ".db":
-                _osuDatabaseLoader.LoadDatabase(fileDir, progress, cancellationToken);
+                LoadStableBeatmaps(filePath, progress, cancellationToken);
                 break;
             case ".realm":
-                _lazerDatabaseLoader.Load(fileDir, progress, cancellationToken);
+                _lazerDatabaseLoader.Load(filePath, progress, cancellationToken);
                 break;
             default:
-                OsuFileLocation = null;
-                return false;
+                throw new InvalidOperationException($"Provided file path did not contain valid file extension. filePath: `{filePath}`");
         }
 
         return true;
     }
 
-    public void Load(string fileDir, IProgress<string> progress = null) => Load(fileDir, progress, CancellationToken.None);
-
+    private void LoadStableBeatmaps(string fileDir, IProgress<string> progress, CancellationToken cancellationToken)
+    {
+        try
+        {
+            StableOsuDatabaseData = StableOsuDatabaseReader.ReadDatabase(fileDir, cancellationToken, progress);
+            LoadedMaps.StoreBeatmaps(StableOsuDatabaseData.Beatmaps);
+        }
+        catch (Exception exception)
+        {
+            progress?.Report($"Something went wrong while processing beatmaps(database is corrupt or its format changed). {exception.Message}; {exception.StackTrace}");
+            throw;
+        }
+    }
 }

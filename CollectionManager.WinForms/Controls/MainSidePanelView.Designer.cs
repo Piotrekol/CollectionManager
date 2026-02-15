@@ -34,7 +34,8 @@
             Menu_loadCollection = new System.Windows.Forms.ToolStripMenuItem();
             Menu_loadDefaultCollection = new System.Windows.Forms.ToolStripMenuItem();
             saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            Menu_saveAllCollections = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_saveAllCollectionsAsDb = new System.Windows.Forms.ToolStripMenuItem();
+            Menu_saveAllCollectionsAsOsdb = new System.Windows.Forms.ToolStripMenuItem();
             Menu_saveOsuCollection = new System.Windows.Forms.ToolStripMenuItem();
             Menu_collectionsSplit = new System.Windows.Forms.ToolStripMenuItem();
             listingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,12 +61,14 @@
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             Menu_discord = new System.Windows.Forms.ToolStripMenuItem();
             Menu_github = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, onlineToolStripMenuItem, osustatsCollectionsToolStripMenuItem, Menu_beatmapListing, settingsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, Menu_beatmapListing, onlineToolStripMenuItem, osustatsCollectionsToolStripMenuItem, settingsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -96,39 +99,45 @@
             // Menu_loadDefaultCollection
             // 
             Menu_loadDefaultCollection.Name = "Menu_loadDefaultCollection";
-            Menu_loadDefaultCollection.Size = new System.Drawing.Size(187, 22);
-            Menu_loadDefaultCollection.Text = "osu! collection";
+            Menu_loadDefaultCollection.Size = new System.Drawing.Size(192, 22);
+            Menu_loadDefaultCollection.Text = "Default osu! collection";
             // 
             // saveToolStripMenuItem
             // 
-            saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_saveAllCollections, Menu_saveOsuCollection, Menu_collectionsSplit });
+            saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_saveAllCollectionsAsDb, Menu_saveAllCollectionsAsOsdb, toolStripSeparator3, Menu_saveOsuCollection, toolStripSeparator2, Menu_collectionsSplit });
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             saveToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             saveToolStripMenuItem.Text = "Save";
             // 
-            // Menu_saveAllCollections
+            // Menu_saveAllCollectionsAsDb
             // 
-            Menu_saveAllCollections.Name = "Menu_saveAllCollections";
-            Menu_saveAllCollections.Size = new System.Drawing.Size(217, 22);
-            Menu_saveAllCollections.Text = "Collection(.db/.osdb)";
+            Menu_saveAllCollectionsAsDb.Name = "Menu_saveAllCollectionsAsDb";
+            Menu_saveAllCollectionsAsDb.Size = new System.Drawing.Size(220, 22);
+            Menu_saveAllCollectionsAsDb.Text = "osu! collection (.db)";
+            // 
+            // Menu_saveAllCollectionsAsOsdb
+            // 
+            Menu_saveAllCollectionsAsOsdb.Name = "Menu_saveAllCollectionsAsOsdb";
+            Menu_saveAllCollectionsAsOsdb.Size = new System.Drawing.Size(220, 22);
+            Menu_saveAllCollectionsAsOsdb.Text = "Shareable collection (.osdb)";
             // 
             // Menu_saveOsuCollection
             // 
             Menu_saveOsuCollection.Name = "Menu_saveOsuCollection";
-            Menu_saveOsuCollection.Size = new System.Drawing.Size(217, 22);
-            Menu_saveOsuCollection.Text = "osu! collection";
+            Menu_saveOsuCollection.Size = new System.Drawing.Size(220, 22);
+            Menu_saveOsuCollection.Text = "Default osu! collection";
             // 
             // Menu_collectionsSplit
             // 
             Menu_collectionsSplit.Name = "Menu_collectionsSplit";
-            Menu_collectionsSplit.Size = new System.Drawing.Size(217, 22);
+            Menu_collectionsSplit.Size = new System.Drawing.Size(220, 22);
             Menu_collectionsSplit.Text = "Collections in separate files";
             // 
             // listingToolStripMenuItem1
             // 
             listingToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_listAllCollections, Menu_listMissingMaps });
             listingToolStripMenuItem1.Name = "listingToolStripMenuItem1";
-            listingToolStripMenuItem1.Size = new System.Drawing.Size(109, 22);
+            listingToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             listingToolStripMenuItem1.Text = "Listing";
             // 
             // Menu_listAllCollections
@@ -146,7 +155,7 @@
             // Menu_unloadCollections
             // 
             Menu_unloadCollections.Name = "Menu_unloadCollections";
-            Menu_unloadCollections.Size = new System.Drawing.Size(109, 22);
+            Menu_unloadCollections.Size = new System.Drawing.Size(180, 22);
             Menu_unloadCollections.Text = "Clear";
             // 
             // onlineToolStripMenuItem
@@ -249,25 +258,35 @@
             // Menu_searchSyntax
             // 
             Menu_searchSyntax.Name = "Menu_searchSyntax";
-            Menu_searchSyntax.Size = new System.Drawing.Size(180, 22);
+            Menu_searchSyntax.Size = new System.Drawing.Size(146, 22);
             Menu_searchSyntax.Text = "Search Syntax";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // Menu_discord
             // 
             Menu_discord.Name = "Menu_discord";
-            Menu_discord.Size = new System.Drawing.Size(180, 22);
+            Menu_discord.Size = new System.Drawing.Size(146, 22);
             Menu_discord.Text = "Discord";
             // 
             // Menu_github
             // 
             Menu_github.Name = "Menu_github";
-            Menu_github.Size = new System.Drawing.Size(180, 22);
+            Menu_github.Size = new System.Drawing.Size(146, 22);
             Menu_github.Text = "Github";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(217, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(217, 6);
             // 
             // MainSidePanelView
             // 
@@ -300,7 +319,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem Menu_loadCollection;
         private System.Windows.Forms.ToolStripMenuItem Menu_loadDefaultCollection;
-        private System.Windows.Forms.ToolStripMenuItem Menu_saveAllCollections;
+        private System.Windows.Forms.ToolStripMenuItem Menu_saveAllCollectionsAsDb;
+        private System.Windows.Forms.ToolStripMenuItem Menu_saveAllCollectionsAsOsdb;
         private System.Windows.Forms.ToolStripMenuItem Menu_collectionsSplit;
         private System.Windows.Forms.ToolStripMenuItem Menu_unloadCollections;
         private System.Windows.Forms.ToolStripMenuItem Menu_beatmapListing;
@@ -317,5 +337,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem Menu_discord;
         private System.Windows.Forms.ToolStripMenuItem Menu_github;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

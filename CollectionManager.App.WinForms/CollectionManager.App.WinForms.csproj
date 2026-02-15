@@ -2,10 +2,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<AssemblyTitle>osu! Collection Manager</AssemblyTitle>
-		<Product>Gui</Product>
 		<Copyright>Copyright ©  2017-present Piotrekol</Copyright>
-		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -26,12 +23,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommandLineParser" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="System.Drawing.Common" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<None Remove="Resources\logo.ico" />
-	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Resources\logo.ico" />
 	</ItemGroup>

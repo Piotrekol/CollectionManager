@@ -3,6 +3,7 @@
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Types;
+using System.Threading;
 
 internal class Class1
 {
@@ -17,7 +18,7 @@ internal class Class1
         string osuDbFileName = "osu!.db";
         string ExampleCollectionFileLocation = @"E:\osuCollections\SomeCollectionThatExists.db";
 
-        osuFileIo.OsuDatabase.Load(osuPath + osuDbFileName);
+        _ = osuFileIo.OsuDatabase.Load(osuPath + osuDbFileName, null, CancellationToken.None);
 
         //osu! configuration file is currently only used for getting a songs folder location
         osuFileIo.OsuSettings.Load(osuPath);

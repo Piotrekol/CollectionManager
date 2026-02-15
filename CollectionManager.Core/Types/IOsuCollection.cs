@@ -66,5 +66,6 @@ public interface IOsuCollection
     void ReplaceBeatmap(string hash, Beatmap newBeatmap);
     void ReplaceBeatmap(int mapId, Beatmap newBeatmap);
     bool RemoveBeatmap(string hash);
+    int RemoveBeatmaps(IEnumerable<string> hashes);
     IEnumerator GetEnumerator();
 }

@@ -7,10 +7,13 @@ using System.Collections.Generic;
 
 public class MapCacher : IMapDataManager
 {
+    public const int InvalidMapIdThreshold = 10;
+
     private readonly Dictionary<string, Beatmap> LoadedBeatmapsHashDict = [];
     private readonly Dictionary<int, Beatmap> LoadedBeatmapsMapIdDict = [];
-    private bool _massStoring;
     private readonly HashSet<string> MassStoringBeatmapHashes = [];
+
+    private bool _massStoring;
 
     public object LockingObject { get; } = new();
     public Beatmaps Beatmaps { get; } = [];
@@ -68,19 +71,31 @@ public class MapCacher : IMapDataManager
         OnBeatmapsModified();
     }
 
+    public void StoreBeatmaps(Beatmaps beatmaps)
+    {
+        StartMassStoring();
+
+        foreach (Beatmap beatmap in beatmaps)
+        {
+            StoreBeatmap(beatmap);
+        }
+
+        EndMassStoring();
+    }
+
     public void StoreBeatmap(Beatmap beatmap)
     {
         if (_massStoring)
         {
             if (MassStoringBeatmapHashes.Add(beatmap.Md5))
             {
-                Beatmaps.Add((Beatmap)beatmap.Clone());
+                Beatmaps.Add(beatmap);
             }
 
             return;
         }
 
-        Beatmaps.Add((Beatmap)beatmap.Clone());
+        Beatmaps.Add(beatmap);
         UpdateLookupDicts(beatmap);
         OnBeatmapsModified();
     }
@@ -89,7 +104,19 @@ public class MapCacher : IMapDataManager
 
     private void OnBeatmapsModified() => BeatmapsModified?.Invoke(this, EventArgs.Empty);
 
-    public Beatmap GetByHash(string hash) => LoadedBeatmapsHashDict.TryGetValue(hash, out Beatmap value) ? value : null;
+    public Beatmap? GetByHash(string hash) => LoadedBeatmapsHashDict.TryGetValue(hash, out Beatmap value) ? value : null;
 
-    public Beatmap GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
+    public Beatmap? GetByMapId(int mapId) => LoadedBeatmapsMapIdDict.TryGetValue(mapId, out Beatmap value) ? value : null;
+
+    public Beatmap? Get(string hash, int mapId)
+    {
+        Beatmap beatmap = GetByHash(hash);
+
+        if (beatmap is not null || mapId <= InvalidMapIdThreshold)
+        {
+            return beatmap;
+        }
+
+        return GetByMapId(mapId);
+    }
 }

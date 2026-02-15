@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  CONFIGURATION: Release
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^v', ''
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Version: $version"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Update version in Directory.Build.props
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.VERSION }}"
+          $filePath = "Directory.Build.props"
+          $content = Get-Content $filePath -Raw
+          $content = $content -replace '<AssemblyVersion>.*?</AssemblyVersion>', "<AssemblyVersion>$version</AssemblyVersion>"
+          $content = $content -replace '<FileVersion>.*?</FileVersion>', "<FileVersion>$version</FileVersion>"
+          $content = $content -replace '<InformationalVersion>.*?</InformationalVersion>', "<InformationalVersion>$version</InformationalVersion>"
+          Set-Content $filePath $content -NoNewline
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Run tests
+        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal
+
+      - name: Publish WinForms app
+        run: dotnet publish CollectionManager.App.WinForms/CollectionManager.App.WinForms.csproj -f net9.0-windows -p:PublishProfile=FolderProfile
+
+      - name: Publish CLI app
+        run: dotnet publish CollectionManager.App.Cli/CollectionManager.App.Cli.csproj -f net9.0 -p:PublishProfile=FolderProfile
+
+      - name: Zip WinForms app
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path ./artifacts -Force
+          Compress-Archive -Path ./CollectionManager.App.WinForms/bin/publish/* -DestinationPath ./artifacts/CollectionManager-WinForms.zip
+
+      - name: Zip CLI app
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ./CollectionManager.App.Cli/bin/publish/* -DestinationPath ./artifacts/CollectionManager-CLI.zip
+
+      - name: Install InnoSetup
+        run: choco install innosetup -y
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.VERSION }}"
+          iscc "/DAppVersion=$version" "InnoSetup\script.iss"
+          Move-Item "InnoSetup\output\CollectionManagerSetup.exe" "./artifacts/" -Force
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: |
+            artifacts/CollectionManager-WinForms.zip
+            artifacts/CollectionManager-CLI.zip
+            artifacts/CollectionManagerSetup.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  CONFIGURATION: Release
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set version with commit hash
+        shell: pwsh
+        run: |
+          $commitSha = "${{ github.sha }}".Substring(0, 7)
+          $filePath = "Directory.Build.props"
+          $content = Get-Content $filePath -Raw
+          $content = $content -replace '<InformationalVersion>.*?</InformationalVersion>', "<InformationalVersion>0.0.0+$commitSha</InformationalVersion>"
+          Set-Content $filePath $content -NoNewline
+          Write-Host "InformationalVersion set to: 0.0.0+$commitSha"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Run tests
+        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal
+
+      - name: Publish WinForms app
+        run: dotnet publish CollectionManager.App.WinForms/CollectionManager.App.WinForms.csproj -f net9.0-windows -p:PublishProfile=FolderProfile
+
+      - name: Publish CLI app
+        run: dotnet publish CollectionManager.App.Cli/CollectionManager.App.Cli.csproj -f net9.0 -p:PublishProfile=FolderProfile
+
+      - name: Zip WinForms app
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path ./artifacts -Force
+          Compress-Archive -Path ./CollectionManager.App.WinForms/bin/publish/* -DestinationPath ./artifacts/CollectionManager-WinForms.zip
+
+      - name: Zip CLI app
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ./CollectionManager.App.Cli/bin/publish/* -DestinationPath ./artifacts/CollectionManager-CLI.zip
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            artifacts/CollectionManager-WinForms.zip
+            artifacts/CollectionManager-CLI.zip

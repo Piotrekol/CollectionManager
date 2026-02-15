@@ -6,7 +6,7 @@ using CollectionManager.Core.Interfaces;
 using CollectionManager.Core.Modules.Collection;
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
-using System.Collections.Generic;
+using System.Linq;
 
 public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
 {
@@ -22,32 +22,53 @@ public class CollectionEditor : ICollectionEditor, ICollectionNameValidator
         _mapCacher = mapCacher;
     }
 
-    public void EditCollection(CollectionEditArgs args)
+    public void EditCollection(CollectionEditArgs args) => EditCollection([args]);
+
+    public void EditCollection(IReadOnlyList<CollectionEditArgs> args)
     {
-        if (args.Action is CollectionEdit.Rename or CollectionEdit.Add)
+        if (args is null || args.Count == 0)
         {
-            bool isRenameform = args.Action == CollectionEdit.Rename;
+            return;
+        }
 
-            string newCollectionName = _collectionAddRenameForm
-                .GetCollectionName(IsCollectionNameValid, args.CollectionNames.FirstOrDefault(), isRenameform);
+        List<CollectionEditArgs> processedArgs = new(args.Count);
 
-            if (newCollectionName == "")
+        foreach (CollectionEditArgs arg in args)
+        {
+            CollectionEditArgs processedArg = ProcessUIActionIfNeeded(arg);
+
+            if (processedArg is not null)
             {
-                return;
-            }
-
-            switch (args.Action)
-            {
-                case CollectionEdit.Rename:
-                    args = CollectionEditArgs.RenameCollection(args.CollectionNames[0], newCollectionName);
-                    break;
-                case CollectionEdit.Add:
-                    args = CollectionEditArgs.AddCollections([new OsuCollection(_mapCacher) { Name = newCollectionName }]);
-                    break;
+                processedArgs.Add(processedArg);
             }
         }
 
-        _collectionsManager.EditCollection(args);
+        if (processedArgs.Count > 0)
+        {
+            _collectionsManager.EditCollection(processedArgs);
+        }
+    }
+
+    private CollectionEditArgs? ProcessUIActionIfNeeded(CollectionEditArgs args)
+    {
+        if (args.Action is not (CollectionEdit.Rename or CollectionEdit.Add))
+        {
+            return args;
+        }
+
+        string newCollectionName = _collectionAddRenameForm.GetCollectionName(IsCollectionNameValid, args.CollectionNames.FirstOrDefault(), isRenameForm: args.Action == CollectionEdit.Rename);
+
+        if (string.IsNullOrEmpty(newCollectionName))
+        {
+            return null;
+        }
+
+        return args.Action switch
+        {
+            CollectionEdit.Rename => CollectionEditArgs.RenameCollection(args.CollectionNames[0], newCollectionName),
+            CollectionEdit.Add => CollectionEditArgs.AddCollections([new OsuCollection(_mapCacher) { Name = newCollectionName }]),
+            _ => args
+        };
     }
 
     public OsuCollections GetCollectionsForBeatmaps(Beatmaps beatmaps)
