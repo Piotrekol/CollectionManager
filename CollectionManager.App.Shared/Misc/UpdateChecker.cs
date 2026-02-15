@@ -35,13 +35,14 @@ public class UpdateChecker : IUpdateModel
 
     public bool CheckForUpdates()
     {
-        if (CurrentVersion.MajorRevision < 0)
+        if (CurrentVersion.Major < 0)
         {
             Error = true;
             return false;
         }
 
         string data = GetStringData(githubUpdateUrl);
+
         if (string.IsNullOrEmpty(data))
         {
             Error = true;
@@ -49,6 +50,7 @@ public class UpdateChecker : IUpdateModel
         }
 
         JObject json;
+
         try
         {
             json = JObject.Parse(data);
@@ -58,9 +60,17 @@ public class UpdateChecker : IUpdateModel
             return false;
         }
 
-        string newestReleaseVersion = json["tag_name"].ToString();
-        OnlineVersion = new Version(newestReleaseVersion);
-        NewVersionLink = json["html_url"].ToString();
+        try
+        {
+            string newestReleaseVersion = json["tag_name"].ToString();
+            OnlineVersion = new Version(newestReleaseVersion.TrimStart('v'));
+            NewVersionLink = json["html_url"].ToString();
+        }
+        catch
+        {
+            Error = true;
+            return false;
+        }
 
         return UpdateIsAvailable;
     }

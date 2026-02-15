@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - '**'
 
 env:
   DOTNET_VERSION: '9.0.x'
