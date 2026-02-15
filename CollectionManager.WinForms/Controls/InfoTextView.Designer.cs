@@ -57,8 +57,8 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(label_CollectionManagerStatus);
             Controls.Add(label_UpdateText);
+            Controls.Add(label_CollectionManagerStatus);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "InfoTextView";
             Size = new System.Drawing.Size(1178, 20);
