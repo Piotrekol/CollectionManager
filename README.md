@@ -148,80 +148,40 @@ CLI is provided with main Installer or as standalone exe in `CollectionManager-C
 
 CLI uses sub-commands for different operations:
 
-* `convert` - Convert collection files between formats (.db/.osdb).
+**Collection Operations:**
+* `list` / `ls` - List loaded collections
+* `load` / `open` - Load collections from file
+* `save` - Save collections to file
+* `rename` / `mv` - Rename a collection
+* `merge` - Merge multiple collections into one
+* `remove` / `rm` - Remove collection(s)
 
-  * `-i` / `--Input`: Required. Input .db/.osdb collection file.
+**Creation:**
+* `create` - Create collection from beatmap IDs or hashes
+* `convert` - Convert collection files between formats. Same as doing `load` then `save` with different extension.
+* `generate` - Generate collections from user top scores using osu! API
 
-* `create` - Create collection from beatmap IDs or hashes.
+**Pipeline Mode:**
+Chain multiple commands together with `--then` to share collections between operations.
 
-  * `-b` / `--BeatmapIds`: Comma or whitespace separated list of beatmap ids. This can also be a path to a file containing this list.
-
-  * `-h` / `--Hashes`: Comma or whitespace separated list of beatmap hashes (MD5). This can also be a path to a file containing this list.
-
-* `generate` - Generate collections from user top scores using the osu! API.
-
-  * `-u` / `--Usernames`: Required. Comma or whitespace separated list of usernames. This can also be a path to a file containing this list.
-
-  * `-k` / `--ApiKey`: Required. osu! API key for accessing user data. Create one in your osu! settings, under `Legacy API` section.
-
-  * `-p` / `--CollectionNamePattern`: Optional. Collection name format pattern. Default: `"{0} - {1}"` where `{0}` is username and `{1}` is mods.
-
-  * `-g` / `--Gamemode`: Optional. Game mode: `0`=Osu, `1`=Taiko, `2`=Catch, `3`=Mania. Default: `0`.
-
-  * `--MinPp`: Optional. Minimum PP required for a score. Default: `0`.
-
-  * `--MaxPp`: Optional. Maximum PP allowed for a score. Default: `5000`.
-
-  * `--MinAcc`: Optional. Minimum accuracy required for a score (0-100). Default: `0`.
-
-  * `--MaxAcc`: Optional. Maximum accuracy allowed for a score (0-100). Default: `100`.
-
-  * `-r` / `--Ranks`: Optional. Rank filter: `0`=S and better, `1`=A and worse, `2`=All. Default: `2`.
-
-  * `-m` / `--Mods`: Optional. Comma separated list of required mods (e.g., `Hd,Hr`). If empty, all mods are included.
-
-Common options:
-
-* `-o` / `--Output`: Required. Output filename with or without a path. The filename extension will specify which format to save in: `.db` or `.osdb`. 
-
-* `-l` / `--OsuLocation`: The location of your osu! directory or a directory containing a valid osu!.db or client.realm. If not provided, Collection Manager will attempt to find it automatically.
-
-* `-s` / `--SkipOsuLocation`: Skip loading of osu! database.
-
-* `--version`: Display version information.
-
-* `--help`: Display help for specific command.
+**Getting Help:**
+Run `CollectionManager.App.Cli.exe --help` for all options, or `CollectionManager.App.Cli.exe <command> --help` for command-specific usage.
 
 ### Examples
 
-**Convert collection format:**
 ```bash
+# Convert between collection formats. This will load your osu maps beforehand by default.
 CollectionManager.App.Cli.exe convert -i input.db -o output.osdb
-#or
-CollectionManager.App.Cli.exe convert -i input.osdb -o output.db
-```
 
-**Create collection from beatmap IDs or hashes:**
-```bash
+# Create collection from beatmap IDs
 CollectionManager.App.Cli.exe create -b "1 2 3 4 5" -o mycollection.osdb
-#or
-CollectionManager.App.Cli.exe create -h "hash1 hash2 hash3" -o mycollection.osdb
-#or using file contents
-CollectionManager.App.Cli.exe create -b C:\path\to\ids-or-hashes.txt -o mycollection.osdb
-```
 
-**Specify osu! location or path to database file manually, instead of using auto detection:**
-```bash
-CollectionManager.App.Cli.exe create -b "1 2 3" -o output.osdb -l "C:\osu!\osu!.db"
-```
+# Generate collections from user top scores, and save
+CollectionManager.App.Cli.exe generate -u "playerName" -k "YOUR_API_KEY" -o "top_plays.osdb"
 
-**Generate collections from user top scores:**
-```bash
-CollectionManager.App.Cli.exe generate -u "Piotrekol" -k "YOUR_API_KEY" -o "top_plays.osdb"
-#or for multiple users
-CollectionManager.App.Cli.exe generate -u "player1,player2,player3" -k "YOUR_API_KEY" -o "top_plays.osdb"
-#or using file contents
-CollectionManager.App.Cli.exe generate -u C:\path\to\usernames.txt -k "YOUR_API_KEY" -o "top_plays.osdb"
-#or with mods filter and minimum PP
-CollectionManager.App.Cli.exe generate -u "player1" -k "YOUR_API_KEY" -o "hdhr_plays.osdb" -m "HR,HD" --MinPp 500
+# Pipeline: Load, list, and save
+CollectionManager.App.Cli.exe load collection.osdb --then ls --then save -o backup.db
+
+# Pipeline: Load collections, and beatmaps from osu! stable, and export as .osdb
+CollectionManager.App.Cli.exe load --stable --then load-maps --stable --then save -o C:\some\cloud\folder\my_collections.osdb
 ```
