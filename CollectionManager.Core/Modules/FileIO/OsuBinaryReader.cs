@@ -14,7 +14,12 @@ public class OsuBinaryReader : BinaryReader
     {
     }
 
-    public override string ReadString() => ReadByte() == 11 ? base.ReadString() : null;
+    public override string ReadString() => ReadRawOsuString() ?? string.Empty;
+
+    /// <summary>
+    /// Reads an osu! string field: its value when the string-marker byte is set, otherwise null.
+    /// </summary>
+    protected string ReadRawOsuString() => ReadByte() == 11 ? base.ReadString() : null;
 
     public DateTime ReadDateTime()
     {
