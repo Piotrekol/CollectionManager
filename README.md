@@ -153,7 +153,11 @@ CLI uses sub-commands for different operations:
 * `load` / `open` - Load collections from file
 * `save` - Save collections to file
 * `rename` / `mv` - Rename a collection
+* `duplicate` - Duplicate a collection
 * `merge` - Merge multiple collections into one
+* `intersect` - Intersect collections (beatmaps present in all) into a new collection
+* `difference` - Difference collections (beatmaps present in only one) into a new collection
+* `inverse` - Inverse collections (loaded beatmaps not in any) into a new collection
 * `remove` / `rm` - Remove collection(s)
 
 **Creation:**
@@ -184,4 +188,7 @@ CollectionManager.App.Cli.exe load collection.osdb --then ls --then save -o back
 
 # Pipeline: Load collections, and beatmaps from osu! stable, and export as .osdb
 CollectionManager.App.Cli.exe load --stable --then load-maps --stable --then save -o C:\some\cloud\folder\my_collections.osdb
+
+# Pipeline: Load collections, intersect two of them (use `ls` to find their Ids), and save the result
+CollectionManager.App.Cli.exe load collections.osdb --then ls --then intersect -i "1 2" -n "Both" --then save -o intersection.osdb
 ```
