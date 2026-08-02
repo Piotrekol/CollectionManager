@@ -23,7 +23,7 @@ public class IntersectStrategy : ICollectionEditStrategy
 
         foreach (IOsuCollection collection in argCollections)
         {
-            beatmaps = beatmaps.Intersect(collection.AllBeatmaps(), new CollectionBeatmapComparer()).ToList();
+            beatmaps = beatmaps.Intersect(collection.AllBeatmaps(), BeatmapIdentityComparer.Instance).ToList();
         }
 
         foreach (BeatmapExtension beatmap in beatmaps)

@@ -17,23 +17,33 @@ public class DifferenceStrategy : ICollectionEditStrategy
     {
         List<IOsuCollection> argCollections = manager.GetCollectionByNames(args.CollectionNames);
         OsuCollection targetCollection = new(_mapCacher) { Name = args.NewName };
-        IOsuCollection mainCollection = argCollections[0];
-        argCollections.RemoveAt(0);
-        IEnumerable<BeatmapExtension> beatmaps = mainCollection.AllBeatmaps();
 
-        foreach (IOsuCollection collection in argCollections)
+        Dictionary<string, HashSet<int>> collectionsPerKey = [];
+        Dictionary<string, BeatmapExtension> samplePerKey = [];
+
+        for (int i = 0; i < argCollections.Count; i++)
         {
-            beatmaps = beatmaps.Concat(collection.AllBeatmaps());
+            foreach (BeatmapExtension beatmap in argCollections[i].AllBeatmaps())
+            {
+                string key = BeatmapIdentityComparer.KeyOf(beatmap);
+
+                if (collectionsPerKey.TryGetValue(key, out HashSet<int>? collections))
+                {
+                    _ = collections.Add(i);
+                }
+                else
+                {
+                    collectionsPerKey[key] = [i];
+                    samplePerKey[key] = beatmap;
+                }
+            }
         }
 
-        List<string> differenceMd5 = beatmaps.GroupBy(x => x.Md5).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
-        List<int> differenceMapId = beatmaps.GroupBy(x => x.MapId).Where(group => group.Count() == 1).Select(group => group.Key).ToList();
-
-        foreach (BeatmapExtension beatmap in beatmaps)
+        foreach (KeyValuePair<string, HashSet<int>> entry in collectionsPerKey)
         {
-            if (differenceMd5.Contains(beatmap.Md5) || differenceMapId.Contains(beatmap.MapId))
+            if (entry.Value.Count == 1)
             {
-                targetCollection.AddBeatmap(beatmap);
+                targetCollection.AddBeatmap(samplePerKey[entry.Key]);
             }
         }
 
