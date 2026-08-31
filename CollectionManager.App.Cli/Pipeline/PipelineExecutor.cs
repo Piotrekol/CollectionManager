@@ -109,7 +109,7 @@ internal static partial class PipelineExecutor
             }
 
             string path = GetOutputPath(cmd.OutputFile);
-            context.SaveCollectionsToFile(path);
+            context.SaveCollectionsToFile(path, cmd.RealmVersion);
             Logger.LogSavedToFile(path);
         }
 

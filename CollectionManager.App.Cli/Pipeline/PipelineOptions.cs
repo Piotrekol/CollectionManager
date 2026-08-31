@@ -1,5 +1,6 @@
 namespace CollectionManager.App.Cli.Pipeline;
 
+using CollectionManager.Core.Modules.FileIo.OsuLazerDb;
 using CommandLine;
 
 /// <summary>
@@ -9,6 +10,9 @@ internal abstract class PipelineOptions : IPipelineCommand
 {
     [Option('o', "output", HelpText = "Output file. If provided, collections are saved after this command.")]
     public virtual string? OutputFile { get; init; }
+
+    [Option("realm-version", Required = false, HelpText = "osu!lazer realm schema version for newly created .realm files (LastLoaded, Latest, V51, V52). Existing files keep their version. Default: LastLoaded.")]
+    public LazerRealmSchemaVersion RealmVersion { get; init; } = LazerRealmSchemaVersion.LastLoaded;
 
     [Option('l', "osu-location", HelpText = "Location of osu! directory or osu!.db/client.realm. Auto-detected if not provided.")]
     public string? OsuLocation { get; init; }

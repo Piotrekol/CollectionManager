@@ -1,7 +1,9 @@
 namespace CollectionManager.App.Cli.Pipeline;
+using CollectionManager.Core.Modules.FileIo.OsuLazerDb;
 
 using CollectionManager.Core.Extensions;
 using CollectionManager.Core.Modules.Collection;
+using CollectionManager.Core.Modules.FileIo.FileCollections;
 using CollectionManager.Core.Modules.FileIo;
 using CollectionManager.Core.Modules.FileIo.OsuDb;
 using CollectionManager.Core.Types;
@@ -111,25 +113,26 @@ internal sealed partial class CollectionContext : IDisposable
         return path;
     }
 
-    public int LoadCollectionsFromFile(string path)
+    public CollectionLoadResult LoadCollectionsFromFile(string path)
     {
         if (!File.Exists(path))
         {
             throw new FileNotFoundException($"Collection file not found: {path}");
         }
 
-        OsuCollections loaded = _fileIo.CollectionLoader.LoadCollection(path);
+        CollectionLoadResult loaded = _fileIo.CollectionLoader.LoadCollection(path);
 
-        if (loaded != null && loaded.Count > 0)
+        if (loaded.Collections.Count > 0)
         {
-            CollectionEditArgs args = CollectionEditArgs.AddCollections(loaded);
+            CollectionEditArgs args = CollectionEditArgs.AddCollections(loaded.Collections);
             Manager.EditCollection(args);
         }
 
-        return loaded.Count;
+        return loaded;
     }
 
-    public void SaveCollectionsToFile(string path) => _fileIo.CollectionLoader.SaveCollection(Collections, path);
+    public void SaveCollectionsToFile(string path, LazerRealmSchemaVersion targetSchemaVersion)
+        => _fileIo.CollectionLoader.SaveCollection(Collections, path, targetSchemaVersion);
 
     public StableOsuDatabaseData? GetStableOsuDatabaseData() => _fileIo.OsuDatabase.StableOsuDatabaseData;
 

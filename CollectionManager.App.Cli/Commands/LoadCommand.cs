@@ -2,6 +2,7 @@ namespace CollectionManager.App.Cli.Commands;
 
 using CollectionManager.App.Cli.Pipeline;
 using CollectionManager.Core.Modules.FileIo;
+using CollectionManager.Core.Modules.FileIo.FileCollections;
 using CollectionManager.Core.Types;
 using CommandLine;
 using Microsoft.Extensions.Logging;
@@ -51,8 +52,19 @@ internal sealed partial class LoadCommand : PipelineOptions, IPipelineCommand
 
         try
         {
-            int loadedCount = context.LoadCollectionsFromFile(effectiveInputFile);
-            LogLoadedCollections(loadedCount, effectiveInputFile);
+            CollectionLoadResult loaded = context.LoadCollectionsFromFile(effectiveInputFile);
+            LogLoadedCollections(loaded.Collections.Count, effectiveInputFile);
+
+            switch (loaded)
+            {
+                case RealmCollectionLoadResult realmLoaded:
+                    LogLoadedRealmSchemaVersion((int)realmLoaded.RealmSchemaVersion, effectiveInputFile);
+                    break;
+                case DbCollectionLoadResult dbLoaded:
+                    LogLoadedDbFileVersion(dbLoaded.FileVersion, effectiveInputFile);
+                    break;
+            }
+
             return Task.FromResult(0);
         }
         catch (Exception ex)
@@ -119,6 +131,11 @@ internal sealed partial class LoadCommand : PipelineOptions, IPipelineCommand
     [LoggerMessage(Level = LogLevel.Error, Message = "Could not find osu! {InstallationName} installation.")]
     private partial void LogPreferredInstallationNotFound(string installationName);
 
+    [LoggerMessage(Level = LogLevel.Information, Message = "Loaded collection file version: {Version} ({Path})")]
+    private partial void LogLoadedDbFileVersion(int version, string path);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Loaded realm schema version: {Version} ({Path})")]
+    private partial void LogLoadedRealmSchemaVersion(int version, string path);
     [LoggerMessage(Level = LogLevel.Information, Message = "Loaded {Count} collection(s) from {Path}")]
     private partial void LogLoadedCollections(int count, string path);
 

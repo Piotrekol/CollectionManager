@@ -1,6 +1,7 @@
 namespace CollectionManager.App.Cli.Commands;
 
 using CollectionManager.App.Cli.Pipeline;
+using CollectionManager.Core.Modules.FileIo.FileCollections;
 using CommandLine;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -19,8 +20,8 @@ internal sealed partial class ConvertCommand : PipelineOptions, IPipelineCommand
     {
         _ = context.EnsureOsuDatabaseLoaded(this);
         LogConvertingCollections();
-        int loadedCount = context.LoadCollectionsFromFile(InputFile);
-        LogLoadedCollections(loadedCount, InputFile);
+        CollectionLoadResult loaded = context.LoadCollectionsFromFile(InputFile);
+        LogLoadedCollections(loaded.Collections.Count, InputFile);
 
         return Task.FromResult(0);
     }
