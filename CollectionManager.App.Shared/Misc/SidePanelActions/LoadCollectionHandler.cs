@@ -32,7 +32,7 @@ public sealed class LoadCollectionHandler : IMainSidePanelActionHandler
         try
         {
             collections = data is string fileLocation
-                ? _osuFileIo.CollectionLoader.LoadCollection(fileLocation)
+                ? _osuFileIo.CollectionLoader.LoadCollection(fileLocation).Collections
                 : await _osuFileIo.CollectionLoader.LoadCollectionFileAsync(_userDialogs);
         }
         catch (CorruptedFileException ex)

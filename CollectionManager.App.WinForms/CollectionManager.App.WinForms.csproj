@@ -22,7 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommandLineParser" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="System.Drawing.Common" />
 	</ItemGroup>

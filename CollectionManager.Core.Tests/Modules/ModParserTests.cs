@@ -2,7 +2,7 @@
 
 using CollectionManager.Core.Modules.Mod;
 using CollectionManager.Core.Types;
-using FluentAssertions;
+using AwesomeAssertions;
 using System.Linq;
 using Xunit;
 

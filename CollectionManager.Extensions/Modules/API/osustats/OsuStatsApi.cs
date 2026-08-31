@@ -103,7 +103,7 @@ public class OsuStatsApi : IWebCollectionProvider, IDisposable
             stream.CopyTo(fileStream);
         }
 
-        return OsdbCollectionHandler.ReadOsdb(tempFile, _mapCacher);
+        return OsdbCollectionHandler.ReadOsdb(tempFile, _mapCacher).Collections;
     }
 
     public async Task<bool> RemoveCollection(int collectionId)

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 [MapTo("BeatmapSet")]
 internal partial class BeatmapSetInfo
     : IRealmObject
@@ -71,7 +72,7 @@ internal partial class BeatmapSetInfo
     //}
 
     [UsedImplicitly] // Realm
-    private BeatmapSetInfo()
+    public BeatmapSetInfo()
     {
     }
 

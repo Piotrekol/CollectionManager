@@ -132,7 +132,7 @@ public class OsdbCollectionHandler
         _binWriter.Write("By Piotrekol");
     }
 
-    public static IEnumerable<OsuCollection> ReadOsdb(string fullFileDir, MapCacher mapCacher)
+    public static DbCollectionLoadResult ReadOsdb(string fullFileDir, MapCacher mapCacher)
     {
         BinaryReader reader;
         using (FileStream fileStream = new(fullFileDir, FileMode.Open, FileAccess.Read))
@@ -144,7 +144,7 @@ public class OsdbCollectionHandler
 
         _ = reader.BaseStream.Seek(0, SeekOrigin.Begin);
         int fileVersion = -1;
-
+        OsuCollections collections = [];
         string versionString = reader.ReadString();
         //check header
         if (_versions.TryGetValue(versionString, out int value))
@@ -235,7 +235,7 @@ public class OsdbCollectionHandler
                         }
                     }
 
-                    yield return collection;
+                    collections.Add(collection);
                 }
             }
 
@@ -251,6 +251,8 @@ public class OsdbCollectionHandler
                 reader.Dispose();
             }
         }
+
+        return new DbCollectionLoadResult(collections, fileVersion);
     }
 
     private static BinaryReader StartReadingFirstFileInArchive(Stream baseStream)

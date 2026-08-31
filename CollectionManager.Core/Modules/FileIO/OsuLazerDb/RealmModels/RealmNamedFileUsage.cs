@@ -2,6 +2,7 @@
 using Realms;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 internal partial class RealmNamedFileUsage
     : IEmbeddedObject
 {

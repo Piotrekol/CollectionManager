@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CollectionManager.App.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "interactive"
+    }
+  }
+}

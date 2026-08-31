@@ -4,6 +4,7 @@ using Realms;
 using System;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 [MapTo("Ruleset")]
 internal partial class RulesetInfo
     : IRealmObject
