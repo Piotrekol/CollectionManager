@@ -137,6 +137,7 @@ public sealed class OsuDownloadManager
         }
 
         _mapDownloader = (DownloadManager)Activator.CreateInstance(downloaderType, DownloadDirectory, SelectedDownloadSource.DownloadThreads, SelectedDownloadSource.DownloadsPerMinute, SelectedDownloadSource.DownloadsPerHour);
+        _mapDownloader.UserAgent = SelectedDownloadSource.UserAgent;
         _mapDownloader.ProgressUpdated += MapDownloaderOnProgressUpdated;
         return SelectedDownloadSource.RequiresLogin ? (IsLoggedIn = loginData.IsValid() && _mapDownloader.Login(loginData)) : (IsLoggedIn = true);
     }

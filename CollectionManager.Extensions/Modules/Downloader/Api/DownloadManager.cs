@@ -30,6 +30,25 @@ public abstract class DownloadManager : IDisposable
         }
     }
 
+    public string UserAgent
+    {
+        get => _userAgent;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return;
+            }
+
+            _userAgent = value;
+            foreach (CookieAwareWebClient client in Clients)
+            {
+                client.UserAgent = value;
+            }
+        }
+    }
+    private string _userAgent = CookieAwareWebClient.DefaultUserAgent;
+
     private readonly Dictionary<int, DownloadProgress> downloadCheck = [];
     private bool _stopDownloads;
     public event EventHandler<DownloadProgressChangedEventArgs> ProgressUpdated;
