@@ -10,7 +10,7 @@ public sealed class StableOsuDatabaseReader
 {
     public const int LatestOsuDbVersion = 20191105;
 
-    public static StableOsuDatabaseData ReadDatabase(string filePath, CancellationToken cancellationToken, IProgress<string> progress = null)
+    public static StableOsuDatabaseData ReadDatabase(string filePath, CancellationToken cancellationToken, IProgress<string> progress = null, bool preserveNullStrings = false)
     {
         if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
         {
@@ -19,12 +19,14 @@ public sealed class StableOsuDatabaseReader
 
         using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-        return ReadDatabase(fileStream, cancellationToken, progress);
+        return ReadDatabase(fileStream, cancellationToken, progress, preserveNullStrings);
     }
 
-    public static StableOsuDatabaseData ReadDatabase(Stream inputStream, CancellationToken cancellationToken, IProgress<string> progress = null)
+    public static StableOsuDatabaseData ReadDatabase(Stream inputStream, CancellationToken cancellationToken, IProgress<string> progress = null, bool preserveNullStrings = false)
     {
-        using OsuBinaryReader binaryReader = new(inputStream);
+        using OsuBinaryReader binaryReader = preserveNullStrings
+            ? new WriteBackOsuBinaryReader(inputStream)
+            : new OsuBinaryReader(inputStream);
 
         StableOsuDatabaseData stableDatabaseData = ReadDatabaseHeader(binaryReader);
 

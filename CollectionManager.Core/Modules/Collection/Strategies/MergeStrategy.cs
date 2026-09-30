@@ -13,6 +13,7 @@ public class MergeStrategy : ICollectionEditStrategy
         if (argCollections.Count > 0)
         {
             IOsuCollection masterCollection = argCollections[0];
+            HashSet<string> masterKeys = [.. masterCollection.AllBeatmaps().Select(BeatmapIdentityComparer.KeyOf)];
 
             for (int i = 1; i < argCollections.Count; i++)
             {
@@ -20,7 +21,10 @@ public class MergeStrategy : ICollectionEditStrategy
 
                 foreach (BeatmapExtension beatmap in collectionToMerge.AllBeatmaps())
                 {
-                    masterCollection.AddBeatmap(beatmap);
+                    if (masterKeys.Add(BeatmapIdentityComparer.KeyOf(beatmap)))
+                    {
+                        masterCollection.AddBeatmap(beatmap);
+                    }
                 }
 
                 manager.LoadedCollections.SilentRemove(collectionToMerge);

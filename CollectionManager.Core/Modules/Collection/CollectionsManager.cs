@@ -95,6 +95,12 @@ public class CollectionsManager : ICollectionEditor, ICollectionNameValidator
     public IOsuCollection GetCollectionByName(string collectionName) =>
         LoadedCollections.FirstOrDefault(c => c.Name == collectionName);
 
+    public IOsuCollection GetCollectionById(int collectionId) =>
+        LoadedCollections.FirstOrDefault(c => c.Id == collectionId);
+
+    public List<IOsuCollection> GetCollectionsById(IEnumerable<int> collectionIds) =>
+        [.. collectionIds.Select(GetCollectionById)];
+
     public List<IOsuCollection> GetCollectionByNames(IReadOnlyList<string> collectionNames) =>
             [.. collectionNames.Select(GetCollectionByName)];
 

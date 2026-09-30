@@ -8,6 +8,12 @@ public class RenameStrategy : ICollectionEditStrategy
     public void Execute(CollectionsManager manager, CollectionEditArgs args)
     {
         IOsuCollection collection = manager.GetCollectionByName(args.CollectionNames[0]);
+
+        if (collection is null || collection.Name == args.NewName)
+        {
+            return;
+        }
+
         collection.Name = manager.GetValidCollectionName(args.NewName);
     }
 }

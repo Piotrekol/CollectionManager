@@ -2,4 +2,4 @@
 
 using CollectionManager.Core.Types;
 
-public sealed record OsuPathResult(string Path, OsuType Type);
+public sealed record OsuPathResult(string Path, OsuType Type, string? StablePath = default, string? LazerPath = default);

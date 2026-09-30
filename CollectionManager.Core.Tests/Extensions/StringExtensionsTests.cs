@@ -1,7 +1,7 @@
 namespace CollectionManager.Core.Tests.Extensions;
 
 using CollectionManager.Core.Extensions;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 public class StringExtensionsTests

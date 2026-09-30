@@ -4,6 +4,7 @@
 		<AssemblyTitle>osu! Collection Manager CLI</AssemblyTitle>
 		<Copyright>Copyright © 2017-present Piotrekol</Copyright>
 		<PackageId>CollectionManager.App.Cli</PackageId>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,5 +14,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommandLineParser" />
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Extensions.Logging" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
 	</ItemGroup>
 </Project>

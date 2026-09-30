@@ -3,6 +3,7 @@ using Realms;
 using System.Linq;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 [MapTo("File")]
 internal partial class RealmFile
     : IRealmObject

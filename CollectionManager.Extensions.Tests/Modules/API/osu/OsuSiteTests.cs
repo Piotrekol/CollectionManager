@@ -1,7 +1,7 @@
 ﻿namespace CollectionManager.Extensions.Tests.Modules.API.osu;
 
 using CollectionManager.Extensions.Modules.API.osu;
-using FluentAssertions;
+using AwesomeAssertions;
 using NSubstitute;
 using System;
 using System.Net;

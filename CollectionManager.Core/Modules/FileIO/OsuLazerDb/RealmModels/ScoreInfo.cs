@@ -8,6 +8,7 @@ using System.Text.Json;
 using CollectionManager.Core.Properties;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 [MapTo("Score")]
 internal partial class ScoreInfo
     : IRealmObject
@@ -151,7 +152,7 @@ internal partial class ScoreInfo
     //}
 
     [UsedImplicitly] // Realm
-    private ScoreInfo()
+    public ScoreInfo()
     {
     }
 

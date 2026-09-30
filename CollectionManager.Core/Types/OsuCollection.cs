@@ -152,10 +152,7 @@ public class OsuCollection : IEnumerable, IOsuCollection
             throw new BeatmapCacherNotInitalizedException();
         }
 
-        if (LoadedMaps is not null)
-        {
-            LoadedMaps.BeatmapsModified -= LoadedMaps_BeatmapsModified;
-        }
+        LoadedMaps?.BeatmapsModified -= LoadedMaps_BeatmapsModified;
 
         LoadedMaps = instance;
         LoadedMaps.BeatmapsModified += LoadedMaps_BeatmapsModified;
@@ -201,7 +198,7 @@ public class OsuCollection : IEnumerable, IOsuCollection
     {
         if (string.IsNullOrEmpty(map.Hash))
         {
-            map.Hash = "semiRandomHash:" + map.MapId + "|" + map.MapSetId;
+            map.Hash = $"manually-added|{map.MapId}|{map.MapSetId}";
         }
 
         if (_beatmaps.ContainsKey(map.Hash))

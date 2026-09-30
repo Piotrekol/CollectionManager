@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Realms;
 
 namespace CollectionManager.Modules.FileIO.OsuLazerDb.RealmModels;
+[Explicit]
 internal partial class BeatmapCollection 
     : IRealmObject
 {

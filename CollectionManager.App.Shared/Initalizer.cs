@@ -66,7 +66,7 @@ public abstract class Initalizer
         {
             if (File.Exists(args[0]))
             {
-                CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(OsuFileIo.CollectionLoader.LoadCollection(args[0])));
+                CollectionsManager.EditCollection(CollectionEditArgs.AddCollections(OsuFileIo.CollectionLoader.LoadCollection(args[0]).Collections));
             }
         }
 

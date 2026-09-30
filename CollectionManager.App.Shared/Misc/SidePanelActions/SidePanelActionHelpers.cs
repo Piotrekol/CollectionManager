@@ -25,7 +25,7 @@ internal static class SidePanelActionHelpers
         {
             try
             {
-                collections.AddRange(osuFileIo.CollectionLoader.LoadCollection(fileLocation));
+                collections.AddRange(osuFileIo.CollectionLoader.LoadCollection(fileLocation).Collections);
             }
             catch (CorruptedFileException ex)
             {

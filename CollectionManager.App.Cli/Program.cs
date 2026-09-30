@@ -1,19 +1,45 @@
 namespace CollectionManager.App.Cli;
 
-using CollectionManager.App.Cli.Convert;
-using CollectionManager.App.Cli.Create;
-using CollectionManager.App.Cli.Generate;
-using CommandLine;
+using CollectionManager.App.Cli.Logging;
+using CollectionManager.App.Cli.Pipeline;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using System.Globalization;
 using System.Threading.Tasks;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 internal static class Program
 {
+    internal static ILogger Logger { get; private set; } = default!;
+
     private static async Task<int> Main(string[] args)
-        => await Parser.Default.ParseArguments<ConvertCommand, CreateCommand, GenerateCommand>(args)
-            .MapResult(
-                (ConvertCommand cmd) => cmd.RunAsync(),
-                (CreateCommand cmd) => cmd.RunAsync(),
-                (GenerateCommand cmd) => cmd.RunAsync(),
-                _ => Task.FromResult(1)
-            );
+    {
+        if (args.Length == 0)
+        {
+            args = ["--help"];
+        }
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .Enrich.With<IndentationEnricher>()
+            .WriteTo.Console(
+                outputTemplate: $$"""{{{IndentationEnricher.IndentationProperty}}}{Message:lj}{NewLine}""",
+                formatProvider: CultureInfo.InvariantCulture)
+            .CreateLogger();
+
+        using ILoggerFactory loggerFactory = LoggerFactory
+            .Create(builder => builder.AddSerilog(Log.Logger, dispose: false));
+
+        Logger = loggerFactory.CreateLogger("CollectionManager.App.Cli");
+
+        try
+        {
+            List<string[]> commands = PipelineParser.GroupArgs(args);
+            return await PipelineExecutor.ExecuteAsync(commands);
+        }
+        finally
+        {
+            await Log.CloseAndFlushAsync();
+        }
+    }
 }

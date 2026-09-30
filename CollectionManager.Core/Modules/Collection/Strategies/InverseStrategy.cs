@@ -21,7 +21,7 @@ public class InverseStrategy : ICollectionEditStrategy
 
         foreach (IOsuCollection collection in argCollections)
         {
-            beatmaps = beatmaps.Except(collection.AllBeatmaps(), new CollectionBeatmapComparer());
+            beatmaps = beatmaps.Except(collection.AllBeatmaps(), BeatmapIdentityComparer.Instance);
         }
 
         foreach (BeatmapExtension beatmap in beatmaps)

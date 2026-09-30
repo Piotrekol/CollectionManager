@@ -15,5 +15,6 @@ public class DownloadSource : IDownloadSource
     public string FullyQualifiedHandlerName { get; set; }
     public bool RequiresLogin { get; set; }
     public bool UseCookiesLogin { get; set; }
+    public string UserAgent { get; set; }
     public int RequestTimeout { get; set; }
 }

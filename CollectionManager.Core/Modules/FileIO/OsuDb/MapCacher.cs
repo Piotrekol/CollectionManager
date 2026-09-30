@@ -47,8 +47,17 @@ public class MapCacher : IMapDataManager
 
             }
 
-            _ = LoadedBeatmapsHashDict.TryAdd(map.Md5, map);
-            _ = LoadedBeatmapsHashDict.TryAdd(map.Hash, map);
+            // Md5/Hash are null only in write-back (preserveNullStrings) mode; default mode yields "".
+            if (map.Md5 is not null)
+            {
+                _ = LoadedBeatmapsHashDict.TryAdd(map.Md5, map);
+            }
+
+            if (map.Hash is not null)
+            {
+                _ = LoadedBeatmapsHashDict.TryAdd(map.Hash, map);
+            }
+
             _ = LoadedBeatmapsMapIdDict.TryAdd(map.MapId, map);
         }
     }

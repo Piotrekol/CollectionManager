@@ -50,4 +50,8 @@ public interface IDownloadSource
     /// Should site cookies be required instead of user and password for logging in?
     /// </summary>
     bool UseCookiesLogin { get; set; }
+    /// <summary>
+    /// User-Agent header used for login checks and download requests. Falls back to the downloader default when not set.
+    /// </summary>
+    string UserAgent { get; set; }
 }
